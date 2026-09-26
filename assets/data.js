@@ -12,12 +12,13 @@
 
 window.SITE = {
   name: "Yashvi Jain",
-  role: "UX & Service Designer · Design Researcher",
+  role: "Experience Design Strategist",
   location: "London, UK",
   email: "yashvi.jain.yj@gmail.com",
   linkedin: "",   // CHECK: paste your LinkedIn profile URL
   cv: "",         // CHECK: path or URL to your CV PDF, e.g. "assets/Yashvi_Jain_CV.pdf"
-  portfolioPdf: "" // CHECK: path or URL to a portfolio PDF, if you have one
+  portfolioPdf: "", // CHECK: path or URL to a portfolio PDF, if you have one
+  portrait: ""      // CHECK: path to your portrait, e.g. "assets/portrait.jpg" (square crop works best)
 };
 
 window.PROJECTS = [

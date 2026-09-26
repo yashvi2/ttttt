@@ -17,13 +17,13 @@ Then open http://localhost:8000. Case studies open at `#case-<id>` (for example 
 | `index.html` | Page shell and library scripts |
 | `assets/data.js` | All project and contact content. Edit copy here. |
 | `assets/app.js` | React components, Three.js hero scene, scroll engine, case-study view, anonymised artefact drawings |
-| `assets/style.css` | Design tokens (white, black, red), off-grid layouts and scroll effects |
+| `assets/style.css` | Design tokens (dark ground, off-white type, red accent), Poppins + Julius Sans One, layouts and scroll effects |
 
 ## Before publishing
 
 Search the repo for `CHECK` and confirm each item:
 
-- LinkedIn URL, CV link and portfolio PDF in `assets/data.js` (`SITE`)
+- LinkedIn URL, CV link, portfolio PDF and portrait image in `assets/data.js` (`SITE`)
 - The `30 days → 3 days` outcome in `assets/app.js` (Experience section): confirm the project, the measure and that it can be disclosed
 - Project copy is written in general process language with no invented metrics or findings. Replace it with specifics you can disclose and remove anything that does not match what happened
 - Team size and solo/group status for projects 04 and 05
