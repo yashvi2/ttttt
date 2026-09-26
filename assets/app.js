@@ -4,7 +4,7 @@
   var S = window.SITE, P = window.PROJECTS, CS = window.CASE_SECTIONS;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
 
   /* ---------- Anonymised artefacts, drawn in HTML/CSS ---------- */
@@ -276,7 +276,7 @@
     if (!a || caseEl.hidden) return;
     ev.preventDefault();
     var id = a.getAttribute("href").slice(1);
-    history.pushState(null, "", "#" + id);
+    try { history.pushState(null, "", "#" + id); } catch (e) {}
     route();
     var t = document.getElementById(id); if (t) t.scrollIntoView();
   });
