@@ -19,7 +19,11 @@ window.SITE = {
   cv: "",         // CHECK: path or URL to your CV PDF, e.g. "assets/Yashvi_Jain_CV.pdf"
   portfolioPdf: "", // CHECK: path or URL to a portfolio PDF, if you have one
   portrait: "assets/img/portrait.jpg",
-  illustration: "assets/img/illustration.png"
+  illustration: "assets/img/illustration.png",
+  portraitFull: "assets/img/portrait-full.jpg",
+  // Home page layout: "classic" (illustration + text side by side)
+  // or "poster" (centred, giant photo-cut word). Try either with #home-classic / #home-poster.
+  homeStyle: "classic"
 };
 
 window.PROJECTS = [

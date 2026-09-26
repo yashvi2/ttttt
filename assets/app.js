@@ -376,6 +376,47 @@
     </section>`;
   }
 
+  /* ================================================================
+     Poster home: centred, a giant word cut from the same photo that
+     continues below it, with crop marks, labels and colour chips.
+  ================================================================ */
+  var Birds = function () {
+    return html`<svg className="doodle birds" viewBox="0 0 70 34" aria-hidden="true">
+      <path d="M4 14 q5 -6 10 0 q5 -6 10 0" /><path d="M30 6 q4 -5 8 0 q4 -5 8 0" /><path d="M46 24 q3 -4 6 0 q3 -4 6 0" />
+    </svg>`;
+  };
+  // Same blue-grey wash on the word and the top of the photo, so they read as one surface
+  var POSTER_TINT = "linear-gradient(rgba(84, 118, 142, .5), rgba(84, 118, 142, .5))";
+  var POSTER_FADE = "linear-gradient(rgba(84, 118, 142, .5), rgba(84, 118, 142, 0) 45%)";
+  function PosterHero() {
+    return html`<section className="poster" id="top" aria-labelledby="poster-h">
+      <span className="crop c-tl" aria-hidden="true"></span><span className="crop c-tr" aria-hidden="true"></span>
+      <span className="crop c-bl" aria-hidden="true"></span><span className="crop c-br" aria-hidden="true"></span>
+      <dl className="poster-meta">
+        <div><dt>Name</dt><dd>Yashvi Jain</dd></div>
+        <div><dt>Role</dt><dd>Product designer</dd></div>
+        <div><dt>Based in</dt><dd>London</dd></div>
+        <div><dt>Focus</dt><dd>Complex systems</dd></div>
+      </dl>
+      <div className="poster-art">
+        <p className="poster-word" aria-hidden="true" style=${{ backgroundImage: POSTER_TINT + ', url("' + S.portraitFull + '")' }}>hello</p>
+        <div className="poster-photo" role="img" aria-label="Yashvi sitting on a chair against a pale blue wall, smiling" style=${{ backgroundImage: POSTER_FADE + ', url("' + S.portraitFull + '")' }}>
+          <ul className="swatches" aria-hidden="true"><li></li><li></li><li></li></ul>
+          <${Birds} />
+        </div>
+      </div>
+      <div className="poster-copy">
+        <p className="hand poster-hi">hi, nice to meet you</p>
+        <h1 id="poster-h" className="poster-h">I'm Yashvi, a product designer who shapes interfaces and the decisions behind them.</h1>
+        <p className="poster-p">UX craft meets strategic thinking, with a service design edge. Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
+        <div className="ctas">
+          <a className="btn btn-red" href="#work">See my work</a>
+          <a className="btn" href="#about">Get to know me</a>
+        </div>
+      </div>
+    </section>`;
+  }
+
   function Hello() {
     return html`<section className="hello wrap" aria-label="Introduction">
       <div className="letter">
@@ -918,8 +959,10 @@
      #work, #approach, #about, #thinking, #contact are pages;
      #case-<id> opens a case study; empty or #home is the home page.
   ================================================================ */
+  var HOME_STYLE = S.homeStyle === "poster" ? "poster" : "classic";
   function readRoute() {
     var hh = location.hash.slice(1);
+    if (hh === "home-poster" || hh === "home-classic") { HOME_STYLE = hh.slice(5); return { page: "home", caseId: null, anchor: null }; }
     if (hh.indexOf("case-") === 0) {
       var id = hh.slice(5);
       for (var i = 0; i < P.length; i++) if (P[i].id === id) return { page: "work", caseId: id, anchor: null };
@@ -934,7 +977,9 @@
       case "approach": return html`<${Approach} />`;
       case "about": return html`<${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
       case "contact": return html`<${Contact} />`;
-      default: return html`<${Hero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`;
+      default: return HOME_STYLE === "poster"
+        ? html`<${PosterHero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`
+        : html`<${Hero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`;
     }
   }
   function App() {
@@ -963,7 +1008,7 @@
     return html`<${React.Fragment}>
       <a className="skip" href="#main">Skip to content</a>
       <${Header} page=${route.page} />
-      <main id="main" tabIndex="-1" key=${key} className=${"page page-" + (cp ? "case" : route.page)}>
+      <main id="main" tabIndex="-1" key=${key} className=${"page page-" + (cp ? "case" : route.page) + (!cp && route.page === "home" ? " home-" + HOME_STYLE : "")}>
         ${cp ? html`<${Case} p=${cp} />` : html`<${PageBody} page=${route.page} />`}
         ${cp ? null : html`<${PageNext} page=${route.page} />`}
       </main>

@@ -20,6 +20,10 @@ Then open http://localhost:8000. Pages live at `#work`, `#approach`, `#about` an
 | `assets/style.css` | Warm paper theme, Bricolage Grotesque + Figtree (+ Caveat for notes), one type scale, collage and card styles |
 | `assets/img/` | Photos, the illustrated portrait, experiment videos (H.264, muted) and posters |
 
+## Home page versions
+
+Set `homeStyle` in `assets/data.js` to `"classic"` (illustration beside the intro) or `"poster"` (centred, a giant word cut from the photo). You can also preview either with `#home-classic` or `#home-poster`.
+
 ## Before publishing
 
 Search the repo for `CHECK` and confirm each item:
