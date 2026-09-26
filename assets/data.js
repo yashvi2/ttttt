@@ -12,7 +12,7 @@
 
 window.SITE = {
   name: "Yashvi Jain",
-  role: "Experience Design Strategist",
+  role: "Product Designer",
   location: "London, UK",
   email: "yashvi.jain.yj@gmail.com",
   linkedin: "",   // CHECK: paste your LinkedIn profile URL
@@ -26,6 +26,8 @@ window.PROJECTS = [
   {
     id: "pfizer",
     category: "digital",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/pfizer.jpg" (anonymised if needed)
     num: "01",
     client: "Pfizer",
@@ -79,6 +81,8 @@ window.PROJECTS = [
   {
     id: "jnj",
     category: "digital",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/jnj.jpg" (anonymised if needed)
     num: "02",
     client: "Johnson & Johnson",
@@ -132,6 +136,8 @@ window.PROJECTS = [
   {
     id: "data",
     category: "digital",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/data.jpg" (anonymised if needed)
     num: "03",
     client: "Enterprise client",
@@ -185,6 +191,8 @@ window.PROJECTS = [
   {
     id: "ai",
     category: "experiments",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/ai.jpg" (anonymised if needed)
     num: "04",
     client: "Self-initiated",
@@ -238,6 +246,8 @@ window.PROJECTS = [
   {
     id: "service",
     category: "physical",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/service.jpg" (anonymised if needed)
     num: "05",
     client: "Student support services",
@@ -291,6 +301,8 @@ window.PROJECTS = [
   {
     id: "culture",
     category: "physical",
+    timeline: "", // CHECK: e.g. "6 months, 2023" (shown on the case study when filled)
+    tools: "",    // CHECK: e.g. "Figma, Miro, Jira" (shown instead of methods when filled)
     image: "", // CHECK: add a project image, e.g. "assets/img/culture.jpg" (anonymised if needed)
     num: "06",
     client: "Indian Music Experience Museum",

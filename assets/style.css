@@ -286,17 +286,6 @@ section[id] { scroll-margin-top: 90px; }
 @media (max-width: 860px) { .loop-wrap { grid-template-columns: 1fr; } .loop-node { font-size: 12px; padding: 6px 10px; } }
 
 /* ---------------------------------------------------------------
-   Outcome (the standout moment)
----------------------------------------------------------------- */
-.outcome { margin-top: clamp(96px, 12vw, 160px); background: var(--red); color: var(--red-ink); border-block: 1.5px solid var(--ink); }
-.outcome-in { padding-block: clamp(64px, 9vw, 120px); display: grid; gap: 16px; justify-items: center; text-align: center; }
-.outcome-k { font-size: 32px; color: var(--butter); transform: rotate(-2deg); }
-.outcome-num { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 28px; font: 400 clamp(56px, 10vw, 150px)/1 var(--head); font-variant-numeric: tabular-nums; }
-.o-from { text-decoration: line-through; text-decoration-thickness: 5px; text-decoration-color: var(--butter); opacity: .75; }
-.o-arrow { width: clamp(60px, 8vw, 110px); height: auto; color: var(--butter); transform: rotate(-30deg); }
-.outcome-cap { font-size: 16px; max-width: 32em; opacity: .9; }
-
-/* ---------------------------------------------------------------
    Transferability
 ---------------------------------------------------------------- */
 .transfer { padding-block: clamp(96px, 12vw, 160px) 0; }
@@ -552,9 +541,6 @@ section[id] { scroll-margin-top: 90px; }
 .hz-notes .note-h { font-size: 27px; }
 .hz-notes .note-card p { font-size: 14px; line-height: 1.55; }
 
-.hz-result { width: min(560px, 86vw); display: grid; gap: 14px; justify-items: center; text-align: center; padding: clamp(32px, 4vw, 56px); background: var(--red); color: var(--red-ink); border: 1.5px solid var(--ink); border-radius: 22px; box-shadow: 6px 6px 0 var(--ink); transform: rotate(-1.5deg); }
-.hz-num { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 18px; font: 400 clamp(46px, 5.4vw, 84px)/1 var(--head); font-variant-numeric: tabular-nums; }
-.hz-result .o-arrow { width: 64px; }
 
 .hz-end { display: grid; gap: 14px; justify-items: start; padding-right: var(--gut); }
 .hz-end .hand { font-size: 26px; color: var(--red); transform: rotate(-3deg); }
@@ -568,9 +554,66 @@ section[id] { scroll-margin-top: 90px; }
   .hz-pin { position: relative; top: auto; height: auto; overflow: visible; }
   .hz-canvas { position: sticky; top: var(--bar-h, 72px); display: block; height: 70svh; margin-bottom: -70svh; opacity: .45; }
   .hz-track { width: auto; height: auto; flex-direction: column; align-items: stretch; gap: 28px; padding-block: 24px 48px; transform: none !important; }
-  .hz-intro, .hz-notes, .hz-result { width: auto; }
+  .hz-intro, .hz-notes { width: auto; }
   .hz-loop { grid-template-columns: 1fr; justify-items: center; }
   .hz-notes .notes { grid-template-columns: 1fr; }
   .hz-hint, .hz-bar { display: none; }
   .hz-end { padding: 16px 0 0; }
 }
+
+/* ---------------------------------------------------------------
+   Hiring-manager pass: calmer work pages, clearer headings
+---------------------------------------------------------------- */
+/* 7. No tilt on work and case study pages; personality stays on Home and About */
+.pcard, .xcard, .pcard:hover, .xcard:hover { transform: none; }
+.pcard-a, .xcard .polaroid { transition: transform .25s, box-shadow .25s; }
+.pcard-a:hover { transform: translateY(-4px); box-shadow: 0 2px 4px rgba(43,35,32,.08), 0 22px 40px rgba(43,35,32,.14); }
+.xcard .polaroid { transform: none; }
+.xcard .polaroid:hover { transform: translateY(-4px); }
+.case-img { transform: none; }
+.cs-big .cs-t { transform: none; }
+.insights li { transform: none; background: var(--card); border-left: 4px solid var(--sky); box-shadow: 0 1px 2px rgba(43,35,32,.06), 0 8px 18px rgba(43,35,32,.06); }
+.insights li:nth-child(2) { background: var(--card); border-left-color: var(--blush); }
+.insights li:nth-child(3) { background: var(--card); border-left-color: var(--sage); }
+
+/* 8. Julius only for large display lines; Poppins semibold below that */
+.group-h, .tl-h, .cs-q, .nx-t, .xf-a, .like-h, .stamp b, .sign-h, .mode-h, .hz-h2, .feat-h, .notes-h {
+  font-family: var(--body); font-weight: 600; letter-spacing: -.015em;
+}
+.cs-q { font-size: clamp(20px, 1.7vw, 25px); line-height: 1.3; }
+.group-h { font-size: clamp(24px, 2.2vw, 32px); }
+.tl-h { font-size: clamp(20px, 1.7vw, 24px); }
+.nx-t { font-size: clamp(18px, 1.7vw, 24px); }
+.xf-a { font-size: clamp(17px, 1.4vw, 20px); }
+.like-h, .stamp b { font-size: 20px; }
+.sign-h { font-size: clamp(22px, 1.9vw, 26px); }
+.mode-h { font-size: clamp(24px, 2.2vw, 30px); }
+.hz-h2 { font-size: clamp(22px, 2vw, 30px); line-height: 1.2; }
+.case-title { font-size: clamp(36px, 4.6vw, 68px); }
+
+/* 2. Featured work on Home */
+.featured { padding-block: 0 clamp(56px, 7vw, 96px); }
+.feat-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 28px; padding-top: 24px; border-top: 1.5px dashed var(--line); }
+.feat-h { font-size: clamp(22px, 2vw, 28px); }
+.feat-all { font-weight: 500; text-decoration: none; background: linear-gradient(var(--butter), var(--butter)) 0 88% / 100% 38% no-repeat; }
+.feat-all:hover { color: var(--red); }
+.hero { padding-bottom: clamp(32px, 4vw, 56px); }
+
+/* 9. At a glance bar */
+.glance { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.6fr); gap: 0; margin-top: clamp(28px, 4vw, 44px); background: var(--card); border: 1.5px solid var(--ink); border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); overflow: hidden; }
+.glance > div { padding: 16px 18px; border-right: 1.5px dashed var(--line); }
+.glance > div:last-child { border-right: 0; }
+.glance dt { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+.glance dd { font-size: 14px; line-height: 1.45; margin-top: 4px; }
+.glance-out { background: var(--butter-soft); }
+.case-img figcaption { font-family: var(--body); font-size: 13px; color: var(--ink-3); }
+.case-transfers { margin-top: 16px; font-size: 14px; color: var(--ink-2); }
+.case-transfers b { color: var(--ink); font-weight: 600; }
+@media (max-width: 980px) { .glance { grid-template-columns: repeat(2, minmax(0, 1fr)); } .glance > div { border-bottom: 1.5px dashed var(--line); } .glance-out { grid-column: 1 / -1; } }
+@media (max-width: 480px) { .glance { grid-template-columns: 1fr; } .glance > div { border-right: 0; } }
+
+/* 10. Principles summary on About, tighter slider */
+.me-bring { font-size: 15px; color: var(--ink-2); padding: 14px 16px; background: var(--card); border-left: 4px solid var(--red); }
+.me-bring b { color: var(--ink); }
+.me-bring a { color: var(--red); font-weight: 500; }
+.hz-track { gap: clamp(28px, 3vw, 56px); }

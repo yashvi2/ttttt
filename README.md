@@ -26,9 +26,9 @@ Search the repo for `CHECK` and confirm each item:
 
 - LinkedIn URL, CV link and portfolio PDF in `assets/data.js` (`SITE`)
 - Project images: set `image` on each project in `assets/data.js` (placeholders show until then)
+- Case study timeline and tools: set `timeline` and `tools` on each project to show them in the at-a-glance bar
 - Talk and hackathon photos: set `src` and captions in `MOMENTS` in `assets/data.js`
 - Experiment descriptions in `EXPERIMENTS`, and the travel / reading / baking copy in `assets/app.js`
-- The `30 days → 3 days` outcome in `assets/app.js` (Experience section): confirm the project, the measure and that it can be disclosed
 - Project copy is written in general process language with no invented metrics or findings. Replace it with specifics you can disclose and remove anything that does not match what happened
 - Team size and solo/group status for projects 04 and 05
 - Research & thinking threads: link real essays, MA papers or talks

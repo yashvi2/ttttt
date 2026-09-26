@@ -36,7 +36,7 @@
         sec.__top = barH;
         if (window.innerWidth < 820) { sec.style.height = ""; track.style.transform = ""; sec.__track = null; return; }
         var extra = Math.max(0, track.scrollWidth - window.innerWidth);
-        sec.style.height = (window.innerHeight - barH + extra) + "px";
+        sec.style.height = (window.innerHeight - barH + extra * 0.7) + "px";
         sec.__track = track; sec.__extra = extra;
       });
       if (!this.running) { this.running = true; this.loop(); }
@@ -325,7 +325,7 @@
     }, []);
     return html`<${React.Fragment}>
       <header className="bar">
-        <a className="brand" href="#home" aria-current=${props.page === "home" ? "page" : null}><span className="brand-name">Yashvi Jain</span><span className="brand-sub hand">experience design strategist</span></a>
+        <a className="brand" href="#home" aria-current=${props.page === "home" ? "page" : null}><span className="brand-name">Yashvi Jain</span><span className="brand-sub hand">product designer</span></a>
         <nav className="nav" aria-label="Primary">
           ${PAGES.slice(1).map(function (n) {
             return html`<a key=${n[0]} href=${"#" + n[0]} className=${n[0] === "contact" ? "nav-hello" : ""} aria-current=${props.page === n[0] ? "page" : null}>${n[1]}</a>`;
@@ -348,7 +348,7 @@
       <div className="hero-copy">
         <p className="hand hero-hi">hi there, nice to meet you</p>
         <h1 id="hero-h" className="hero-h">I'm Yashvi.</h1>
-        <p className="hero-p">A designer who's spent years shaping interfaces, and is now focused on shaping the decisions behind them. UX craft meets strategic thinking.</p>
+        <p className="hero-p">A product designer who's spent years shaping interfaces, and is now just as focused on the decisions behind them. UX craft meets strategic thinking, with a service design edge.</p>
         <p className="hero-line">Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
         <div className="ctas">
           <a className="btn btn-red" href="#work">See my work</a>
@@ -366,6 +366,20 @@
     </section>`;
   }
 
+  var FEATURED = ["pfizer", "jnj", "data"];
+  function FeaturedWork() {
+    var list = FEATURED.map(function (id) { return P.filter(function (x) { return x.id === id; })[0]; }).filter(Boolean);
+    return html`<section className="featured wrap" aria-labelledby="feat-h">
+      <div className="feat-head">
+        <h2 id="feat-h" className="feat-h">Selected work</h2>
+        <a href="#work" className="feat-all">See all work →</a>
+      </div>
+      <ul className="cards feat-cards">
+        ${list.map(function (p) { return html`<${ProjectCard} key=${p.id} p=${p} rot=${0} />`; })}
+      </ul>
+    </section>`;
+  }
+
   function Ribbon() {
     var words = ["Research", "Service design", "Systems thinking", "UX", "Strategy", "Baking", "Travel", "Hackathons", "Reading", "Making"];
     var row = words.concat(words);
@@ -378,7 +392,7 @@
     return html`<section className="hello wrap" aria-label="Introduction">
       <div className="letter">
         <p className="hand letter-k">a quick hello —</p>
-        <p className="letter-t">I'm a multidisciplinary UX and Service Designer with 3+ years of experience across complex digital products and services. I combine user research, interaction design, service design and systems thinking to understand difficult problems and turn them into clear, evidence-led experiences.</p>
+        <p className="letter-t">I'm a product designer with 3+ years of experience across complex digital products and services, with a background in research and service design. I combine user research, interaction design, service design and systems thinking to understand difficult problems and turn them into clear, evidence-led experiences.</p>
         <p className="letter-t">I've worked on enterprise projects for Pfizer and Johnson & Johnson at TCS, and I'm now doing an MA in Design Management at London College of Communication. Outside work I bake, travel, read, and turn up at design hackathons.</p>
         <p className="hand sig">— Yashvi</p>
       </div>
@@ -552,12 +566,6 @@
             </ul>
           </div>
 
-          <div className="hz-panel hz-result">
-            <p className="hand outcome-k">a result I'm proud of</p>
-            <p className="hz-num"><span className="o-from">30 days</span><${Arrow} className="o-arrow" /><span className="o-to">3 days</span></p>
-            <p className="outcome-cap">Verified project outcome: turnaround reduced on a client engagement at TCS.</p>
-          </div>
-
           <div className="hz-panel hz-end">
             <p className="hand">next page</p>
             <a href="#about" className="hz-end-a">Get to know me →</a>
@@ -572,16 +580,6 @@
   /* ================================================================
      Outcome + transferability
   ================================================================ */
-  // CHECK: confirm the project, the measure and that the 30 days → 3 days figure can be disclosed
-  function Outcome() {
-    return html`<section className="outcome" aria-label="A project outcome">
-      <div className="outcome-in wrap">
-        <p className="hand outcome-k">a result I'm proud of</p>
-        <p className="outcome-num"><span className="o-from">30 days</span><${Arrow} className="o-arrow" /><span className="o-to">3 days</span></p>
-        <p className="outcome-cap">Verified project outcome: turnaround reduced on a client engagement at TCS.</p>
-      </div>
-    </section>`;
-  }
   var XFER = [
     ["Healthcare", "Designing within complexity and regulation", "Banking · Insurance · Public sector"],
     ["Pharmaceuticals", "Evidence-led decision making", "Consulting · Research-led products"],
@@ -623,6 +621,7 @@
           <ol className="path" aria-label="How my practice has grown">
             ${["Product Design", "UX / UI", "Research", "Service Design", "Systems Thinking"].map(function (s, i) { return html`<li key=${i}>${s}</li>`; })}
           </ol>
+          <p className="me-bring"><b>What I bring:</b> ${PRINCIPLES.map(function (x) { return x[0]; }).join(" · ")}. <a href="#approach">See how I work →</a></p>
         </div>
         <div className="collage" aria-label="Photos">
           <figure className="polaroid p-portrait" style=${{ "--rot": "-3deg" }}>
@@ -848,14 +847,18 @@
         <p className="lede case-sum">${p.summary}</p>
         <ol className="flowline" aria-label="Project arc">${p.flow.map(function (f, i) { return html`<li key=${i}>${f}</li>`; })}</ol>
       </header>
-      <figure className="case-img">
-        <span className="tape" aria-hidden="true"></span>
-        <${ProjectImage} p=${p} />
-        <figcaption className="hand">reconstructed artefact, client details removed</figcaption>
-      </figure>
-      <dl className="case-meta">
-        ${Object.keys(p.meta).map(function (k) { return html`<div key=${k}><dt>${k}</dt><dd>${p.meta[k]}</dd></div>`; })}
+      <dl className="glance" aria-label="At a glance">
+        <div><dt>Role</dt><dd>${p.meta.Role}</dd></div>
+        ${p.timeline ? html`<div><dt>Timeline</dt><dd>${p.timeline}</dd></div>` : html`<div><dt>Context</dt><dd>${p.via}</dd></div>`}
+        <div><dt>Team</dt><dd>${p.meta.Team}</dd></div>
+        <div><dt>${p.tools ? "Tools" : "Methods"}</dt><dd>${p.tools || p.meta.Methods}</dd></div>
+        <div className="glance-out"><dt>Outcome</dt><dd>${p.split.outcome}</dd></div>
       </dl>
+      <figure className="case-img">
+        <${ProjectImage} p=${p} />
+        <figcaption>Reconstructed artefact. Client details removed.</figcaption>
+      </figure>
+      <p className="case-transfers"><b>Where this applies:</b> ${p.meta.Transfers}</p>
       <div className="split">
         <div className="sp sp-mine"><p className="sp-l">My contribution</p><p>${p.split.mine}</p></div>
         <div className="sp"><p className="sp-l">Team contribution</p><p>${p.split.team}</p></div>
@@ -943,7 +946,7 @@
       case "approach": return html`<${Approach} />`;
       case "about": return html`<${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
       case "contact": return html`<${Contact} />`;
-      default: return html`<${Hero} /><${Ribbon} /><${Hello} /><${Signposts} /><${Outcome} />`;
+      default: return html`<${Hero} /><${FeaturedWork} /><${Ribbon} /><${Hello} /><${Signposts} />`;
     }
   }
   function App() {
