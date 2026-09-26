@@ -41,7 +41,7 @@ export const LANDMARKS = {
     const g = new THREE.Group();
     const dark = facadeMaterial({ color: 0x8a8f98, floorH: 4, lit: 0.6, groundFloor: 7 });
     const ads = [
-      ['BROADWAY', '#b0122b', '#fff1d0'], ['SISTERS APART', '#12324a', '#ffd27a'], ['☕ 24/7', '#1b1b1b', '#62f0c8'],
+      ['BROADWAY', '#b0122b', '#fff1d0'], ['LONDON-NEWYORK', '#12324a', '#ffd27a'], ['☕ 24/7', '#1b1b1b', '#62f0c8'],
       ['NEW YORK', '#1d4fbf', '#ffffff'], ['JAZZ TONIGHT', '#3a1454', '#ffb3f0'], ['HELLO, CITY', '#e05a1a', '#fff'],
       ['DELI', '#f2c230', '#1b1b1b'], ['LIVE • LIVE • LIVE', '#101010', '#ff5a5a'],
     ];

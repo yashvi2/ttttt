@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => ({
       outDir: 'dist-artifact',
       modulePreload: false,
       cssCodeSplit: false,
+      assetsInlineLimit: 100_000_000, // inline the album photo as a data URI
       rollupOptions: { external: [/^three(\/.*)?$/] },
     }
     : { chunkSizeWarningLimit: 1200 },

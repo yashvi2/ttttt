@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 
 const root = join(dirname(new URL(import.meta.url).pathname), '..');
 const outDir = join(root, 'dist-artifact');
-const out = process.argv[2] || join(outDir, 'sisters-apart.html');
+const out = process.argv[2] || join(outDir, 'london-newyork.html');
 const threeVersion = JSON.parse(readFileSync(join(root, 'node_modules/three/package.json'), 'utf8')).version;
 
 const assets = readdirSync(join(outDir, 'assets'));
@@ -16,9 +16,9 @@ if (js.length !== 1) throw new Error(`expected one JS bundle, found ${js.length}
 
 const cdn = `https://cdn.jsdelivr.net/npm/three@${threeVersion}`;
 const importMap = { imports: { three: `${cdn}/build/three.module.js`, 'three/addons/': `${cdn}/examples/jsm/` } };
-const fonts = 'https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=Overpass:wght@300;400;600;700&display=swap';
+const fonts = 'https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&display=swap';
 
-const html = `<title>Sisters Apart</title>
+const html = `<title>London-Newyork</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${fonts}">

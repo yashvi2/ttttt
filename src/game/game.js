@@ -17,6 +17,9 @@ import { Player } from './player.js';
 import { Story, PHASES } from './story.js';
 import { newState, saveGame, loadGame, clearSave, loadMeta, saveMeta } from './state.js';
 import { SISTERS, BACKSTORY } from '../data/common.js';
+import { renderAlbumPhotos } from '../world/album-scenes.js';
+import { playAlbum, introSpreads, LOGO_HTML } from '../ui/album.js';
+import lastSummer from '../assets/album/last-summer.jpg';
 import NYC from '../data/nyc.js';
 import LONDON from '../data/london.js';
 
@@ -131,7 +134,7 @@ export class Game {
     el.className = 'title';
     const sE = SISTERS.emma, sS = SISTERS.sophie;
     el.innerHTML = `<div class="inner">
-      <h1>Sisters <i>Apart</i></h1>
+      <h1>${LOGO_HTML}</h1>
       <div class="tag">Two sisters. Two cities. Six weeks of slices, strangers and clues — and one bridge at sunset.</div>
       ${save && !save.ended ? `<button class="route" data-a="continue"><span class="av" style="background:#e8e2d4">↻</span><span><b>Continue</b><span>${esc(ROUTES[save.route].city)} · Day ${save.day} · ${esc(PHASES[save.phase])}</span></span><span></span></button>` : ''}
       <button class="route" data-a="nyc"><span class="av" style="background:${sE.color}">E</span><span><b>Emma — New York</b><span>${esc(sE.blurb)}</span></span><span class="tagp">Story</span></button>
@@ -193,7 +196,8 @@ export class Game {
       ? [...BACKSTORY, `${this.route.season}. New York. ${sis.name} has been here two weeks, and the city still hasn't noticed.`, `${other.name} is in London. Probably. Definitely. …Right?`]
       : [`Six months later.`, `${this.route.season}. London. ${sis.name} has the internship, a flat in King's Cross, and a guitar with a new G string.`, `${other.name} is back in New York. Probably. Definitely. …Right?`];
     this.enterDistrict(this.route.startDistrict, null, { quiet: true });
-    await this.ui.cards(intro, { title: routeId === 'nyc' ? 'Sisters Apart' : 'Sisters Apart — Sophie', solid: true });
+    const spreads = introSpreads(routeId, intro, this.albumPhotos(), lastSummer, loadMeta().reunionPhoto);
+    await playAlbum(this.ui, spreads, { audio: this.audio, logoHtml: LOGO_HTML });
     this.startPlay();
     this.run(async () => {
       await this.ui.cards([`Phase 1 — ${PHASES[1]}`, 'Walk with WASD, drag to look around, press E to talk to people and enter places. Your phone (Tab) has messages, tasks and the transit map.'], { title: sis.full });
@@ -211,6 +215,12 @@ export class Game {
     this.enterDistrict(this.state.district, this.state.pos, { quiet: true });
     this.startPlay();
     this.ui.toast(`Welcome back — Day ${this.state.day}, ${fmtTime(this.state.time)}`, '📔');
+  }
+
+  /** Childhood snapshots for the album, rendered once per session. */
+  albumPhotos() {
+    if (!this._albumPhotos) this._albumPhotos = renderAlbumPhotos(this.renderer, () => this.renderFrame());
+    return this._albumPhotos;
   }
 
   _setupPlayer(look) {
@@ -503,7 +513,7 @@ export class Game {
     const dot = (x, z, col, r, label) => {
       g.beginPath(); g.arc(X(x), Z(z), r, 0, Math.PI * 2); g.fillStyle = col; g.fill();
       g.lineWidth = 2; g.strokeStyle = 'rgba(0,0,0,0.5)'; g.stroke();
-      if (label && big) { g.fillStyle = '#fff'; g.font = '600 20px Overpass, Arial, sans-serif'; g.fillText(label, X(x) + r + 5, Z(z) + 6); }
+      if (label && big) { g.fillStyle = '#fff'; g.font = '600 20px Fredoka, Arial, sans-serif'; g.fillText(label, X(x) + r + 5, Z(z) + 6); }
     };
     const R = big ? 11 : 9;
     for (const sp of d.photoSpots) if (sp.ring.visible) dot(sp.pos.x, sp.pos.z, '#ffffff', R * 0.6, big ? '📷 ' + sp.name : null);
@@ -511,7 +521,7 @@ export class Game {
       if (!q.ring.visible) continue;
       const c = '#' + POI_STYLE[q.type].color.toString(16).padStart(6, '0');
       dot(q.pos.x, q.pos.z, c, q.type === 'station' ? R * 1.2 : R, q.name);
-      if (q.type === 'station') { g.fillStyle = '#111'; g.font = `700 ${R * 1.4}px Overpass, Arial, sans-serif`; g.textAlign = 'center'; g.fillText('M', X(q.pos.x), Z(q.pos.z) + R * 0.5); g.textAlign = 'left'; }
+      if (q.type === 'station') { g.fillStyle = '#111'; g.font = `700 ${R * 1.4}px Fredoka, Arial, sans-serif`; g.textAlign = 'center'; g.fillText('M', X(q.pos.x), Z(q.pos.z) + R * 0.5); g.textAlign = 'left'; }
     }
     for (const n of this.presentNpcs()) {
       const f = this.npcFigs.get(n.id);
@@ -1106,16 +1116,16 @@ export class Game {
     }
   }
 
-  capture() {
+  capture(w = 240, h = 150) {
     try {
       const src = this.renderer.domElement;
       const c = document.createElement('canvas');
-      c.width = 240; c.height = 150;
+      c.width = w; c.height = h;
       const g = c.getContext('2d');
-      const ar = src.width / src.height, tar = 240 / 150;
+      const ar = src.width / src.height, tar = w / h;
       let sw = src.width, sh = src.height, sx = 0, sy = 0;
       if (ar > tar) { sw = sh * tar; sx = (src.width - sw) / 2; } else { sh = sw / tar; sy = (src.height - sh) / 2; }
-      g.drawImage(src, sx, sy, sw, sh, 0, 0, 240, 150);
+      g.drawImage(src, sx, sy, sw, sh, 0, 0, w, h);
       return c.toDataURL('image/jpeg', 0.72);
     } catch { return null; }
   }
@@ -1240,7 +1250,11 @@ export class Game {
     this.camera.position.copy(eye); this.camera.fov = 30; this.camera.updateProjectionMatrix(); this.camera.lookAt(head);
     this.renderFrame();
     const img = this.capture();
+    const albumImg = this.capture(480, 300);
     this.camera.position.copy(saved.pos); this.camera.fov = saved.fov; this.camera.updateProjectionMatrix();
+    // Keep the reunion photo for the next story's family album.
+    const meta = loadMeta();
+    if (albumImg) { meta.reunionPhoto = albumImg; saveMeta(meta); }
     this.audio.shutter(); this.ui.flash();
     this.addMemory({ id: 'reunion', title: `${sis.name}, the second after she laughed`, img, stars: 3, text: r.reunion.district === 'brooklyn' ? 'The Brooklyn Bridge at sunset.' : 'Waterloo Bridge at sunset.' });
     await this.ui.cards(['You\'ve found each other.'], { title: '♥', scene: true });

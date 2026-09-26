@@ -1,4 +1,4 @@
-# Sisters Apart
+# London-Newyork
 
 A 3D city-discovery game about two sisters. Emma (25, photographer) is on a
 residency in **New York**; Sophie (23, musician) is interning in **London**.
@@ -106,6 +106,18 @@ scene on the bridge), and an Epilogue where you play as your sister.
 - **Speed Run** shows a timer and records your best time.
 - **Photo Perfect** (Emma only) gives you 24 exposures in total.
 
+**The family album.** The opening narration plays over the Hart family
+scrapbook, and its pages turn as the story is told. It holds:
+- childhood snapshots rendered in-engine with a drugstore-print film look
+  (grain, faded blacks, light leak, orange date stamp)
+- a photo of the sisters from last summer
+- plane and train tickets
+- postcards from both cities
+- the chord sheet for "Paper Lanterns", with the wrong chord crossed out
+
+When you start the London story, the album also shows the reunion photo
+from the New York ending.
+
 **Audio.** Procedural WebAudio: a jazz trio for New York (walking bass,
 brushes, swung comping) and chamber pop for London (pizzicato arpeggios and
 pads). Ambience covers traffic, rain, café chatter and subway rumble. The
@@ -127,6 +139,12 @@ no assets, so they were adapted:
   procedural music and sound.
 - **Real landmarks** are simplified, recognisable stand-ins. Businesses and
   characters are fictional.
+- **Type** uses Bungee (a signage-inspired display face) for titles and the
+  HUD, Fredoka for UI and dialogue, and Patrick Hand for the sisters'
+  handwriting. All three load from Google Fonts.
+
+The "last summer" photo in the album is `src/assets/album/last-summer.jpg`.
+Replace it with your own image if you don't hold the rights to share it.
 
 ## Project layout
 

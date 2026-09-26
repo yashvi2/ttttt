@@ -186,6 +186,17 @@ export class Audio {
   honk() { this._sfxTone(392, 0.25, 'sawtooth', 0.03); this._sfxTone(466, 0.25, 'sawtooth', 0.025); }
   note(midi, dur = 0.4) { this._sfxTone(NOTE(midi), dur, 'triangle', 0.18); }
   bad() { this._sfxTone(140, 0.3, 'sawtooth', 0.06); }
+  pageTurn() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    const src = this.ctx.createBufferSource(); src.buffer = this.white;
+    const f = this.ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 0.7;
+    f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(3600, t + 0.28);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.18, t + 0.06); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.34);
+    src.connect(f); f.connect(g); g.connect(this.sfx);
+    src.start(t, Math.random()); src.stop(t + 0.4);
+  }
 
   playLanterns(tempo = 0.42) {
     if (!this.ctx) return;

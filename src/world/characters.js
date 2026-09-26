@@ -33,7 +33,7 @@ function mat(color, rough = 0.85) {
 export function makeFigure(look = {}) {
   const {
     skin = 0xe0b08a, hair = 0x3a2a1e, hairStyle = 'short', top = 0x4a6a8a, bottom = 0x2c2f3a,
-    shoes = 0x1b1b1b, coat = null, accessory = null, scarf = null, height = 1, cap = null,
+    shoes = 0x1b1b1b, coat = null, accessory = null, scarf = null, height = 1, cap = null, child = false,
   } = look;
   const g = new THREE.Group();
   const body = new THREE.Group();
@@ -56,19 +56,22 @@ export function makeFigure(look = {}) {
   for (const A of [armL, armR]) {
     const m = new THREE.Mesh(geo.arm, mat(coat ?? top)); m.position.y = -0.3; A.add(m);
   }
-  const head = new THREE.Mesh(geo.head, mat(skin, 0.7)); head.position.y = 1.86; body.add(head);
+  // Head and hair live in their own group (pivot at the neck) so it can be
+  // scaled up for children.
+  const headG = new THREE.Group(); headG.position.y = 1.72; body.add(headG);
+  const head = new THREE.Mesh(geo.head, mat(skin, 0.7)); head.position.y = 0.14; headG.add(head);
   const hairM = mat(hair, 0.9);
   if (hairStyle !== 'bald') {
-    const h = new THREE.Mesh(geo.bob, hairM); h.position.y = 1.88; h.rotation.x = -0.25; body.add(h);
+    const h = new THREE.Mesh(geo.bob, hairM); h.position.y = 0.16; h.rotation.x = -0.25; headG.add(h);
   }
   if (hairStyle === 'long' || hairStyle === 'bob') {
-    const l = new THREE.Mesh(geo.long, hairM); l.position.set(0, hairStyle === 'long' ? 1.72 : 1.82, -0.02);
-    l.scale.y = hairStyle === 'long' ? 1.1 : 0.55; body.add(l);
+    const l = new THREE.Mesh(geo.long, hairM); l.position.set(0, hairStyle === 'long' ? 0 : 0.1, -0.02);
+    l.scale.y = hairStyle === 'long' ? 1.1 : 0.55; headG.add(l);
   }
-  if (hairStyle === 'bun') { const b = new THREE.Mesh(geo.bun, hairM); b.position.set(0, 2.03, -0.1); body.add(b); }
+  if (hairStyle === 'bun') { const b = new THREE.Mesh(geo.bun, hairM); b.position.set(0, 0.31, -0.1); headG.add(b); }
   if (cap != null) {
-    const c = new THREE.Mesh(geo.cap, mat(cap)); c.position.y = 2.01; body.add(c);
-    const br = new THREE.Mesh(geo.brim, mat(cap)); br.position.set(0, 1.98, 0.16); body.add(br);
+    const c = new THREE.Mesh(geo.cap, mat(cap)); c.position.y = 0.29; headG.add(c);
+    const br = new THREE.Mesh(geo.brim, mat(cap)); br.position.set(0, 0.26, 0.16); headG.add(br);
   }
   if (scarf != null) { const s = new THREE.Mesh(geo.scarf, mat(scarf)); s.rotation.x = Math.PI / 2; s.position.y = 1.7; body.add(s); }
   if (accessory === 'camera') {
@@ -79,9 +82,10 @@ export function makeFigure(look = {}) {
   } else if (accessory === 'bag') {
     const c = new THREE.Mesh(geo.bag, mat(0x6b4a32, 0.7)); c.position.set(0.32, 1.05, 0); body.add(c);
   }
+  if (child) { headG.scale.setScalar(1.45); headG.position.y = 1.66; }
   g.traverse((o) => { if (o.isMesh) { o.castShadow = true; } });
   g.scale.setScalar(height);
-  g.userData.rig = { body, legL, legR, armL, armR, head, phase: Math.random() * 6 };
+  g.userData.rig = { body, hips, legL, legR, armL, armR, head, headG, phase: Math.random() * 6 };
   return g;
 }
 

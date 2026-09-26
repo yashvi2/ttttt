@@ -1,9 +1,9 @@
 {
-  "name": "sisters-apart",
+  "name": "london-newyork",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Sisters Apart \u2014 a 3D city discovery game set in New York and London.",
+  "description": "London-Newyork \u2014 a 3D city discovery game about two sisters in New York and London.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
