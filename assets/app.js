@@ -18,6 +18,9 @@
        data-progress="pin"  --p = 0..1 while a tall section is pinned
        data-progress="read" --p = 0..1 as an element is read through
        data-marquee="1|-1"  endless strip, nudged by scroll velocity
+       data-track           horizontal track inside a pinned section;
+                            the section is sized so vertical scroll
+                            drives it sideways
   ================================================================ */
   var Engine = {
     prog: [], marq: [], lastY: 0, vel: 0, running: false,
@@ -25,6 +28,17 @@
       var q = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
       this.prog = q("[data-progress]");
       this.marq = q("[data-marquee]").map(function (el) { return { el: el, x: 0 }; });
+      var bar = document.querySelector(".bar"), barH = bar ? bar.offsetHeight : 0;
+      document.documentElement.style.setProperty("--bar-h", barH + "px");
+      q("[data-track]").forEach(function (track) {
+        var sec = track.closest("[data-progress]");
+        if (!sec) return;
+        sec.__top = barH;
+        if (window.innerWidth < 820) { sec.style.height = ""; track.style.transform = ""; sec.__track = null; return; }
+        var extra = Math.max(0, track.scrollWidth - window.innerWidth);
+        sec.style.height = (window.innerHeight - barH + extra) + "px";
+        sec.__track = track; sec.__extra = extra;
+      });
       if (!this.running) { this.running = true; this.loop(); }
     },
     loop: function () {
@@ -37,10 +51,11 @@
         for (var j = 0; j < self.prog.length; j++) {
           var e = self.prog[j], rr = e.getBoundingClientRect(), mode = e.getAttribute("data-progress"), p;
           if (rr.bottom < -vh || rr.top > vh * 2) continue;
-          if (mode === "pin") p = -rr.top / Math.max(1, rr.height - vh);
+          if (mode === "pin") { var top = e.__top || 0; p = (top - rr.top) / Math.max(1, rr.height - (vh - top)); }
           else p = (vh * 0.9 - rr.top) / (rr.height + vh * 0.35);
           p = clamp(p, 0, 1);
           e.style.setProperty("--p", p.toFixed(4));
+          if (e.__track) e.__track.style.transform = "translate3d(" + (-p * e.__extra).toFixed(1) + "px,0,0)";
           if (e.__onProgress) e.__onProgress(p);
         }
         for (var k = 0; k < self.marq.length; k++) {
@@ -57,6 +72,7 @@
     }
   };
   window.addEventListener("resize", function () { Engine.refresh(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Engine.refresh(); });
 
   /* ================================================================
      Cursor: a small ring that follows the pointer, trailing particles
@@ -139,7 +155,8 @@
       st[4][o] = Math.cos(th) * rad2; st[4][o + 1] = y * 2.4; st[4][o + 2] = Math.sin(th) * rad2; }
     return st;
   }
-  function initScene(canvas, getP) {
+  function initScene(canvas, getP, opts) {
+    opts = opts || {};
     var T = window.THREE;
     if (!T) return function () {};
     var renderer;
@@ -150,7 +167,9 @@
     scene.add(group);
     var N = window.innerWidth < 700 ? 380 : 640, states = buildStates(N);
     var pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
-    var PAL = [[0.96, 0.93, 0.87], [0.96, 0.93, 0.87], [0.96, 0.93, 0.87], [0.85, 0.26, 0.18], [0.95, 0.71, 0.25]];
+    var PAL = opts.light
+      ? [[0.17, 0.14, 0.13], 0, 0, [0.85, 0.26, 0.18], [0.91, 0.66, 0.16]]
+      : [[0.96, 0.93, 0.87], 0, 0, [0.85, 0.26, 0.18], [0.95, 0.71, 0.25]];
     for (var i = 0; i < N; i++) { var cc = PAL[i % 11 === 0 ? 3 : i % 17 === 0 ? 4 : 0]; col[i * 3] = cc[0]; col[i * 3 + 1] = cc[1]; col[i * 3 + 2] = cc[2]; }
     var geo = new T.BufferGeometry();
     geo.setAttribute("position", new T.BufferAttribute(pos, 3));
@@ -171,7 +190,7 @@
     }
     var lpos = new Float32Array(pairs.length * 3);
     var lgeo = new T.BufferGeometry(); lgeo.setAttribute("position", new T.BufferAttribute(lpos, 3));
-    var lmat = new T.LineBasicMaterial({ color: 0xf5eee2, transparent: true, opacity: 0 });
+    var lmat = new T.LineBasicMaterial({ color: opts.light ? 0x2b2320 : 0xf5eee2, transparent: true, opacity: 0 });
     group.add(new T.LineSegments(lgeo, lmat));
 
     var mouse = { x: 0, y: 0 }, rot = { x: 0, y: 0 };
@@ -183,7 +202,7 @@
     var size = function () {
       var w = canvas.clientWidth, hh = canvas.clientHeight;
       renderer.setSize(w, hh, false); camera.aspect = w / Math.max(1, hh); camera.updateProjectionMatrix();
-      group.position.x = w > 800 ? 1.6 : 0; group.position.y = w > 800 ? 0 : -0.8;
+      group.position.y = w > 800 ? 0 : -0.8;
     };
     size(); window.addEventListener("resize", size);
     var visible = false, raf = 0, t0 = performance.now(), spin = 0;
@@ -203,7 +222,9 @@
         pos[k + 2] = A[k + 2] + (B[k + 2] - A[k + 2]) * f;
       }
       geo.attributes.position.needsUpdate = true;
-      var lo = clamp((s - 2.6) / 1.2, 0, 1) * 0.25;
+      var lo = clamp((s - 2.6) / 1.2, 0, 1) * (opts.light ? 0.16 : 0.25);
+      var wide = canvas.clientWidth > 800;
+      group.position.x = !wide ? 0 : opts.drift ? 2.4 - p * 4.8 : 1.6;
       lmat.opacity = lo;
       if (lo > 0) {
         for (var q = 0; q < pairs.length; q++) { var src = pairs[q] * 3, dst = q * 3; lpos[dst] = pos[src]; lpos[dst + 1] = pos[src + 1]; lpos[dst + 2] = pos[src + 2]; }
@@ -279,13 +300,12 @@
     ["work", "Work", "Work · Yashvi Jain"],
     ["approach", "Approach", "Approach · Yashvi Jain"],
     ["about", "About", "About · Yashvi Jain"],
-    ["thinking", "Talks & thinking", "Talks & thinking · Yashvi Jain"],
     ["contact", "Say hello", "Contact · Yashvi Jain"]
   ];
   // Sections that live on a page, so old in-page links still land in the right place
   var SECTION_PAGE = {
     top: "home", zoom: "approach", process: "approach", transfer: "work", me: "about", baking: "about",
-    experience: "about", "out-loud": "thinking", skills: "thinking", "work-physical": "work", "work-digital": "work", "work-experiments": "work"
+    experience: "about", thinking: "about", "out-loud": "about", skills: "about", "work-physical": "work", "work-digital": "work", "work-experiments": "work"
   };
   function Header(props) {
     var os = useState(false), open = os[0], setOpen = os[1];
@@ -427,7 +447,8 @@
   }
 
   /* ================================================================
-     The one particle window: people → systems
+     Approach: one pinned, horizontal slider. Vertical scroll moves the
+     panels sideways; the particles behind them follow the same scroll.
   ================================================================ */
   var STAGES = [
     ["People", "Someone trying to get something done."],
@@ -436,39 +457,6 @@
     ["Services", "The teams, processes and handovers around the tools."],
     ["Systems", "The organisations and rules shaping all of it."]
   ];
-  function ZoomOut() {
-    var sec = useRef(null), cv = useRef(null);
-    var st = useState(0), stage = st[0], setStage = st[1];
-    useEffect(function () {
-      var p = 0, last = -1;
-      sec.current.__onProgress = function (v) {
-        p = v; var s = Math.min(4, Math.floor(clamp(v * 1.1, 0, 1) * 4.999));
-        if (s !== last) { last = s; setStage(s); }
-      };
-      return initScene(cv.current, function () { return p; });
-    }, []);
-    return html`<section className="zoom" id="zoom" ref=${sec} data-progress="pin" aria-labelledby="zoom-h">
-      <div className="zoom-pin">
-        <div className="zoom-window">
-          <canvas ref=${cv} className="zoom-canvas" aria-hidden="true"></canvas>
-          <div className="zoom-copy">
-            <p className="hand kicker kicker-light">scroll slowly</p>
-            <h2 id="zoom-h" className="zoom-h">From people to systems</h2>
-            <p className="zoom-p">I start with one person and a task, then keep zooming out until I can see what's really shaping their experience.</p>
-            <ol className="zoom-stages">
-              ${STAGES.map(function (s, i) {
-                return html`<li key=${i} className=${i === stage ? "on" : ""} aria-current=${i === stage ? "step" : null}><span>${s[0]}</span><small>${s[1]}</small></li>`;
-              })}
-            </ol>
-          </div>
-        </div>
-      </div>
-    </section>`;
-  }
-
-  /* ================================================================
-     How I work: a hand-drawn loop + principles as notes
-  ================================================================ */
   var MODES = [
     ["Understand", "User interviews, stakeholder interviews, observation, surveys, secondary research and contextual inquiry."],
     ["Frame", "Problem definition, synthesis, thematic analysis, journey mapping, personas and opportunity areas."],
@@ -484,46 +472,100 @@
     ["Collaboration", "I work across design, research, technology, business and other disciplines to move ideas towards implementation."],
     ["Accessibility", "I consider accessibility and inclusion as part of the design process, not an afterthought."]
   ];
-  function Process() {
+  function Approach() {
+    var sec = useRef(null), cv = useRef(null);
+    var st = useState(0), stage = st[0], setStage = st[1];
     var ms = useState(0), m = ms[0], setM = ms[1];
-    return html`<section className="process wrap" id="process" aria-labelledby="process-h">
-      <header className="sec-head">
-        <p className="hand kicker">how I work</p>
-        <h2 id="process-h" className="h2">I move between the details and the bigger picture.</h2>
-        <p className="sec-note">Six modes of work. I move back and forth between them as the evidence changes. It's a loop, not a checklist.</p>
-      </header>
-      <div className="loop-wrap">
-        <div className="loop">
-          <svg className="loop-draw" viewBox="0 0 400 400" aria-hidden="true">
-            <path d="M200 42 C 300 38, 362 110, 358 200 C 354 296, 290 360, 196 358 C 104 356, 40 292, 44 196 C 48 110, 110 46, 188 44" />
-            <path className="loop-arrow" d="M178 32 L192 44 L178 56" />
-          </svg>
-          ${MODES.map(function (x, i) {
-            var a = (i / MODES.length) * Math.PI * 2 - Math.PI / 2;
-            var style = { left: (50 + Math.cos(a) * 39.5) + "%", top: (50 + Math.sin(a) * 39.5) + "%" };
-            return html`<button key=${i} type="button" className="loop-node" style=${style} aria-pressed=${m === i} onClick=${function () { setM(i); }}>${x[0]}</button>`;
-          })}
-          <p className="loop-mid hand">repeat<br />as needed</p>
-        </div>
-        <div className="mode-card" aria-live="polite">
-          <p className="hand mode-n">${m + 1} of 6</p>
-          <h3 className="mode-h">${MODES[m][0]}</h3>
-          <p>${MODES[m][1]}</p>
-          <div className="mode-nav">
-            <button type="button" className="btn btn-small" onClick=${function () { setM((m + 5) % 6); }}>← Previous</button>
-            <button type="button" className="btn btn-small" onClick=${function () { setM((m + 1) % 6); }}>Next →</button>
+    useEffect(function () {
+      var p = 0, last = -1, el = sec.current;
+      el.__onProgress = function (v) {
+        p = v; var s = Math.min(4, Math.floor(clamp(v * 1.1, 0, 1) * 4.999));
+        if (s !== last) { last = s; setStage(s); }
+      };
+      // Keyboard users: bring the focused panel into view
+      var onFocus = function (e) {
+        if (!el.__track || !el.__extra) return;
+        var panel = e.target.closest(".hz-panel"); if (!panel) return;
+        var target = clamp((panel.offsetLeft - 48) / el.__extra, 0, 1);
+        var docTop = el.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo(0, docTop - el.__top + target * (el.offsetHeight - (window.innerHeight - el.__top)));
+      };
+      el.addEventListener("focusin", onFocus);
+      var stop = initScene(cv.current, function () { return p; }, { light: true, drift: true });
+      return function () { el.removeEventListener("focusin", onFocus); stop(); };
+    }, []);
+    return html`<section className="hz" id="process" ref=${sec} data-progress="pin" aria-labelledby="hz-h">
+      <div className="hz-pin">
+        <canvas ref=${cv} className="hz-canvas" aria-hidden="true"></canvas>
+        <div className="hz-track" data-track="">
+          <div className="hz-panel hz-intro">
+            <p className="hand kicker">how I work</p>
+            <h1 id="hz-h" className="hz-h">From people to systems</h1>
+            <p className="hz-p">I move between the details and the bigger picture. I start with one person and a task, then keep zooming out until I can see what's really shaping their experience.</p>
+            <ol className="hz-stages">
+              ${STAGES.map(function (s, i) {
+                return html`<li key=${i} className=${i === stage ? "on" : ""} aria-current=${i === stage ? "step" : null}><span>${s[0]}</span><small>${s[1]}</small></li>`;
+              })}
+            </ol>
+            <p className="hz-hint hand" aria-hidden="true">keep scrolling, it moves sideways →</p>
+          </div>
+
+          <div className="hz-panel hz-loop">
+            <div className="hz-loop-head">
+              <p className="hand kicker">six modes, one loop</p>
+              <h2 className="hz-h2">I move back and forth as the evidence changes.</h2>
+              <p className="hz-p">It's a loop, not a checklist. Pick a mode to see what goes into it.</p>
+            </div>
+            <div className="loop">
+              <svg className="loop-draw" viewBox="0 0 400 400" aria-hidden="true">
+                <path d="M200 42 C 300 38, 362 110, 358 200 C 354 296, 290 360, 196 358 C 104 356, 40 292, 44 196 C 48 110, 110 46, 188 44" />
+                <path className="loop-arrow" d="M178 32 L192 44 L178 56" />
+              </svg>
+              ${MODES.map(function (x, i) {
+                var a = (i / MODES.length) * Math.PI * 2 - Math.PI / 2;
+                var style = { left: (50 + Math.cos(a) * 39.5) + "%", top: (50 + Math.sin(a) * 39.5) + "%" };
+                return html`<button key=${i} type="button" className="loop-node" style=${style} aria-pressed=${m === i} onClick=${function () { setM(i); }}>${x[0]}</button>`;
+              })}
+              <p className="loop-mid hand">repeat<br />as needed</p>
+            </div>
+            <div className="mode-card" aria-live="polite">
+              <p className="hand mode-n">${m + 1} of 6</p>
+              <h3 className="mode-h">${MODES[m][0]}</h3>
+              <p>${MODES[m][1]}</p>
+              <div className="mode-nav">
+                <button type="button" className="btn btn-small" onClick=${function () { setM((m + 5) % 6); }}>← Previous</button>
+                <button type="button" className="btn btn-small" onClick=${function () { setM((m + 1) % 6); }}>Next →</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="hz-panel hz-notes">
+            <p className="hand kicker">what I bring</p>
+            <h2 className="hz-h2">Five principles I work by</h2>
+            <ul className="notes">
+              ${PRINCIPLES.map(function (x, i) {
+                return html`<li key=${i} className=${"note-card c" + i} style=${{ "--rot": [-2, 1.5, -1, 2, -1.5][i] + "deg" }}>
+                  <span className="pin" aria-hidden="true"></span>
+                  <h3 className="note-h">${x[0]}</h3><p>${x[1]}</p>
+                </li>`;
+              })}
+            </ul>
+          </div>
+
+          <div className="hz-panel hz-result">
+            <p className="hand outcome-k">a result I'm proud of</p>
+            <p className="hz-num"><span className="o-from">30 days</span><${Arrow} className="o-arrow" /><span className="o-to">3 days</span></p>
+            <p className="outcome-cap">Verified project outcome: turnaround reduced on a client engagement at TCS.</p>
+          </div>
+
+          <div className="hz-panel hz-end">
+            <p className="hand">next page</p>
+            <a href="#about" className="hz-end-a">Get to know me →</a>
+            <a href="#work" className="btn btn-small">Or see the work</a>
           </div>
         </div>
+        <div className="hz-bar" aria-hidden="true"><i></i></div>
       </div>
-      <h3 className="h3 notes-h">What I bring</h3>
-      <ul className="notes">
-        ${PRINCIPLES.map(function (x, i) {
-          return html`<li key=${i} className=${"note-card c" + i} style=${{ "--rot": [-2, 1.5, -1, 2, -1.5][i] + "deg" }}>
-            <span className="pin" aria-hidden="true"></span>
-            <h4 className="note-h">${x[0]}</h4><p>${x[1]}</p>
-          </li>`;
-        })}
-      </ul>
     </section>`;
   }
 
@@ -853,8 +895,7 @@
   var SIGNS = [
     ["work", "Work", "Physical experiences, digital experiences and experiments.", "sky"],
     ["approach", "Approach", "How I zoom out from people to systems, and the loop I work in.", "butter"],
-    ["about", "About", "Travel, books, my bakery, and where I've worked.", "blush"],
-    ["thinking", "Talks & thinking", "Talks, hackathons, research threads and my toolbox.", "sage"]
+    ["about", "About", "Travel, books, my bakery, talks and hackathons, and where I've worked.", "blush"]
   ];
   function Signposts() {
     return html`<section className="signs wrap" aria-labelledby="signs-h">
@@ -871,7 +912,7 @@
       </ul>
     </section>`;
   }
-  var NEXT = { home: "work", work: "approach", approach: "about", about: "thinking", thinking: "contact" };
+  var NEXT = { home: "work", work: "approach", about: "contact" };
   function PageNext(props) {
     var n = NEXT[props.page];
     if (!n) return null;
@@ -899,9 +940,8 @@
   function PageBody(props) {
     switch (props.page) {
       case "work": return html`<${Work} /><${Transfer} />`;
-      case "approach": return html`<${ZoomOut} /><${Process} /><${Outcome} />`;
-      case "about": return html`<${Me} /><${Baking} /><${Experience} />`;
-      case "thinking": return html`<${OutLoud} /><${Notebook} />`;
+      case "approach": return html`<${Approach} />`;
+      case "about": return html`<${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
       case "contact": return html`<${Contact} />`;
       default: return html`<${Hero} /><${Ribbon} /><${Hello} /><${Signposts} /><${Outcome} />`;
     }
