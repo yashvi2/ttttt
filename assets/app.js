@@ -3,38 +3,28 @@
   "use strict";
 
   var S = window.SITE, P = window.PROJECTS, CS = window.CASE_SECTIONS;
+  var CATS = window.CATEGORIES, EXP = window.EXPERIMENTS, MOMENTS = window.MOMENTS;
   var h = window.React.createElement;
   var html = window.htm.bind(h);
   var useState = React.useState, useEffect = React.useEffect, useRef = React.useRef;
   var mq = function (q) { return !!(window.matchMedia && window.matchMedia(q).matches); };
   var REDUCE = mq("(prefers-reduced-motion: reduce)");
+  var FINE = mq("(hover: hover) and (pointer: fine)");
   var pad = function (n) { return String(n).padStart(2, "0"); };
   var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
 
   /* ================================================================
-     Scroll engine
-     Writes CSS variables and transforms straight to the DOM, so React
-     never re-renders on scroll.
+     Scroll engine: writes CSS variables straight to the DOM.
        data-progress="pin"  --p = 0..1 while a tall section is pinned
        data-progress="read" --p = 0..1 as an element is read through
-       data-progress="fill" --p = 0..1 as an element crosses the upper middle
        data-marquee="1|-1"  endless strip, nudged by scroll velocity
-       data-track           horizontal track inside a pinned section
-     --scroll on <html> is overall page progress (drives the particles).
   ================================================================ */
   var Engine = {
-    prog: [], marq: [], lastY: 0, vel: 0, running: false, scroll: 0,
+    prog: [], marq: [], lastY: 0, vel: 0, running: false,
     refresh: function () {
       var q = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
       this.prog = q("[data-progress]");
       this.marq = q("[data-marquee]").map(function (el) { return { el: el, x: 0 }; });
-      q("[data-track]").forEach(function (track) {
-        var sec = track.closest("[data-progress]");
-        if (!sec) return;
-        if (window.innerWidth < 820) { sec.style.height = ""; track.style.transform = ""; return; }
-        var extra = track.scrollWidth - window.innerWidth;
-        sec.style.height = (window.innerHeight + Math.max(0, extra)) + "px";
-      });
       if (!this.running) { this.running = true; this.loop(); }
     },
     loop: function () {
@@ -43,27 +33,20 @@
         var vh = window.innerHeight, y = window.scrollY, doc = document.documentElement;
         self.vel = self.vel * 0.85 + (y - self.lastY) * 0.15;
         self.lastY = y;
-        self.scroll = y / Math.max(1, doc.scrollHeight - vh);
-        doc.style.setProperty("--scroll", self.scroll.toFixed(4));
-
+        doc.style.setProperty("--scroll", (y / Math.max(1, doc.scrollHeight - vh)).toFixed(4));
         for (var j = 0; j < self.prog.length; j++) {
           var e = self.prog[j], rr = e.getBoundingClientRect(), mode = e.getAttribute("data-progress"), p;
           if (rr.bottom < -vh || rr.top > vh * 2) continue;
           if (mode === "pin") p = -rr.top / Math.max(1, rr.height - vh);
-          else if (mode === "fill") p = (vh * 0.85 - rr.top) / (vh * 0.45);
           else p = (vh * 0.9 - rr.top) / (rr.height + vh * 0.35);
           p = clamp(p, 0, 1);
           e.style.setProperty("--p", p.toFixed(4));
-          var track = mode === "pin" && e.querySelector("[data-track]");
-          if (track && window.innerWidth >= 820) {
-            var ex = track.scrollWidth - window.innerWidth;
-            track.style.transform = "translate3d(" + (-p * ex).toFixed(1) + "px,0,0)";
-          }
+          if (e.__onProgress) e.__onProgress(p);
         }
         for (var k = 0; k < self.marq.length; k++) {
           var m = self.marq[k], dir = parseFloat(m.el.getAttribute("data-marquee"));
           var half = m.el.scrollWidth / 2;
-          if (!REDUCE) m.x -= dir * (0.5 + Math.min(Math.abs(self.vel), 60) * 0.25);
+          if (!REDUCE) m.x -= dir * (0.45 + Math.min(Math.abs(self.vel), 60) * 0.22);
           if (m.x <= -half) m.x += half;
           if (m.x > 0) m.x -= half;
           m.el.style.transform = "translate3d(" + m.x.toFixed(1) + "px,0,0)";
@@ -76,9 +59,58 @@
   window.addEventListener("resize", function () { Engine.refresh(); });
 
   /* ================================================================
-     Three.js background: one field of particles that reorganises
-     itself as you scroll the page.
-     People → Information → Technology → Services → Systems
+     Cursor: a small ring that follows the pointer, trailing particles
+  ================================================================ */
+  function CursorTrail() {
+    var cv = useRef(null);
+    useEffect(function () {
+      if (!FINE || REDUCE) return;
+      var c = cv.current, ctx = c.getContext("2d"), dpr = Math.min(2, window.devicePixelRatio || 1);
+      var parts = [], mx = -100, my = -100, fx = -100, fy = -100, big = 0, bigT = 0, raf = 0, idle = true;
+      var COLS = ["#D9432E", "#F3B63F", "#2B2320", "#E88B6A"];
+      var size = function () { c.width = innerWidth * dpr; c.height = innerHeight * dpr; c.style.width = innerWidth + "px"; c.style.height = innerHeight + "px"; };
+      size(); window.addEventListener("resize", size);
+      var wake = function () { if (idle) { idle = false; raf = requestAnimationFrame(draw); } };
+      var onMove = function (e) {
+        var dx = e.clientX - mx, dy = e.clientY - my;
+        mx = e.clientX; my = e.clientY;
+        var n = Math.min(3, 1 + Math.floor(Math.hypot(dx, dy) / 18));
+        for (var i = 0; i < n; i++) parts.push({ x: mx, y: my, vx: (Math.random() - 0.5) * 1.4 - dx * 0.03, vy: (Math.random() - 0.5) * 1.4 - dy * 0.03 + 0.2, r: 1.2 + Math.random() * 2.6, life: 1, c: COLS[(Math.random() * COLS.length) | 0] });
+        if (parts.length > 160) parts.splice(0, parts.length - 160);
+        var t = e.target.closest && e.target.closest("a, button, [data-cursor]");
+        bigT = t ? 1 : 0;
+        wake();
+      };
+      var onLeave = function () { mx = my = -100; };
+      window.addEventListener("pointermove", onMove, { passive: true });
+      document.addEventListener("pointerleave", onLeave);
+      function draw() {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        fx += (mx - fx) * 0.18; fy += (my - fy) * 0.18; big += (bigT - big) * 0.15;
+        for (var i = parts.length - 1; i >= 0; i--) {
+          var p = parts[i];
+          p.x += p.vx; p.y += p.vy; p.vy += 0.025; p.vx *= 0.98; p.life -= 0.022;
+          if (p.life <= 0) { parts.splice(i, 1); continue; }
+          ctx.globalAlpha = p.life * 0.85; ctx.fillStyle = p.c;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        var rad = 14 + big * 16;
+        ctx.strokeStyle = "#2B2320"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(fx, fy, rad, 0, Math.PI * 2); ctx.stroke();
+        if (big > 0.05) { ctx.globalAlpha = big * 0.18; ctx.fillStyle = "#D9432E"; ctx.fill(); ctx.globalAlpha = 1; }
+        var moving = parts.length || Math.abs(mx - fx) > 0.3 || Math.abs(my - fy) > 0.3 || Math.abs(bigT - big) > 0.01;
+        if (moving) raf = requestAnimationFrame(draw); else idle = true;
+      }
+      return function () { cancelAnimationFrame(raf); window.removeEventListener("pointermove", onMove); document.removeEventListener("pointerleave", onLeave); window.removeEventListener("resize", size); };
+    }, []);
+    return html`<canvas ref=${cv} className="cursor-trail" aria-hidden="true"></canvas>`;
+  }
+
+  /* ================================================================
+     Three.js: particles that reorganise from people to systems.
+     Lives in one framed window on the page, only renders when visible.
   ================================================================ */
   function rng(seed) {
     return function () {
@@ -89,7 +121,6 @@
     };
   }
   function gauss(r) { var u = r() || 1e-6, v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
-
   function buildStates(N) {
     var r = rng(7), st = [], i, o;
     for (i = 0; i < 5; i++) st.push(new Float32Array(N * 3));
@@ -108,7 +139,6 @@
       st[4][o] = Math.cos(th) * rad2; st[4][o + 1] = y * 2.4; st[4][o + 2] = Math.sin(th) * rad2; }
     return st;
   }
-
   function initScene(canvas, getP) {
     var T = window.THREE;
     if (!T) return function () {};
@@ -116,28 +146,20 @@
     try { renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
     catch (e) { canvas.style.display = "none"; return function () {}; }
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
-    var scene = new T.Scene();
-    var camera = new T.PerspectiveCamera(38, 1, 0.1, 100);
-    var group = new T.Group(); scene.add(group);
-
-    var N = window.innerWidth < 700 ? 420 : 720;
-    var states = buildStates(N);
+    var scene = new T.Scene(), camera = new T.PerspectiveCamera(38, 1, 0.1, 100), group = new T.Group();
+    scene.add(group);
+    var N = window.innerWidth < 700 ? 380 : 640, states = buildStates(N);
     var pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
-    for (var i = 0; i < N; i++) {
-      var red = i % 11 === 0;
-      col[i * 3] = red ? 1.0 : 0.62; col[i * 3 + 1] = red ? 0.18 : 0.62; col[i * 3 + 2] = red ? 0.27 : 0.66;
-    }
+    var PAL = [[0.96, 0.93, 0.87], [0.96, 0.93, 0.87], [0.96, 0.93, 0.87], [0.85, 0.26, 0.18], [0.95, 0.71, 0.25]];
+    for (var i = 0; i < N; i++) { var cc = PAL[i % 11 === 0 ? 3 : i % 17 === 0 ? 4 : 0]; col[i * 3] = cc[0]; col[i * 3 + 1] = cc[1]; col[i * 3 + 2] = cc[2]; }
     var geo = new T.BufferGeometry();
     geo.setAttribute("position", new T.BufferAttribute(pos, 3));
     geo.setAttribute("color", new T.BufferAttribute(col, 3));
-
     var dot = document.createElement("canvas"); dot.width = dot.height = 64;
     var dc = dot.getContext("2d"); dc.beginPath(); dc.arc(32, 32, 28, 0, Math.PI * 2); dc.fillStyle = "#fff"; dc.fill();
     var tex = new T.CanvasTexture(dot);
-    var mat = new T.PointsMaterial({ size: 0.06, vertexColors: true, map: tex, alphaTest: 0.5, transparent: true, sizeAttenuation: true });
+    var mat = new T.PointsMaterial({ size: 0.07, vertexColors: true, map: tex, alphaTest: 0.5, transparent: true, sizeAttenuation: true });
     group.add(new T.Points(geo, mat));
-
-    // Links between nearest neighbours in the "systems" state, faded in towards the end
     var pairs = [], s4 = states[4];
     for (i = 0; i < N; i++) {
       var best = [-1, -1], bd = [1e9, 1e9];
@@ -149,26 +171,30 @@
     }
     var lpos = new Float32Array(pairs.length * 3);
     var lgeo = new T.BufferGeometry(); lgeo.setAttribute("position", new T.BufferAttribute(lpos, 3));
-    var lmat = new T.LineBasicMaterial({ color: 0x9a9aa2, transparent: true, opacity: 0 });
+    var lmat = new T.LineBasicMaterial({ color: 0xf5eee2, transparent: true, opacity: 0 });
     group.add(new T.LineSegments(lgeo, lmat));
 
     var mouse = { x: 0, y: 0 }, rot = { x: 0, y: 0 };
-    var onMove = function (e) { mouse.x = e.clientX / window.innerWidth - 0.5; mouse.y = e.clientY / window.innerHeight - 0.5; };
+    var onMove = function (e) {
+      var r = canvas.getBoundingClientRect();
+      mouse.x = clamp((e.clientX - r.left) / r.width - 0.5, -0.6, 0.6); mouse.y = clamp((e.clientY - r.top) / r.height - 0.5, -0.6, 0.6);
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
-
     var size = function () {
-      var w = window.innerWidth, hh = window.innerHeight;
+      var w = canvas.clientWidth, hh = canvas.clientHeight;
       renderer.setSize(w, hh, false); camera.aspect = w / Math.max(1, hh); camera.updateProjectionMatrix();
-      group.position.x = w > 900 ? 2.2 : 0; group.position.y = w > 900 ? 0 : -0.4;
+      group.position.x = w > 800 ? 1.6 : 0; group.position.y = w > 800 ? 0 : -0.8;
     };
     size(); window.addEventListener("resize", size);
-
-    var raf = 0, t0 = performance.now(), spin = 0;
+    var visible = false, raf = 0, t0 = performance.now(), spin = 0;
+    var io = new IntersectionObserver(function (en) { visible = en[0].isIntersecting; });
+    io.observe(canvas);
     var smooth = function (x) { return x * x * (3 - 2 * x); };
     var frame = function (now) {
       raf = requestAnimationFrame(frame);
+      if (!visible) return;
       var t = (now - t0) / 1000, p = getP();
-      var s = clamp(p * 1.35, 0, 1) * 4, a = Math.floor(Math.min(s, 3.999)), f = smooth(s - a);
+      var s = clamp(p * 1.1, 0, 1) * 4, a = Math.floor(Math.min(s, 3.999)), f = smooth(s - a);
       var A = states[a], B = states[a + 1], w = REDUCE ? 0 : 0.05;
       for (var k = 0; k < N * 3; k += 3) {
         var ph = k * 0.013;
@@ -177,48 +203,49 @@
         pos[k + 2] = A[k + 2] + (B[k + 2] - A[k + 2]) * f;
       }
       geo.attributes.position.needsUpdate = true;
-      var lo = clamp((s - 2.6) / 1.2, 0, 1) * 0.3;
+      var lo = clamp((s - 2.6) / 1.2, 0, 1) * 0.25;
       lmat.opacity = lo;
       if (lo > 0) {
         for (var q = 0; q < pairs.length; q++) { var src = pairs[q] * 3, dst = q * 3; lpos[dst] = pos[src]; lpos[dst + 1] = pos[src + 1]; lpos[dst + 2] = pos[src + 2]; }
         lgeo.attributes.position.needsUpdate = true;
       }
-      if (!REDUCE) spin += 0.0016;
-      rot.x += (mouse.y * 0.5 - rot.x) * 0.05; rot.y += (mouse.x * 0.8 - rot.y) * 0.05;
+      if (!REDUCE) spin += 0.0018;
+      rot.x += (mouse.y * 0.6 - rot.x) * 0.06; rot.y += (mouse.x * 0.9 - rot.y) * 0.06;
       group.rotation.set(rot.x + (a === 1 ? -0.35 * (1 - f) : 0), spin + rot.y, 0);
-      camera.position.z = 7.6 + s * 0.6;
+      camera.position.z = 7.4 + s * 0.6;
       renderer.render(scene, camera);
     };
     raf = requestAnimationFrame(frame);
-
     return function () {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf); io.disconnect();
       window.removeEventListener("pointermove", onMove); window.removeEventListener("resize", size);
       geo.dispose(); lgeo.dispose(); mat.dispose(); lmat.dispose(); tex.dispose(); renderer.dispose();
     };
   }
 
-  function Particles() {
-    var cv = useRef(null);
-    useEffect(function () { return initScene(cv.current, function () { return Engine.scroll; }); }, []);
-    return html`<canvas ref=${cv} className="particles" aria-hidden="true"></canvas>`;
-  }
+  /* ================================================================
+     Doodles: small hand-drawn SVG marks
+  ================================================================ */
+  var Squiggle = function () { return html`<svg className="doodle squiggle" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12 C 30 2, 50 20, 80 10 S 130 2, 160 11 S 215 20, 245 9 S 285 6, 297 10" /></svg>`; };
+  var Arrow = function (p) { return html`<svg className=${"doodle arrow " + (p.className || "")} viewBox="0 0 120 80" aria-hidden="true"><path d="M8 10 C 40 6, 90 20, 100 64" /><path d="M86 54 L100 66 L108 48" /></svg>`; };
+  var Star = function (p) { return html`<svg className=${"doodle star " + (p.className || "")} viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L23 16 L37 18 L25 24 L28 37 L20 28 L11 37 L14 24 L3 18 L17 16 Z" /></svg>`; };
+  var Circle = function (p) { return html`<svg className=${"doodle circ " + (p.className || "")} viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M150 8 C 90 -2, 12 10, 8 40 C 5 70, 120 80, 180 62 C 205 54, 196 18, 130 12" /></svg>`; };
 
   /* ================================================================
-     Anonymised artefacts (reconstructed, no client detail)
+     Anonymised artefacts used as placeholder project images
   ================================================================ */
   var L = function (w) { return '<div class="ln ' + w + '"></div>'; };
   var VIS = {
     ia: function () {
       var col = function (hd, hi) { var s = ""; for (var i = 0; i < 3; i++) s += '<div class="leaf' + (i === hi ? " hi" : "") + '">' + L(i ? "m" : "l") + L("s") + "</div>";
         return '<div class="col"><div class="head">' + hd + "</div>" + s + "</div>"; };
-      return '<div class="vis v-ia" role="img" aria-label="Reconstructed information architecture: one entry point and three task-led sections"><div class="root">Home</div><div class="branches">' + col("Find", 0) + col("Understand", 1) + col("Act", 2) + '</div><span class="tag">Task-led structure</span></div>';
+      return '<div class="vis v-ia" role="img" aria-label="Reconstructed information architecture: one entry point and three task-led sections"><div class="root">Home</div><div class="branches">' + col("Find", 0) + col("Understand", 1) + col("Act", 2) + "</div></div>";
     },
     journey: function () {
       var lane = function (n, hd) { var c = ""; for (var i = 0; i < 5; i++) c += '<div class="cell' + (hd.indexOf(i) > -1 ? " hand" : "") + '"></div>'; return '<div class="lane"><span class="tag">' + n + "</span>" + c + "</div>"; };
       return '<div class="vis v-journey" role="img" aria-label="Journey map across three user groups and five stages, with handovers highlighted"><div class="stg"><span></span><span>Aware</span><span>Access</span><span>Use</span><span>Handover</span><span>Follow-up</span></div>' +
         lane("Group A", [3]) + lane("Group B", [1, 3]) + lane("Group C", [3, 4]) +
-        '<svg class="curve" viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="28" x2="300" y2="28"/><path d="M8 20 C 50 14, 70 24, 96 26 S 150 18, 170 22 S 205 50, 222 46 S 270 22, 292 18"/><circle cx="222" cy="46" r="4"/></svg><span class="tag">Experience curve · handovers marked</span></div>';
+        '<svg class="curve" viewBox="0 0 300 56" preserveAspectRatio="none" aria-hidden="true"><path d="M8 20 C 50 14, 70 24, 96 26 S 150 18, 170 22 S 205 50, 222 46 S 270 22, 292 18"/><circle cx="222" cy="46" r="4"/></svg></div>';
     },
     dashboard: function () {
       var b = [38, 52, 44, 60, 48, 72, 66, 84, 58, 62].map(function (v, i) { return '<i style="height:' + v + '%"' + (i === 7 ? ' class="hi"' : "") + "></i>"; }).join("");
@@ -227,43 +254,35 @@
     },
     ai: function () {
       return '<div class="vis v-ai" role="img" aria-label="Concept: an AI answer showing sources and confidence, which the person can edit or reject"><div class="q">Summarise the options for me</div><div class="a panel">' + L("l") + L("l") + L("m") +
-        '<div class="srcs"><span class="src">Source 1</span><span class="src">Source 2</span><span class="src">+1</span></div><div class="conf"><span class="tag">Confidence</span><div class="meter"><i></i></div><span class="tag">Medium</span></div><div class="acts"><span>Edit</span><span>Accept</span><span>Why?</span></div></div><span class="tag">Concept · person stays in control</span></div>';
+        '<div class="srcs"><span class="src">Source 1</span><span class="src">Source 2</span></div><div class="conf"><span class="tag">Confidence</span><div class="meter"><i></i></div></div><div class="acts"><span>Edit</span><span>Accept</span><span>Why?</span></div></div></div>';
     },
     blueprint: function () {
       var r = function (n, cls, cells) { return '<div class="r ' + cls + '"><span class="tag">' + n + "</span>" + cells.map(function (c) { return '<div class="c ' + c + '"></div>'; }).join("") + "</div>"; };
-      return '<div class="vis v-bp" role="img" aria-label="Service blueprint with pain points and opportunities marked">' + r("Student", "cust", ["", "", "", ""]) + r("Front stage", "", ["", "pain", "", "pain"]) + '<div class="vline"><span>line of visibility</span></div>' + r("Back stage", "", ["", "", "pain", ""]) + r("Systems", "", ["", "e", "", ""]) + r("Opportunity", "opp", ["e", "", "", ""]) + "</div>";
+      return '<div class="vis v-bp" role="img" aria-label="Service blueprint with pain points and opportunities marked">' + r("Student", "cust", ["", "", "", ""]) + r("Front stage", "", ["", "pain", "", "pain"]) + '<div class="vline"><span>line of visibility</span></div>' + r("Back stage", "", ["", "", "pain", ""]) + r("Systems", "", ["", "e", "", ""]) + r("Ideas", "opp", ["e", "", "", ""]) + "</div>";
     },
     participation: function () {
       var d = [[50, 3, 0], [88, 28, 0], [92, 70, 1], [55, 97, 0], [12, 74, 0], [8, 30, 1], [70, 20, 1], [80, 50, 0], [28, 22, 0], [22, 62, 1], [60, 80, 1], [36, 82, 0]]
         .map(function (p) { return '<i class="dot' + (p[2] ? " a" : "") + '" style="left:' + p[0] + "%;top:" + p[1] + '%"></i>'; }).join("");
-      return '<div class="vis v-part" role="img" aria-label="Participation map: visitors, staff and community around the museum experience"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core">Visitor<br>experience</div>' + d + '<span class="lbl tag" style="left:50%;top:13%">Staff</span><span class="lbl tag" style="left:50%;top:94%">Community</span></div>';
+      return '<div class="vis v-part" role="img" aria-label="Participation map: visitors, staff and community around the museum experience"><div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="core">Visitors</div>' + d + "</div>";
     }
   };
-  var Vis = function (p) { return html`<div className="vis-wrap" dangerouslySetInnerHTML=${{ __html: VIS[p.kind]() }}></div>`; };
-
-  /* Words that brighten as you read */
-  function Words(props) {
-    var words = props.text.split(" ");
-    var hi = props.hi || [];
-    return html`<p className=${"words " + (props.className || "")} data-progress="read" style=${{ "--n": words.length }}>
-      ${words.map(function (w, i) {
-        return html`<span key=${i} className=${"w" + (hi.indexOf(i) > -1 ? " hi" : "")} style=${{ "--i": i }}>${w} </span>`;
-      })}
-    </p>`;
+  function ProjectImage(p) {
+    if (p.p.image) return html`<img className="proj-img" src=${p.p.image} alt="" loading="lazy" />`;
+    return html`<div className=${"proj-ph tint-" + p.p.category} dangerouslySetInnerHTML=${{ __html: VIS[p.p.visual]() }}></div>`;
   }
 
   /* ================================================================
-     Header + menu overlay
+     Header + menu
   ================================================================ */
-  var MENU = [["work", "Work"], ["approach", "Approach"], ["principles", "Principles"], ["experience", "Experience"], ["about", "About"], ["thinking", "Research"], ["contact", "Contact"]];
+  var NAV = [["work", "Work"], ["process", "How I work"], ["me", "Me"], ["contact", "Say hello"]];
+  var MENU = [["work", "Work"], ["zoom", "People to systems"], ["process", "How I work"], ["me", "Off the clock"], ["baking", "Design & baking"], ["out-loud", "Talks & hackathons"], ["experience", "Experience"], ["contact", "Contact"]];
   function Header() {
     var os = useState(false), open = os[0], setOpen = os[1];
     var btn = useRef(null), panel = useRef(null);
     useEffect(function () {
       document.documentElement.classList.toggle("menu-open", open);
       if (!open) return;
-      var first = panel.current && panel.current.querySelector("a");
-      if (first) first.focus();
+      var first = panel.current && panel.current.querySelector("a"); if (first) first.focus();
       var onKey = function (e) { if (e.key === "Escape") { setOpen(false); if (btn.current) btn.current.focus(); } };
       window.addEventListener("keydown", onKey);
       return function () { window.removeEventListener("keydown", onKey); };
@@ -275,120 +294,239 @@
     }, []);
     return html`<${React.Fragment}>
       <header className="bar">
-        <div className="bar-progress" aria-hidden="true"></div>
-        <a className="bar-name" href="#top">${S.name}</a>
-        <p className="bar-meta">Experience Design<br />Strategist</p>
-        <p className="bar-meta">London,<br />United Kingdom</p>
-        <button ref=${btn} type="button" className="bar-menu" aria-expanded=${open} aria-controls="menu" onClick=${function () { setOpen(!open); }}>
-          <span>${open ? "Close" : "Menu"}</span><i aria-hidden="true"></i>
-        </button>
+        <a className="brand" href="#top"><span className="brand-name">Yashvi Jain</span><span className="brand-sub hand">experience design strategist</span></a>
+        <nav className="nav" aria-label="Primary">
+          ${NAV.map(function (n) { return html`<a key=${n[0]} href=${"#" + n[0]} className=${n[0] === "contact" ? "nav-hello" : ""}>${n[1]}</a>`; })}
+        </nav>
+        <button ref=${btn} type="button" className="bar-menu" aria-expanded=${open} aria-controls="menu" onClick=${function () { setOpen(!open); }}>${open ? "Close" : "Menu"}</button>
       </header>
-      <nav id="menu" ref=${panel} className=${"menu" + (open ? " open" : "")} aria-label="Site" hidden=${!open}>
-        <ol>
-          ${MENU.map(function (m, i) {
-            return html`<li key=${m[0]} style=${{ "--d": i * 40 + "ms" }}><a href=${"#" + m[0]}><span className="menu-n">${pad(i + 1)}</span>${m[1]}</a></li>`;
-          })}
-        </ol>
-        <div className="menu-foot">
-          <p><span className="lbl">Email</span>${S.email}</p>
-          <p><span className="lbl">Based in</span>London, United Kingdom</p>
-        </div>
+      <nav id="menu" ref=${panel} className="menu" aria-label="Site" hidden=${!open}>
+        <ol>${MENU.map(function (m, i) { return html`<li key=${m[0]} style=${{ "--d": i * 35 + "ms" }}><a href=${"#" + m[0]}><span className="menu-n hand">${i + 1}.</span>${m[1]}</a></li>`; })}</ol>
+        <p className="menu-foot">${S.email} · London, United Kingdom</p>
       </nav>
     <//>`;
   }
 
   /* ================================================================
-     Hero
+     Hero: illustrated me + hello
   ================================================================ */
   function Hero() {
     return html`<section className="hero" id="top" aria-labelledby="hero-h">
-      <div className="hero-text">
-        <h1 id="hero-h" className="hero-h">I'm Yashvi</h1>
-        <p className="hero-p">a designer who's spent years shaping interfaces, and I'm now focused on shaping the decisions behind them. UX craft meets strategic thinking.</p>
+      <div className="hero-copy">
+        <p className="hand hero-hi">hi there, nice to meet you</p>
+        <h1 id="hero-h" className="hero-h">I'm Yashvi.</h1>
+        <p className="hero-p">A designer who's spent years shaping interfaces, and is now focused on shaping the decisions behind them. UX craft meets strategic thinking.</p>
+        <p className="hero-line">Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
         <div className="ctas">
-          <a className="btn btn-red" href="#work">View selected work</a>
-          <a className="btn" href="#about">About me</a>
+          <a className="btn btn-red" href="#work">See my work</a>
+          <a className="btn" href="#me">Get to know me</a>
         </div>
       </div>
-      <figure className="portrait">
-        ${S.portrait
-          ? html`<img src=${S.portrait} alt="Portrait of Yashvi Jain" />`
-          : html`<div className="portrait-ph" aria-hidden="true"><span>YJ</span></div>`}
+      <figure className="hero-art">
+        <img src=${S.illustration} alt="Illustration of Yashvi sitting on a chair, chin resting on her hand, smiling" width="911" height="1045" />
+        <figcaption className="hand note n1">that's me, thinking about systems<br />(or cake)<${Arrow} className="a1" /></figcaption>
+        <span className="sticker s1" aria-hidden="true">UX</span>
+        <span className="sticker s2" aria-hidden="true">Service<br />design</span>
+        <span className="sticker s3" aria-hidden="true">Research</span>
+        <${Star} className="st1" />
       </figure>
-      <dl className="hero-foot">
-        <div><dt>Worked with</dt><dd>Pfizer · Johnson & Johnson</dd></div>
-        <div><dt>Studying</dt><dd>MA Design Management, LCC</dd></div>
-        <div><dt>Scroll</dt><dd>People → Information → Technology → Services → Systems</dd></div>
-      </dl>
     </section>`;
   }
 
-  /* ================================================================
-     Statement
-  ================================================================ */
-  function Statement() {
-    var text = "I'm a multidisciplinary UX and Service Designer with 3+ years of experience across complex digital products and services. I combine user research, interaction design, service design and systems thinking to understand difficult problems and turn them into clear, evidence-led experiences.";
-    return html`<section className="statement" aria-labelledby="st-h">
-      <h2 id="st-h" className="st-h">Designing better experiences for <span className="red">complex systems.</span></h2>
-      <${Words} text=${text} hi=${[16, 17, 22, 23, 38, 39]} className="st-words" />
-      <ul className="st-facts">
-        <li><b>3+ years</b>enterprise UX at TCS</li>
-        <li><b>Pfizer · J&J</b>complex, regulated environments</li>
-        <li><b>Research → Systems</b>from interface detail to organisational level</li>
+  function Ribbon() {
+    var words = ["Research", "Service design", "Systems thinking", "UX", "Strategy", "Baking", "Travel", "Hackathons", "Reading", "Making"];
+    var row = words.concat(words);
+    return html`<div className="ribbon" aria-hidden="true"><div className="rb-track" data-marquee="1">
+      ${row.map(function (w, i) { return html`<span key=${i}>${w}<${Star} /></span>`; })}
+    </div></div>`;
+  }
+
+  function Hello() {
+    return html`<section className="hello wrap" aria-label="Introduction">
+      <div className="letter">
+        <p className="hand letter-k">a quick hello —</p>
+        <p className="letter-t">I'm a multidisciplinary UX and Service Designer with 3+ years of experience across complex digital products and services. I combine user research, interaction design, service design and systems thinking to understand difficult problems and turn them into clear, evidence-led experiences.</p>
+        <p className="letter-t">I've worked on enterprise projects for Pfizer and Johnson & Johnson at TCS, and I'm now doing an MA in Design Management at London College of Communication. Outside work I bake, travel, read, and turn up at design hackathons.</p>
+        <p className="hand sig">— Yashvi</p>
+      </div>
+      <ul className="stamps">
+        <li className="stamp"><b>3+ yrs</b><span>enterprise UX</span></li>
+        <li className="stamp"><b>Pfizer · J&J</b><span>via TCS</span></li>
+        <li className="stamp"><b>MA</b><span>Design Management, LCC</span></li>
       </ul>
     </section>`;
   }
 
   /* ================================================================
-     Selected work: alternating rows, no overlaps
+     Work: three groups
   ================================================================ */
-  var FILTERS = [["all", "All"], ["research", "Research"], ["ux", "UX & product"], ["service", "Service & systems"], ["data", "Data"], ["ai", "AI"]];
-  function Card(props) {
-    var p = props.p, i = props.i;
-    var onMove = function (e) {
-      var r = e.currentTarget.getBoundingClientRect();
-      e.currentTarget.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      e.currentTarget.style.setProperty("--my", (e.clientY - r.top) + "px");
-    };
-    return html`<li className=${"wk " + (i % 2 ? "wk-r" : "wk-l") + (props.dim ? " dim" : "")}>
-      <a className="card" href=${"#case-" + p.id}>
-        <div className="card-vis" onMouseMove=${onMove}>
-          <${Vis} kind=${p.visual} />
-          <span className="card-cursor" aria-hidden="true">View</span>
-        </div>
-        <div className="card-text">
-          <p className="card-meta"><span className="card-n">${p.num}</span><b>${p.client}</b><span>${p.kind}</span></p>
-          <h3 className="card-title">${p.title}</h3>
-          <p className="card-sum">${p.summary}</p>
-          <p className="card-flow">${p.flow.join("  →  ")}</p>
-          <span className="card-go">Read case study <i aria-hidden="true">→</i></span>
-        </div>
+  function ProjectCard(props) {
+    var p = props.p;
+    return html`<li className="pcard" style=${{ "--rot": props.rot + "deg" }}>
+      <a href=${"#case-" + p.id} className="pcard-a">
+        <div className="pcard-img"><span className="tape" aria-hidden="true"></span><${ProjectImage} p=${p} /></div>
+        <p className="pcard-meta"><b>${p.client}</b> · ${p.kind}</p>
+        <h4 className="pcard-title">${p.title}</h4>
+        <p className="pcard-sum">${p.summary}</p>
+        <span className="pcard-go">Read the story <i aria-hidden="true">→</i></span>
       </a>
     </li>`;
   }
+  function ExperimentCard(props) {
+    var x = props.x;
+    return html`<li className="xcard" style=${{ "--rot": props.rot + "deg" }}>
+      <div className="polaroid">
+        <span className="tape" aria-hidden="true"></span>
+        ${x.video
+          ? html`<video src=${x.video} poster=${x.poster} autoPlay=${!REDUCE} muted loop playsInline preload="metadata" aria-label=${x.title}></video>`
+          : html`<img src=${x.image} alt=${x.title} loading="lazy" />`}
+        <p className="hand pol-cap">${x.title}</p>
+      </div>
+      <p className="xcard-note">${x.note}</p>
+      <p className="xcard-tags">${x.tags.join(" · ")}</p>
+    </li>`;
+  }
+  var ROTS = [-1.6, 1.2, -0.6, 1.8, -1.2, 0.8];
   function Work() {
-    var fs = useState("all"), f = fs[0], setF = fs[1];
-    return html`<section className="sec work-sec" id="work" aria-labelledby="work-h">
+    return html`<section className="work wrap" id="work" aria-labelledby="work-h">
       <header className="sec-head">
-        <p className="kicker">Selected work</p>
-        <h2 id="work-h" className="h2">Range across products, services and systems.</h2>
-        <p className="sec-note">Each project shows context, challenge, my role, process and outcome. Filter by the kind of work you're hiring for.</p>
-        <div className="filters" role="group" aria-label="Filter projects by type of work">
-          ${FILTERS.map(function (x) {
-            return html`<button key=${x[0]} type="button" className="chip" aria-pressed=${f === x[0]} onClick=${function () { setF(x[0]); }}>${x[1]}</button>`;
-          })}
-        </div>
+        <p className="hand kicker">things I've worked on</p>
+        <h2 id="work-h" className="h2">Selected work</h2>
+        <p className="sec-note">Three kinds of work: physical experiences, digital experiences, and experiments. Every case study covers context, challenge, my role, process and outcome.</p>
       </header>
-      <ol className="work">
-        ${P.map(function (p, i) { return html`<${Card} key=${p.id} p=${p} i=${i} dim=${f !== "all" && p.filters.indexOf(f) < 0} />`; })}
-      </ol>
+      ${CATS.map(function (c, ci) {
+        var projects = P.filter(function (p) { return p.category === c[0]; });
+        var exps = c[0] === "experiments" ? EXP : [];
+        return html`<div key=${c[0]} className=${"group g-" + c[0]} id=${"work-" + c[0]}>
+          <div className="group-head">
+            <span className="group-n hand">${ci + 1}</span>
+            <h3 className="group-h">${c[1]}</h3>
+            <p className="group-sub">${c[2]}</p>
+          </div>
+          <ul className="cards">
+            ${projects.map(function (p, i) { return html`<${ProjectCard} key=${p.id} p=${p} rot=${ROTS[(i + ci) % ROTS.length]} />`; })}
+            ${exps.map(function (x, i) { return html`<${ExperimentCard} key=${x.title} x=${x} rot=${ROTS[(i + 3) % ROTS.length]} />`; })}
+          </ul>
+        </div>`;
+      })}
       <p className="confidential">Selected project details and visuals have been adapted or anonymised to respect client confidentiality.</p>
     </section>`;
   }
 
   /* ================================================================
-     Transferability
+     The one particle window: people → systems
   ================================================================ */
+  var STAGES = [
+    ["People", "Someone trying to get something done."],
+    ["Information", "What they need to know, and how it's structured."],
+    ["Technology", "The tools and platforms that carry it."],
+    ["Services", "The teams, processes and handovers around the tools."],
+    ["Systems", "The organisations and rules shaping all of it."]
+  ];
+  function ZoomOut() {
+    var sec = useRef(null), cv = useRef(null);
+    var st = useState(0), stage = st[0], setStage = st[1];
+    useEffect(function () {
+      var p = 0, last = -1;
+      sec.current.__onProgress = function (v) {
+        p = v; var s = Math.min(4, Math.floor(clamp(v * 1.1, 0, 1) * 4.999));
+        if (s !== last) { last = s; setStage(s); }
+      };
+      return initScene(cv.current, function () { return p; });
+    }, []);
+    return html`<section className="zoom" id="zoom" ref=${sec} data-progress="pin" aria-labelledby="zoom-h">
+      <div className="zoom-pin">
+        <div className="zoom-window">
+          <canvas ref=${cv} className="zoom-canvas" aria-hidden="true"></canvas>
+          <div className="zoom-copy">
+            <p className="hand kicker kicker-light">scroll slowly</p>
+            <h2 id="zoom-h" className="zoom-h">From people to systems</h2>
+            <p className="zoom-p">I start with one person and a task, then keep zooming out until I can see what's really shaping their experience.</p>
+            <ol className="zoom-stages">
+              ${STAGES.map(function (s, i) {
+                return html`<li key=${i} className=${i === stage ? "on" : ""} aria-current=${i === stage ? "step" : null}><span>${s[0]}</span><small>${s[1]}</small></li>`;
+              })}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  /* ================================================================
+     How I work: a hand-drawn loop + principles as notes
+  ================================================================ */
+  var MODES = [
+    ["Understand", "User interviews, stakeholder interviews, observation, surveys, secondary research and contextual inquiry."],
+    ["Frame", "Problem definition, synthesis, thematic analysis, journey mapping, personas and opportunity areas."],
+    ["Explore", "Ideation, co-design, information architecture, wireframes, prototypes and service concepts."],
+    ["Test", "Usability testing, heuristic evaluation, accessibility testing and iterative research."],
+    ["Deliver", "High-fidelity design, design systems, documentation, developer collaboration and design QA."],
+    ["Learn", "Analytics, feedback, post-launch evaluation and iteration."]
+  ];
+  var PRINCIPLES = [
+    ["Research-led", "I use evidence to understand what people actually need rather than designing around assumptions."],
+    ["Systems thinking", "I look beyond individual touchpoints to understand the services, organisations and systems surrounding them."],
+    ["Clarity", "I turn complex information, processes and requirements into experiences people can understand and use."],
+    ["Collaboration", "I work across design, research, technology, business and other disciplines to move ideas towards implementation."],
+    ["Accessibility", "I consider accessibility and inclusion as part of the design process, not an afterthought."]
+  ];
+  function Process() {
+    var ms = useState(0), m = ms[0], setM = ms[1];
+    return html`<section className="process wrap" id="process" aria-labelledby="process-h">
+      <header className="sec-head">
+        <p className="hand kicker">how I work</p>
+        <h2 id="process-h" className="h2">I move between the details and the bigger picture.</h2>
+        <p className="sec-note">Six modes of work. I move back and forth between them as the evidence changes. It's a loop, not a checklist.</p>
+      </header>
+      <div className="loop-wrap">
+        <div className="loop">
+          <svg className="loop-draw" viewBox="0 0 400 400" aria-hidden="true">
+            <path d="M200 42 C 300 38, 362 110, 358 200 C 354 296, 290 360, 196 358 C 104 356, 40 292, 44 196 C 48 110, 110 46, 188 44" />
+            <path className="loop-arrow" d="M178 32 L192 44 L178 56" />
+          </svg>
+          ${MODES.map(function (x, i) {
+            var a = (i / MODES.length) * Math.PI * 2 - Math.PI / 2;
+            var style = { left: (50 + Math.cos(a) * 39.5) + "%", top: (50 + Math.sin(a) * 39.5) + "%" };
+            return html`<button key=${i} type="button" className="loop-node" style=${style} aria-pressed=${m === i} onClick=${function () { setM(i); }}>${x[0]}</button>`;
+          })}
+          <p className="loop-mid hand">repeat<br />as needed</p>
+        </div>
+        <div className="mode-card" aria-live="polite">
+          <p className="hand mode-n">${m + 1} of 6</p>
+          <h3 className="mode-h">${MODES[m][0]}</h3>
+          <p>${MODES[m][1]}</p>
+          <div className="mode-nav">
+            <button type="button" className="btn btn-small" onClick=${function () { setM((m + 5) % 6); }}>← Previous</button>
+            <button type="button" className="btn btn-small" onClick=${function () { setM((m + 1) % 6); }}>Next →</button>
+          </div>
+        </div>
+      </div>
+      <h3 className="h3 notes-h">What I bring</h3>
+      <ul className="notes">
+        ${PRINCIPLES.map(function (x, i) {
+          return html`<li key=${i} className=${"note-card c" + i} style=${{ "--rot": [-2, 1.5, -1, 2, -1.5][i] + "deg" }}>
+            <span className="pin" aria-hidden="true"></span>
+            <h4 className="note-h">${x[0]}</h4><p>${x[1]}</p>
+          </li>`;
+        })}
+      </ul>
+    </section>`;
+  }
+
+  /* ================================================================
+     Outcome + transferability
+  ================================================================ */
+  // CHECK: confirm the project, the measure and that the 30 days → 3 days figure can be disclosed
+  function Outcome() {
+    return html`<section className="outcome" aria-label="A project outcome">
+      <div className="outcome-in wrap">
+        <p className="hand outcome-k">a result I'm proud of</p>
+        <p className="outcome-num"><span className="o-from">30 days</span><${Arrow} className="o-arrow" /><span className="o-to">3 days</span></p>
+        <p className="outcome-cap">Verified project outcome: turnaround reduced on a client engagement at TCS.</p>
+      </div>
+    </section>`;
+  }
   var XFER = [
     ["Healthcare", "Designing within complexity and regulation", "Banking · Insurance · Public sector"],
     ["Pharmaceuticals", "Evidence-led decision making", "Consulting · Research-led products"],
@@ -399,212 +537,193 @@
     ["Service design", "Systems and journey thinking", "Operations · Omnichannel services"]
   ];
   function Transfer() {
-    var strip = ["Healthcare", "Banking", "Fintech", "Consulting", "SaaS", "Public services", "Culture", "Pharma", "Insurance", "Enterprise"];
-    var row = strip.concat(strip);
-    return html`<section className="xfer-sec" id="transfer" aria-labelledby="xfer-h">
-      <div className="marquee" aria-hidden="true"><div className="mq-track" data-marquee="1">
-        ${row.map(function (w, i) { return html`<span key=${i}>${w}<i>·</i></span>`; })}
-      </div></div>
-      <div className="sec">
-        <header className="sec-head">
-          <p className="kicker">Transferability</p>
-          <h2 id="xfer-h" className="h2">Different industries. <span className="red">Similar design challenges.</span></h2>
-          <p className="sec-note">I'm interested in complex problems, regardless of where they occur.</p>
-        </header>
-        <div className="table-wrap">
-          <table className="xfer">
-            <thead><tr><th scope="col">Experience</th><th scope="col">Transferable capability</th><th scope="col">Where it applies</th></tr></thead>
-            <tbody>
-              ${XFER.map(function (x, i) { return html`<tr key=${i}><th scope="row">${x[0]}</th><td>${x[1]}</td><td>${x[2]}</td></tr>`; })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>`;
-  }
-
-  /* ================================================================
-     Approach: pinned horizontal track
-  ================================================================ */
-  var MODES = [
-    ["Understand", "User interviews, stakeholder interviews, observation, surveys, secondary research and contextual inquiry."],
-    ["Frame", "Problem definition, synthesis, thematic analysis, journey mapping, personas and opportunity areas."],
-    ["Explore", "Ideation, co-design, information architecture, wireframes, prototypes and service concepts."],
-    ["Test", "Usability testing, heuristic evaluation, accessibility testing and iterative research."],
-    ["Deliver", "High-fidelity design, design systems, documentation, developer collaboration and design QA."],
-    ["Learn", "Analytics, feedback, post-launch evaluation and iteration."]
-  ];
-  function Approach() {
-    return html`<section className="appr" id="approach" data-progress="pin" aria-labelledby="appr-h">
-      <div className="appr-pin">
-        <div className="appr-track" data-track="">
-          <div className="appr-intro">
-            <p className="kicker">My approach</p>
-            <h2 id="appr-h" className="h2">I move between the details and <span className="red">the bigger picture.</span></h2>
-            <p className="sec-note">Six modes of work. I move back and forth between them as the evidence changes. It's a loop, not a checklist.</p>
-          </div>
-          ${MODES.map(function (m, i) {
-            return html`<article key=${i} className="mode">
-              <span className="mode-n">${pad(i + 1)}</span>
-              <h3 className="mode-h">${m[0]}</h3>
-              <p>${m[1]}</p>
-            </article>`;
-          })}
-          <div className="mode mode-loop">
-            <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 10 A50 50 0 1 1 18 36" /><path d="M8 26 L18 36 L30 28" /></svg>
-            <p>Back to <strong>Understand</strong>. Iterative, not linear.</p>
-          </div>
-        </div>
-        <div className="appr-bar" aria-hidden="true"><i></i></div>
-      </div>
-    </section>`;
-  }
-
-  /* ================================================================
-     Principles: words brighten as they cross the screen
-  ================================================================ */
-  var PRINCIPLES = [
-    ["Research-led", "I use evidence to understand what people actually need rather than designing around assumptions."],
-    ["Systems thinking", "I look beyond individual touchpoints to understand the services, organisations and systems surrounding them."],
-    ["Clarity", "I turn complex information, processes and requirements into experiences people can understand and use."],
-    ["Collaboration", "I work across design, research, technology, business and other disciplines to move ideas towards implementation."],
-    ["Accessibility", "I consider accessibility and inclusion as part of the design process, not an afterthought."]
-  ];
-  function Principles() {
-    return html`<section className="sec prin" id="principles" aria-labelledby="prin-h">
+    return html`<section className="transfer wrap" id="transfer" aria-labelledby="xfer-h">
       <header className="sec-head">
-        <p className="kicker">What I bring</p>
-        <h2 id="prin-h" className="h2">Five principles I work by.</h2>
+        <p className="hand kicker">why it travels</p>
+        <h2 id="xfer-h" className="h2">Different industries. Similar design challenges.</h2>
+        <p className="sec-note">I'm interested in complex problems, regardless of where they occur.</p>
       </header>
-      <ol className="prin-list">
-        ${PRINCIPLES.map(function (x, i) {
-          return html`<li key=${i} className="pr" data-progress="fill">
-            <span className="pr-n">${pad(i + 1)}</span>
-            <span className="pr-w">${x[0]}</span>
-            <p className="pr-d">${x[1]}</p>
-          </li>`;
-        })}
-      </ol>
-    </section>`;
-  }
-
-  /* ================================================================
-     Experience
-  ================================================================ */
-  var TAGS_TCS = ["Enterprise UX", "UX research", "Usability testing", "Accessibility / WCAG", "Design systems", "Dashboards", "Digital transformation", "Developer collaboration"];
-  var TAGS_MA = ["Design research", "Systems thinking", "Service design", "Participatory design", "Strategy", "Organisational design", "Social innovation", "Critical design"];
-  var tagList = function (t) { return html`<ul className="tags">${t.map(function (x) { return html`<li key=${x}>${x}</li>`; })}</ul>`; };
-  // CHECK: confirm the project, the measure and that the 30 days → 3 days figure can be disclosed
-  function Experience() {
-    return html`<section className="sec exp" id="experience" aria-labelledby="exp-h">
-      <div className="exp-side">
-        <p className="kicker">Experience</p>
-        <h2 id="exp-h" className="h2">From interface detail to <span className="red">organisational systems.</span></h2>
-        <div className="stat">
-          <p className="stat-num"><s>30 days</s><span className="stat-ar" aria-hidden="true">→</span><strong>3 days</strong></p>
-          <p className="stat-cap">Verified project outcome: turnaround reduced on a client engagement at TCS.</p>
-        </div>
-      </div>
-      <ol className="tl">
-        <li>
-          <p className="tl-when">Oct 2022 — Present · on sabbatical for MA</p>
-          <h3 className="h3">Tata Consultancy Services</h3>
-          <p className="tl-role">UI/UX & Service Designer</p>
-          <p className="tl-p">Enterprise UX for healthcare and pharmaceutical clients including Pfizer and Johnson & Johnson. I planned and ran discovery research, facilitated workshops and user testing, created journey maps, flows and interfaces, and worked with business analysts and developers to balance user needs with technical constraints.</p>
-          ${tagList(TAGS_TCS)}
-        </li>
-        <li>
-          <p className="tl-when">2025 — 2026</p>
-          <h3 className="h3">London College of Communication, UAL</h3>
-          <p className="tl-role">MA Design Management</p>
-          <p className="tl-p">Expanding my practice from interface-level problem solving to organisational and systemic challenges. Alongside the course I work as a Student Ambassador and Halls Community Lead, which keeps me close to how services feel from the inside.</p>
-          ${tagList(TAGS_MA)}
-        </li>
-        <li>
-          <p className="tl-when">Jan — Aug 2022</p>
-          <h3 className="h3">Indian Music Experience Museum</h3>
-          <p className="tl-role">UI/UX Design Intern · British Council</p>
-          <p className="tl-p">Participatory design sessions and co-design workshops with visitors, rapid prototyping, personas and low-fidelity blueprints.</p>
-        </li>
-        <li>
-          <p className="tl-when">2018 — 2022</p>
-          <h3 className="h3">Amity University, Noida</h3>
-          <p className="tl-role">Bachelor of Design, Product Design</p>
-        </li>
-      </ol>
-    </section>`;
-  }
-
-  /* ================================================================
-     About
-  ================================================================ */
-  function About() {
-    var steps = ["Product Design", "UX / UI", "Research", "Service Design", "Systems Thinking"];
-    return html`<section className="sec about" id="about" aria-labelledby="about-h">
-      <header className="sec-head">
-        <p className="kicker">About</p>
-        <h2 id="about-h" className="h2">I'm interested in what happens between <span className="red">people, products and systems.</span></h2>
-      </header>
-      <div className="about-grid">
-        <div className="about-copy">
-          <p className="lede">I started in product design, learning how physical things get made and used. That curiosity followed me into UX and UI.</p>
-          <p>At TCS I worked on enterprise projects for large healthcare and pharmaceutical organisations. The interfaces mattered, but the hardest problems usually sat around them: in handovers between teams, in regulation, in how information was produced and approved.</p>
-          <p>That pulled me towards research, service design and systems thinking, and to an MA in Design Management in London. Today my practice combines all four. I'm still learning which question to ask first.</p>
-        </div>
-        <ol className="path" aria-label="How my practice has grown">
-          ${steps.map(function (s, i) { return html`<li key=${i}><span className="lbl">${["Start", "Then", "Then", "Now", "Next"][i]}</span>${s}</li>`; })}
-        </ol>
-      </div>
-    </section>`;
-  }
-
-  /* ================================================================
-     Research & thinking + skills
-  ================================================================ */
-  // CHECK: replace or link these with your actual essays, MA papers or talks
-  var THREADS = [
-    ["Service design · Public services", "Who owns the journey when no single team does?", "How organisations can design for the handovers between departments, not only within them."],
-    ["Responsible AI · Accessibility", "What does it take to trust an AI suggestion?", "Calibrated trust, transparency and control in AI-assisted services."],
-    ["Inclusive design · Social design", "Designing with, not for.", "Participatory methods that bring lived experience into service decisions."],
-    ["Design strategy · Transformation", "Where design sits in the organisation.", "How design management shapes whether research actually changes decisions."]
-  ];
-  function Thinking() {
-    return html`<section className="sec think" id="thinking" aria-labelledby="think-h">
-      <header className="sec-head">
-        <p className="kicker">Research & thinking</p>
-        <h2 id="think-h" className="h2">Questions I'm <span className="red">working through.</span></h2>
-        <p className="sec-note">Selected threads from my MA research and practice. Writing to follow.</p>
-      </header>
-      <ul className="threads">
-        ${THREADS.map(function (t, i) {
-          return html`<li key=${i} className="th"><p className="lbl">${t[0]}</p><h3 className="h3">${t[1]}</h3><p>${t[2]}</p></li>`;
+      <ul className="xfer">
+        ${XFER.map(function (x, i) {
+          return html`<li key=${i}><span className="xf-a">${x[0]}</span><span className="xf-arr hand" aria-hidden="true">→</span><span className="xf-b">${x[1]}<small>${x[2]}</small></span></li>`;
         })}
       </ul>
     </section>`;
   }
 
+  /* ================================================================
+     Me: who I am off the clock
+  ================================================================ */
+  function Me() {
+    return html`<section className="me wrap" id="me" aria-labelledby="me-h">
+      <header className="sec-head">
+        <p className="hand kicker">off the clock</p>
+        <h2 id="me-h" className="h2">I'm interested in what happens between people, products and systems.</h2>
+      </header>
+      <div className="me-grid">
+        <div className="me-story">
+          <p className="lede">I started in product design, learning how physical things get made and used. That curiosity followed me into UX and UI.</p>
+          <p>At TCS I worked on enterprise projects for large healthcare and pharmaceutical organisations. The interfaces mattered, but the hardest problems usually sat around them: in handovers between teams, in regulation, in how information was produced and approved. That pulled me towards research, service design and systems thinking, and to an MA in Design Management in London.</p>
+          <p>Away from the desk, I'm happiest when I'm travelling somewhere new, halfway through a book, or covered in flour.</p>
+          <ol className="path" aria-label="How my practice has grown">
+            ${["Product Design", "UX / UI", "Research", "Service Design", "Systems Thinking"].map(function (s, i) { return html`<li key=${i}>${s}</li>`; })}
+          </ol>
+        </div>
+        <div className="collage" aria-label="Photos">
+          <figure className="polaroid p-portrait" style=${{ "--rot": "-3deg" }}>
+            <span className="tape" aria-hidden="true"></span>
+            <img src=${S.portrait} alt="Yashvi sitting on a chair, smiling, chin on her hand" loading="lazy" />
+            <figcaption className="hand pol-cap">me, mid-thought</figcaption>
+          </figure>
+          <figure className="polaroid p-travel" style=${{ "--rot": "2.5deg" }}>
+            <span className="tape" aria-hidden="true"></span>
+            <img src="assets/img/travel-london.jpg" alt="Yashvi smiling on Westminster Bridge at night, with Big Ben lit up behind her" loading="lazy" />
+            <figcaption className="hand pol-cap">London nights</figcaption>
+          </figure>
+        </div>
+      </div>
+      <ul className="likes">
+        <li className="like"><span className="like-ico" aria-hidden="true">✈</span><h3 className="like-h">Travel</h3><p>New places remind me how differently people live, move and get things done. Every trip is a little field study.</p></li>
+        <li className="like"><span className="like-ico" aria-hidden="true">❦</span><h3 className="like-h">Reading</h3><p>There's usually a book in my bag. Reading is where a lot of my thinking about people and systems starts.</p></li>
+        <li className="like"><span className="like-ico" aria-hidden="true">✿</span><h3 className="like-h">Baking</h3><p>My favourite way to switch off, and a place I've learned a surprising amount about design. More on that below.</p></li>
+      </ul>
+    </section>`;
+  }
+
+  /* ================================================================
+     Design & baking
+  ================================================================ */
+  var RECIPE = [
+    ["Know who you're baking for", "Understand what people need before designing anything."],
+    ["Mise en place", "Research and framing before pixels. Preparation makes the rest calmer."],
+    ["Follow the recipe, then adapt it", "Use proven methods, then adjust them to the context."],
+    ["Taste as you go", "Test early and often. Don't wait for the final bake to find out."],
+    ["Dough needs time to prove", "Good ideas need time to develop. Rushing shows."],
+    ["Presentation matters, taste matters more", "Polish is important. Being useful is more important."],
+    ["Running the bakery, not just the oven", "Orders, suppliers, timing and customers. That's service design: the system behind the product."]
+  ];
+  function Baking() {
+    return html`<section className="baking" id="baking" aria-labelledby="bake-h">
+      <div className="wrap bake-in">
+        <div className="bake-side">
+          <p className="hand kicker">flour on my sleeves</p>
+          <h2 id="bake-h" className="h2">What baking taught me about design</h2>
+          <p className="bake-intro">I've run my own bakery. It taught me that a great cake is only part of the job: the customer, the order, the timing and the delivery all have to work too. That's the same way I think about design.</p>
+          <figure className="polaroid p-bake" style=${{ "--rot": "-2deg" }}>
+            <span className="tape" aria-hidden="true"></span>
+            <img src="assets/img/baking.jpg" alt="A homemade Victoria sponge birthday cake being shared on a wooden table" loading="lazy" />
+            <figcaption className="hand pol-cap">best part: sharing it</figcaption>
+          </figure>
+        </div>
+        <div className="recipe">
+          <div className="recipe-head"><span className="hand">In the kitchen</span><span className="hand">In design</span></div>
+          <ol>
+            ${RECIPE.map(function (r, i) {
+              return html`<li key=${i}><span className="rc-n hand">${i + 1}</span><p className="rc-a">${r[0]}</p><p className="rc-b">${r[1]}</p></li>`;
+            })}
+          </ol>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  /* ================================================================
+     Talks, sharing work and hackathons
+  ================================================================ */
+  function OutLoud() {
+    return html`<section className="outloud wrap" id="out-loud" aria-labelledby="ol-h">
+      <header className="sec-head">
+        <p className="hand kicker">thinking out loud</p>
+        <h2 id="ol-h" className="h2">Talks, sharing work and hackathons</h2>
+        <p className="sec-note">I like giving talks and sharing work in progress, because explaining an idea to a room is the fastest way to find its gaps. Design hackathons are my favourite kind of pressure: a new team, a messy problem and not much time.</p>
+      </header>
+      <ul className="moments">
+        ${MOMENTS.map(function (m, i) {
+          return html`<li key=${i} className="polaroid moment" style=${{ "--rot": [-2, 1.5, -1, 2.2][i % 4] + "deg" }}>
+            <span className="tape" aria-hidden="true"></span>
+            ${m.src ? html`<img src=${m.src} alt=${m.caption} loading="lazy" />` : html`<div className="moment-ph"><span className="hand">photo coming soon</span></div>`}
+            <p className="pol-cap hand">${m.caption}</p>
+            <span className="moment-kind">${m.kind}</span>
+          </li>`;
+        })}
+      </ul>
+    </section>`;
+  }
+
+  /* ================================================================
+     Experience, research threads and skills
+  ================================================================ */
+  var TAGS_TCS = ["Enterprise UX", "UX research", "Usability testing", "Accessibility / WCAG", "Design systems", "Dashboards", "Digital transformation", "Developer collaboration"];
+  var TAGS_MA = ["Design research", "Systems thinking", "Service design", "Participatory design", "Strategy", "Organisational design", "Social innovation", "Critical design"];
+  var tagList = function (t) { return html`<ul className="tags">${t.map(function (x) { return html`<li key=${x}>${x}</li>`; })}</ul>`; };
+  function Experience() {
+    return html`<section className="experience wrap" id="experience" aria-labelledby="exp-h">
+      <header className="sec-head">
+        <p className="hand kicker">where I've been</p>
+        <h2 id="exp-h" className="h2">From interface detail to organisational systems.</h2>
+      </header>
+      <ol className="tl">
+        <li>
+          <p className="tl-when">Oct 2022 – Present · on sabbatical for my MA</p>
+          <h3 className="tl-h">Tata Consultancy Services</h3>
+          <p className="tl-role">UI/UX & Service Designer</p>
+          <p>Enterprise UX for healthcare and pharmaceutical clients including Pfizer and Johnson & Johnson. I planned and ran discovery research, facilitated workshops and user testing, created journey maps, flows and interfaces, and worked with business analysts and developers to balance user needs with technical constraints.</p>
+          ${tagList(TAGS_TCS)}
+        </li>
+        <li>
+          <p className="tl-when">2025 – 2026</p>
+          <h3 className="tl-h">London College of Communication, UAL</h3>
+          <p className="tl-role">MA Design Management</p>
+          <p>Expanding my practice from interface-level problem solving to organisational and systemic challenges. Alongside the course I'm a Student Ambassador and Halls Community Lead, which keeps me close to how services feel from the inside.</p>
+          ${tagList(TAGS_MA)}
+        </li>
+        <li>
+          <p className="tl-when">Jan – Aug 2022</p>
+          <h3 className="tl-h">Indian Music Experience Museum</h3>
+          <p className="tl-role">UI/UX Design Intern · British Council</p>
+          <p>Participatory design sessions and co-design workshops with visitors, rapid prototyping, personas and low-fidelity blueprints.</p>
+        </li>
+        <li>
+          <p className="tl-when">2018 – 2022</p>
+          <h3 className="tl-h">Amity University, Noida</h3>
+          <p className="tl-role">Bachelor of Design, Product Design</p>
+        </li>
+      </ol>
+    </section>`;
+  }
+  // CHECK: replace or link these with your actual essays, MA papers or talks
+  var THREADS = [
+    ["Service design · Public services", "Who owns the journey when no single team does?"],
+    ["Responsible AI · Accessibility", "What does it take to trust an AI suggestion?"],
+    ["Inclusive design · Social design", "Designing with, not for."],
+    ["Design strategy · Transformation", "Where design sits in the organisation."]
+  ];
   var SKILLS = [
     ["Research", ["User interviews", "Qualitative research", "Usability testing", "Surveys", "Heuristic evaluation", "Thematic analysis", "Participatory research", "Journey mapping"]],
     ["UX / Product", ["Information architecture", "Interaction design", "Wireframing", "Prototyping", "Design systems", "Accessibility", "Content hierarchy"]],
     ["Service / Strategy", ["Service design", "Systems thinking", "Service blueprints", "Stakeholder mapping", "Problem framing", "Design strategy", "Co-design"]],
     ["Tools", ["Figma", "Miro", "Adobe Creative Cloud", "Notion", "Framer", "Power BI", "Microsoft 365"]]
   ];
-  function Skills() {
-    return html`<section className="sec skills-sec" id="skills" aria-labelledby="skills-h">
-      <header className="sec-head">
-        <p className="kicker">Skills</p>
-        <h2 id="skills-h" className="h2">Methods and tools.</h2>
-      </header>
-      <div className="skills" data-progress="read">
-        ${SKILLS.map(function (g, gi) {
-          return html`<div key=${gi} className="sk">
-            <h3 className="lbl">${g[0]}</h3>
-            <ul>${g[1].map(function (s, i) {
-              var r = (((gi * 7 + i * 13) % 11) - 5) * 1.2;
-              return html`<li key=${s} style=${{ "--r": r + "deg" }}>${s}</li>`;
-            })}</ul>
-          </div>`;
-        })}
+  function Notebook() {
+    return html`<section className="notebook wrap" id="thinking" aria-labelledby="nb-h">
+      <div className="nb-page">
+        <p className="hand kicker">questions I'm working through</p>
+        <h2 id="nb-h" className="h2">Research & thinking</h2>
+        <ul className="threads">
+          ${THREADS.map(function (t, i) { return html`<li key=${i}><span className="th-tag">${t[0]}</span><span className="th-q">${t[1]}</span></li>`; })}
+        </ul>
+        <p className="nb-note hand">writing to follow ✎</p>
+      </div>
+      <div className="nb-page" id="skills">
+        <p className="hand kicker">my toolbox</p>
+        <h2 className="h2">Methods & tools</h2>
+        <div className="skills" data-progress="read">
+          ${SKILLS.map(function (g, gi) {
+            return html`<div key=${gi} className="sk"><h3 className="sk-h">${g[0]}</h3><ul>${g[1].map(function (s, i) {
+              return html`<li key=${s} style=${{ "--r": ((((gi * 7 + i * 13) % 11) - 5) * 1.3) + "deg" }}>${s}</li>`;
+            })}</ul></div>`;
+          })}
+        </div>
       </div>
     </section>`;
   }
@@ -613,35 +732,33 @@
      Contact
   ================================================================ */
   function Contact() {
-    var cs = useState("Copy"), copyLabel = cs[0], setCopy = cs[1];
+    var cs = useState("Copy email"), copyLabel = cs[0], setCopy = cs[1];
     var emailRef = useRef(null);
     var copy = function () {
       var fallback = function () {
         var r = document.createRange(); r.selectNodeContents(emailRef.current);
         var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); setCopy("Selected, press Ctrl/⌘ C");
       };
-      try { navigator.clipboard.writeText(S.email).then(function () { setCopy("Copied"); setTimeout(function () { setCopy("Copy"); }, 1800); }, fallback); }
+      try { navigator.clipboard.writeText(S.email).then(function () { setCopy("Copied!"); setTimeout(function () { setCopy("Copy email"); }, 1800); }, fallback); }
       catch (e) { fallback(); }
     };
     var linkedin = S.linkedin || "https://www.linkedin.com/search/results/people/?keywords=" + encodeURIComponent(S.name + " designer");
     return html`<section className="contact" id="contact" aria-labelledby="contact-h">
-      <div className="marquee contact-mq" aria-hidden="true"><div className="mq-track" data-marquee="-1">
-        ${[0, 1, 2, 3, 4, 5, 6, 7].map(function (i) { return html`<span key=${i}>Let's explore it<i>·</i></span>`; })}
-      </div></div>
-      <div className="sec">
-        <h2 id="contact-h" className="contact-h">Working on something complex? <span className="red">Let's explore it.</span></h2>
-        <ul className="contact-list">
-          <li><span className="lbl">Email</span><span className="c-val" ref=${emailRef}>${S.email}</span>
-            <button type="button" className="copy" onClick=${copy}>${copyLabel}</button></li>
-          <li><span className="lbl">LinkedIn</span><a className="c-val" href=${linkedin} target="_blank" rel="noopener">${S.name} ↗</a></li>
-          <li><span className="lbl">CV</span>${S.cv
-            ? html`<a className="c-val" href=${S.cv} target="_blank" rel="noopener">Download CV ↗</a>`
-            : html`<span className="c-val">On request</span><span className="c-sub">Email me for the latest version</span>`}</li>
-          <li><span className="lbl">Selected work</span>${S.portfolioPdf
-            ? html`<a className="c-val" href=${S.portfolioPdf} target="_blank" rel="noopener">Portfolio PDF ↗</a>`
-            : html`<a className="c-val" href="#work">Browse projects</a><span className="c-sub">Full PDF on request</span>`}</li>
+      <div className="wrap contact-in">
+        <p className="hand kicker">let's talk</p>
+        <h2 id="contact-h" className="contact-h">Working on something complex? <span className="mark">Let's explore it.<${Squiggle} /></span></h2>
+        <p className="hand contact-note">(I'll bring the cake.)</p>
+        <div className="contact-card">
+          <p className="c-lbl">Email</p>
+          <p className="c-mail" ref=${emailRef}>${S.email}</p>
+          <button type="button" className="btn btn-red" onClick=${copy}>${copyLabel}</button>
+        </div>
+        <ul className="contact-links">
+          <li><a href=${linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+          <li>${S.cv ? html`<a href=${S.cv} target="_blank" rel="noopener">CV ↗</a>` : html`<span>CV on request</span>`}</li>
+          <li>${S.portfolioPdf ? html`<a href=${S.portfolioPdf} target="_blank" rel="noopener">Portfolio PDF ↗</a>` : html`<span>Portfolio PDF on request</span>`}</li>
         </ul>
-        <p className="foot">© ${new Date().getFullYear()} Yashvi Jain · London, United Kingdom</p>
+        <p className="foot">Made with care (and a little flour) in London · © ${new Date().getFullYear()} Yashvi Jain</p>
       </div>
     </section>`;
   }
@@ -652,6 +769,7 @@
   function Case(props) {
     var p = props.p, idx = P.indexOf(p);
     var prev = P[(idx - 1 + P.length) % P.length], next = P[(idx + 1) % P.length];
+    var cat = CATS.filter(function (c) { return c[0] === p.category; })[0];
     var as = useState("context"), active = as[0], setActive = as[1];
     useEffect(function () {
       if (!("IntersectionObserver" in window)) return;
@@ -666,33 +784,32 @@
       var t = document.getElementById(p.id + "-" + id);
       if (t) t.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
     };
-    return html`<article className="sec case" aria-labelledby="case-h">
-      <a className="back" href="#work">← All work</a>
+    return html`<article className="case wrap" aria-labelledby="case-h">
+      <a className="back" href="#work">← Back to all work</a>
       <header className="case-top">
-        <p className="case-kicker"><span className="red">${p.num} · ${p.kind}</span><span>${p.client}</span><span>${p.via}</span></p>
+        <p className="hand kicker">${cat ? cat[1].toLowerCase() : ""}</p>
         <h1 id="case-h" className="case-title" tabIndex="-1">${p.title}</h1>
+        <p className="case-kicker"><b>${p.client}</b> · ${p.kind} · ${p.via}</p>
         <p className="lede case-sum">${p.summary}</p>
-        <ol className="flowline" aria-label="Project arc">
-          ${p.flow.map(function (f, i) { return html`<li key=${i}>${f}</li>`; })}
-        </ol>
+        <ol className="flowline" aria-label="Project arc">${p.flow.map(function (f, i) { return html`<li key=${i}>${f}</li>`; })}</ol>
       </header>
-      <dl className="case-meta">
-        ${Object.keys(p.meta).map(function (k) { return html`<div key=${k}><dt className="lbl">${k}</dt><dd>${p.meta[k]}</dd></div>`; })}
-      </dl>
-      <figure className="case-vis">
-        <${Vis} kind=${p.visual} />
-        <figcaption className="lbl">Reconstructed artefact. Client details removed.</figcaption>
+      <figure className="case-img">
+        <span className="tape" aria-hidden="true"></span>
+        <${ProjectImage} p=${p} />
+        <figcaption className="hand">reconstructed artefact, client details removed</figcaption>
       </figure>
+      <dl className="case-meta">
+        ${Object.keys(p.meta).map(function (k) { return html`<div key=${k}><dt>${k}</dt><dd>${p.meta[k]}</dd></div>`; })}
+      </dl>
       <div className="split">
-        <div className="sp sp-mine"><p className="lbl">My contribution</p><p>${p.split.mine}</p></div>
-        <div className="sp"><p className="lbl">Team contribution</p><p>${p.split.team}</p></div>
-        <div className="sp"><p className="lbl">Outcome</p><p>${p.split.outcome}</p></div>
+        <div className="sp sp-mine"><p className="sp-l">My contribution</p><p>${p.split.mine}</p></div>
+        <div className="sp"><p className="sp-l">Team contribution</p><p>${p.split.team}</p></div>
+        <div className="sp"><p className="sp-l">Outcome</p><p>${p.split.outcome}</p></div>
       </div>
       <div className="case-body">
         <nav className="toc" aria-label="Case study sections">
           ${CS.map(function (s, i) {
-            return html`<a key=${s[0]} href=${"#" + p.id + "-" + s[0]} aria-current=${active === s[0] ? "true" : null} onClick=${function (e) { go(e, s[0]); }}>
-              <span className="toc-n">${pad(i + 1)}</span>${s[1]}</a>`;
+            return html`<a key=${s[0]} href=${"#" + p.id + "-" + s[0]} aria-current=${active === s[0] ? "true" : null} onClick=${function (e) { go(e, s[0]); }}><span className="toc-n">${i + 1}</span>${s[1]}</a>`;
           })}
         </nav>
         <div className="cs-col">
@@ -700,10 +817,10 @@
             var v = p.sections[s[0]];
             var big = s[0] === "opportunity" || s[0] === "outcome";
             return html`<section key=${s[0]} id=${p.id + "-" + s[0]} data-sec=${s[0]} className=${"cs" + (big ? " cs-big" : "")}>
-              <p className="cs-k"><span className="red">${pad(i + 1)}</span> ${s[1]}</p>
+              <p className="cs-k"><span className="hand">${i + 1}.</span> ${s[1]}</p>
               <h2 className="cs-q">${s[2]}</h2>
               ${Array.isArray(v)
-                ? html`<ol className="insights">${v.map(function (x, k) { return html`<li key=${k}><span className="red">I${k + 1}</span>${x}</li>`; })}</ol>`
+                ? html`<ol className="insights">${v.map(function (x, k) { return html`<li key=${k} style=${{ "--rot": [-1, 0.8, -0.6][k] + "deg" }}>${x}</li>`; })}</ol>`
                 : html`<p className="cs-t">${v}</p>`}
             </section>`;
           })}
@@ -711,8 +828,8 @@
       </div>
       <p className="confidential">Selected project details and visuals have been adapted or anonymised to respect client confidentiality.</p>
       <nav className="next" aria-label="More projects">
-        <a href=${"#case-" + prev.id}><span className="lbl">← Previous</span><span className="nx-t">${prev.title}</span></a>
-        <a href=${"#case-" + next.id}><span className="lbl">Next →</span><span className="nx-t">${next.title}</span></a>
+        <a href=${"#case-" + prev.id}><span className="hand">← previous</span><span className="nx-t">${prev.title}</span></a>
+        <a href=${"#case-" + next.id}><span className="hand">next →</span><span className="nx-t">${next.title}</span></a>
       </nav>
     </article>`;
   }
@@ -738,7 +855,6 @@
     }, []);
     useEffect(function () {
       Engine.refresh();
-      document.documentElement.classList.toggle("is-case", !!route.caseId);
       var wasCase = prevCase.current; prevCase.current = route.caseId;
       if (route.caseId) {
         window.scrollTo(0, 0);
@@ -752,19 +868,18 @@
         } else if (wasCase) window.scrollTo(0, 0);
       }
     }, [route.caseId, route.anchor]);
-
     var cp = route.caseId && P.filter(function (x) { return x.id === route.caseId; })[0];
     return html`<${React.Fragment}>
       <a className="skip" href="#main">Skip to content</a>
-      <${Particles} />
       <${Header} />
       <main id="main">
         ${cp ? html`<${Case} key=${cp.id} p=${cp} />` : html`<${React.Fragment}>
-          <${Hero} /><${Statement} /><${Work} /><${Transfer} /><${Approach} /><${Principles} />
-          <${Experience} /><${About} /><${Thinking} /><${Skills} />
+          <${Hero} /><${Ribbon} /><${Hello} /><${Work} /><${ZoomOut} /><${Process} /><${Outcome} />
+          <${Transfer} /><${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />
         <//>`}
         <${Contact} />
       </main>
+      <${CursorTrail} />
     <//>`;
   }
 

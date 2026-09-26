@@ -18,12 +18,15 @@ window.SITE = {
   linkedin: "",   // CHECK: paste your LinkedIn profile URL
   cv: "",         // CHECK: path or URL to your CV PDF, e.g. "assets/Yashvi_Jain_CV.pdf"
   portfolioPdf: "", // CHECK: path or URL to a portfolio PDF, if you have one
-  portrait: ""      // CHECK: path to your portrait, e.g. "assets/portrait.jpg" (square crop works best)
+  portrait: "assets/img/portrait.jpg",
+  illustration: "assets/img/illustration.png"
 };
 
 window.PROJECTS = [
   {
     id: "pfizer",
+    category: "digital",
+    image: "", // CHECK: add a project image, e.g. "assets/img/pfizer.jpg" (anonymised if needed)
     num: "01",
     client: "Pfizer",
     via: "Delivered at Tata Consultancy Services",
@@ -75,6 +78,8 @@ window.PROJECTS = [
   },
   {
     id: "jnj",
+    category: "digital",
+    image: "", // CHECK: add a project image, e.g. "assets/img/jnj.jpg" (anonymised if needed)
     num: "02",
     client: "Johnson & Johnson",
     via: "Delivered at Tata Consultancy Services",
@@ -126,6 +131,8 @@ window.PROJECTS = [
   },
   {
     id: "data",
+    category: "digital",
+    image: "", // CHECK: add a project image, e.g. "assets/img/data.jpg" (anonymised if needed)
     num: "03",
     client: "Enterprise client",
     via: "TCS · client anonymised",
@@ -177,6 +184,8 @@ window.PROJECTS = [
   },
   {
     id: "ai",
+    category: "experiments",
+    image: "", // CHECK: add a project image, e.g. "assets/img/ai.jpg" (anonymised if needed)
     num: "04",
     client: "Self-initiated",
     via: "Exploratory study",
@@ -228,6 +237,8 @@ window.PROJECTS = [
   },
   {
     id: "service",
+    category: "physical",
+    image: "", // CHECK: add a project image, e.g. "assets/img/service.jpg" (anonymised if needed)
     num: "05",
     client: "Student support services",
     via: "MA Design Management, LCC",
@@ -279,6 +290,8 @@ window.PROJECTS = [
   },
   {
     id: "culture",
+    category: "physical",
+    image: "", // CHECK: add a project image, e.g. "assets/img/culture.jpg" (anonymised if needed)
     num: "06",
     client: "Indian Music Experience Museum",
     via: "UI/UX Design Intern · British Council",
@@ -328,6 +341,47 @@ window.PROJECTS = [
         "This project taught me that the most useful design research often happens away from the screen."
     }
   }
+];
+
+/* Project groups on the homepage */
+window.CATEGORIES = [
+  ["physical", "Physical experiences", "Spaces, services and the people moving through them."],
+  ["digital", "Digital experiences", "Products and platforms for complex organisations."],
+  ["experiments", "Experiments", "Things I make to learn: materials, prototypes and new technology."]
+];
+
+/* Small experiments shown without a full case study.
+   CHECK: confirm the descriptions match what you built. */
+window.EXPERIMENTS = [
+  {
+    title: "Printing with clay",
+    note: "Testing how a digital file turns into a tactile object, one layer of clay at a time.",
+    video: "assets/img/clay-printing.mp4",
+    poster: "assets/img/clay-printing-poster.jpg",
+    tags: ["Material", "Making"]
+  },
+  {
+    title: "The finished vessel",
+    note: "Small, imperfect and very satisfying to hold. The ridges come straight from the print path.",
+    image: "assets/img/clay-vessel.jpg",
+    tags: ["Material", "Form"]
+  },
+  {
+    title: "Light that responds",
+    note: "A quick electronics prototype: a distance sensor and an LED strip, exploring how an object can notice people nearby.",
+    video: "assets/img/sensor-light.mp4",
+    poster: "assets/img/sensor-light-poster.jpg",
+    tags: ["Prototype", "Interaction"]
+  }
+];
+
+/* Talks, sharing work and hackathons.
+   CHECK: add your photos (src) and real captions when you have them. */
+window.MOMENTS = [
+  { src: "", caption: "Sharing work in a crit", kind: "Talk" },
+  { src: "", caption: "Hackathon, hour 20", kind: "Hackathon" },
+  { src: "", caption: "Presenting to a room", kind: "Talk" },
+  { src: "", caption: "Team sketching session", kind: "Hackathon" }
 ];
 
 window.CASE_SECTIONS = [
