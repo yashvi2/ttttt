@@ -8,7 +8,7 @@ Static portfolio site for a UX Designer, Service Designer and Design Researcher.
 python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000. Case studies open at `#case-<id>` (for example `#case-pfizer`).
+Then open http://localhost:8000. Pages live at `#work`, `#approach`, `#about`, `#thinking` and `#contact`; case studies open at `#case-<id>` (for example `#case-pfizer`).
 
 ## Structure
 

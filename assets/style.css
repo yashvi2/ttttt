@@ -496,3 +496,46 @@ section[id] { scroll-margin-top: 90px; }
   .case-img .proj-ph, .case-img .proj-img { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 560px) { .next { grid-template-columns: 1fr; } .next a:last-child { text-align: left; } }
+
+/* ---------------------------------------------------------------
+   Pages
+---------------------------------------------------------------- */
+.page { min-height: 70vh; outline: none; }
+.page > :first-child { margin-top: 0; }
+.page > .work:first-child, .page > .me:first-child, .page > .outloud:first-child { padding-top: clamp(40px, 6vw, 88px); }
+.page > .zoom:first-child .zoom-pin { padding-top: 88px; }
+.page-contact > .contact:first-child { border-top: 0; }
+.page-contact .contact-in { min-height: calc(100vh - 90px); align-content: center; padding-block: 64px; }
+@media (prefers-reduced-motion: no-preference) {
+  .page { animation: pageIn .5s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes pageIn { from { opacity: .001; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+}
+/* a transform on the page would break the pinned particle window, so that page only fades */
+@media (prefers-reduced-motion: no-preference) {
+  .page-approach { animation-name: pageFade; }
+  @keyframes pageFade { from { opacity: .001; } to { opacity: 1; } }
+}
+.nav a[aria-current="page"] { background-size: 100% 38%; }
+.nav a.nav-hello[aria-current="page"] { background: var(--butter) !important; }
+.menu a[aria-current="page"] { color: var(--red); }
+
+/* Home signposts */
+.signs { padding-block: clamp(24px, 4vw, 56px) clamp(24px, 4vw, 48px); }
+.sign-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 32px; }
+.sign { transform: rotate(var(--rot)); transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.sign:hover { transform: rotate(0deg) translateY(-6px); }
+.sign a { position: relative; display: grid; gap: 10px; align-content: start; min-height: 230px; padding: 30px 24px 24px; text-decoration: none; box-shadow: 0 2px 3px rgba(43,35,32,.08), 0 12px 24px rgba(43,35,32,.1); }
+.sign-sky a { background: var(--sky); } .sign-butter a { background: var(--butter-soft); } .sign-blush a { background: var(--blush); } .sign-sage a { background: var(--sage); }
+.sign-n { font-size: 40px; line-height: .8; color: var(--red); }
+.sign-h { font: 400 clamp(24px, 2.2vw, 30px)/1.15 var(--head); }
+.sign-p { font-size: 15px; color: var(--ink); }
+.sign-go { margin-top: auto; font-weight: 500; font-size: 14px; }
+.sign a:hover .sign-h { color: var(--red); }
+@media (prefers-reduced-motion: reduce) { .sign, .sign:hover { transform: none; } }
+
+/* Next page nudge */
+.page-next { padding-block: clamp(72px, 9vw, 120px) clamp(48px, 6vw, 80px); display: flex; justify-content: flex-end; }
+.page-next a { display: grid; justify-items: end; gap: 4px; text-decoration: none; }
+.page-next .hand { font-size: 26px; color: var(--red); transform: rotate(-3deg); }
+.pn-t { font: 400 clamp(32px, 4.4vw, 64px)/1.05 var(--head); background: linear-gradient(var(--butter), var(--butter)) 0 90% / 0 30% no-repeat; transition: background-size .3s; }
+.page-next a:hover .pn-t { background-size: 100% 30%; }

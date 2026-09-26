@@ -274,9 +274,20 @@
   /* ================================================================
      Header + menu
   ================================================================ */
-  var NAV = [["work", "Work"], ["process", "How I work"], ["me", "Me"], ["contact", "Say hello"]];
-  var MENU = [["work", "Work"], ["zoom", "People to systems"], ["process", "How I work"], ["me", "Off the clock"], ["baking", "Design & baking"], ["out-loud", "Talks & hackathons"], ["experience", "Experience"], ["contact", "Contact"]];
-  function Header() {
+  var PAGES = [
+    ["home", "Home", "Yashvi Jain Portfolio"],
+    ["work", "Work", "Work · Yashvi Jain"],
+    ["approach", "Approach", "Approach · Yashvi Jain"],
+    ["about", "About", "About · Yashvi Jain"],
+    ["thinking", "Talks & thinking", "Talks & thinking · Yashvi Jain"],
+    ["contact", "Say hello", "Contact · Yashvi Jain"]
+  ];
+  // Sections that live on a page, so old in-page links still land in the right place
+  var SECTION_PAGE = {
+    top: "home", zoom: "approach", process: "approach", transfer: "work", me: "about", baking: "about",
+    experience: "about", "out-loud": "thinking", skills: "thinking", "work-physical": "work", "work-digital": "work", "work-experiments": "work"
+  };
+  function Header(props) {
     var os = useState(false), open = os[0], setOpen = os[1];
     var btn = useRef(null), panel = useRef(null);
     useEffect(function () {
@@ -294,14 +305,16 @@
     }, []);
     return html`<${React.Fragment}>
       <header className="bar">
-        <a className="brand" href="#top"><span className="brand-name">Yashvi Jain</span><span className="brand-sub hand">experience design strategist</span></a>
+        <a className="brand" href="#home" aria-current=${props.page === "home" ? "page" : null}><span className="brand-name">Yashvi Jain</span><span className="brand-sub hand">experience design strategist</span></a>
         <nav className="nav" aria-label="Primary">
-          ${NAV.map(function (n) { return html`<a key=${n[0]} href=${"#" + n[0]} className=${n[0] === "contact" ? "nav-hello" : ""}>${n[1]}</a>`; })}
+          ${PAGES.slice(1).map(function (n) {
+            return html`<a key=${n[0]} href=${"#" + n[0]} className=${n[0] === "contact" ? "nav-hello" : ""} aria-current=${props.page === n[0] ? "page" : null}>${n[1]}</a>`;
+          })}
         </nav>
         <button ref=${btn} type="button" className="bar-menu" aria-expanded=${open} aria-controls="menu" onClick=${function () { setOpen(!open); }}>${open ? "Close" : "Menu"}</button>
       </header>
       <nav id="menu" ref=${panel} className="menu" aria-label="Site" hidden=${!open}>
-        <ol>${MENU.map(function (m, i) { return html`<li key=${m[0]} style=${{ "--d": i * 35 + "ms" }}><a href=${"#" + m[0]}><span className="menu-n hand">${i + 1}.</span>${m[1]}</a></li>`; })}</ol>
+        <ol>${PAGES.map(function (m, i) { return html`<li key=${m[0]} style=${{ "--d": i * 35 + "ms" }}><a href=${"#" + m[0]} aria-current=${props.page === m[0] ? "page" : null}><span className="menu-n hand">${i + 1}.</span>${m[0] === "contact" ? "Contact" : m[1]}</a></li>`; })}</ol>
         <p className="menu-foot">${S.email} · London, United Kingdom</p>
       </nav>
     <//>`;
@@ -319,7 +332,7 @@
         <p className="hero-line">Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
         <div className="ctas">
           <a className="btn btn-red" href="#work">See my work</a>
-          <a className="btn" href="#me">Get to know me</a>
+          <a className="btn" href="#about">Get to know me</a>
         </div>
       </div>
       <figure className="hero-art">
@@ -835,19 +848,66 @@
   }
 
   /* ================================================================
-     App + hash routing (#case-<id> opens a case study)
+     Home signposts and the "next page" nudge at the end of each page
+  ================================================================ */
+  var SIGNS = [
+    ["work", "Work", "Physical experiences, digital experiences and experiments.", "sky"],
+    ["approach", "Approach", "How I zoom out from people to systems, and the loop I work in.", "butter"],
+    ["about", "About", "Travel, books, my bakery, and where I've worked.", "blush"],
+    ["thinking", "Talks & thinking", "Talks, hackathons, research threads and my toolbox.", "sage"]
+  ];
+  function Signposts() {
+    return html`<section className="signs wrap" aria-labelledby="signs-h">
+      <header className="sec-head">
+        <p className="hand kicker">where to next?</p>
+        <h2 id="signs-h" className="h2">Have a look around</h2>
+      </header>
+      <ul className="sign-list">
+        ${SIGNS.map(function (x, i) {
+          return html`<li key=${x[0]} className=${"sign sign-" + x[3]} style=${{ "--rot": [-1.5, 1.2, -0.8, 1.6][i] + "deg" }}>
+            <a href=${"#" + x[0]}><span className="tape" aria-hidden="true"></span><span className="sign-n hand">${i + 1}</span><span className="sign-h">${x[1]}</span><span className="sign-p">${x[2]}</span><span className="sign-go">Open page →</span></a>
+          </li>`;
+        })}
+      </ul>
+    </section>`;
+  }
+  var NEXT = { home: "work", work: "approach", approach: "about", about: "thinking", thinking: "contact" };
+  function PageNext(props) {
+    var n = NEXT[props.page];
+    if (!n) return null;
+    var pg = PAGES.filter(function (x) { return x[0] === n; })[0];
+    return html`<nav className="page-next wrap" aria-label="Next page">
+      <a href=${"#" + n}><span className="hand">next page</span><span className="pn-t">${n === "contact" ? "Let's talk" : pg[1]} →</span></a>
+    </nav>`;
+  }
+
+  /* ================================================================
+     App + hash routing
+     #work, #approach, #about, #thinking, #contact are pages;
+     #case-<id> opens a case study; empty or #home is the home page.
   ================================================================ */
   function readRoute() {
     var hh = location.hash.slice(1);
     if (hh.indexOf("case-") === 0) {
       var id = hh.slice(5);
-      for (var i = 0; i < P.length; i++) if (P[i].id === id) return { caseId: id, anchor: null };
+      for (var i = 0; i < P.length; i++) if (P[i].id === id) return { page: "work", caseId: id, anchor: null };
     }
-    return { caseId: null, anchor: hh || null };
+    for (var j = 0; j < PAGES.length; j++) if (PAGES[j][0] === hh) return { page: hh, caseId: null, anchor: null };
+    if (SECTION_PAGE[hh]) return { page: SECTION_PAGE[hh], caseId: null, anchor: hh === "top" ? null : hh };
+    return { page: "home", caseId: null, anchor: null };
+  }
+  function PageBody(props) {
+    switch (props.page) {
+      case "work": return html`<${Work} /><${Transfer} />`;
+      case "approach": return html`<${ZoomOut} /><${Process} /><${Outcome} />`;
+      case "about": return html`<${Me} /><${Baking} /><${Experience} />`;
+      case "thinking": return html`<${OutLoud} /><${Notebook} />`;
+      case "contact": return html`<${Contact} />`;
+      default: return html`<${Hero} /><${Ribbon} /><${Hello} /><${Signposts} /><${Outcome} />`;
+    }
   }
   function App() {
     var rs = useState(readRoute), route = rs[0], setRoute = rs[1];
-    var prevCase = useRef(route.caseId);
     useEffect(function () {
       var on = function () { setRoute(readRoute()); };
       window.addEventListener("hashchange", on);
@@ -855,29 +915,26 @@
     }, []);
     useEffect(function () {
       Engine.refresh();
-      var wasCase = prevCase.current; prevCase.current = route.caseId;
       if (route.caseId) {
         window.scrollTo(0, 0);
         document.title = P.filter(function (x) { return x.id === route.caseId; })[0].title + " · Yashvi Jain";
         var t = document.getElementById("case-h"); if (t) t.focus({ preventScroll: true });
-      } else {
-        document.title = "Yashvi Jain Portfolio";
-        if (route.anchor) {
-          var el = document.getElementById(route.anchor);
-          if (el) setTimeout(function () { el.scrollIntoView(); Engine.refresh(); }, wasCase ? 30 : 0);
-        } else if (wasCase) window.scrollTo(0, 0);
+        return;
       }
-    }, [route.caseId, route.anchor]);
+      var pg = PAGES.filter(function (x) { return x[0] === route.page; })[0];
+      document.title = pg ? pg[2] : "Yashvi Jain Portfolio";
+      var el = route.anchor && document.getElementById(route.anchor);
+      if (el) el.scrollIntoView(); else window.scrollTo(0, 0);
+      var main = document.getElementById("main"); if (main) main.focus({ preventScroll: true });
+    }, [route.page, route.caseId, route.anchor]);
     var cp = route.caseId && P.filter(function (x) { return x.id === route.caseId; })[0];
+    var key = cp ? "case-" + cp.id : route.page;
     return html`<${React.Fragment}>
       <a className="skip" href="#main">Skip to content</a>
-      <${Header} />
-      <main id="main">
-        ${cp ? html`<${Case} key=${cp.id} p=${cp} />` : html`<${React.Fragment}>
-          <${Hero} /><${Ribbon} /><${Hello} /><${Work} /><${ZoomOut} /><${Process} /><${Outcome} />
-          <${Transfer} /><${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />
-        <//>`}
-        <${Contact} />
+      <${Header} page=${route.page} />
+      <main id="main" tabIndex="-1" key=${key} className=${"page page-" + (cp ? "case" : route.page)}>
+        ${cp ? html`<${Case} p=${cp} />` : html`<${PageBody} page=${route.page} />`}
+        ${cp ? null : html`<${PageNext} page=${route.page} />`}
       </main>
       <${CursorTrail} />
     <//>`;
