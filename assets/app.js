@@ -335,7 +335,7 @@
       </header>
       <nav id="menu" ref=${panel} className="menu" aria-label="Site" hidden=${!open}>
         <ol>${PAGES.map(function (m, i) { return html`<li key=${m[0]} style=${{ "--d": i * 35 + "ms" }}><a href=${"#" + m[0]} aria-current=${props.page === m[0] ? "page" : null}><span className="menu-n hand">${i + 1}.</span>${m[0] === "contact" ? "Contact" : m[1]}</a></li>`; })}</ol>
-        <p className="menu-foot">${S.email} · London, United Kingdom</p>
+        <p className="menu-foot">${S.email} · <a href=${S.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a> · London, United Kingdom</p>
       </nav>
     <//>`;
   }
@@ -358,10 +358,6 @@
       <figure className="hero-art">
         <img src=${S.illustration} alt="Illustration of Yashvi sitting on a chair, chin resting on her hand, smiling" width="911" height="1045" />
         <figcaption className="hand note n1">that's me, thinking about systems<br />(or cake)<${Arrow} className="a1" /></figcaption>
-        <span className="sticker s1" aria-hidden="true">UX</span>
-        <span className="sticker s2" aria-hidden="true">Service<br />design</span>
-        <span className="sticker s3" aria-hidden="true">Research</span>
-        <${Star} className="st1" />
       </figure>
     </section>`;
   }
@@ -380,14 +376,6 @@
     </section>`;
   }
 
-  function Ribbon() {
-    var words = ["Research", "Service design", "Systems thinking", "UX", "Strategy", "Baking", "Travel", "Hackathons", "Reading", "Making"];
-    var row = words.concat(words);
-    return html`<div className="ribbon" aria-hidden="true"><div className="rb-track" data-marquee="1">
-      ${row.map(function (w, i) { return html`<span key=${i}>${w}<${Star} /></span>`; })}
-    </div></div>`;
-  }
-
   function Hello() {
     return html`<section className="hello wrap" aria-label="Introduction">
       <div className="letter">
@@ -396,11 +384,12 @@
         <p className="letter-t">I've worked on enterprise projects for Pfizer and Johnson & Johnson at TCS, and I'm now doing an MA in Design Management at London College of Communication. Outside work I bake, travel, read, and turn up at design hackathons.</p>
         <p className="hand sig">— Yashvi</p>
       </div>
-      <ul className="stamps">
-        <li className="stamp"><b>3+ yrs</b><span>enterprise UX</span></li>
-        <li className="stamp"><b>Pfizer · J&J</b><span>via TCS</span></li>
-        <li className="stamp"><b>MA</b><span>Design Management, LCC</span></li>
-      </ul>
+      <dl className="facts">
+        <div><dt>Experience</dt><dd>3+ years in enterprise UX</dd></div>
+        <div><dt>Worked with</dt><dd>Pfizer · Johnson & Johnson, via TCS</dd></div>
+        <div><dt>Studying</dt><dd>MA Design Management, LCC</dd></div>
+        <div><dt>Elsewhere</dt><dd><a href=${S.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></dd></div>
+      </dl>
     </section>`;
   }
 
@@ -411,7 +400,7 @@
     var p = props.p;
     return html`<li className="pcard" style=${{ "--rot": props.rot + "deg" }}>
       <a href=${"#case-" + p.id} className="pcard-a">
-        <div className="pcard-img"><span className="tape" aria-hidden="true"></span><${ProjectImage} p=${p} /></div>
+        <div className="pcard-img"><${ProjectImage} p=${p} /></div>
         <p className="pcard-meta"><b>${p.client}</b> · ${p.kind}</p>
         <h4 className="pcard-title">${p.title}</h4>
         <p className="pcard-sum">${p.summary}</p>
@@ -559,7 +548,6 @@
             <ul className="notes">
               ${PRINCIPLES.map(function (x, i) {
                 return html`<li key=${i} className=${"note-card c" + i} style=${{ "--rot": [-2, 1.5, -1, 2, -1.5][i] + "deg" }}>
-                  <span className="pin" aria-hidden="true"></span>
                   <h3 className="note-h">${x[0]}</h3><p>${x[1]}</p>
                 </li>`;
               })}
@@ -909,7 +897,7 @@
       <ul className="sign-list">
         ${SIGNS.map(function (x, i) {
           return html`<li key=${x[0]} className=${"sign sign-" + x[3]} style=${{ "--rot": [-1.5, 1.2, -0.8, 1.6][i] + "deg" }}>
-            <a href=${"#" + x[0]}><span className="tape" aria-hidden="true"></span><span className="sign-n hand">${i + 1}</span><span className="sign-h">${x[1]}</span><span className="sign-p">${x[2]}</span><span className="sign-go">Open page →</span></a>
+            <a href=${"#" + x[0]}><span className="sign-n hand">${i + 1}</span><span className="sign-h">${x[1]}</span><span className="sign-p">${x[2]}</span><span className="sign-go">Open page →</span></a>
           </li>`;
         })}
       </ul>
@@ -946,7 +934,7 @@
       case "approach": return html`<${Approach} />`;
       case "about": return html`<${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
       case "contact": return html`<${Contact} />`;
-      default: return html`<${Hero} /><${FeaturedWork} /><${Ribbon} /><${Hello} /><${Signposts} />`;
+      default: return html`<${Hero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`;
     }
   }
   function App() {

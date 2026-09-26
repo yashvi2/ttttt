@@ -24,7 +24,7 @@ Then open http://localhost:8000. Pages live at `#work`, `#approach`, `#about` an
 
 Search the repo for `CHECK` and confirm each item:
 
-- LinkedIn URL, CV link and portfolio PDF in `assets/data.js` (`SITE`)
+- CV link and portfolio PDF in `assets/data.js` (`SITE`)
 - Project images: set `image` on each project in `assets/data.js` (placeholders show until then)
 - Case study timeline and tools: set `timeline` and `tools` on each project to show them in the at-a-glance bar
 - Talk and hackathon photos: set `src` and captions in `MOMENTS` in `assets/data.js`

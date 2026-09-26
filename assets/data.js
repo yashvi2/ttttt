@@ -15,7 +15,7 @@ window.SITE = {
   role: "Product Designer",
   location: "London, UK",
   email: "yashvi.jain.yj@gmail.com",
-  linkedin: "",   // CHECK: paste your LinkedIn profile URL
+  linkedin: "https://www.linkedin.com/in/yashvi-jain-b049851ba/",
   cv: "",         // CHECK: path or URL to your CV PDF, e.g. "assets/Yashvi_Jain_CV.pdf"
   portfolioPdf: "", // CHECK: path or URL to a portfolio PDF, if you have one
   portrait: "assets/img/portrait.jpg",
