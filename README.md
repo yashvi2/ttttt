@@ -17,7 +17,7 @@ Then open http://localhost:8000. Pages live at `#work`, `#approach`, `#about` an
 | `index.html` | Page shell and library scripts |
 | `assets/data.js` | All project and contact content. Edit copy here. |
 | `assets/app.js` | React components, Three.js hero scene, scroll engine, case-study view, anonymised artefact drawings |
-| `assets/style.css` | Warm paper theme, Bricolage Grotesque + Figtree (+ Caveat for notes), one type scale, collage and card styles |
+| `assets/style.css` | Warm paper theme, Bricolage Grotesque + Figtree, one type scale, motion system, collage and card styles |
 | `assets/img/` | Photos, the illustrated portrait, experiment videos (H.264, muted) and posters |
 
 ## Home page versions

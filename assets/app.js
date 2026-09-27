@@ -75,6 +75,33 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Engine.refresh(); });
 
   /* ================================================================
+     Reveal: content below the fold eases in as it arrives
+  ================================================================ */
+  var REVEAL_SEL = [".sec-head", ".feat-head", ".pcard", ".xcard", ".note-card", ".like", ".tl > li", ".glance", ".split .sp",
+    ".cs", ".sign", ".collage .polaroid", ".p-bake", ".moment", ".letter", ".facts > div", ".recipe", ".xfer li", ".threads li",
+    ".sk", ".contact-card", ".case-img", ".poster-copy", ".me-story > *", ".group-head", ".mode-card", ".loop"].join(",");
+  var Reveal = {
+    io: null,
+    scan: function () {
+      if (REDUCE || !("IntersectionObserver" in window)) return;
+      var self = this;
+      document.documentElement.classList.add("reveal-on");
+      if (!self.io) self.io = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); self.io.unobserve(e.target); } });
+      }, { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
+      var vh = window.innerHeight;
+      Array.prototype.forEach.call(document.querySelectorAll(REVEAL_SEL), function (el) {
+        if (el.hasAttribute("data-rv") || el.closest(".hz-track")) return;
+        if (el.getBoundingClientRect().top < vh * 0.92) return; // already on screen: leave it be
+        var i = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+        el.style.setProperty("--rv", Math.min(i, 5) * 70 + "ms");
+        el.setAttribute("data-rv", "");
+        self.io.observe(el);
+      });
+    }
+  };
+
+  /* ================================================================
      Cursor: a small ring that follows the pointer, trailing particles
   ================================================================ */
   function CursorTrail() {
@@ -247,6 +274,12 @@
   /* ================================================================
      Doodles: small hand-drawn SVG marks
   ================================================================ */
+  // Split a headline into masked words so each can rise into place
+  var Rise = function (p) {
+    return p.text.split(" ").map(function (w, i) {
+      return html`<span key=${i} className="w-mask"><span className="w-in" style=${{ "--i": i }}>${w}</span></span>${" "}`;
+    });
+  };
   var Squiggle = function () { return html`<svg className="doodle squiggle" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 12 C 30 2, 50 20, 80 10 S 130 2, 160 11 S 215 20, 245 9 S 285 6, 297 10" /></svg>`; };
   var Arrow = function (p) { return html`<svg className=${"doodle arrow " + (p.className || "")} viewBox="0 0 120 80" aria-hidden="true"><path d="M8 10 C 40 6, 90 20, 100 64" /><path d="M86 54 L100 66 L108 48" /></svg>`; };
   var Star = function (p) { return html`<svg className=${"doodle star " + (p.className || "")} viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L23 16 L37 18 L25 24 L28 37 L20 28 L11 37 L14 24 L3 18 L17 16 Z" /></svg>`; };
@@ -347,7 +380,7 @@
     return html`<section className="hero" id="top" aria-labelledby="hero-h">
       <div className="hero-copy">
         <p className="hand hero-hi">hi there, nice to meet you</p>
-        <h1 id="hero-h" className="hero-h">I'm Yashvi.</h1>
+        <h1 id="hero-h" className="hero-h"><${Rise} text="I'm Yashvi." /></h1>
         <p className="hero-p">A product designer who's spent years shaping interfaces, and is now just as focused on the decisions behind them. UX craft meets strategic thinking, with a service design edge.</p>
         <p className="hero-line">Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
         <div className="ctas">
@@ -407,7 +440,7 @@
       </div>
       <div className="poster-copy">
         <p className="hand poster-hi">hi, nice to meet you</p>
-        <h1 id="poster-h" className="poster-h">I'm Yashvi, a product designer who shapes interfaces and the decisions behind them.</h1>
+        <h1 id="poster-h" className="poster-h"><${Rise} text="I'm Yashvi, a product designer who shapes interfaces and the decisions behind them." /></h1>
         <p className="poster-p">UX craft meets strategic thinking, with a service design edge. Designing better experiences for <span className="mark">complex systems<${Squiggle} /></span></p>
         <div className="ctas">
           <a className="btn btn-red" href="#work">See my work</a>
@@ -420,7 +453,7 @@
   function Hello() {
     return html`<section className="hello wrap" aria-label="Introduction">
       <div className="letter">
-        <p className="hand letter-k">a quick hello —</p>
+        <p className="hand letter-k">a quick hello</p>
         <p className="letter-t">I'm a product designer with 3+ years of experience across complex digital products and services, with a background in research and service design. I combine user research, interaction design, service design and systems thinking to understand difficult problems and turn them into clear, evidence-led experiences.</p>
         <p className="letter-t">I've worked on enterprise projects for Pfizer and Johnson & Johnson at TCS, and I'm now doing an MA in Design Management at London College of Communication. Outside work I bake, travel, read, and turn up at design hackathons.</p>
         <p className="hand sig">— Yashvi</p>
@@ -830,7 +863,7 @@
       <div className="wrap contact-in">
         <p className="hand kicker">let's talk</p>
         <h2 id="contact-h" className="contact-h">Working on something complex? <span className="mark">Let's explore it.<${Squiggle} /></span></h2>
-        <p className="hand contact-note">(I'll bring the cake.)</p>
+        <p className="contact-note">(I'll bring the cake.)</p>
         <div className="contact-card">
           <p className="c-lbl">Email</p>
           <p className="c-mail" ref=${emailRef}>${S.email}</p>
@@ -868,6 +901,7 @@
       if (t) t.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" });
     };
     return html`<article className="case wrap" aria-labelledby="case-h">
+      <div className="read-progress" aria-hidden="true"></div>
       <a className="back" href="#work">← Back to all work</a>
       <header className="case-top">
         <p className="hand kicker">${cat ? cat[1].toLowerCase() : ""}</p>
@@ -991,6 +1025,7 @@
     }, []);
     useEffect(function () {
       Engine.refresh();
+      requestAnimationFrame(function () { Reveal.scan(); });
       if (route.caseId) {
         window.scrollTo(0, 0);
         document.title = P.filter(function (x) { return x.id === route.caseId; })[0].title + " · Yashvi Jain";
