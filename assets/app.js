@@ -27,9 +27,11 @@
     refresh: function () {
       var q = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
       this.prog = q("[data-progress]");
+      this.para = REDUCE ? [] : q("[data-parallax]");
       this.marq = q("[data-marquee]").map(function (el) { return { el: el, x: 0 }; });
       var bar = document.querySelector(".bar"), barH = bar ? bar.offsetHeight : 0;
       document.documentElement.style.setProperty("--bar-h", barH + "px");
+      q('[data-progress="pin"]').forEach(function (sec) { sec.__top = barH; });
       q("[data-track]").forEach(function (track) {
         var sec = track.closest("[data-progress]");
         if (!sec) return;
@@ -58,6 +60,13 @@
           if (e.__track) e.__track.style.transform = "translate3d(" + (-p * e.__extra).toFixed(1) + "px,0,0)";
           if (e.__onProgress) e.__onProgress(p);
         }
+        // Parallax: the element drifts relative to the viewport centre (uses the CSS translate property)
+        for (var n = 0; n < self.para.length; n++) {
+          var el = self.para[n], br = el.getBoundingClientRect();
+          if (br.bottom < -100 || br.top > vh + 100) continue;
+          var off = (br.top + br.height / 2 - vh / 2) * parseFloat(el.getAttribute("data-parallax"));
+          el.style.setProperty("--py", off.toFixed(1) + "px");
+        }
         for (var k = 0; k < self.marq.length; k++) {
           var m = self.marq[k], dir = parseFloat(m.el.getAttribute("data-marquee"));
           var half = m.el.scrollWidth / 2;
@@ -72,6 +81,36 @@
     }
   };
   window.addEventListener("resize", function () { Engine.refresh(); });
+
+  /* ================================================================
+     Smooth scroll: gentle inertia for mouse wheels on desktop.
+     Keyboard, scrollbar, touch and anchor jumps stay native.
+  ================================================================ */
+  var Smooth = {
+    on: !REDUCE && FINE, target: 0, cur: 0, running: false,
+    init: function () {
+      if (!this.on) return;
+      var self = this;
+      self.cur = self.target = window.scrollY;
+      window.addEventListener("wheel", function (e) {
+        if (e.ctrlKey || e.defaultPrevented || document.documentElement.classList.contains("menu-open")) return;
+        var dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? window.innerHeight : 1);
+        if (Math.abs(e.deltaX) > Math.abs(dy)) return;
+        e.preventDefault();
+        if (!self.running) self.cur = self.target = window.scrollY;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        self.target = clamp(self.target + dy, 0, max);
+        if (!self.running) { self.running = true; requestAnimationFrame(function step() {
+          self.cur += (self.target - self.cur) * 0.12;
+          if (Math.abs(self.target - self.cur) < 0.5) { self.cur = self.target; self.running = false; }
+          window.scrollTo(0, self.cur);
+          if (self.running) requestAnimationFrame(step);
+        }); }
+      }, { passive: false });
+    },
+    stop: function () { this.running = false; this.cur = this.target = window.scrollY; }
+  };
+  Smooth.init();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { Engine.refresh(); });
 
   /* ================================================================
@@ -79,7 +118,7 @@
   ================================================================ */
   var REVEAL_SEL = [".sec-head", ".feat-head", ".pcard", ".xcard", ".note-card", ".like", ".tl > li", ".glance", ".split .sp",
     ".cs", ".sign", ".collage .polaroid", ".p-bake", ".moment", ".letter", ".facts > div", ".recipe", ".xfer li", ".threads li",
-    ".sk", ".contact-card", ".case-img", ".poster-copy", ".me-story > *", ".group-head", ".mode-card", ".loop"].join(",");
+    ".sk", ".contact-card", ".case-img", ".poster-copy", ".wrow", ".windex-filters", ".me-story > *", ".group-head", ".mode-card", ".loop"].join(",");
   var Reveal = {
     io: null,
     scan: function () {
@@ -389,7 +428,7 @@
         </div>
       </div>
       <figure className="hero-art">
-        <img src=${S.illustration} alt="Illustration of Yashvi sitting on a chair, chin resting on her hand, smiling" width="911" height="1045" />
+        <img data-parallax="0.06" src=${S.illustration} alt="Illustration of Yashvi sitting on a chair, chin resting on her hand, smiling" width="911" height="1045" />
         <figcaption className="hand note n1">that's me, thinking about systems<br />(or cake)<${Arrow} className="a1" /></figcaption>
       </figure>
     </section>`;
@@ -450,6 +489,30 @@
     </section>`;
   }
 
+  /* ================================================================
+     Chapter: scroll grows a framed photo to full bleed while the
+     statement is written over it, line by line.
+  ================================================================ */
+  function Chapter() {
+    return html`<section className="chapter" data-progress="pin" aria-labelledby="chap-h">
+      <div className="chap-pin">
+        <div className="chap-frame">
+          <img src=${S.portraitFull} alt="" loading="lazy" />
+          <div className="chap-shade" aria-hidden="true"></div>
+        </div>
+        <div className="chap-copy">
+          <p className="kicker kicker-light chap-l0">What I do</p>
+          <h2 id="chap-h" className="chap-h">
+            <span className="chap-l1">I design for the moments</span>
+            <span className="chap-l2">where people, products</span>
+            <span className="chap-l3">and systems meet.</span>
+          </h2>
+          <p className="chap-l4">Research, product and service design, from one person's task to the organisation around it.</p>
+        </div>
+      </div>
+    </section>`;
+  }
+
   function Hello() {
     return html`<section className="hello wrap" aria-label="Introduction">
       <div className="letter">
@@ -497,14 +560,72 @@
     </li>`;
   }
   var ROTS = [-1.6, 1.2, -0.6, 1.8, -1.2, 0.8];
+
+  /* Index view: big typographic rows, a preview follows the cursor */
+  function WorkIndex(props) {
+    var fs = useState("all"), f = fs[0], setF = fs[1];
+    var hs = useState(null), hover = hs[0], setHover = hs[1];
+    var prev = useRef(null);
+    useEffect(function () {
+      if (!FINE || REDUCE) return;
+      var el = prev.current, x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, raf = 0;
+      var onMove = function (e) { tx = e.clientX; ty = e.clientY; };
+      var step = function () {
+        x += (tx - x) * 0.14; y += (ty - y) * 0.14;
+        el.style.transform = "translate3d(" + (x + 28).toFixed(1) + "px," + (y - 110).toFixed(1) + "px,0) rotate(" + clamp((tx - x) * 0.05, -6, 6).toFixed(2) + "deg)";
+        raf = requestAnimationFrame(step);
+      };
+      window.addEventListener("pointermove", onMove, { passive: true });
+      raf = requestAnimationFrame(step);
+      return function () { cancelAnimationFrame(raf); window.removeEventListener("pointermove", onMove); };
+    }, []);
+    var list = P.filter(function (p) { return f === "all" || p.category === f; });
+    var hp = hover && P.filter(function (p) { return p.id === hover; })[0];
+    return html`<div className="windex">
+      <div className="windex-filters" role="group" aria-label="Filter projects">
+        ${[["all", "All"]].concat(CATS.map(function (c) { return [c[0], c[1]]; })).map(function (c) {
+          var n = c[0] === "all" ? P.length : P.filter(function (p) { return p.category === c[0]; }).length;
+          return html`<button key=${c[0]} type="button" className="wf" aria-pressed=${f === c[0]} onClick=${function () { setF(c[0]); }}>${c[1]}<sup>${n}</sup></button>`;
+        })}
+      </div>
+      <ol className="wlist" onMouseLeave=${function () { setHover(null); }}>
+        ${list.map(function (p, i) {
+          var cat = CATS.filter(function (c) { return c[0] === p.category; })[0];
+          return html`<li key=${p.id} className=${"wrow" + (hover && hover !== p.id ? " dim" : "")}>
+            <a href=${"#case-" + p.id} onMouseEnter=${function () { setHover(p.id); }} onFocus=${function () { setHover(p.id); }}>
+              <span className="wr-n">${pad(i + 1)}</span>
+              <span className="wr-t">${p.title}</span>
+              <span className="wr-c">${p.client}</span>
+              <span className="wr-k">${cat ? cat[1] : ""}</span>
+              <span className="wr-go" aria-hidden="true">→</span>
+            </a>
+          </li>`;
+        })}
+      </ol>
+      <div ref=${prev} className=${"wprev" + (hp ? " on" : "")} aria-hidden="true">
+        ${P.map(function (p) { return html`<div key=${p.id} className=${"wprev-i" + (hp && hp.id === p.id ? " cur" : "")}><${ProjectImage} p=${p} /></div>`; })}
+      </div>
+    </div>`;
+  }
+
   function Work() {
+    var vs = useState(function () { try { return localStorage.getItem("yj-work-view") || "list"; } catch (e) { return "list"; } });
+    var view = vs[0], setView = function (v) { vs[1](v); try { localStorage.setItem("yj-work-view", v); } catch (e) {} };
     return html`<section className="work wrap" id="work" aria-labelledby="work-h">
-      <header className="sec-head">
+      <header className="sec-head work-head">
         <p className="hand kicker">things I've worked on</p>
         <h2 id="work-h" className="h2">Selected work</h2>
-        <p className="sec-note">Three kinds of work: physical experiences, digital experiences, and experiments. Every case study covers context, challenge, my role, process and outcome.</p>
+        <p className="sec-note">Physical experiences, digital experiences and experiments. Every case study covers context, challenge, my role, process and outcome.</p>
+        <div className="view-toggle" role="group" aria-label="Layout">
+          <button type="button" aria-pressed=${view === "list"} onClick=${function () { setView("list"); }}>Index</button>
+          <button type="button" aria-pressed=${view === "grid"} onClick=${function () { setView("grid"); }}>Grid</button>
+        </div>
       </header>
-      ${CATS.map(function (c, ci) {
+      ${view === "list" ? html`<${WorkIndex} />
+        <div className="group g-experiments" id="work-experiments">
+          <div className="group-head"><span className="group-n hand">+</span><h3 className="group-h">Making & experiments</h3><p className="group-sub">Things I make to learn: materials, prototypes and new technology.</p></div>
+          <ul className="cards">${EXP.map(function (x, i) { return html`<${ExperimentCard} key=${x.title} x=${x} rot=${0} />`; })}</ul>
+        </div>` : CATS.map(function (c, ci) {
         var projects = P.filter(function (p) { return p.category === c[0]; });
         var exps = c[0] === "experiments" ? EXP : [];
         return html`<div key=${c[0]} className=${"group g-" + c[0]} id=${"work-" + c[0]}>
@@ -688,12 +809,12 @@
         <div className="collage" aria-label="Photos">
           <figure className="polaroid p-portrait" style=${{ "--rot": "-3deg" }}>
             <span className="tape" aria-hidden="true"></span>
-            <img src=${S.portrait} alt="Yashvi sitting on a chair, smiling, chin on her hand" loading="lazy" />
+            <div className="pol-img"><img data-parallax="-0.06" src=${S.portrait} alt="Yashvi sitting on a chair, smiling, chin on her hand" loading="lazy" /></div>
             <figcaption className="hand pol-cap">me, mid-thought</figcaption>
           </figure>
           <figure className="polaroid p-travel" style=${{ "--rot": "2.5deg" }}>
             <span className="tape" aria-hidden="true"></span>
-            <img src="assets/img/travel-london.jpg" alt="Yashvi smiling on Westminster Bridge at night, with Big Ben lit up behind her" loading="lazy" />
+            <div className="pol-img"><img data-parallax="-0.08" src="assets/img/travel-london.jpg" alt="Yashvi smiling on Westminster Bridge at night, with Big Ben lit up behind her" loading="lazy" /></div>
             <figcaption className="hand pol-cap">London nights</figcaption>
           </figure>
         </div>
@@ -727,7 +848,7 @@
           <p className="bake-intro">I've run my own bakery. It taught me that a great cake is only part of the job: the customer, the order, the timing and the delivery all have to work too. That's the same way I think about design.</p>
           <figure className="polaroid p-bake" style=${{ "--rot": "-2deg" }}>
             <span className="tape" aria-hidden="true"></span>
-            <img src="assets/img/baking.jpg" alt="A homemade Victoria sponge birthday cake being shared on a wooden table" loading="lazy" />
+            <div className="pol-img"><img data-parallax="-0.07" src="assets/img/baking.jpg" alt="A homemade Victoria sponge birthday cake being shared on a wooden table" loading="lazy" /></div>
             <figcaption className="hand pol-cap">best part: sharing it</figcaption>
           </figure>
         </div>
@@ -1005,15 +1126,35 @@
     if (SECTION_PAGE[hh]) return { page: SECTION_PAGE[hh], caseId: null, anchor: hh === "top" ? null : hh };
     return { page: "home", caseId: null, anchor: null };
   }
+  var ABOUT_CH = [["me", "Me"], ["baking", "Baking"], ["out-loud", "Talks"], ["experience", "Experience"], ["thinking", "Thinking"]];
+  function ChapterDots() {
+    var as = useState("me"), active = as[0], setActive = as[1];
+    useEffect(function () {
+      if (!("IntersectionObserver" in window)) return;
+      var io = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin: "-40% 0px -55% 0px" });
+      ABOUT_CH.forEach(function (c) { var el = document.getElementById(c[0]); if (el) io.observe(el); });
+      return function () { io.disconnect(); };
+    }, []);
+    return html`<nav className="chdots" aria-label="On this page">
+      ${ABOUT_CH.map(function (c, i) {
+        return html`<a key=${c[0]} href=${"#" + c[0]} aria-current=${active === c[0] ? "true" : null}
+          onClick=${function (e) { e.preventDefault(); Smooth.stop(); var t = document.getElementById(c[0]); if (t) t.scrollIntoView({ behavior: REDUCE ? "auto" : "smooth" }); }}>
+          <span className="chd-l">${c[1]}</span><span className="chd-d"></span></a>`;
+      })}
+    </nav>`;
+  }
+
   function PageBody(props) {
     switch (props.page) {
       case "work": return html`<${Work} /><${Transfer} />`;
       case "approach": return html`<${Approach} />`;
-      case "about": return html`<${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
+      case "about": return html`<${ChapterDots} /><${Me} /><${Baking} /><${OutLoud} /><${Experience} /><${Notebook} />`;
       case "contact": return html`<${Contact} />`;
       default: return HOME_STYLE === "poster"
-        ? html`<${PosterHero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`
-        : html`<${Hero} /><${FeaturedWork} /><${Hello} /><${Signposts} />`;
+        ? html`<${PosterHero} /><${FeaturedWork} /><${Chapter} /><${Hello} /><${Signposts} />`
+        : html`<${Hero} /><${FeaturedWork} /><${Chapter} /><${Hello} /><${Signposts} />`;
     }
   }
   function App() {
@@ -1023,7 +1164,11 @@
       window.addEventListener("hashchange", on);
       return function () { window.removeEventListener("hashchange", on); };
     }, []);
+    var first = useRef(true);
+    var cs = useState(0), curtain = cs[0], setCurtain = cs[1];
     useEffect(function () {
+      Smooth.stop();
+      if (first.current) first.current = false; else if (!REDUCE) setCurtain(function (n) { return n + 1; });
       Engine.refresh();
       requestAnimationFrame(function () { Reveal.scan(); });
       if (route.caseId) {
@@ -1047,6 +1192,7 @@
         ${cp ? html`<${Case} p=${cp} />` : html`<${PageBody} page=${route.page} />`}
         ${cp ? null : html`<${PageNext} page=${route.page} />`}
       </main>
+      ${curtain ? html`<div key=${curtain} className="curtain" aria-hidden="true"><span>${cp ? cp.title : (PAGES.filter(function (x) { return x[0] === route.page; })[0] || ["", "Home"])[1]}</span></div>` : null}
       <${CursorTrail} />
     <//>`;
   }
