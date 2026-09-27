@@ -27,4 +27,4 @@ Rules for keeping this portfolio consistent. Tokens live in `assets/style.css` (
 
 ## Interaction
 - Every hover has a matching focus state.
-- Hover previews never cover the text they describe (they sit behind it or beside the cursor).
+- Hover previews are small (40 × 40 chip beside the cursor) and never cover the text they describe.

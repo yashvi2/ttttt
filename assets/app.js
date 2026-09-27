@@ -571,11 +571,9 @@
       var el = prev.current, x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, raf = 0;
       var onMove = function (e) { tx = e.clientX; ty = e.clientY; };
       var step = function () {
-        // Keep the preview in the right-hand columns so it never covers a title
-        var col = document.querySelector(".wrow .wr-c"), minX = col ? col.getBoundingClientRect().left : innerWidth * 0.6;
-        var gx = clamp(tx + 36, minX, innerWidth - el.offsetWidth - 24);
-        x += (gx - x) * 0.14; y += (ty - y) * 0.14;
-        el.style.transform = "translate3d(" + x.toFixed(1) + "px," + (y - el.offsetHeight / 2).toFixed(1) + "px,0) rotate(" + clamp((ty - y) * 0.04, -4, 4).toFixed(2) + "deg)";
+        // A small 40px chip that trails just beside the cursor
+        x += (tx + 18 - x) * 0.25; y += (ty + 14 - y) * 0.25;
+        el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
         raf = requestAnimationFrame(step);
       };
       window.addEventListener("pointermove", onMove, { passive: true });
@@ -606,7 +604,10 @@
         })}
       </ol>
       <div ref=${prev} className=${"wprev" + (hp ? " on" : "")} aria-hidden="true">
-        ${P.map(function (p) { return html`<div key=${p.id} className=${"wprev-i" + (hp && hp.id === p.id ? " cur" : "")}><${ProjectImage} p=${p} /></div>`; })}
+        ${P.map(function (p) {
+          return html`<div key=${p.id} className=${"wprev-i tint-" + p.category + (hp && hp.id === p.id ? " cur" : "")}>
+            ${p.image ? html`<img src=${p.image} alt="" />` : html`<span>↗</span>`}</div>`;
+        })}
       </div>
     </div>`;
   }
