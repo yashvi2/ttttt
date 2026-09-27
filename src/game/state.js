@@ -44,18 +44,18 @@ function safe(fn, fallback = null) {
   try { return fn(); } catch { return fallback; }
 }
 
-export function saveGame(state) {
-  safe(() => localStorage.setItem(SAVE_KEY, JSON.stringify(state)));
+export function saveGame(state, key = SAVE_KEY) {
+  safe(() => localStorage.setItem(key, JSON.stringify(state)));
 }
-export function loadGame() {
-  return safe(() => JSON.parse(localStorage.getItem(SAVE_KEY)));
+export function loadGame(key = SAVE_KEY) {
+  return safe(() => JSON.parse(localStorage.getItem(key)));
 }
-export function clearSave() {
-  safe(() => localStorage.removeItem(SAVE_KEY));
+export function clearSave(key = SAVE_KEY) {
+  safe(() => localStorage.removeItem(key));
 }
-export function loadMeta() {
-  return safe(() => JSON.parse(localStorage.getItem(META_KEY)), null) || { completed: {}, best: {}, trueEnding: {} };
+export function loadMeta(key = META_KEY) {
+  return safe(() => JSON.parse(localStorage.getItem(key)), null) || { completed: {}, best: {}, trueEnding: {}, endings: {} };
 }
-export function saveMeta(meta) {
-  safe(() => localStorage.setItem(META_KEY, JSON.stringify(meta)));
+export function saveMeta(meta, key = META_KEY) {
+  safe(() => localStorage.setItem(key, JSON.stringify(meta)));
 }

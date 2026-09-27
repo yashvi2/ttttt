@@ -49,7 +49,8 @@ export class Game {
     document.getElementById('labels').appendChild(this.labels.domElement);
 
     this.composer = new EffectComposer(this.renderer);
-    this.composer.addPass(new RenderPass(this.scene, this.camera));
+    this.renderPass = new RenderPass(this.scene, this.camera);
+    this.composer.addPass(this.renderPass);
     this.bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.55, 0.5, 0.82);
     this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
@@ -69,6 +70,7 @@ export class Game {
     this.msgTimer = 0;
     this.saveTimer = 0;
     this.mode = 'boot';
+    this.timeScale = 1; // game minutes per real second
 
     this.applyQuality();
     window.addEventListener('resize', () => this.resize());
@@ -389,7 +391,7 @@ export class Game {
 
     // Time and needs.
     if (!blocked && s.phase !== 5) {
-      const hours = dt / 60;
+      const hours = (dt / 60) * this.timeScale;
       this.advanceTime(hours, speed > 5 ? 1.6 : 1);
     }
     // NPCs
@@ -596,7 +598,7 @@ export class Game {
       if (!q.ring.visible) continue;
       const d = Math.hypot(q.pos.x - p.x, q.pos.z - p.z);
       if (d > 2.6) continue;
-      const verb = { eat: 'Eat at', work: 'Go to work at', hangout: 'Visit', home: 'Go inside —', station: 'Take the ' + this.route.metro.name + ' at', gem: 'Visit' }[q.type] || 'Visit';
+      const verb = { eat: 'Eat at', work: 'Go to work at', hangout: 'Visit', home: 'Go inside —', station: 'Take the ' + this.route.metro.name + ' at', gem: 'Visit', police: 'Go into', therapy: 'Go to', shelter: 'Knock at' }[q.type] || 'Visit';
       const sub = this.isOpen(q) ? (q.type === 'eat' || (q.type === 'gem' && q.menu) ? 'food' : '') : `closed · opens ${fmtTime(q.hours[0] % 24)}`;
       consider(d - 0.3, { kind: 'poi', poi: q, label: `${verb} ${q.name}`, sub });
     }

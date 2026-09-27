@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "build:artifact": "vite build --mode artifact && node scripts/build-artifact.mjs"
+    "build:artifact": "ENTRY=index vite build --mode artifact && ENTRY=index node scripts/build-artifact.mjs && ENTRY=last-seen vite build --mode artifact && ENTRY=last-seen node scripts/build-artifact.mjs"
   },
   "dependencies": {
     "three": "^0.186.1"

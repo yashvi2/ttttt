@@ -86,6 +86,7 @@ export function makeFigure(look = {}) {
   g.traverse((o) => { if (o.isMesh) { o.castShadow = true; } });
   g.scale.setScalar(height);
   g.userData.rig = { body, hips, legL, legR, armL, armR, head, headG, phase: Math.random() * 6 };
+  g.userData.look = look;
   return g;
 }
 

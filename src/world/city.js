@@ -22,6 +22,9 @@ export const POI_STYLE = {
   gem: { color: 0xffe07a, icon: '✨' },
   photo: { color: 0xffffff, icon: '📷' },
   goal: { color: 0xff6b8a, icon: '♥' },
+  police: { color: 0x6fa8f2, icon: '🚓' },
+  therapy: { color: 0x9ad0a0, icon: '🛋️' },
+  shelter: { color: 0xe0c08a, icon: '🕯️' },
 };
 
 const STYLES = {
@@ -416,7 +419,7 @@ export function buildDistrict(d, city) {
 
   return {
     group, colliders, circles, walkables, pois, photoSpots, groundHeight, update, dispose, labels,
-    drivable, grid, cellAt, spawn: d.spawn,
+    drivable, grid, cellAt, spawn: d.spawn, lamps,
   };
 }
 

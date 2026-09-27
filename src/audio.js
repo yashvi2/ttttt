@@ -28,7 +28,9 @@ export class Audio {
     const ctx = (this.ctx = new AC());
     this.master = ctx.createGain(); this.master.gain.value = this.enabled ? 0.8 : 0;
     this.master.connect(ctx.destination);
-    this.music = ctx.createGain(); this.music.gain.value = this.musicVol * 0.5; this.music.connect(this.master);
+    this.music = ctx.createGain(); this.music.gain.value = this.musicVol * 0.5;
+    this.musicFilter = ctx.createBiquadFilter(); this.musicFilter.type = 'lowpass'; this.musicFilter.frequency.value = 20000;
+    this.music.connect(this.musicFilter); this.musicFilter.connect(this.master);
     this.amb = ctx.createGain(); this.amb.gain.value = this.ambVol; this.amb.connect(this.master);
     this.sfx = ctx.createGain(); this.sfx.gain.value = 0.7; this.sfx.connect(this.master);
 
@@ -100,11 +102,12 @@ export class Audio {
     const ctx = this.ctx;
     if (!ctx || this.musicVol <= 0) return;
     const nyc = this.style === 'nyc';
-    const bpm = nyc ? (this.mood === 'night' ? 84 : 96) : (this.mood === 'night' ? 72 : 88);
+    const bpm = this.style === 'lastseen' ? 58 : nyc ? (this.mood === 'night' ? 84 : 96) : (this.mood === 'night' ? 72 : 88);
     const spb = 60 / bpm;
     while (this.nextBeat < ctx.currentTime + 0.3) {
       if (this.lanternsUntil && this.nextBeat < this.lanternsUntil) { this.nextBeat += spb; this.beat++; continue; }
-      if (nyc) this._jazzBeat(this.nextBeat, spb); else this._chamberBeat(this.nextBeat, spb);
+      if (this.style === 'lastseen') this._ambientBeat(this.nextBeat, spb);
+      else if (nyc) this._jazzBeat(this.nextBeat, spb); else this._chamberBeat(this.nextBeat, spb);
       this.nextBeat += spb;
       this.beat++;
     }
@@ -145,9 +148,61 @@ export class Audio {
     if (b === 2 && Math.random() < 0.5) this._tone(NOTE(ch[2] + 24), t, spb, 'sine', 0.035, 0.01, 1.4, true);
   }
 
+  _ambientBeat(t, spb) {
+    // Sparse felt-piano in A minor; the distortion layer detunes it.
+    const chords = [[57, 60, 64, 71], [53, 57, 60, 64], [48, 52, 55, 62], [52, 55, 59, 64]];
+    const bar = Math.floor(this.beat / 8) % 4, b = this.beat % 8;
+    const ch = chords[bar];
+    if (b === 0) {
+      this._tone(NOTE(ch[0] - 12), t, spb * 7, 'sine', 0.09, 0.02, 2.4, true);
+      for (const n of ch) this._tone(NOTE(n), t + Math.random() * 0.05, spb * 6, 'triangle', 0.025, 0.4, 2.6, true, 1400);
+    }
+    if ((b === 3 || b === 5) && Math.random() < 0.6) {
+      const scale = [69, 71, 72, 74, 76, 79, 81];
+      this._tone(NOTE(scale[Math.floor(Math.random() * scale.length)]), t, spb * 1.5, 'sine', 0.05, 0.005, 1.8, true);
+    }
+  }
+
+  // ---- distortion layer (used by Last Seen) ----
+  heartbeat(vol = 0.12) {
+    if (!this.ctx) return;
+    this._sfxTone(58, 0.16, 'sine', vol); this._sfxTone(52, 0.2, 'sine', vol * 0.8, 0.19);
+  }
+  setTinnitus(level) {
+    if (!this.ctx) return;
+    if (!this.tinnitus) {
+      const o = this.ctx.createOscillator(); o.frequency.value = 6800;
+      const g = this.ctx.createGain(); g.gain.value = 0;
+      o.connect(g); g.connect(this.sfx); o.start();
+      this.tinnitus = g;
+    }
+    this.tinnitus.gain.setTargetAtTime(Math.max(0, level) * 0.006, this.ctx.currentTime, 0.8);
+  }
+  setMusicFilter(freq) {
+    if (this.musicFilter) this.musicFilter.frequency.setTargetAtTime(freq, this.ctx.currentTime, 0.6);
+  }
+  whisper() {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime;
+    for (let i = 0; i < 3; i++) {
+      const s = this.ctx.createBufferSource(); s.buffer = this.white;
+      const f = this.ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 900 + i * 700; f.Q.value = 6;
+      const g = this.ctx.createGain();
+      g.gain.setValueAtTime(0, t + i * 0.12); g.gain.linearRampToValueAtTime(0.05, t + i * 0.12 + 0.18); g.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.12 + 0.7);
+      s.connect(f); f.connect(g); g.connect(this.sfx); s.start(t + i * 0.12, Math.random()); s.stop(t + i * 0.12 + 0.8);
+    }
+  }
+  sting() {
+    if (!this.ctx) return;
+    [74, 73, 70].forEach((n, i) => this._sfxTone(NOTE(n) * (1 + (Math.random() - 0.5) * 0.02), 1.2, 'triangle', 0.06, i * 0.05));
+    this._noise(this.ctx.currentTime, 0.6, 400, 0.08, this.sfx);
+  }
+
   _tone(freq, t, dur, type, vol, att = 0.01, rel = 0.3, verb = false, lp = 0) {
     const ctx = this.ctx;
-    const o = ctx.createOscillator(); o.type = type; o.frequency.value = freq;
+    const o = ctx.createOscillator(); o.type = type;
+    // `warble` (0..1) detunes notes for the distortion layer; 0 leaves them clean.
+    o.frequency.value = this.warble ? freq * (1 + (Math.random() - 0.5) * 0.05 * this.warble) : freq;
     const g = ctx.createGain();
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(vol, t + att);
