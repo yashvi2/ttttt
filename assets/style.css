@@ -975,6 +975,29 @@ h1, h2, h3, h4 { font-optical-sizing: auto; }
 
 /* ---------- Small quality fixes ---------- */
 .pcard-a:hover .pcard-title { color: var(--red); }
-.feat-cards .pcard:nth-child(2) { margin-top: clamp(0px, 4vw, 56px); }
 .wlist, .wrow a { position: relative; z-index: 6; }
 .wrow a:hover .wr-t { color: var(--ink); text-shadow: 0 0 18px var(--paper), 0 0 2px var(--paper); }
+
+/* ---------------------------------------------------------------
+   Alignment pass
+---------------------------------------------------------------- */
+/* Work index: calmer titles, a smaller preview that sits beside the cursor */
+.wr-t { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.12; }
+.wrow a { padding: clamp(18px, 2vw, 24px) 0; }
+.wrow a:hover .wr-t, .wrow a:focus-visible .wr-t { translate: 8px 0; }
+.wprev { width: 240px; }
+
+/* Card rows: equal width and equal height, content aligned inside */
+.cards { align-items: stretch; }
+.feat-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pcard, .pcard-a { height: 100%; }
+.pcard-a { grid-template-rows: auto auto auto 1fr auto; }
+.pcard-go { align-self: end; }
+@media (max-width: 900px) { .feat-cards { grid-template-columns: 1fr; } }
+
+.sign-list { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.sign, .sign a { height: 100%; }
+.sign a { min-height: 0; grid-template-rows: auto auto 1fr auto; }
+.sign-go { align-self: end; }
+@media (max-width: 820px) { .sign-list { grid-template-columns: 1fr; } }
+.wrow a:hover .wr-c, .wrow a:hover .wr-k { text-shadow: 0 0 10px var(--card), 0 0 2px var(--card); }

@@ -571,8 +571,11 @@
       var el = prev.current, x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y, raf = 0;
       var onMove = function (e) { tx = e.clientX; ty = e.clientY; };
       var step = function () {
-        x += (tx - x) * 0.14; y += (ty - y) * 0.14;
-        el.style.transform = "translate3d(" + (x + 28).toFixed(1) + "px," + (y - 110).toFixed(1) + "px,0) rotate(" + clamp((tx - x) * 0.05, -6, 6).toFixed(2) + "deg)";
+        // Keep the preview in the right-hand columns so it never covers a title
+        var col = document.querySelector(".wrow .wr-c"), minX = col ? col.getBoundingClientRect().left : innerWidth * 0.6;
+        var gx = clamp(tx + 36, minX, innerWidth - el.offsetWidth - 24);
+        x += (gx - x) * 0.14; y += (ty - y) * 0.14;
+        el.style.transform = "translate3d(" + x.toFixed(1) + "px," + (y - el.offsetHeight / 2).toFixed(1) + "px,0) rotate(" + clamp((ty - y) * 0.04, -4, 4).toFixed(2) + "deg)";
         raf = requestAnimationFrame(step);
       };
       window.addEventListener("pointermove", onMove, { passive: true });
