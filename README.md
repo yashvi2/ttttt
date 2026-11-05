@@ -17,7 +17,7 @@ npm run build    # static site in dist/ (relative paths, deploy anywhere)
 - `src/dc/`: the small runtime the screens share: the `DCLogic` base
   component, `defineScreen`, template helpers and the asset-path map.
 - `src/components/ImageSlot.jsx`: the circular/rect photo frames.
-- `public/`: images, fonts' design-system CSS, Figma token sheets and the CV PDF.
+- `public/`: images, the design-system stylesheet, Figma token sheets and the CV PDF.
 
 Note: the floating "Ask my portfolio agent" chat calls `window.claude.complete`,
 which only exists inside Claude. On a normal host it shows its fallback reply
