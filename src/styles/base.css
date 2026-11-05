@@ -1,0 +1,74 @@
+/* Page shell: the portfolio is a full-window page. */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+#dc-root,
+#dc-root > .sc-host {
+  height: 100%;
+}
+
+/* Photo frames (see components/ImageSlot.jsx). */
+.image-slot {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.08);
+  font: 13px/1.3 system-ui, -apple-system, sans-serif;
+}
+.image-slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+.image-slot__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+  text-align: center;
+  border: 1.5px dashed color-mix(in srgb, currentColor 35%, transparent);
+}
+.image-slot__cap {
+  max-width: 90%;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  opacity: 0.75;
+}
+
+@media print {
+  @page {
+    margin: 0.5cm;
+  }
+  figure,
+  table {
+    break-inside: avoid;
+  }
+  #dc-root,
+  #dc-root > .sc-host {
+    height: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    animation-delay: -99s !important;
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    animation-fill-mode: both !important;
+    animation-play-state: running !important;
+    transition-duration: 0s !important;
+  }
+}
