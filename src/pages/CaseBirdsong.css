@@ -1,0 +1,2 @@
+/* Screen styles for Case Birdsong Pub, injected when the screen first renders. */
+@keyframes yjCar2{0%,46%{opacity:1}50%,96%{opacity:0}100%{opacity:1}}@keyframes yjCar3{0%,30%{opacity:1}33.3%,96.6%{opacity:0}100%{opacity:1}}@keyframes yjCarBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}@media (prefers-reduced-motion:reduce){[style*="yjCar"]{animation:none !important}}
