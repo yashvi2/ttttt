@@ -22,3 +22,9 @@ npm run build    # static site in dist/ (relative paths, deploy anywhere)
 Note: the floating "Ask my portfolio agent" chat calls `window.claude.complete`,
 which only exists inside Claude. On a normal host it shows its fallback reply
 pointing visitors to email.
+
+## Single-file build for Netlify
+
+`npm run build:standalone` writes `dist-standalone/index.html`: the whole site
+in one HTML file with every image embedded. Netlify's Claude Design importer
+deploys that file; the committed copy is what the live site was deployed from.

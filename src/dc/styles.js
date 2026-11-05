@@ -1,3 +1,5 @@
+import { inlinedStyles } from './resources.js';
+
 // Screens inject their stylesheets the first time they render, in render
 // order, so the cascade matches the design (later screens win ties).
 const mounted = new Set();
@@ -11,6 +13,11 @@ function once(key, create) {
 export function injectScreenAssets(screen) {
   for (const href of screen.screenLinks || []) {
     once('link|' + href, () => {
+      if (inlinedStyles && inlinedStyles[href] != null) {
+        const el = document.createElement('style');
+        el.textContent = inlinedStyles[href];
+        return el;
+      }
       const el = document.createElement('link');
       el.rel = 'stylesheet';
       el.href = href;
