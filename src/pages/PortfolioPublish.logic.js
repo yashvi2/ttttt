@@ -940,7 +940,12 @@ Agent:`;
       h('img', {src:__R('assets/web/assets/pfizer/cover-kid.webp'), alt:'', style:{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'55% 40%', opacity:0.28, filter:'grayscale(1)', mixBlendMode:'luminosity', pointerEvents:'none'}}),
       h('img', {src:__R('assets/logos/pfizer-white.svg'), alt:'Pfizer', style:{position:'relative', width:'38%', maxWidth:360, height:'auto', pointerEvents:'none'}}));
     if (c.id === 'ava') return h('div', {style:{position:'absolute', inset:0, overflow:'hidden', background:'#c8102e url("' + __R('assets/web/assets/ava/pattern.webp') + '") center / cover'}},
-      h('img', {src:__R('assets/web/assets/ava/cover-banner.webp'), alt:'Johnson & Johnson · Dosing Error · AVA', style:{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'contain', objectPosition:'50% 50%', pointerEvents:'none'}}));
+      // Built from vector/high-res parts instead of the 1400px cover-banner.webp, so it stays sharp at any size.
+      h('div', {role:'img', 'aria-label':'Johnson & Johnson · Dosing Error · AVA', style:{position:'absolute', inset:0, margin:'auto', aspectRatio:'1400 / 765', maxWidth:'100%', maxHeight:'100%', containerType:'inline-size', pointerEvents:'none',
+          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', color:'#ffffff'}},
+        h('img', {src:__R('assets/logos/jnj.svg'), alt:'', style:{width:'36.7cqw', height:'auto', filter:'brightness(0) invert(1)', marginTop:'2cqw'}}),
+        h('div', {style:{marginTop:'5.6cqw', fontFamily:'Geist, sans-serif', fontWeight:700, fontSize:'2.05cqw', letterSpacing:'-0.005em', lineHeight:1}}, 'Dosing Error'),
+        h('img', {src:__R('figma/ava/assets/1a818537395aa2c3.png'), alt:'', style:{width:'14cqw', height:'auto', marginTop:'3.6cqw', filter:'brightness(0) invert(1)'}})));
     if (c.banner === 'cray' || c.banner === 'poster') return h('div', {style:{position:'absolute', inset:0, background:c.tone, overflow:'hidden'}},
       h('img', {src:c.src, alt:c.alt || 'CRAY — Safer streets. Happier strays.', style:{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:c.cardPos || '0% 50%'}}),
       extra !== false && h('div', {style:{position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.82), rgba(0,0,0,0.35) 34%, rgba(0,0,0,0) 55%)'}}));
