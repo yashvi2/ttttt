@@ -511,8 +511,8 @@ class Component extends DCLogic {
     const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
-    const sans = 'Geist, sans-serif', cond = sans;
-    const corner = {fontFamily:sans, fontSize:13, lineHeight:1.5, letterSpacing:'.06em', textTransform:'uppercase', maxWidth:340, margin:0};
+    const sans = 'Geist, sans-serif', cond = sans, display = "'Gloock', Georgia, serif";
+    const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#cfcfcf', maxWidth:330, margin:0};
     const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
     const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Drag it, or click to see selected work',
@@ -529,7 +529,7 @@ class Component extends DCLogic {
           boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
         h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
         h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, borderRadius:14, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
-        h('div', {style:{fontFamily:cond, fontWeight:800, fontSize:'clamp(30px, 9.4vw, 52px)', lineHeight:.9, letterSpacing:'-0.035em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
+        h('div', {style:{fontFamily:display, fontWeight:400, fontSize:'clamp(36px, 11vw, 60px)', lineHeight:.88, letterSpacing:'-0.03em'}}, 'Yashvi', h('br'), 'Jain'),
         h('div', {style:{marginTop:10, fontFamily:cond, fontWeight:600, fontSize:'clamp(12px, 3.6vw, 16px)', lineHeight:1.15, letterSpacing:'.02em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
         h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-start', gap:6, padding:'10px 0'}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', opacity:.7}}, 'Domains'),
@@ -540,7 +540,7 @@ class Component extends DCLogic {
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('section', {ref:wrap, 'aria-label':'Introduction',
         style:{position:'relative', height:'100svh', minHeight:620, background:'#000000', color:ink, overflow:'hidden'}},
-      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(14vw + 28px)}}'),
+      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(17vw + 24px)}}'),
       h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
       h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(120px, 17vh, 160px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24, zIndex:1}},
         h('div', {style:corner},
@@ -548,7 +548,7 @@ class Component extends DCLogic {
           h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
       h('div', {ref:nameRef, 'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
-          fontWeight:800, fontSize:'clamp(50px, 14vw, 290px)', lineHeight:1, letterSpacing:'-0.045em', textTransform:'uppercase', pointerEvents:'none', willChange:'transform'}},
+          fontFamily:display, fontWeight:400, fontSize:'clamp(58px, 17.5vw, 360px)', lineHeight:1, letterSpacing:'-0.035em', pointerEvents:'none', willChange:'transform'}},
         h('span', {ref:wordA, style:{display:'inline-block'}}, 'Yashvi'), ' ', h('span', {ref:wordB, style:{display:'inline-block', color:green}}, 'Jain')),
       h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
         h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
@@ -1317,11 +1317,11 @@ Agent:`;
         onEnter:() => this.setState({ctaHover:true}), onLeave:() => this.setState({ctaHover:false}), onClick:() => this.go('contact'),
         faces:[
           h('div', {style:{position:'absolute', inset:0, background:RED, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
-            h('span', {style:{font:`13px ${MONO}`, letterSpacing:'0.08em', textTransform:'uppercase'}}, '(Designer · Researcher · Thinker — open to roles)'),
-            h('span', {style:{fontFamily:"Geist,'Geist Display',sans-serif", fontStretch:'62%', fontWeight:800, fontSize:'clamp(48px,7.50vw,135px)', lineHeight:0.82, textTransform:'uppercase'}}, 'Have a messy problem?')),
+            h('span', {style:{font:`12px ${MONO}`, letterSpacing:'0.16em', textTransform:'uppercase'}}, '(Designer · Researcher · Thinker — open to roles)'),
+            h('span', {style:{fontFamily:"'Gloock',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
           h('div', {style:{position:'absolute', inset:0, background:CREAM, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`13px ${MONO}`, letterSpacing:'0.08em', textTransform:'uppercase', color:RED}}, '(Get in touch)'),
-            h('span', {style:{fontFamily:SERIF, fontStyle:'italic', fontSize:'clamp(48px,7.50vw,135px)', lineHeight:0.9}}, "Let's frame it →"))]})
+            h('span', {style:{fontFamily:"'Gloock',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, "Let's frame it →"))]})
     };
   }
 }

@@ -65,20 +65,19 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "Geist,'Geist Display',sans-serif",
-                fontWeight: '700',
-                fontSize: '26px',
-                letterSpacing: '0.005em',
+                fontFamily: "'Gloock',Georgia,serif",
+                fontWeight: '400',
+                fontSize: '24px',
+                letterSpacing: '-0.01em',
                 lineHeight: '1',
-                textTransform: 'uppercase',
               }}
             >
               Yashvi
             </span>
             <span
-              style={{ fontFamily: "'Instrument Serif',serif", fontStyle: 'italic', fontSize: '24px', lineHeight: '1' }}
+              style={{ fontFamily: "'Gloock',Georgia,serif", fontSize: '24px', letterSpacing: '-0.01em', lineHeight: '1' }}
             >
-              jain
+              Jain
             </span>
           </button>
           <nav
@@ -135,7 +134,7 @@ function template(v) {
                   fontFamily: 'Geist,sans-serif',
                   fontWeight: '500',
                   fontSize: '13px',
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.14em',
                   textTransform: 'uppercase',
                   whiteSpace: 'nowrap',
                 }}
@@ -167,7 +166,7 @@ function template(v) {
                   padding: '40px clamp(20px,7vw,128px) 0',
                   maxWidth: '1600px',
                   margin: '0 auto',
-                  paddingTop: '96px',
+                  paddingTop: '140px',
                   paddingBottom: '0px',
                 }}
               >
@@ -178,7 +177,7 @@ function template(v) {
                     fontFamily: 'Geist,sans-serif',
                     fontWeight: '500',
                     fontSize: '13px',
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: '#999999',
                   }}
@@ -188,13 +187,13 @@ function template(v) {
                 <h2
                   data-yj-rv="mask"
                   style={{
-                    margin: '16px 0 0',
-                    fontFamily: "Geist,'Geist Display',sans-serif",
-                    fontWeight: '700',
-                    fontSize: 'clamp(28px,3.2vw,48px)',
-                    lineHeight: '0.95',
-                    letterSpacing: '-0.01em',
-                    textTransform: 'uppercase',
+                    margin: '20px 0 0',
+                    fontFamily: "'Gloock',Georgia,serif",
+                    fontWeight: '400',
+                    fontSize: 'clamp(44px,5vw,84px)',
+                    lineHeight: '1',
+                    letterSpacing: '-0.025em',
+                    textTransform: 'none',
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '10px',
@@ -266,9 +265,8 @@ function template(v) {
                             style={{
                               all: 'unset',
                               cursor: 'pointer',
-                              fontFamily: 'Geist,sans-serif',
-                              fontStyle: 'normal',
-                              fontSize: '28px', fontWeight: '600', letterSpacing: '-0.02em',
+                              fontFamily: "'Gloock',Georgia,serif",
+                              fontSize: '32px', fontWeight: '400', letterSpacing: '-0.02em',
                               lineHeight: '1.05',
                             }}
                             type="reset"
@@ -284,7 +282,7 @@ function template(v) {
                                 fontFamily: 'Geist,sans-serif',
                                 fontWeight: '500',
                                 fontSize: '13px',
-                                letterSpacing: '0.08em',
+                                letterSpacing: '0.14em',
                                 textTransform: 'uppercase',
                                 color: '#f4f4f4',
                               }}
@@ -299,7 +297,7 @@ function template(v) {
                                 fontFamily: 'Geist,sans-serif',
                                 fontWeight: '500',
                                 fontSize: '13px',
-                                letterSpacing: '0.08em',
+                                letterSpacing: '0.14em',
                                 textTransform: 'uppercase',
                                 color: '#999999',
                               }}
@@ -328,7 +326,7 @@ function template(v) {
                 style={{
                   maxWidth: '1600px',
                   margin: '0 auto',
-                  padding: '96px clamp(20px,7vw,128px) 0',
+                  padding: '140px clamp(20px,7vw,128px) 0',
                   position: 'relative',
                   display: 'block',
                   alignItems: 'center',
@@ -341,7 +339,7 @@ function template(v) {
                     fontFamily: 'Geist,sans-serif',
                     fontWeight: '500',
                     fontSize: '13px',
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: '#999999',
                     paddingBottom: '24px',
@@ -423,7 +421,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -478,7 +476,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -535,7 +533,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -590,7 +588,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -646,7 +644,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -703,7 +701,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -760,7 +758,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -817,7 +815,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -874,7 +872,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -930,7 +928,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -987,7 +985,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -1045,7 +1043,7 @@ function template(v) {
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
-                          letterSpacing: '0.08em',
+                          letterSpacing: '0.14em',
                           textTransform: 'uppercase',
                           color: '#999999',
                           textAlign: 'center',
@@ -1063,7 +1061,7 @@ function template(v) {
                 style={{
                   maxWidth: '1600px',
                   margin: '0 auto',
-                  padding: '96px clamp(20px,7vw,128px) 0',
+                  padding: '140px clamp(20px,7vw,128px) 0',
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: 'clamp(32px,5vw,88px)',
@@ -1092,7 +1090,7 @@ function template(v) {
                       fontFamily: 'Geist,sans-serif',
                       fontWeight: '500',
                       fontSize: '13px',
-                      letterSpacing: '0.08em',
+                      letterSpacing: '0.14em',
                       textTransform: 'uppercase',
                       color: '#999999',
                     }}
@@ -1102,19 +1100,21 @@ function template(v) {
                   <p
                     style={{
                       margin: '0',
-                      fontSize: 'clamp(22px,2.2vw,32px)',
-                      lineHeight: '1.15',
-                      letterSpacing: '-0.02em',
-                      fontWeight: '500',
+                      fontFamily: "'Gloock',Georgia,serif",
+                      fontSize: 'clamp(26px,2.5vw,40px)',
+                      lineHeight: '1.16',
+                      letterSpacing: '-0.015em',
+                      fontWeight: '400',
+                      color: '#bdbdbd',
                       textWrap: 'pretty',
-                      maxWidth: '34ch',
+                      maxWidth: '30ch',
                     }}
                   >
                     {t(v.tcsWord)}
                     {' years at TCS and an MA in Design Management taught me the screen is rarely the problem. I design, research and think my way to the real one, with '}
-                    <span style={{ fontWeight: '600' }}>actual intelligence</span>
+                    <span style={{ color: '#f4f4f4' }}>actual intelligence</span>
                     {' first and '}
-                    <span style={{ fontWeight: '600', color: 'var(--yj-accent, #ff4d2e)' }}>artificial intelligence</span>
+                    <span style={{ color: 'var(--yj-accent, #ff4d2e)' }}>artificial intelligence</span>
                     {' to move faster.'}
                   </p>
                   <dl style={{ margin: '0', borderBottom: '1px solid #262626', maxWidth: '640px' }}>
@@ -1171,7 +1171,7 @@ function template(v) {
                   </div>
                 </div>
               </section>
-              <section style={{ maxWidth: '1600px', margin: '0 auto', padding: '96px clamp(20px,7vw,128px) 120px' }}>
+              <section style={{ maxWidth: '1600px', margin: '0 auto', padding: '140px clamp(20px,7vw,128px) 160px' }}>
                 {' '}
                 <div
                   data-yj-rv="up"
@@ -1188,7 +1188,7 @@ function template(v) {
                       style={{
                         fontFamily: 'Geist,sans-serif',
                         fontWeight: '500',
-                        letterSpacing: '0.08em',
+                        letterSpacing: '0.14em',
                         textTransform: 'uppercase',
                         fontSize: '13px',
                         color: '#999999',
@@ -1199,10 +1199,9 @@ function template(v) {
                     <h2
                       style={{
                         margin: '0',
-                        fontFamily: 'Geist,sans-serif',
-                        fontStyle: 'normal',
-                        fontWeight: '600', letterSpacing: '-0.02em',
-                        fontSize: 'clamp(26px,2.6vw,40px)',
+                        fontFamily: "'Gloock',Georgia,serif",
+                        fontWeight: '400', letterSpacing: '-0.02em',
+                        fontSize: 'clamp(34px,3.6vw,58px)',
                         lineHeight: '1',
                         color: '#f4f4f4',
                       }}
@@ -1258,8 +1257,8 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: 'Geist,sans-serif',
-                            fontSize: '64px', fontWeight: '700',
+                            fontFamily: "'Gloock',Georgia,serif",
+                            fontSize: '72px', fontWeight: '400',
                             lineHeight: '0.6',
                             color: 'var(--yj-accent, #ff4d2e)',
                             height: '32px',
@@ -1312,7 +1311,7 @@ function template(v) {
                             style={{
                               fontFamily: 'Geist,sans-serif',
                               fontWeight: '500',
-                              letterSpacing: '0.08em',
+                              letterSpacing: '0.14em',
                               textTransform: 'uppercase',
                               fontSize: '13px',
                               color: '#999999',
@@ -1331,7 +1330,7 @@ function template(v) {
                     style={{
                       fontFamily: 'Geist,sans-serif',
                       fontWeight: '500',
-                      letterSpacing: '0.08em',
+                      letterSpacing: '0.14em',
                       textTransform: 'uppercase',
                       fontSize: '13px',
                       color: '#999999',
@@ -1384,9 +1383,9 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: 'Geist,sans-serif',
-                              fontStyle: 'normal',
-                              fontSize: 'clamp(24px,2.2vw,32px)',
+                              fontFamily: "'Gloock',Georgia,serif",
+                              fontSize: 'clamp(24px,2.2vw,34px)',
+                              letterSpacing: '-0.015em',
                               lineHeight: '1.05',
                             }}
                           >
@@ -1398,7 +1397,7 @@ function template(v) {
                           style={{
                             fontFamily: 'Geist,sans-serif',
                             fontWeight: '500',
-                            letterSpacing: '0.08em',
+                            letterSpacing: '0.14em',
                             textTransform: 'uppercase',
                             fontSize: '13px',
                             color: '#999999',
@@ -1425,7 +1424,7 @@ function template(v) {
                     fontFamily: 'Geist,sans-serif',
                     fontWeight: '500',
                     fontSize: '13px',
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: '#999999',
                   }}
@@ -8369,7 +8368,7 @@ export default defineScreen({
   css: screenCss,
   links: [
     '_ds/modernist-f6c1caa7-5cac-451a-a099-225de5c74272/styles.css',
-    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap',
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&family=Gloock&display=swap',
   ],
   defaults: {
     accent: '#b6f23a',
