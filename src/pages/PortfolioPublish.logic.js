@@ -668,6 +668,7 @@ Agent:`;
       .catch(() => done("I couldn't reach my brain just now — email Yashvi directly at yashvi.jain.yj@gmail.com and she'll reply herself."));
   }
   componentDidMount() {
+    setTimeout(() => this.syncTone(), 300);
     window.addEventListener('keydown', this._mvK = e => { if (e.key === 'Escape' && this.state.mvRules) this.setState({mvRules:false}); });
     this._fcT = setInterval(() => { if (document.hidden || this.state.lb || this.state.fcHold) return; const n = 5; this.setState(s => ({fcI:((s.fcI || 0) + 1) % n})); }, 5000);
     window.addEventListener('scroll', this._mvS = () => { cancelAnimationFrame(this._mvR); this._mvR = requestAnimationFrame(() => this.onMvScroll()); }, {passive:true});
@@ -702,6 +703,7 @@ Agent:`;
     }, 500);
   }
   componentDidUpdate() {
+    setTimeout(() => this.syncTone(), 60);
     if (this._mvS) this._mvS(); setTimeout(() => { this.armDrops(); this.armMotion(); }, 0); this.syncHz(); this.syncMz(); const c = this.chatRef.current; if (c) c.scrollTop = c.scrollHeight; this.applyAccent(); (this.props.customCursor ?? true) ? this.mountCursor() : this.unmountCursor(); }
   syncJourney() {
     const t = this.jRef.current; if (!t || this._jUser) return;
@@ -709,7 +711,31 @@ Agent:`;
     const p = Math.min(1, Math.max(0, (vh * 0.8 - r.top) / (vh * 1.1)));
     t.style.scrollBehavior = 'auto'; t.scrollLeft = p * m; t.style.scrollBehavior = '';
   }
+  // Each nav pill checks what is behind it and switches to dark text on light backgrounds.
+  syncTone() {
+    const nav = this.navRef.current; if (!nav) return;
+    const pills = nav.querySelectorAll(':scope > button, :scope > nav');
+    const lum = c => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const [r, g, b, a = 1] = m[1].split(',').map(Number); if (a < 0.35) return null;
+      const f = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
+    pills.forEach(el => {
+      const r = el.getBoundingClientRect(); if (!r.width) return;
+      let light = 0, n = 0;
+      for (const fx of [.2, .5, .8]) {
+        const stack = document.elementsFromPoint(r.left + r.width * fx, r.top + r.height / 2);
+        let L = null;
+        for (const e of stack) {
+          if (nav.contains(e)) continue;
+          if (/^(IMG|VIDEO|CANVAS|IFRAME)$/.test(e.tagName)) { L = .1; break; }
+          const v = lum(getComputedStyle(e).backgroundColor); if (v != null) { L = v; break; }
+        }
+        if (L == null) L = 0; n++; if (L > .45) light++;
+      }
+      const tone = light * 2 > n ? 'light' : 'dark';
+      if (el.getAttribute('data-yj-tone') !== tone) el.setAttribute('data-yj-tone', tone);
+    });
+  }
   syncNav() {
+    if (!this._toneRaf) this._toneRaf = requestAnimationFrame(() => { this._toneRaf = 0; this.syncTone(); });
     const el = this.navRef.current; if (!el) return;
     const y = window.scrollY, d = y - (this._navY ?? y);
     if (Math.abs(d) < 6 && y > window.innerHeight) return;

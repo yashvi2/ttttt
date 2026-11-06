@@ -59,3 +59,9 @@
 .dc-hover-133417de:hover{background:var(--yj-accent, #ff4d2e) !important;color:#000000 !important}
 
 .dc-hover-693e7bb0:hover{transform:rotate(-8deg) scale(1.08) !important}
+
+/* Nav pills over light backgrounds: dark text on frosted white glass */
+[data-yj-tone]{transition:color 300ms ease,background-color 300ms ease,border-color 300ms ease}
+[data-yj-tone="light"]{color:#111111 !important;background:rgba(255,255,255,0.62) !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),0 8px 24px -14px rgba(0,0,0,0.35) !important}
+[data-yj-tone="light"] button{color:#111111 !important}
+[data-yj-tone="light"] .dc-hover-aae40af0:hover,[data-yj-tone="light"].dc-hover-582f54e7:hover{background:rgba(0,0,0,0.08) !important}
