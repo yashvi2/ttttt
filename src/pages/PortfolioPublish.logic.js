@@ -491,9 +491,9 @@ class Component extends DCLogic {
           h('div', {style:{display:'flex', flexWrap:'wrap', gap:5}},
             ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'].map(t => h('span', {key:t, style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(10px, 2.9vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'5px 8px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:8}},
-          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:'clamp(34px, 10vw, 52px)', height:'clamp(34px, 10vw, 52px)', flex:'none'}},
-            h('circle', {cx:28, cy:28, r:27, fill:'#0a0a0a'}),
-            h('path', {d:'M28 28 L28 1 A27 27 0 0 1 55 28 Z', fill:green})),
+          // the hand-drawn portrait used for the site's chat button
+          h('div', {'aria-hidden':true, style:{width:'clamp(40px, 12vw, 62px)', height:'clamp(40px, 12vw, 62px)', flex:'none', marginLeft:-4, marginBottom:-4}},
+            h(Component.Sketch, {size:'100%', weight:1.25})),
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('div', {role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
         style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:ink, overflow:'hidden', touchAction:'none',
