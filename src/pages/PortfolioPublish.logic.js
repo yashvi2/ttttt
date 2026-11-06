@@ -462,23 +462,23 @@ class Component extends DCLogic {
       s.drag = {x:L.x, y:L.y, ox:e.clientX - L.x, oy:e.clientY - L.y, sx:e.clientX, sy:e.clientY, moved:0}; setGrab(true); };
     const move = e => { const g = S.current.drag; if (!g) return; g.x = e.clientX - g.ox; g.y = e.clientY - g.oy; g.moved = Math.max(g.moved, Math.hypot(e.clientX - g.sx, e.clientY - g.sy)); };
     const up = () => { const s = S.current, g = s.drag; if (!g) return; s.drag = null; setGrab(false); if (g.moved < 6) enter(); };
-    const ink = '#0d0d0d', serif = "'Source Serif 4', Georgia, serif", accent = '#ff4d2e', grey = '#8a8a8a';
+    const ink = '#f4f4f4', serif = "'Source Serif 4', Georgia, serif", display = "'DM Serif Display', Georgia, serif", accent = '#ff4d2e', grey = '#8a8a8a';
     const corner = {fontFamily:serif, fontSize:'clamp(14px, 1.15vw, 17px)', lineHeight:1.3, maxWidth:300, margin:0};
     const bracket = (label, onClick) => h('button', {onClick, style:{all:'unset', cursor:'pointer', color:grey, textDecoration:'underline', textUnderlineOffset:3}}, '[' + label + ']');
     const chip = (txt, bg) => h('span', {style:{display:'inline-block', padding:'3px 8px', borderRadius:999, background:bg, color:'#fff', fontSize:10, fontWeight:600, whiteSpace:'nowrap'}}, txt);
     return h('div', {role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
-        style:{position:'fixed', inset:0, zIndex:10000, background:'#ffffff', color:ink, overflow:'hidden', touchAction:'none',
+        style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:ink, overflow:'hidden', touchAction:'none',
           opacity:out ? 0 : 1, transform:out ? 'translateY(-2%)' : 'none', pointerEvents:out ? 'none' : 'auto', transition:'opacity 650ms ease, transform 650ms ease'}},
       h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-l{max-width:52vw!important}}'),
       h('div', {style:{position:'absolute', top:'clamp(28px, 9vh, 96px)', left:'clamp(20px, 8vw, 120px)', right:'clamp(20px, 8vw, 120px)', display:'flex', justifyContent:'space-between', gap:24}},
-        h('p', {className:'yj-land-l', style:corner}, 'Service & UX designer, working across research, strategy & design. ', bracket('enter', enter)),
+        h('p', {className:'yj-land-l', style:corner}, 'Product & service designer, working across research, strategy & design. ', bracket('enter', enter)),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right'}}, 'Case studies with Johnson & Johnson, Pfizer & the British Council.')),
-      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.17em', textAlign:'center', whiteSpace:'nowrap', fontFamily:serif,
-          fontWeight:600, fontSize:'clamp(84px, 23.5vw, 460px)', lineHeight:1, letterSpacing:'-0.045em', pointerEvents:'none'}}, 'Yashvi Jain'),
-      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(10px 14px 8px rgba(0,0,0,.14))'}},
-        h('path', {ref:strapA, fill:'none', stroke:'#262626', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'}),
-        h('path', {ref:strapB, fill:'none', stroke:'#303030', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'})),
-      h('div', {ref:card, role:'button', tabIndex:0, 'aria-label':'Yashvi Jain badge. Click to enter', onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up,
+      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.17em', textAlign:'center', whiteSpace:'nowrap', fontFamily:display,
+          fontWeight:400, fontSize:'clamp(84px, 22vw, 440px)', lineHeight:1, letterSpacing:'-0.035em', pointerEvents:'none'}}, 'Yashvi Jain'),
+      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 10px 8px rgba(0,0,0,.6))'}},
+        h('path', {ref:strapA, fill:'none', stroke:'#5c5c5c', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'}),
+        h('path', {ref:strapB, fill:'none', stroke:'#6e6e6e', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'})),
+      h('div', {ref:card, role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain badge. Click to enter', onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up,
           style:{position:'absolute', left:0, top:0, width:'clamp(200px, 54vw, 270px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
         // metal swivel clip from the strap knot down into the sleeve's slot
         h('svg', {width:22, height:CLIP + 14, viewBox:`0 0 22 ${CLIP + 14}`, style:{position:'absolute', left:'50%', top:0, marginLeft:-11, zIndex:2, overflow:'visible'}},
@@ -487,16 +487,16 @@ class Component extends DCLogic {
           h('rect', {x:3, y:14, width:16, height:12, rx:3, fill:'none', stroke:'url(#yjMetal)', strokeWidth:3}),
           h('path', {d:`M11 26 L11 ${CLIP + 2} q0 6 -5 6`, fill:'none', stroke:'url(#yjMetal)', strokeWidth:2.6, strokeLinecap:'round'})),
         // clear plastic sleeve
-        h('div', {style:{position:'relative', aspectRatio:'0.7', borderRadius:16, background:'linear-gradient(160deg, rgba(255,255,255,.75), rgba(245,245,245,.5))',
-            border:'1px solid rgba(0,0,0,.13)', boxShadow:'0 30px 50px -24px rgba(0,0,0,.3), inset 0 0 0 4px rgba(255,255,255,.7), inset 0 0 0 5px rgba(0,0,0,.05)', backdropFilter:'blur(1.5px)', WebkitBackdropFilter:'blur(1.5px)'}},
-          h('span', {style:{position:'absolute', left:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(0,0,0,.18)'}}),
-          h('span', {style:{position:'absolute', right:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(0,0,0,.18)'}}),
-          h('span', {style:{position:'absolute', left:'50%', top:6, width:54, height:9, marginLeft:-27, borderRadius:6, border:'1.5px solid rgba(0,0,0,.16)', background:'#fff'}}),
-          h('span', {style:{position:'absolute', left:10, right:10, top:40, height:1, background:'rgba(0,0,0,.1)'}}),
+        h('div', {style:{position:'relative', aspectRatio:'0.7', borderRadius:16, background:'linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.08))',
+            border:'1px solid rgba(255,255,255,.28)', boxShadow:'0 30px 60px -20px rgba(0,0,0,.9), inset 0 0 0 4px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.35)', backdropFilter:'blur(1.5px)', WebkitBackdropFilter:'blur(1.5px)'}},
+          h('span', {style:{position:'absolute', left:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(255,255,255,.35)'}}),
+          h('span', {style:{position:'absolute', right:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(255,255,255,.35)'}}),
+          h('span', {style:{position:'absolute', left:'50%', top:6, width:54, height:9, marginLeft:-27, borderRadius:6, border:'1.5px solid rgba(255,255,255,.35)', background:'#000'}}),
+          h('span', {style:{position:'absolute', left:10, right:10, top:40, height:1, background:'rgba(255,255,255,.18)'}}),
           // printed insert
-          h('div', {style:{position:'absolute', left:14, right:14, top:50, bottom:14, background:'#ffffff', borderRadius:4, boxShadow:'0 0 0 1px rgba(0,0,0,.05)', padding:'18px 16px 14px', display:'flex', flexDirection:'column', justifyContent:'space-between', overflow:'hidden'}},
-            h('div', {style:{fontFamily:serif, fontWeight:600, fontSize:'clamp(40px, 13vw, 56px)', lineHeight:.8, letterSpacing:'-0.04em', transform:'rotate(-7deg)', transformOrigin:'0 0', marginTop:6}},
-              h('div', null, 'Yashvi'), h('div', {style:{color:accent, fontStyle:'italic', marginLeft:'0.55em'}}, 'Jain')),
+          h('div', {style:{position:'absolute', left:14, right:14, top:50, bottom:14, background:'#ffffff', color:'#0d0d0d', borderRadius:4, boxShadow:'0 0 0 1px rgba(0,0,0,.05)', padding:'18px 16px 14px', display:'flex', flexDirection:'column', justifyContent:'space-between', overflow:'hidden'}},
+            h('div', {style:{fontFamily:display, fontWeight:400, fontSize:'clamp(40px, 13vw, 56px)', lineHeight:.86, letterSpacing:'-0.03em', transform:'rotate(-7deg)', transformOrigin:'0 0', marginTop:6}},
+              h('div', null, 'Yashvi'), h('div', {style:{color:accent, marginLeft:'0.55em'}}, 'Jain')),
             h('div', {style:{fontFamily:serif, fontSize:11, color:grey, lineHeight:1.35}},
               h('div', {style:{fontStyle:'italic'}}, 'Studied'), h('div', {style:{color:'#555'}}, 'MA Design Management'),
               h('div', {style:{fontStyle:'italic', marginTop:8}}, 'Selected work'),
@@ -557,7 +557,7 @@ class Component extends DCLogic {
     const el = document.createElement('div'), lab = document.createElement('span');
     el.setAttribute('aria-hidden', 'true');
     Object.assign(el.style, {position:'fixed', left:'0', top:'0', width:'24px', height:'24px', marginLeft:'-12px', marginTop:'-12px', borderRadius:'50%', background:'#f4f4f4',
-      mixBlendMode:'difference', pointerEvents:'none', zIndex:'9999', display:'flex', alignItems:'center', justifyContent:'center',
+      mixBlendMode:'difference', pointerEvents:'none', zIndex:'10001', display:'flex', alignItems:'center', justifyContent:'center',
       transition:'width 450ms cubic-bezier(.22,1,.36,1), height 450ms cubic-bezier(.22,1,.36,1), margin 450ms cubic-bezier(.22,1,.36,1), opacity 250ms', opacity:'0', willChange:'transform'});
     Object.assign(lab.style, {fontFamily:"Geist,sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#000000', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
     el.appendChild(lab); document.body.appendChild(el); document.documentElement.classList.add('yj-cur');
@@ -567,6 +567,7 @@ class Component extends DCLogic {
       tx = e.clientX; ty = e.clientY; el.style.opacity = '1';
       const t = e.target.closest ? e.target.closest('button, a, [role="button"]') : null;
       if (!t) setSize(24);
+      else if (t.getAttribute('data-cursor')) setSize(84, t.getAttribute('data-cursor'));
       else if (t.closest('[aria-label="Featured work"]') || t.getAttribute('aria-label') === 'Contact') setSize(110, 'View');
       else setSize(64);
     };
