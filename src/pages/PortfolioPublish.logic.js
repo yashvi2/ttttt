@@ -436,15 +436,17 @@ class Component extends DCLogic {
         s.ropes.forEach((r, ri) => {
           const P = r.pts, L = P[N - 1], seg = r.seg;
           for (let i = 1; i < N; i++) { const q = P[i], vx = (q.x - q.px) * .985, vy = (q.y - q.py) * .985; q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + .55; }
+          // while dragging, the card eases toward the pointer through a soft spring instead of snapping to it
+          if (r.drag) { const g = r.drag; g.sx2 = g.sx2 == null ? L.x : g.sx2 + (g.x - g.sx2) * .28; g.sy2 = g.sy2 == null ? L.y : g.sy2 + (g.y - g.sy2) * .28; }
           for (let it = 0; it < 14; it++) {
             P[0].x = r.ax; P[0].y = ay;
-            if (r.drag) { L.x = r.drag.x; L.y = r.drag.y; }
+            if (r.drag) { L.x = r.drag.sx2; L.y = r.drag.sy2; }
             for (let i = 0; i < N - 1; i++) { const a = P[i], b = P[i + 1], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, k = (d - seg) / d;
               const last = i + 1 === N - 1 && r.drag, fa = i === 0 ? 0 : (last ? 1 : .5), fb = i === 0 ? 1 : (last ? 0 : .5);
               a.x += dx * k * fa; a.y += dy * k * fa; b.x -= dx * k * fb; b.y -= dy * k * fb; }
           }
           const B = P[N - 2], target = -Math.atan2(L.x - B.x, L.y - B.y) * 180 / Math.PI;
-          r.rot += (target - r.rot) * .2;
+          r.rot += (target - r.rot) * (r.drag ? .14 : .2);
           const c = cards[ri].current; if (c) c.style.transform = `translate3d(${L.x}px,${L.y}px,0) translateX(-50%) rotate(${r.rot}deg)`;
           if (ri === 0) floatTags(L, r.rot);
           let d = `M${P[0].x},${P[0].y}`;
@@ -481,6 +483,7 @@ class Component extends DCLogic {
           if (oy < ox) { const d = (A.y < B2.y ? -1 : 1) * oy / 2; A.y += d; B2.y -= d; const v = (A.vy + B2.vy) / 2; A.vy = v; B2.vy = v; }
           else { const d = (A.x < B2.x ? -1 : 1) * ox / 2; A.x += d; B2.x -= d; const v = (A.vx + B2.vx) / 2; A.vx = v; B2.vx = v; }
         }
+        for (const t of T) { if (t.y + t.h > BH) t.y = BH - t.h; if (t.in && t.y < 0) t.y = 0; if (t.w < BW) t.x = Math.max(0, Math.min(BW - t.w, t.x)); }
         for (const t of T) { t.a += (Math.max(-14, Math.min(14, t.vx * 6)) - t.a) * .12; t.e.style.transform = `translate3d(${t.x}px,${t.y}px,0) rotate(${t.a}deg)`; t.e.style.opacity = t.y + t.h < 0 ? 0 : 1; }
       };
       // Name parallax: the name drifts slower than the page on scroll, its two words
@@ -531,7 +534,8 @@ class Component extends DCLogic {
         h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-start', gap:6, padding:'10px 0'}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', opacity:.7}}, 'Domains'),
           h('div', {ref:tagBox, style:{position:'relative', flex:1, minHeight:'clamp(92px, 27vw, 118px)', clipPath:'inset(0 -24px 0 -24px)'}},
-            TAGS.map((t, i) => h('span', {key:t, ref:e => { tagEls.current[i] = e; }, style:{position:'absolute', left:0, top:0, opacity:0, willChange:'transform', fontFamily:cond, fontWeight:500, fontSize:'clamp(9px, 2.5vw, 12px)', letterSpacing:'.04em', textTransform:'uppercase', lineHeight:1, padding:'5px 7px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
+            TAGS.map((t, i) => h('span', {key:t, ref:e => { tagEls.current[i] = e; }, style:{position:'absolute', left:0, top:0, opacity:0, willChange:'transform', fontFamily:cond, fontWeight:600, fontSize:'clamp(9px, 2.5vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'6px 9px', borderRadius:999, whiteSpace:'nowrap',
+                ...(i % 3 === 0 ? {background:'#0a0a0a', color:green, border:'1.5px solid #0a0a0a'} : {background:'#ffffff', color:'#0a0a0a', border:'1.5px solid #0a0a0a'}), boxShadow:'0 3px 0 rgba(0,0,0,.85)'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'flex-end', alignItems:'flex-end', gap:8}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('section', {ref:wrap, 'aria-label':'Introduction',
