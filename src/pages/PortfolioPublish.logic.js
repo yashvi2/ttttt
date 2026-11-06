@@ -414,31 +414,23 @@ class Component extends DCLogic {
         style: k ? {strokeDasharray:1, strokeDashoffset:1, animation:`yjDraw ${D}ms cubic-bezier(.65,0,.35,1) ${delay}ms forwards`} : {}})));
   };
 
-  static Loader = function Loader(p) {
-    // Landing: a green ID card on a wide printed lanyard (verlet rope physics)
-    // above the name set huge along the bottom. Drag/fling the card; click it,
-    // press Enter or use [enter] to go in.
-    const h = React.createElement;
-    const straps = [React.useRef(null), React.useRef(null)], prints = [React.useRef(null), React.useRef(null)], cards = [React.useRef(null), React.useRef(null)];
-    const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(-1);
+  static LandingHero = function LandingHero(p) {
+    // Home hero: a green ID card on a wide printed lanyard (verlet rope physics)
+    // above the name set huge along the bottom. Part of the page, not a gate:
+    // the nav sits on top and Selected work follows below.
+    const h = React.createElement, wrap = React.useRef(null);
+    const straps = [React.useRef(null)], prints = [React.useRef(null)], cards = [React.useRef(null)];
+    const [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const S = React.useRef({leaving:false, lt:0, N:16, ropes:[
-      {pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
+    const S = React.useRef({N:16, vis:true, ropes:[{pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
     const CLIP = 64;
-    const enter = React.useCallback(() => {
-      const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.ropes.forEach(r => { r.drag = null; });
-      setTimeout(() => setOut(true), reduce ? 0 : 420); setTimeout(p.onDone, reduce ? 300 : 1150);
-    }, []);
     React.useEffect(() => {
-      const s = S.current, N = s.N; let raf, W, H, ay = -40;
-      const size = () => { W = innerWidth; H = innerHeight; const m = W < 640;
+      const s = S.current, N = s.N, el = wrap.current; let raf = 0, W, H, ay = -40;
+      const size = () => { W = el.clientWidth; H = el.clientHeight; const m = W < 640;
         s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(m ? 50 : 100, H * (m ? r.lenm : r.len)) / (N - 1);
           if (!r.pts.length) for (let i = 0; i < N; i++) { const x = r.ax + i * r.seg * (reduce ? 0 : r.sw), y = ay + i * r.seg * (reduce ? 1 : .72); r.pts.push({x, y, px:x, py:y}); } }); };
-      size(); addEventListener('resize', size);
-      const key = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } };
-      addEventListener('keydown', key);
-      const tick = t => {
-        if (s.leaving) ay -= Math.min(60, 2 + (t - s.lt) * .05);
+      size(); const ro = new ResizeObserver(size); ro.observe(el);
+      const tick = () => {
         s.ropes.forEach((r, ri) => {
           const P = r.pts, L = P[N - 1], seg = r.seg;
           for (let i = 1; i < N; i++) { const q = P[i], vx = (q.x - q.px) * .985, vy = (q.y - q.py) * .985; q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + .55; }
@@ -457,22 +449,26 @@ class Component extends DCLogic {
           d += ` L${L.x},${L.y}`;
           straps[ri].current && straps[ri].current.setAttribute('d', d); prints[ri].current && prints[ri].current.setAttribute('d', d);
         });
-        raf = requestAnimationFrame(tick);
+        raf = s.vis ? requestAnimationFrame(tick) : 0;
       };
-      raf = requestAnimationFrame(tick);
-      return () => { cancelAnimationFrame(raf); removeEventListener('resize', size); removeEventListener('keydown', key); };
+      // only animate while the hero is on screen
+      const io = new IntersectionObserver(([e]) => { s.vis = e.isIntersecting; if (s.vis && !raf) raf = requestAnimationFrame(tick); });
+      io.observe(el); raf = requestAnimationFrame(tick);
+      return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
     }, []);
-    const down = ri => e => { const s = S.current; if (s.leaving) return; const r = s.ropes[ri], L = r.pts[s.N - 1]; e.currentTarget.setPointerCapture(e.pointerId);
-      r.drag = {x:L.x, y:L.y, ox:e.clientX - L.x, oy:e.clientY - L.y, sx:e.clientX, sy:e.clientY, moved:0}; setGrab(ri); };
-    const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; g.x = e.clientX - g.ox; g.y = e.clientY - g.oy; g.moved = Math.max(g.moved, Math.hypot(e.clientX - g.sx, e.clientY - g.sy)); };
-    const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6) enter(); };
+    const local = e => { const r = wrap.current.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const down = ri => e => { const s = S.current, r = s.ropes[ri], L = r.pts[s.N - 1], [x, y] = local(e); e.currentTarget.setPointerCapture(e.pointerId);
+      r.drag = {x:L.x, y:L.y, ox:x - L.x, oy:y - L.y, sx:x, sy:y, moved:0}; setGrab(ri); };
+    const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
+    const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
     const cond = "Oswald, 'Arial Narrow', sans-serif", sans = 'Geist, sans-serif';
-    const corner = {fontFamily:sans, fontSize:13, lineHeight:1.5, letterSpacing:'.06em', textTransform:'uppercase', maxWidth:320, margin:0};
+    const corner = {fontFamily:sans, fontSize:13, lineHeight:1.5, letterSpacing:'.06em', textTransform:'uppercase', maxWidth:340, margin:0};
+    const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
-    const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Click to enter',
-        onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri),
-        style:{position:'absolute', left:0, top:0, width:'clamp(170px, 46vw, 280px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
+    const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Drag it, or click to see selected work',
+        onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri), onKeyDown:e => { if ((e.key === 'Enter' || e.key === ' ') && p.onWork) { e.preventDefault(); p.onWork(); } },
+        style:{position:'absolute', left:0, top:0, width:'clamp(170px, 46vw, 280px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform', touchAction:'none'}},
       // metal split ring + lobster clasp from the strap end down into the card's slot
       h('svg', {width:40, height:CLIP + 16, viewBox:`0 0 40 ${CLIP + 16}`, style:{position:'absolute', left:'50%', top:-14, marginLeft:-20, zIndex:2, overflow:'visible'}},
         h('defs', null, h('linearGradient', {id:'yjMetal' + ri, x1:0, x2:1}, h('stop', {offset:0, stopColor:'#8d8d8d'}), h('stop', {offset:.5, stopColor:'#f5f5f5'}), h('stop', {offset:1, stopColor:'#7d7d7d'}))),
@@ -492,14 +488,15 @@ class Component extends DCLogic {
             ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'].map(t => h('span', {key:t, style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(10px, 2.9vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'5px 8px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'flex-end', alignItems:'flex-end', gap:8}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
-    return h('div', {role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
-        style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:ink, overflow:'hidden', touchAction:'none',
-          opacity:out ? 0 : 1, transform:out ? 'translateY(-2%)' : 'none', pointerEvents:out ? 'none' : 'auto', transition:'opacity 650ms ease, transform 650ms ease'}},
+    return h('section', {ref:wrap, 'aria-label':'Introduction',
+        style:{position:'relative', height:'100svh', minHeight:620, background:'#000000', color:ink, overflow:'hidden'}},
       h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(17vw + 28px)}}'),
-      h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(28px, 7vh, 72px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24}},
-        h('p', {style:corner}, 'Product & service designer, working across research, strategy & design. ',
-          h('button', {onClick:enter, style:{all:'unset', cursor:'pointer', color:green}}, '[enter]')),
-        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right'}}, h('span', {style:{color:green}}, 'London, UK'))),
+      h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
+      h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(120px, 17vh, 160px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24, zIndex:1}},
+        h('div', {style:corner},
+          h('p', {style:{margin:0}}, 'Product & service designer, working across research, strategy & design.'),
+          h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
+        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
       h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
           fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none'}},
         'Yashvi ', h('span', {style:{color:green}}, 'Jain')),
@@ -1106,7 +1103,8 @@ Agent:`;
       chatType: e => this.setState({chatInput:e.target.value}),
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
-      loader: s.loaded ? null : h(Component.Loader, {onDone:() => this.setState({loaded:true})}),
+      loader: null,
+      landingHero: h(Component.LandingHero, {cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
