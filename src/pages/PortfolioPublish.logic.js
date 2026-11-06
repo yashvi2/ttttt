@@ -415,53 +415,81 @@ class Component extends DCLogic {
   };
 
   static Loader = function Loader(p) {
-    const h = React.createElement, cv = React.useRef(null), wrap = React.useRef(null);
-    const [pct, setPct] = React.useState(0), [out, setOut] = React.useState(false);
+    // Landing: a lanyard ID badge you can drag and fling (verlet rope physics)
+    // over a giant scrolling name marquee. Click the badge or "Enter" to go in.
+    const h = React.createElement, wrap = React.useRef(null), strap = React.useRef(null), stitch = React.useRef(null), card = React.useRef(null);
+    const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(false);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const st = React.useRef({k:0, mx:null, my:null, bt:0, done:false});
+    const S = React.useRef({drag:null, leaving:false, lt:0, pts:[], N:16, rot:0});
+    const enter = React.useCallback(() => {
+      const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.drag = null;
+      setTimeout(() => setOut(true), reduce ? 0 : 420); setTimeout(p.onDone, reduce ? 300 : 1150);
+    }, []);
     React.useEffect(() => {
-      const c = cv.current, ctx = c.getContext('2d'), S = st.current; let raf, W, H, P = [], t0 = performance.now();
-      const accent = getComputedStyle(wrap.current).getPropertyValue('--yj-accent').trim() || '#b6f23a';
-      const build = () => { const dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const g = Math.max(14, Math.round(Math.sqrt(W * H / 2600))); P = [];
-        for (let y = g / 2; y < H; y += g) for (let x = g / 2; x < W; x += g) { const d = Math.hypot(x - W / 2, y - H / 2) / Math.hypot(W / 2, H / 2);
-          P.push({hx:x, hy:y, d, x:W / 2 + (Math.random() - .5) * 40, y:H / 2 + (Math.random() - .5) * 40, vx:0, vy:0, ph:Math.random() * 6.28, acc:Math.random() < .12, j:Math.random()}); } };
-      build(); addEventListener('resize', build);
-      const finish = () => { if (S.done) return; S.done = true; S.bt = performance.now(); setPct(100); setTimeout(() => setOut(true), reduce ? 100 : 1100); setTimeout(p.onDone, reduce ? 400 : 1800); };
-      S.finish = finish;
+      const s = S.current, N = s.N; let raf, W, H, seg, ax, ay;
+      const size = () => { W = innerWidth; H = innerHeight; ax = W / 2; ay = -10; seg = Math.max(150, H * .34) / (N - 1);
+        if (!s.pts.length) for (let i = 0; i < N; i++) { const x = ax + i * seg * (reduce ? 0 : .72), y = ay + i * seg * (reduce ? 1 : .7); s.pts.push({x, y, px:x, py:y}); } };
+      size(); addEventListener('resize', size);
+      const key = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } };
+      addEventListener('keydown', key);
       const tick = t => {
-        const el = (t - t0) / 1000;
-        if (!S.done) { S.k = Math.min(1, el / 4); setPct(Math.round(S.k * 100)); if (S.k >= 1) finish(); }
-        const k = S.k, bk = S.bt ? Math.min(1, (t - S.bt) / 1400) : 0, cx = W / 2, cy = H / 2;
-        ctx.clearRect(0, 0, W, H);
-        for (const q of P) {
-          const reach = Math.max(0, Math.min(1, (k * 1.25 - q.d) / .25));
-          const wave = Math.sin(q.hx * .012 + q.hy * .006 - t * .004) * 10 + Math.sin(q.hy * .02 - t * .0027) * 5;
-          let gx = cx + (q.hx - cx) * reach, gy = cy + (q.hy - cy) * reach + wave * reach;
-          let a = (.15 + .85 * reach) * (.75 + .25 * Math.sin(t * .003 + q.ph)), r = 1 + reach * .9;
-          if (bk) { const lag = Math.max(0, Math.min(1, (bk * 1.6 - q.hx / W * .6 - q.j * .1))), e = lag * lag;
-            gy -= e * (H * .6 + q.hy * .4) + Math.sin(q.hx * .01 - t * .006) * 30 * lag; gx += Math.sin(q.hy * .015 + t * .005) * 24 * lag; a *= 1 - e; r *= 1 + lag; }
-          if (S.mx != null && !bk) { const dx = q.x - S.mx, dy = q.y - S.my, d2 = dx * dx + dy * dy; if (d2 < 12000) { const fz = (1 - d2 / 12000) * 4, d = Math.sqrt(d2) + 1; q.vx += dx / d * fz; q.vy += dy / d * fz; } }
-          q.vx += (gx - q.x) * .08; q.vy += (gy - q.y) * .08; q.vx *= .8; q.vy *= .8; q.x += q.vx; q.y += q.vy;
-          if (a <= .01) continue;
-          ctx.globalAlpha = a; ctx.fillStyle = q.acc ? accent : '#f4f4f4'; ctx.fillRect(q.x - r, q.y - r, r * 2, r * 2);
+        const P = s.pts, L = P[N - 1];
+        if (s.leaving) ay -= Math.min(60, 2 + (t - s.lt) * .05);
+        for (let i = 1; i < N; i++) { const q = P[i], vx = (q.x - q.px) * .985, vy = (q.y - q.py) * .985; q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + .55; }
+        for (let it = 0; it < 14; it++) {
+          P[0].x = ax; P[0].y = ay;
+          if (s.drag) { L.x = s.drag.x; L.y = s.drag.y; }
+          for (let i = 0; i < N - 1; i++) { const a = P[i], b = P[i + 1], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, k = (d - seg) / d;
+            const fa = i === 0 ? 0 : (i + 1 === N - 1 && s.drag ? 1 : .5), fb = i === 0 ? 1 : (i + 1 === N - 1 && s.drag ? 0 : .5);
+            a.x += dx * k * fa; a.y += dy * k * fa; b.x -= dx * k * fb; b.y -= dy * k * fb; }
         }
-        ctx.globalAlpha = 1; raf = requestAnimationFrame(tick);
+        const B = P[N - 2], target = -Math.atan2(L.x - B.x, L.y - B.y) * 180 / Math.PI;
+        s.rot += (target - s.rot) * .2;
+        if (card.current) card.current.style.transform = `translate3d(${L.x}px,${L.y}px,0) translateX(-50%) rotate(${s.rot}deg)`;
+        let d = `M${P[0].x},${P[0].y}`;
+        for (let i = 1; i < N - 1; i++) { const m = P[i], n = P[i + 1]; d += ` Q${m.x},${m.y} ${(m.x + n.x) / 2},${(m.y + n.y) / 2}`; }
+        d += ` L${L.x},${L.y}`;
+        strap.current && strap.current.setAttribute('d', d); stitch.current && stitch.current.setAttribute('d', d);
+        raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
-      return () => { cancelAnimationFrame(raf); removeEventListener('resize', build); };
+      return () => { cancelAnimationFrame(raf); removeEventListener('resize', size); removeEventListener('keydown', key); };
     }, []);
-    const move = e => { const S = st.current; S.mx = e.clientX; S.my = e.clientY; if (!S.hov) { S.hov = true; setTimeout(() => S.finish && S.finish(), 250); } };
-    const leave = () => { st.current.mx = null; };
-    const skip = () => st.current.finish && st.current.finish();
-    return h('div', {ref:wrap, onPointerMove:move, onPointerLeave:leave, onClick:skip, role:'status', 'aria-label':'Loading portfolio',
-        style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:'#f4f4f4', cursor:'crosshair',
-          opacity:out ? 0 : 1, pointerEvents:out ? 'none' : 'auto', transition:'opacity 700ms ease'}},
-      h('canvas', {ref:cv, style:{position:'absolute', inset:0, width:'100%', height:'100%'}}),
-      h('div', {style:{position:'absolute', left:24, right:24, bottom:32, display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:16,
-          fontFamily:"Geist,sans-serif", fontSize:13, letterSpacing:'.08em', textTransform:'uppercase', color:'#999999', opacity:pct >= 100 ? 0 : 1, transition:'opacity 300ms'}},
-        h('span', null, 'Hover to enter'),
-        h('span', {style:{color:'#f4f4f4', fontVariantNumeric:'tabular-nums'}}, String(pct).padStart(3, '0'))));
+    const down = e => { const s = S.current; if (s.leaving) return; const L = s.pts[s.N - 1]; e.currentTarget.setPointerCapture(e.pointerId);
+      s.drag = {x:L.x, y:L.y, ox:e.clientX - L.x, oy:e.clientY - L.y, sx:e.clientX, sy:e.clientY, moved:0}; setGrab(true); };
+    const move = e => { const g = S.current.drag; if (!g) return; g.x = e.clientX - g.ox; g.y = e.clientY - g.oy; g.moved = Math.max(g.moved, Math.hypot(e.clientX - g.sx, e.clientY - g.sy)); };
+    const up = () => { const s = S.current, g = s.drag; if (!g) return; s.drag = null; setGrab(false); if (g.moved < 6) enter(); };
+    const ink = '#111111', paper = '#f1efea', accent = 'var(--yj-accent, #ff4d2e)', mono = "Geist,sans-serif";
+    const word = h('span', {style:{display:'inline-flex', alignItems:'center', gap:'0.18em', paddingRight:'0.18em'}}, 'Yashvi Jain',
+      h('span', {style:{fontSize:'.42em', color:accent, transform:'translateY(-.08em)'}}, '✳'));
+    const row = h('div', {style:{display:'flex', flex:'none', whiteSpace:'nowrap'}}, word, word, word);
+    return h('div', {ref:wrap, role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
+        style:{position:'fixed', inset:0, zIndex:10000, background:paper, color:ink, overflow:'hidden', fontFamily:mono, touchAction:'none',
+          opacity:out ? 0 : 1, transform:out ? 'translateY(-2%)' : 'none', pointerEvents:out ? 'none' : 'auto', transition:'opacity 650ms ease, transform 650ms ease'}},
+      h('style', null, '@keyframes yjMarq{to{transform:translateX(-50%)}}@media (max-width:600px){.yj-land-role{display:none}}'),
+      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, top:'50%', transform:'translateY(-18%)', display:'flex', width:'max-content',
+          fontWeight:700, fontSize:'clamp(110px, 21vw, 340px)', lineHeight:.9, letterSpacing:'-0.045em',
+          animation:reduce ? 'none' : 'yjMarq 38s linear infinite'}}, row, row),
+      h('div', {style:{position:'absolute', top:28, left:28, right:28, display:'flex', justifyContent:'space-between', gap:16, fontSize:13, letterSpacing:'.08em', textTransform:'uppercase'}},
+        h('span', null, 'Yashvi Jain'), h('span', {className:'yj-land-role', style:{color:'#6b6b6b'}}, 'Service & UX Designer')),
+      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none'}},
+        h('path', {ref:strap, fill:'none', stroke:accent, strokeWidth:18, strokeLinecap:'butt', strokeLinejoin:'round'}),
+        h('path', {ref:stitch, fill:'none', stroke:'rgba(255,255,255,.55)', strokeWidth:1.5, strokeDasharray:'5 6'})),
+      h('div', {ref:card, role:'button', tabIndex:0, 'aria-label':'Yashvi Jain badge. Click to enter', onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up,
+          style:{position:'absolute', left:0, top:0, width:'clamp(190px, 58vw, 250px)', transformOrigin:'50% 0', cursor:grab ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
+        h('div', {style:{position:'absolute', left:'50%', top:-20, width:30, height:30, marginLeft:-15, borderRadius:7, background:'linear-gradient(180deg,#e4e4e4,#9c9c9c)', boxShadow:'inset 0 1px 0 #fff, 0 2px 4px rgba(0,0,0,.25)'}}),
+        h('div', {style:{position:'relative', background:'#ffffff', borderRadius:18, padding:'26px 16px 16px', boxShadow:'0 30px 60px -20px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.08)', border:'1px solid rgba(0,0,0,.06)'}},
+          h('div', {style:{position:'absolute', left:'50%', top:10, width:46, height:7, marginLeft:-23, borderRadius:4, background:'#e7e4de'}}),
+          h('div', {style:{aspectRatio:'1', borderRadius:12, overflow:'hidden', background:'#ddd'}},
+            h('img', {src:__R('assets/web/assets/yashvi.webp'), alt:'', draggable:false, style:{width:'100%', height:'100%', objectFit:'cover', objectPosition:'50% 30%', display:'block', pointerEvents:'none'}})),
+          h('div', {style:{marginTop:14, fontWeight:700, fontSize:22, letterSpacing:'-0.02em', lineHeight:1.1}}, 'Yashvi Jain'),
+          h('div', {style:{marginTop:4, fontSize:13, color:'#6b6b6b'}}, 'Service & UX Designer'),
+          h('div', {style:{marginTop:16, display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:12}},
+            h('span', {style:{fontSize:11, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b'}}, 'Portfolio'),
+            h('span', {'aria-hidden':true, style:{width:84, height:22, background:'repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px)'}})))),
+      h('div', {style:{position:'absolute', left:28, right:28, bottom:28, display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, fontSize:13, letterSpacing:'.08em', textTransform:'uppercase'}},
+        h('span', {style:{color:'#6b6b6b'}}, 'Drag the badge'),
+        h('button', {onClick:enter, style:{all:'unset', cursor:'pointer', background:ink, color:'#f4f4f4', borderRadius:999, padding:'14px 22px', letterSpacing:'.08em'}}, 'Enter portfolio →')));
   };
 
   static Louvre = function Louvre(p) {
