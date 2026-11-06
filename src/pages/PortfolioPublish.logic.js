@@ -415,16 +415,15 @@ class Component extends DCLogic {
   };
 
   static Loader = function Loader(p) {
-    // Landing: two matching green ID cards on wide printed lanyards (verlet rope
-    // physics) above the name set huge along the bottom. Drag/fling either card;
-    // click one, press Enter or use [enter] to go in.
+    // Landing: a green ID card on a wide printed lanyard (verlet rope physics)
+    // above the name set huge along the bottom. Drag/fling the card; click it,
+    // press Enter or use [enter] to go in.
     const h = React.createElement;
     const straps = [React.useRef(null), React.useRef(null)], prints = [React.useRef(null), React.useRef(null)], cards = [React.useRef(null), React.useRef(null)];
     const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const S = React.useRef({leaving:false, lt:0, N:16, ropes:[
-      {pts:[], rot:0, drag:null, fx:.39, fxm:.29, len:.34, lenm:.27, sw:.7},
-      {pts:[], rot:0, drag:null, fx:.62, fxm:.73, len:.26, lenm:.19, sw:-.55}]});
+      {pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.18, sw:.7}]});
     const CLIP = 64;
     const enter = React.useCallback(() => {
       const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.ropes.forEach(r => { r.drag = null; });
@@ -433,7 +432,7 @@ class Component extends DCLogic {
     React.useEffect(() => {
       const s = S.current, N = s.N; let raf, W, H, ay = -40;
       const size = () => { W = innerWidth; H = innerHeight; const m = W < 640;
-        s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(100, H * (m ? r.lenm : r.len)) / (N - 1);
+        s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(m ? 70 : 100, H * (m ? r.lenm : r.len)) / (N - 1);
           if (!r.pts.length) for (let i = 0; i < N; i++) { const x = r.ax + i * r.seg * (reduce ? 0 : r.sw), y = ay + i * r.seg * (reduce ? 1 : .72); r.pts.push({x, y, px:x, py:y}); } }); };
       size(); addEventListener('resize', size);
       const key = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } };
@@ -473,7 +472,7 @@ class Component extends DCLogic {
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
     const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Click to enter',
         onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri),
-        style:{position:'absolute', left:0, top:0, width:'clamp(140px, 40vw, 270px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
+        style:{position:'absolute', left:0, top:0, width:'clamp(180px, 50vw, 280px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
       // metal split ring + lobster clasp from the strap end down into the card's slot
       h('svg', {width:40, height:CLIP + 16, viewBox:`0 0 40 ${CLIP + 16}`, style:{position:'absolute', left:'50%', top:-14, marginLeft:-20, zIndex:2, overflow:'visible'}},
         h('defs', null, h('linearGradient', {id:'yjMetal' + ri, x1:0, x2:1}, h('stop', {offset:0, stopColor:'#8d8d8d'}), h('stop', {offset:.5, stopColor:'#f5f5f5'}), h('stop', {offset:1, stopColor:'#7d7d7d'}))),
@@ -485,14 +484,14 @@ class Component extends DCLogic {
           boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
         h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
         h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
-        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(30px, 10.5vw, 62px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
-        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(11px, 3.2vw, 18px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
+        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(40px, 13vw, 64px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
+        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(15px, 4.6vw, 19px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
         h('div', {style:{flex:1}}),
         h('div', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:8}},
-          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:'clamp(30px, 9vw, 52px)', height:'clamp(30px, 9vw, 52px)', flex:'none'}},
+          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:52, height:52, flex:'none'}},
             h('circle', {cx:28, cy:28, r:27, fill:'#0a0a0a'}),
             h('path', {d:'M28 28 L28 1 A27 27 0 0 1 55 28 Z', fill:green})),
-          h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(8px, 2.4vw, 11px)', letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · 0' + (ri + 1)))));
+          h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('div', {role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
         style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:ink, overflow:'hidden', touchAction:'none',
           opacity:out ? 0 : 1, transform:out ? 'translateY(-2%)' : 'none', pointerEvents:out ? 'none' : 'auto', transition:'opacity 650ms ease, transform 650ms ease'}},
@@ -505,12 +504,12 @@ class Component extends DCLogic {
           fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none'}},
         'Yashvi ', h('span', {style:{color:green}}, 'Jain')),
       h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
-        h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]}), h('path', {id:'yjStrapPath1', ref:prints[1]})),
-        [0, 1].map(ri => h('g', {key:ri},
+        h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
+        [0].map(ri => h('g', {key:ri},
           h('path', {ref:straps[ri], fill:'none', stroke:'#141414', strokeWidth:30, strokeLinecap:'butt', strokeLinejoin:'round'}),
           h('text', {fill:green, fontFamily:cond, fontWeight:500, fontSize:13, letterSpacing:'.14em', dominantBaseline:'central'},
             h('textPath', {href:'#yjStrapPath' + ri, startOffset:'0'}, print))))),
-      [0, 1].map(idCard));
+      idCard(0));
   };
 
   static Louvre = function Louvre(p) {
