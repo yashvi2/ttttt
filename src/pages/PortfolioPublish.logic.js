@@ -420,9 +420,11 @@ class Component extends DCLogic {
     // the nav sits on top and Selected work follows below.
     const h = React.createElement, wrap = React.useRef(null);
     const straps = [React.useRef(null)], prints = [React.useRef(null)], cards = [React.useRef(null)];
+    const tagBox = React.useRef(null), tagEls = React.useRef([]), nameRef = React.useRef(null), wordA = React.useRef(null), wordB = React.useRef(null);
+    const TAGS = ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'];
     const [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const S = React.useRef({N:16, vis:true, ropes:[{pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
+    const S = React.useRef({N:16, vis:true, tags:null, hist:[], ropes:[{pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
     const CLIP = 64;
     React.useEffect(() => {
       const s = S.current, N = s.N, el = wrap.current; let raf = 0, W, H, ay = -40;
@@ -444,17 +446,61 @@ class Component extends DCLogic {
           const B = P[N - 2], target = -Math.atan2(L.x - B.x, L.y - B.y) * 180 / Math.PI;
           r.rot += (target - r.rot) * .2;
           const c = cards[ri].current; if (c) c.style.transform = `translate3d(${L.x}px,${L.y}px,0) translateX(-50%) rotate(${r.rot}deg)`;
+          if (ri === 0) floatTags(L, r.rot);
           let d = `M${P[0].x},${P[0].y}`;
           for (let i = 1; i < N - 1; i++) { const m = P[i], n = P[i + 1]; d += ` Q${m.x},${m.y} ${(m.x + n.x) / 2},${(m.y + n.y) / 2}`; }
           d += ` L${L.x},${L.y}`;
           straps[ri].current && straps[ri].current.setAttribute('d', d); prints[ri].current && prints[ri].current.setAttribute('d', d);
         });
+        if (!reduce) para();
         raf = s.vis ? requestAnimationFrame(tick) : 0;
       };
+      // Domain tags: low-gravity ("anti-gravity") bodies inside the card. They drift down
+      // into the card, bump into each other, and slosh when the card swings.
+      const floatTags = (L, rot) => {
+        const box = tagBox.current; if (!box) return;
+        const hs = s.hist; hs.push(L.x, L.y); if (hs.length > 6) hs.splice(0, 2);
+        if (!s.tags) {
+          const BW = box.clientWidth, BH = box.clientHeight; if (!BW || !tagEls.current[3] || !tagEls.current[3].offsetWidth) return;
+          s.tags = tagEls.current.map((e, i) => { const w = e.offsetWidth, hh = e.offsetHeight;
+            return {e, w, h:hh, x:Math.random() * Math.max(0, BW - w), y:reduce ? BH - hh * (i + 1) - 4 * i : -hh - i * 34 - 10, vx:(Math.random() - .5) * .6, vy:0, a:0, dragS:0}; });
+        }
+        const BW = box.clientWidth, BH = box.clientHeight, T = s.tags;
+        const ax = hs.length === 6 ? (hs[4] - hs[2]) - (hs[2] - hs[0]) : 0, ay = hs.length === 6 ? (hs[5] - hs[3]) - (hs[3] - hs[1]) : 0;
+        const th = rot * Math.PI / 180, co = Math.cos(th), sn = Math.sin(th), G = .045, K = .55;
+        const wx = -ax * K, wy = G - ay * K, fx = wx * co + wy * sn, fy = -wx * sn + wy * co;
+        for (const t of T) {
+          if (!reduce) { t.vx = (t.vx + fx) * .986; t.vy = (t.vy + fy) * .986; t.x += t.vx; t.y += t.vy; }
+          if (t.w >= BW) { t.x = (BW - t.w) / 2; t.vx = 0; } else { if (t.x < 0) { t.x = 0; t.vx *= -.45; } if (t.x + t.w > BW) { t.x = BW - t.w; t.vx *= -.45; } }
+          if (t.y + t.h > BH) { t.y = BH - t.h; t.vy *= -.35; t.vx *= .94; }
+          if (t.y >= 0) t.in = true; if (t.in && t.y < 0) { t.y = 0; t.vy *= -.35; }
+        }
+        for (let it = 0; it < 3; it++) for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++) {
+          const A = T[i], B2 = T[j], ox = Math.min(A.x + A.w, B2.x + B2.w) - Math.max(A.x, B2.x), oy = Math.min(A.y + A.h, B2.y + B2.h) - Math.max(A.y, B2.y);
+          if (ox <= 0 || oy <= 0) continue;
+          if (oy < ox) { const d = (A.y < B2.y ? -1 : 1) * oy / 2; A.y += d; B2.y -= d; const v = (A.vy + B2.vy) / 2; A.vy = v; B2.vy = v; }
+          else { const d = (A.x < B2.x ? -1 : 1) * ox / 2; A.x += d; B2.x -= d; const v = (A.vx + B2.vx) / 2; A.vx = v; B2.vx = v; }
+        }
+        for (const t of T) { t.a += (Math.max(-14, Math.min(14, t.vx * 6)) - t.a) * .12; t.e.style.transform = `translate3d(${t.x}px,${t.y}px,0) rotate(${t.a}deg)`; t.e.style.opacity = t.y + t.h < 0 ? 0 : 1; }
+      };
+      // Name parallax: the name drifts slower than the page on scroll, its two words
+      // spread apart, and it shifts slightly against the pointer.
+      let mx = 0, my = 0, pmx = 0, pmy = 0;
+      const para = () => {
+        const n = nameRef.current; if (!n) return;
+        const r = el.getBoundingClientRect(), sc = Math.max(0, -r.top), k = Math.min(1, sc / Math.max(1, r.height));
+        pmx += (mx - pmx) * .08; pmy += (my - pmy) * .08;
+        n.style.transform = `translate3d(${(-pmx * 14).toFixed(2)}px,${(-sc * .35 - pmy * 8).toFixed(2)}px,0)`;
+        if (wordA.current) wordA.current.style.transform = `translate3d(${(-k * 9).toFixed(2)}vw,0,0)`;
+        if (wordB.current) wordB.current.style.transform = `translate3d(${(k * 9).toFixed(2)}vw,0,0)`;
+      };
+      const onMove = e => { if (reduce) return; const r = el.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width - .5; my = (e.clientY - r.top) / r.height - .5; };
+      const onScroll = () => { if (!reduce && !s.vis) para(); };
+      el.addEventListener('pointermove', onMove); addEventListener('scroll', onScroll, {passive:true});
       // only animate while the hero is on screen
       const io = new IntersectionObserver(([e]) => { s.vis = e.isIntersecting; if (s.vis && !raf) raf = requestAnimationFrame(tick); });
       io.observe(el); raf = requestAnimationFrame(tick);
-      return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
+      return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); el.removeEventListener('pointermove', onMove); removeEventListener('scroll', onScroll); };
     }, []);
     const local = e => { const r = wrap.current.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
     const down = ri => e => { const s = S.current, r = s.ropes[ri], L = r.pts[s.N - 1], [x, y] = local(e); e.currentTarget.setPointerCapture(e.pointerId);
@@ -482,10 +528,10 @@ class Component extends DCLogic {
         h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, borderRadius:14, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
         h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(34px, 11vw, 64px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
         h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(13px, 4vw, 19px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
-        h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'center', gap:6, padding:'10px 0'}},
+        h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-start', gap:6, padding:'10px 0'}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', opacity:.7}}, 'Domains'),
-          h('div', {style:{display:'flex', flexWrap:'wrap', gap:5}},
-            ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'].map(t => h('span', {key:t, style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(10px, 2.9vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'5px 8px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
+          h('div', {ref:tagBox, style:{position:'relative', flex:1, minHeight:'clamp(92px, 27vw, 118px)', clipPath:'inset(0 -24px 0 -24px)'}},
+            TAGS.map((t, i) => h('span', {key:t, ref:e => { tagEls.current[i] = e; }, style:{position:'absolute', left:0, top:0, opacity:0, willChange:'transform', fontFamily:cond, fontWeight:500, fontSize:'clamp(9px, 2.5vw, 12px)', letterSpacing:'.04em', textTransform:'uppercase', lineHeight:1, padding:'5px 7px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'flex-end', alignItems:'flex-end', gap:8}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('section', {ref:wrap, 'aria-label':'Introduction',
@@ -497,9 +543,9 @@ class Component extends DCLogic {
           h('p', {style:{margin:0}}, 'Product & service designer, working across research, strategy & design.'),
           h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
-      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
-          fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none'}},
-        'Yashvi ', h('span', {style:{color:green}}, 'Jain')),
+      h('div', {ref:nameRef, 'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
+          fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none', willChange:'transform'}},
+        h('span', {ref:wordA, style:{display:'inline-block'}}, 'Yashvi'), ' ', h('span', {ref:wordB, style:{display:'inline-block', color:green}}, 'Jain')),
       h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
         h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
         [0].map(ri => h('g', {key:ri},
