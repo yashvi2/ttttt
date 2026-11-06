@@ -24,7 +24,7 @@ function template(v) {
         }}
       >
         <header
-          className="dc-before-52b949b5"
+          className="dc-before-52b949b5 yj-hdr"
           ref={v.navRef}
           style={{
             position: 'fixed',
@@ -42,7 +42,7 @@ function template(v) {
           }}
         >
           <button
-            className="dc-hover-582f54e7"
+            className="dc-hover-582f54e7 yj-hdr-logo"
             onClick={v.goHome}
             style={{
               all: 'unset',
@@ -81,6 +81,7 @@ function template(v) {
             </span>
           </button>
           <nav
+            className="yj-hdr-nav"
             style={{
               pointerEvents: 'auto',
               display: 'flex',
@@ -111,7 +112,7 @@ function template(v) {
           {v.showCta ? (
             <>
               <button
-                className="dc-hover-ab009e83"
+                className="dc-hover-ab009e83 yj-hdr-cta"
                 data-yj-mag="1"
                 onClick={v.goContact}
                 style={{
@@ -8078,7 +8079,7 @@ function template(v) {
             <>
               {' '}
               <div style={{ '--yj-accent': 'var(--yj-base, #ff4d2e)', padding: '40px 12px 12px', paddingTop: '120px' }}>
-                <div style={{ position: 'relative', height: '320px', width: '100%' }}>{t(v.cta)}</div>
+                <div style={{ position: 'relative', height: '320px', width: '100%', overflow: 'hidden' }}>{t(v.cta)}</div>
               </div>
             </>
           ) : null}
