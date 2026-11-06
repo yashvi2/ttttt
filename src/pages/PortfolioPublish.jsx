@@ -8617,7 +8617,7 @@ export default defineScreen({
   css: screenCss,
   links: [
     '_ds/modernist-f6c1caa7-5cac-451a-a099-225de5c74272/styles.css',
-    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap',
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&family=Oswald:wght@500;700&display=swap',
   ],
   defaults: {
     accent: '#b6f23a',

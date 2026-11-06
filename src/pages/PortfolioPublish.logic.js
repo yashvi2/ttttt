@@ -415,92 +415,102 @@ class Component extends DCLogic {
   };
 
   static Loader = function Loader(p) {
-    // Landing: a clear-sleeve ID badge on a two-strand lanyard (verlet rope physics)
-    // above the name set huge along the bottom. Drag/fling the badge; click it,
-    // press Enter or use [enter] to go in.
-    const h = React.createElement, strapA = React.useRef(null), strapB = React.useRef(null), card = React.useRef(null);
-    const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(false);
+    // Landing: two matching green ID cards on wide printed lanyards (verlet rope
+    // physics) above the name set huge along the bottom. Drag/fling either card;
+    // click one, press Enter or use [enter] to go in.
+    const h = React.createElement;
+    const straps = [React.useRef(null), React.useRef(null)], prints = [React.useRef(null), React.useRef(null)], cards = [React.useRef(null), React.useRef(null)];
+    const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const S = React.useRef({drag:null, leaving:false, lt:0, pts:[], N:16, rot:0});
-    const CLIP = 44;
+    const S = React.useRef({leaving:false, lt:0, N:16, ropes:[
+      {pts:[], rot:0, drag:null, fx:.39, fxm:.29, len:.34, lenm:.27, sw:.7},
+      {pts:[], rot:0, drag:null, fx:.62, fxm:.73, len:.26, lenm:.19, sw:-.55}]});
+    const CLIP = 64;
     const enter = React.useCallback(() => {
-      const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.drag = null;
+      const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.ropes.forEach(r => { r.drag = null; });
       setTimeout(() => setOut(true), reduce ? 0 : 420); setTimeout(p.onDone, reduce ? 300 : 1150);
     }, []);
     React.useEffect(() => {
-      const s = S.current, N = s.N; let raf, W, H, seg, ax, ay, spread;
-      const size = () => { W = innerWidth; H = innerHeight; ax = W < 640 ? W * .68 : W / 2; ay = -12; spread = Math.min(80, W * .07); seg = Math.max(120, H * (W < 640 ? .3 : .36)) / (N - 1);
-        if (!s.pts.length) for (let i = 0; i < N; i++) { const x = ax + i * seg * (reduce ? 0 : .7), y = ay + i * seg * (reduce ? 1 : .72); s.pts.push({x, y, px:x, py:y}); } };
+      const s = S.current, N = s.N; let raf, W, H, ay = -40;
+      const size = () => { W = innerWidth; H = innerHeight; const m = W < 640;
+        s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(100, H * (m ? r.lenm : r.len)) / (N - 1);
+          if (!r.pts.length) for (let i = 0; i < N; i++) { const x = r.ax + i * r.seg * (reduce ? 0 : r.sw), y = ay + i * r.seg * (reduce ? 1 : .72); r.pts.push({x, y, px:x, py:y}); } }); };
       size(); addEventListener('resize', size);
       const key = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } };
       addEventListener('keydown', key);
       const tick = t => {
-        const P = s.pts, L = P[N - 1];
         if (s.leaving) ay -= Math.min(60, 2 + (t - s.lt) * .05);
-        for (let i = 1; i < N; i++) { const q = P[i], vx = (q.x - q.px) * .985, vy = (q.y - q.py) * .985; q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + .55; }
-        for (let it = 0; it < 14; it++) {
-          P[0].x = ax; P[0].y = ay;
-          if (s.drag) { L.x = s.drag.x; L.y = s.drag.y; }
-          for (let i = 0; i < N - 1; i++) { const a = P[i], b = P[i + 1], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, k = (d - seg) / d;
-            const last = i + 1 === N - 1 && s.drag, fa = i === 0 ? 0 : (last ? 1 : .5), fb = i === 0 ? 1 : (last ? 0 : .5);
-            a.x += dx * k * fa; a.y += dy * k * fa; b.x -= dx * k * fb; b.y -= dy * k * fb; }
-        }
-        const B = P[N - 2], target = -Math.atan2(L.x - B.x, L.y - B.y) * 180 / Math.PI;
-        s.rot += (target - s.rot) * .2;
-        if (card.current) card.current.style.transform = `translate3d(${L.x}px,${L.y}px,0) translateX(-50%) rotate(${s.rot}deg)`;
-        const path = sgn => { const pt = i => { const f = 1 - i / (N - 1); return [P[i].x + sgn * spread * f * f, P[i].y]; };
-          let [x0, y0] = pt(0), d = `M${x0},${y0}`;
-          for (let i = 1; i < N - 1; i++) { const [mx, my] = pt(i), [nx, ny] = pt(i + 1); d += ` Q${mx},${my} ${(mx + nx) / 2},${(my + ny) / 2}`; }
-          return d + ` L${L.x},${L.y}`; };
-        strapA.current && strapA.current.setAttribute('d', path(-1)); strapB.current && strapB.current.setAttribute('d', path(1));
+        s.ropes.forEach((r, ri) => {
+          const P = r.pts, L = P[N - 1], seg = r.seg;
+          for (let i = 1; i < N; i++) { const q = P[i], vx = (q.x - q.px) * .985, vy = (q.y - q.py) * .985; q.px = q.x; q.py = q.y; q.x += vx; q.y += vy + .55; }
+          for (let it = 0; it < 14; it++) {
+            P[0].x = r.ax; P[0].y = ay;
+            if (r.drag) { L.x = r.drag.x; L.y = r.drag.y; }
+            for (let i = 0; i < N - 1; i++) { const a = P[i], b = P[i + 1], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, k = (d - seg) / d;
+              const last = i + 1 === N - 1 && r.drag, fa = i === 0 ? 0 : (last ? 1 : .5), fb = i === 0 ? 1 : (last ? 0 : .5);
+              a.x += dx * k * fa; a.y += dy * k * fa; b.x -= dx * k * fb; b.y -= dy * k * fb; }
+          }
+          const B = P[N - 2], target = -Math.atan2(L.x - B.x, L.y - B.y) * 180 / Math.PI;
+          r.rot += (target - r.rot) * .2;
+          const c = cards[ri].current; if (c) c.style.transform = `translate3d(${L.x}px,${L.y}px,0) translateX(-50%) rotate(${r.rot}deg)`;
+          let d = `M${P[0].x},${P[0].y}`;
+          for (let i = 1; i < N - 1; i++) { const m = P[i], n = P[i + 1]; d += ` Q${m.x},${m.y} ${(m.x + n.x) / 2},${(m.y + n.y) / 2}`; }
+          d += ` L${L.x},${L.y}`;
+          straps[ri].current && straps[ri].current.setAttribute('d', d); prints[ri].current && prints[ri].current.setAttribute('d', d);
+        });
         raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
       return () => { cancelAnimationFrame(raf); removeEventListener('resize', size); removeEventListener('keydown', key); };
     }, []);
-    const down = e => { const s = S.current; if (s.leaving) return; const L = s.pts[s.N - 1]; e.currentTarget.setPointerCapture(e.pointerId);
-      s.drag = {x:L.x, y:L.y, ox:e.clientX - L.x, oy:e.clientY - L.y, sx:e.clientX, sy:e.clientY, moved:0}; setGrab(true); };
-    const move = e => { const g = S.current.drag; if (!g) return; g.x = e.clientX - g.ox; g.y = e.clientY - g.oy; g.moved = Math.max(g.moved, Math.hypot(e.clientX - g.sx, e.clientY - g.sy)); };
-    const up = () => { const s = S.current, g = s.drag; if (!g) return; s.drag = null; setGrab(false); if (g.moved < 6) enter(); };
-    const ink = '#f4f4f4', serif = "'Source Serif 4', Georgia, serif", display = "'DM Serif Display', Georgia, serif", accent = '#ff4d2e', grey = '#8a8a8a';
-    const corner = {fontFamily:serif, fontSize:'clamp(14px, 1.15vw, 17px)', lineHeight:1.3, maxWidth:300, margin:0};
-    const bracket = (label, onClick) => h('button', {onClick, style:{all:'unset', cursor:'pointer', color:grey, textDecoration:'underline', textUnderlineOffset:3}}, '[' + label + ']');
-    const chip = (txt, bg) => h('span', {style:{display:'inline-block', padding:'3px 8px', borderRadius:999, background:bg, color:'#fff', fontSize:10, fontWeight:600, whiteSpace:'nowrap'}}, txt);
+    const down = ri => e => { const s = S.current; if (s.leaving) return; const r = s.ropes[ri], L = r.pts[s.N - 1]; e.currentTarget.setPointerCapture(e.pointerId);
+      r.drag = {x:L.x, y:L.y, ox:e.clientX - L.x, oy:e.clientY - L.y, sx:e.clientX, sy:e.clientY, moved:0}; setGrab(ri); };
+    const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; g.x = e.clientX - g.ox; g.y = e.clientY - g.oy; g.moved = Math.max(g.moved, Math.hypot(e.clientX - g.sx, e.clientY - g.sy)); };
+    const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6) enter(); };
+    const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
+    const cond = "Oswald, 'Arial Narrow', sans-serif", sans = 'Geist, sans-serif';
+    const corner = {fontFamily:sans, fontSize:13, lineHeight:1.5, letterSpacing:'.06em', textTransform:'uppercase', maxWidth:320, margin:0};
+    const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
+    const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Click to enter',
+        onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri),
+        style:{position:'absolute', left:0, top:0, width:'clamp(140px, 40vw, 270px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
+      // metal split ring + lobster clasp from the strap end down into the card's slot
+      h('svg', {width:40, height:CLIP + 16, viewBox:`0 0 40 ${CLIP + 16}`, style:{position:'absolute', left:'50%', top:-14, marginLeft:-20, zIndex:2, overflow:'visible'}},
+        h('defs', null, h('linearGradient', {id:'yjMetal' + ri, x1:0, x2:1}, h('stop', {offset:0, stopColor:'#8d8d8d'}), h('stop', {offset:.5, stopColor:'#f5f5f5'}), h('stop', {offset:1, stopColor:'#7d7d7d'}))),
+        h('circle', {cx:20, cy:18, r:15, fill:'none', stroke:`url(#yjMetal${ri})`, strokeWidth:3.2}),
+        h('path', {d:'M20 33 L20 40', stroke:`url(#yjMetal${ri})`, strokeWidth:4, strokeLinecap:'round'}),
+        h('path', {d:'M20 40 C11 44 11 60 17 66 L20 70 L23 66 C29 60 29 44 20 40 Z', fill:'none', stroke:`url(#yjMetal${ri})`, strokeWidth:3}),
+        h('path', {d:`M20 70 L20 ${CLIP + 22}`, stroke:`url(#yjMetal${ri})`, strokeWidth:2.6, strokeLinecap:'round'})),
+      h('div', {style:{position:'relative', aspectRatio:'0.68', borderRadius:14, background:green, color:'#0a0a0a', overflow:'hidden',
+          boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
+        h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
+        h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
+        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(30px, 10.5vw, 62px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
+        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(11px, 3.2vw, 18px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
+        h('div', {style:{flex:1}}),
+        h('div', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:8}},
+          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:'clamp(30px, 9vw, 52px)', height:'clamp(30px, 9vw, 52px)', flex:'none'}},
+            h('circle', {cx:28, cy:28, r:27, fill:'#0a0a0a'}),
+            h('path', {d:'M28 28 L28 1 A27 27 0 0 1 55 28 Z', fill:green})),
+          h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(8px, 2.4vw, 11px)', letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · 0' + (ri + 1)))));
     return h('div', {role:'dialog', 'aria-label':'Welcome. Press Enter to view the portfolio',
         style:{position:'fixed', inset:0, zIndex:10000, background:'#000000', color:ink, overflow:'hidden', touchAction:'none',
           opacity:out ? 0 : 1, transform:out ? 'translateY(-2%)' : 'none', pointerEvents:out ? 'none' : 'auto', transition:'opacity 650ms ease, transform 650ms ease'}},
-      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-l{max-width:52vw!important}}'),
-      h('div', {style:{position:'absolute', top:'clamp(28px, 9vh, 96px)', left:'clamp(20px, 8vw, 120px)', right:'clamp(20px, 8vw, 120px)', display:'flex', justifyContent:'space-between', gap:24}},
-        h('p', {className:'yj-land-l', style:corner}, 'Product & service designer, working across research, strategy & design. ', bracket('enter', enter)),
+      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(17vw + 28px)}}'),
+      h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(28px, 7vh, 72px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24}},
+        h('p', {style:corner}, 'Product & service designer, working across research, strategy & design. ',
+          h('button', {onClick:enter, style:{all:'unset', cursor:'pointer', color:green}}, '[enter]')),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right'}}, 'Case studies with Johnson & Johnson, Pfizer & the British Council.')),
-      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.17em', textAlign:'center', whiteSpace:'nowrap', fontFamily:display,
-          fontWeight:400, fontSize:'clamp(84px, 22vw, 440px)', lineHeight:1, letterSpacing:'-0.035em', pointerEvents:'none'}}, 'Yashvi Jain'),
-      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 10px 8px rgba(0,0,0,.6))'}},
-        h('path', {ref:strapA, fill:'none', stroke:'#5c5c5c', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'}),
-        h('path', {ref:strapB, fill:'none', stroke:'#6e6e6e', strokeWidth:9, strokeLinecap:'round', strokeLinejoin:'round'})),
-      h('div', {ref:card, role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain badge. Click to enter', onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up,
-          style:{position:'absolute', left:0, top:0, width:'clamp(200px, 54vw, 270px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
-        // metal swivel clip from the strap knot down into the sleeve's slot
-        h('svg', {width:22, height:CLIP + 14, viewBox:`0 0 22 ${CLIP + 14}`, style:{position:'absolute', left:'50%', top:0, marginLeft:-11, zIndex:2, overflow:'visible'}},
-          h('defs', null, h('linearGradient', {id:'yjMetal', x1:0, x2:1}, h('stop', {offset:0, stopColor:'#9a9a9a'}), h('stop', {offset:.5, stopColor:'#f2f2f2'}), h('stop', {offset:1, stopColor:'#8c8c8c'}))),
-          h('rect', {x:6, y:0, width:10, height:16, rx:3, fill:'url(#yjMetal)', stroke:'#777', strokeWidth:.6}),
-          h('rect', {x:3, y:14, width:16, height:12, rx:3, fill:'none', stroke:'url(#yjMetal)', strokeWidth:3}),
-          h('path', {d:`M11 26 L11 ${CLIP + 2} q0 6 -5 6`, fill:'none', stroke:'url(#yjMetal)', strokeWidth:2.6, strokeLinecap:'round'})),
-        // clear plastic sleeve
-        h('div', {style:{position:'relative', aspectRatio:'0.7', borderRadius:16, background:'linear-gradient(160deg, rgba(255,255,255,.2), rgba(255,255,255,.08))',
-            border:'1px solid rgba(255,255,255,.28)', boxShadow:'0 30px 60px -20px rgba(0,0,0,.9), inset 0 0 0 4px rgba(255,255,255,.06), inset 0 1px 0 rgba(255,255,255,.35)', backdropFilter:'blur(1.5px)', WebkitBackdropFilter:'blur(1.5px)'}},
-          h('span', {style:{position:'absolute', left:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(255,255,255,.35)'}}),
-          h('span', {style:{position:'absolute', right:16, top:14, width:16, height:16, borderRadius:'50%', border:'1.5px solid rgba(255,255,255,.35)'}}),
-          h('span', {style:{position:'absolute', left:'50%', top:6, width:54, height:9, marginLeft:-27, borderRadius:6, border:'1.5px solid rgba(255,255,255,.35)', background:'#000'}}),
-          h('span', {style:{position:'absolute', left:10, right:10, top:40, height:1, background:'rgba(255,255,255,.18)'}}),
-          // printed insert
-          h('div', {style:{position:'absolute', left:14, right:14, top:50, bottom:14, background:'#ffffff', color:'#0d0d0d', borderRadius:4, boxShadow:'0 0 0 1px rgba(0,0,0,.05)', padding:'18px 16px 14px', display:'flex', flexDirection:'column', justifyContent:'space-between', overflow:'hidden'}},
-            h('div', {style:{fontFamily:display, fontWeight:400, fontSize:'clamp(40px, 13vw, 56px)', lineHeight:.86, letterSpacing:'-0.03em', transform:'rotate(-7deg)', transformOrigin:'0 0', marginTop:6}},
-              h('div', null, 'Yashvi'), h('div', {style:{color:accent, marginLeft:'0.55em'}}, 'Jain')),
-            h('div', {style:{fontFamily:serif, fontSize:11, color:grey, lineHeight:1.35}},
-              h('div', {style:{fontStyle:'italic'}}, 'Studied'), h('div', {style:{color:'#555'}}, 'MA Design Management'),
-              h('div', {style:{fontStyle:'italic', marginTop:8}}, 'Selected work'),
-              h('div', {style:{display:'flex', flexWrap:'wrap', gap:4, marginTop:4}}, chip('Johnson & Johnson', '#c8102e'), chip('Pfizer', '#0000c9'), chip('British Council', '#232323')))))));
+      h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
+          fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none'}},
+        'Yashvi ', h('span', {style:{color:green}}, 'Jain')),
+      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
+        h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]}), h('path', {id:'yjStrapPath1', ref:prints[1]})),
+        [0, 1].map(ri => h('g', {key:ri},
+          h('path', {ref:straps[ri], fill:'none', stroke:'#141414', strokeWidth:30, strokeLinecap:'butt', strokeLinejoin:'round'}),
+          h('text', {fill:green, fontFamily:cond, fontWeight:500, fontSize:13, letterSpacing:'.14em', dominantBaseline:'central'},
+            h('textPath', {href:'#yjStrapPath' + ri, startOffset:'0'}, print))))),
+      [0, 1].map(idCard));
   };
 
   static Louvre = function Louvre(p) {
