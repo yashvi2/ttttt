@@ -423,7 +423,7 @@ class Component extends DCLogic {
     const [out, setOut] = React.useState(false), [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
     const S = React.useRef({leaving:false, lt:0, N:16, ropes:[
-      {pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.18, sw:.7}]});
+      {pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
     const CLIP = 64;
     const enter = React.useCallback(() => {
       const s = S.current; if (s.leaving) return; s.leaving = true; s.lt = performance.now(); s.ropes.forEach(r => { r.drag = null; });
@@ -432,7 +432,7 @@ class Component extends DCLogic {
     React.useEffect(() => {
       const s = S.current, N = s.N; let raf, W, H, ay = -40;
       const size = () => { W = innerWidth; H = innerHeight; const m = W < 640;
-        s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(m ? 70 : 100, H * (m ? r.lenm : r.len)) / (N - 1);
+        s.ropes.forEach(r => { r.ax = W * (m ? r.fxm : r.fx); r.seg = Math.max(m ? 50 : 100, H * (m ? r.lenm : r.len)) / (N - 1);
           if (!r.pts.length) for (let i = 0; i < N; i++) { const x = r.ax + i * r.seg * (reduce ? 0 : r.sw), y = ay + i * r.seg * (reduce ? 1 : .72); r.pts.push({x, y, px:x, py:y}); } }); };
       size(); addEventListener('resize', size);
       const key = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); } };
@@ -472,7 +472,7 @@ class Component extends DCLogic {
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
     const idCard = ri => h('div', {key:ri, ref:cards[ri], role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Click to enter',
         onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri),
-        style:{position:'absolute', left:0, top:0, width:'clamp(180px, 50vw, 280px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
+        style:{position:'absolute', left:0, top:0, width:'clamp(170px, 46vw, 280px)', paddingTop:CLIP, transformOrigin:'50% 0', cursor:grab === ri ? 'grabbing' : 'grab', userSelect:'none', willChange:'transform'}},
       // metal split ring + lobster clasp from the strap end down into the card's slot
       h('svg', {width:40, height:CLIP + 16, viewBox:`0 0 40 ${CLIP + 16}`, style:{position:'absolute', left:'50%', top:-14, marginLeft:-20, zIndex:2, overflow:'visible'}},
         h('defs', null, h('linearGradient', {id:'yjMetal' + ri, x1:0, x2:1}, h('stop', {offset:0, stopColor:'#8d8d8d'}), h('stop', {offset:.5, stopColor:'#f5f5f5'}), h('stop', {offset:1, stopColor:'#7d7d7d'}))),
@@ -480,15 +480,18 @@ class Component extends DCLogic {
         h('path', {d:'M20 33 L20 40', stroke:`url(#yjMetal${ri})`, strokeWidth:4, strokeLinecap:'round'}),
         h('path', {d:'M20 40 C11 44 11 60 17 66 L20 70 L23 66 C29 60 29 44 20 40 Z', fill:'none', stroke:`url(#yjMetal${ri})`, strokeWidth:3}),
         h('path', {d:`M20 70 L20 ${CLIP + 22}`, stroke:`url(#yjMetal${ri})`, strokeWidth:2.6, strokeLinecap:'round'})),
-      h('div', {style:{position:'relative', aspectRatio:'0.68', borderRadius:14, background:green, color:'#0a0a0a', overflow:'hidden',
+      h('div', {style:{position:'relative', aspectRatio:'0.68', borderRadius:14, background:green, color:'#0a0a0a',
           boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
         h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
-        h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
-        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(40px, 13vw, 64px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
-        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(15px, 4.6vw, 19px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
-        h('div', {style:{flex:1}}),
+        h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, borderRadius:14, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
+        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(34px, 11vw, 64px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
+        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(13px, 4vw, 19px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
+        h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'center', gap:6, padding:'10px 0'}},
+          h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', opacity:.7}}, 'Domains'),
+          h('div', {style:{display:'flex', flexWrap:'wrap', gap:5}},
+            ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'].map(t => h('span', {key:t, style:{fontFamily:cond, fontWeight:500, fontSize:'clamp(10px, 2.9vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'5px 8px', border:'1.5px solid #0a0a0a', borderRadius:999, whiteSpace:'nowrap'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:8}},
-          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:52, height:52, flex:'none'}},
+          h('svg', {viewBox:'0 0 56 56', 'aria-hidden':true, style:{width:'clamp(34px, 10vw, 52px)', height:'clamp(34px, 10vw, 52px)', flex:'none'}},
             h('circle', {cx:28, cy:28, r:27, fill:'#0a0a0a'}),
             h('path', {d:'M28 28 L28 1 A27 27 0 0 1 55 28 Z', fill:green})),
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
