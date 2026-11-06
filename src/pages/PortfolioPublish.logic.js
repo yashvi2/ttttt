@@ -499,7 +499,7 @@ class Component extends DCLogic {
       h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(28px, 7vh, 72px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24}},
         h('p', {style:corner}, 'Product & service designer, working across research, strategy & design. ',
           h('button', {onClick:enter, style:{all:'unset', cursor:'pointer', color:green}}, '[enter]')),
-        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right'}}, 'Case studies with Johnson & Johnson, Pfizer & the British Council.')),
+        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right'}}, 'Case studies with Johnson & Johnson, Pfizer & the British Council.', h('br'), h('span', {style:{color:green}}, 'London, UK'))),
       h('div', {'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
           fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none'}},
         'Yashvi ', h('span', {style:{color:green}}, 'Jain')),
