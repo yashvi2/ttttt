@@ -1,5 +1,11 @@
 import { defineScreen } from '../dc/defineScreen.js';
 import { css, cx, asset, each, t } from '../dc/template.js';
+
+// Editorial photos are shown as blue halftone prints (made by scripts/halftone.py).
+// Diagrams, journey maps and the game's artwork stay in full colour so they read clearly,
+// and clicking any photo still opens the original in the lightbox.
+const HT = /(postcard-mockup|iwillgoout|exhibit-wall-hq|exhibit-visitor-hq|exhibit-tags-hq|focus-group|expert-interview|game-family|game-classroom|game-a|game-c|testing-1|testing-2)\.webp$/;
+const ht = (p) => (typeof p === 'string' ? p.replace(HT, '$1-ht.webp') : p);
 import Logic from './CaseMove.logic.js';
 import './CaseMove.states.css';
 
@@ -71,8 +77,8 @@ function template(v) {
             <span
               style={{
                 display: 'block',
-                fontFamily: "'Playfair Display',serif",
-                fontWeight: '900',
+                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontWeight: '600',
                 fontSize: 'clamp(56px,11.5vw,184px)',
                 lineHeight: '0.92',
                 letterSpacing: '0.01em',
@@ -110,7 +116,7 @@ function template(v) {
           <div style={{ textAlign: 'center', padding: '14px 0 10px', borderBottom: '1px solid #141210' }}>
             <span
               style={{
-                fontFamily: "'Playfair Display',serif",
+                fontFamily: "'Source Serif 4',Georgia,serif",
                 fontWeight: '500',
                 fontSize: 'clamp(40px,7vw,104px)',
                 lineHeight: '1',
@@ -191,8 +197,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '800',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '26px',
                       lineHeight: '1.05',
                       color: '#141210',
@@ -247,8 +253,8 @@ function template(v) {
               <h1
                 style={{
                   margin: '0',
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '900',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(40px,5.6vw,88px)',
                   lineHeight: '0.98',
                   letterSpacing: '-0.015em',
@@ -297,7 +303,7 @@ function template(v) {
                     style={{ position: 'absolute', left: '0', right: '0', top: '-12%', bottom: '-12%' }}
                   >
                     <img
-                      src="assets/web/assets/ma/postcard-mockup.webp"
+                      src="assets/web/assets/ma/postcard-mockup-ht.webp"
                       alt="The campaign postcard, front and back, on a kerb"
                       style={{
                         position: 'absolute',
@@ -339,8 +345,8 @@ function template(v) {
                   <span
                     style={{
                       float: 'left',
-                      fontFamily: '"Playfair Display", serif',
-                      fontWeight: '900',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '76px',
                       lineHeight: '0.8',
                       padding: '6px 10px 0px 0px',
@@ -385,7 +391,7 @@ function template(v) {
                     }}
                   >
                     <img
-                      src="assets/web/assets/ma/iwillgoout.webp"
+                      src="assets/web/assets/ma/iwillgoout-ht.webp"
                       alt="Women marching behind an “I will go out” banner"
                       loading="lazy"
                       style={{ position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: 'cover' }}
@@ -490,8 +496,8 @@ function template(v) {
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px' }}>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '900',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '72px',
                       lineHeight: '0.85',
                       color: 'var(--color-neutral-900)',
@@ -601,7 +607,7 @@ function template(v) {
             <span
               style={{
                 flex: '1 1 480px',
-                fontFamily: "'Playfair Display',serif",
+                fontFamily: "'Source Serif 4',Georgia,serif",
                 fontStyle: 'italic',
                 fontWeight: '500',
                 fontSize: 'clamp(20px,1.8vw,26px)',
@@ -663,8 +669,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -698,8 +704,8 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
                 }}
@@ -733,8 +739,8 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
                 }}
@@ -768,8 +774,8 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
                 }}
@@ -803,8 +809,8 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
                 }}
@@ -860,8 +866,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
                     }}
@@ -892,8 +898,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
                     }}
@@ -924,8 +930,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
                     }}
@@ -1311,8 +1317,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -1339,8 +1345,8 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '900',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: 'clamp(44px,4vw,60px)',
                       lineHeight: '1',
                       color: '#c4161c',
@@ -1571,7 +1577,7 @@ function template(v) {
                       }}
                     >
                       <img
-                        src={asset(f?.src)}
+                        src={asset(ht(f?.src))}
                         alt={f?.k}
                         loading="lazy"
                         style={{
@@ -1714,8 +1720,8 @@ function template(v) {
                     <blockquote
                       style={{
                         margin: '0',
-                        fontFamily: "'Playfair Display',serif",
-                        fontWeight: '700',
+                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontWeight: '600',
                         fontSize: '22px',
                         lineHeight: '1.25',
                         color: '#141210',
@@ -1836,8 +1842,8 @@ function template(v) {
                 <p
                   style={{
                     margin: '0',
-                    fontFamily: "'Playfair Display',serif",
-                    fontWeight: '700',
+                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontWeight: '600',
                     fontSize: 'clamp(26px,2.6vw,38px)',
                     lineHeight: '1.1',
                     color: '#141210',
@@ -1964,8 +1970,8 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '900',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(56px,6vw,88px)',
                   lineHeight: '0.9',
                   color: '#141210',
@@ -1975,7 +1981,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
+                  fontFamily: "'Source Serif 4',Georgia,serif",
                   fontStyle: 'italic',
                   fontSize: '22px',
                   lineHeight: '1.3',
@@ -2100,8 +2106,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -2258,8 +2264,8 @@ function template(v) {
                 style={{
                   padding: '14px 16px',
                   background: '#141210',
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(20px,2vw,26px)',
                   color: '#ffffff',
                 }}
@@ -2393,8 +2399,8 @@ function template(v) {
                   <span
                     style={{
                       flex: '0 0 40px',
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '900',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '28px',
                       color: '#c4161c',
                     }}
@@ -2404,8 +2410,8 @@ function template(v) {
                   <span
                     style={{
                       flex: '0 1 360px',
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '22px',
                       lineHeight: '1.2',
                       color: '#141210',
@@ -2481,8 +2487,8 @@ function template(v) {
             </span>
             <span
               style={{
-                fontFamily: "'Playfair Display',serif",
-                fontWeight: '800',
+                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontWeight: '600',
                 fontSize: 'clamp(26px,2.4vw,36px)',
                 lineHeight: '1.1',
                 color: '#141210',
@@ -2501,8 +2507,8 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '16px 16px 4px 0' }}>
                 <span
                   style={{
-                    fontFamily: "'Playfair Display',serif",
-                    fontWeight: '900',
+                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontWeight: '600',
                     fontSize: 'clamp(56px,6vw,88px)',
                     lineHeight: '0.9',
                     color: '#c4161c',
@@ -2527,8 +2533,8 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '16px 0 4px 20px' }}>
                 <span
                   style={{
-                    fontFamily: "'Playfair Display',serif",
-                    fontWeight: '900',
+                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontWeight: '600',
                     fontSize: 'clamp(56px,6vw,88px)',
                     lineHeight: '0.9',
                     color: '#9a8f86',
@@ -2614,8 +2620,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -2813,8 +2819,8 @@ function template(v) {
                 <span
                   style={{
                     padding: '12px 0',
-                    fontFamily: "'Playfair Display',serif",
-                    fontWeight: '900',
+                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontWeight: '600',
                     fontSize: '20px',
                     color: '#c4161c',
                   }}
@@ -5072,8 +5078,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '24px',
                       lineHeight: '1.1',
                       color: '#141210',
@@ -5176,7 +5182,7 @@ function template(v) {
                       >
                         <img
                           className="dc-hover-ce0189d7"
-                          src={asset(o?.src)}
+                          src={asset(ht(o?.src))}
                           alt={o?.k}
                           loading="lazy"
                           style={{
@@ -5200,8 +5206,8 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Playfair Display',serif",
-                            fontWeight: '900',
+                            fontFamily: "'Source Serif 4',Georgia,serif",
+                            fontWeight: '600',
                             fontSize: '22px',
                             color: '#c4161c',
                           }}
@@ -5287,8 +5293,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -5311,8 +5317,8 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 18px 14px 0' }}>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '900',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
                   color: '#c4161c',
@@ -5327,8 +5333,8 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 18px' }}>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '900',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
                   color: '#141210',
@@ -5343,8 +5349,8 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 0 14px 18px' }}>
               <span
                 style={{
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '900',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
                   color: '#141210',
@@ -5384,7 +5390,7 @@ function template(v) {
                   >
                     <img
                       className="dc-hover-ce0189d7"
-                      src={asset(ti?.src)}
+                      src={asset(ht(ti?.src))}
                       alt={ti?.k}
                       loading="lazy"
                       style={{
@@ -5511,7 +5517,7 @@ function template(v) {
             <span
               style={{
                 flex: '1 1 420px',
-                fontFamily: "'Playfair Display',serif",
+                fontFamily: "'Source Serif 4',Georgia,serif",
                 fontWeight: '500',
                 fontSize: 'clamp(20px,1.8vw,26px)',
                 lineHeight: '1.35',
@@ -5572,8 +5578,8 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Playfair Display',serif",
-              fontWeight: '800',
+              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
               letterSpacing: '-0.01em',
@@ -5608,8 +5614,8 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Playfair Display',serif",
-                            fontWeight: '900',
+                            fontFamily: "'Source Serif 4',Georgia,serif",
+                            fontWeight: '600',
                             fontSize: '28px',
                             lineHeight: '1',
                             color: '#ffffff',
@@ -5621,8 +5627,8 @@ function template(v) {
                     </div>
                     <span
                       style={{
-                        fontFamily: "'Playfair Display',serif",
-                        fontWeight: '700',
+                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontWeight: '600',
                         fontSize: '21px',
                         color: '#141210',
                       }}
@@ -5823,8 +5829,8 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontWeight: '700',
+                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontWeight: '600',
                       fontSize: '24px',
                       color: '#141210',
                     }}
@@ -6296,8 +6302,8 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Playfair Display',serif",
-                        fontWeight: '800',
+                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontWeight: '600',
                         fontSize: '24px',
                         lineHeight: '1.1',
                         color: '#141210',
@@ -6399,8 +6405,8 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Playfair Display',serif",
-                  fontWeight: '700',
+                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontWeight: '600',
                   fontSize: 'clamp(34px,4.4vw,68px)',
                   lineHeight: '1.02',
                   letterSpacing: '-0.01em',
@@ -6634,8 +6640,8 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <span
                   style={{
-                    fontFamily: "'Playfair Display',serif",
-                    fontWeight: '900',
+                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontWeight: '600',
                     fontSize: 'clamp(40px,5vw,56px)',
                     lineHeight: '0.95',
                   }}
@@ -6668,7 +6674,7 @@ function template(v) {
                   >
                     Players
                   </span>
-                  <span style={{ fontFamily: "'Playfair Display',serif", fontWeight: '700', fontSize: '26px' }}>
+                  <span style={{ fontFamily: "'Source Serif 4',Georgia,serif", fontWeight: '600', fontSize: '26px' }}>
                     4–10
                   </span>
                 </div>
@@ -6726,7 +6732,7 @@ function template(v) {
                     >
                       <span
                         style={css(
-                          `flex:none;width:48px;height:48px;border-radius:50%;border:1.5px solid ${p?.fg ?? ''};display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:24px;line-height:1;color:${p?.fg ?? ''}`,
+                          `flex:none;width:48px;height:48px;border-radius:50%;border:1.5px solid ${p?.fg ?? ''};display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:24px;line-height:1;color:${p?.fg ?? ''}`,
                         )}
                       >
                         {t(p?.n, true)}
