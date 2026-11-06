@@ -1059,198 +1059,34 @@ function template(v) {
                 </div>{' '}
               </section>{' '}
               <section
+                id="yj-about"
                 style={{
-                  padding: '40px clamp(20px,7vw,128px) 0',
                   maxWidth: '1600px',
                   margin: '0 auto',
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,240px),1fr))',
-                  gap: '56px',
-                  alignItems: 'center',
-                  paddingTop: '96px',
-                  paddingBottom: '0px',
+                  padding: '96px clamp(20px,7vw,128px) 0',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 'clamp(32px,5vw,88px)',
+                  alignItems: 'flex-start',
                 }}
               >
-                <div
-                  data-yj-drop="1"
-                  style={{
-                    position: 'relative',
-                    maxWidth: '420px',
-                    width: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifySelf: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '34px',
-                      height: '140px',
-                      background: '#1f2329',
-                      borderLeft: '1px solid #333333',
-                      borderRight: '1px solid #333333',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <span
-                      style={{
-                        writingMode: 'vertical-rl',
-                        transform: 'rotate(180deg)',
-                        fontFamily: 'Geist,sans-serif',
-                        fontWeight: '500',
-                        fontSize: '13px',
-                        letterSpacing: '0.24em',
-                        textTransform: 'uppercase',
-                        color: '#999999',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      Yashvi Jain · Yashvi Jain · Yashvi Jain
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      width: '64px',
-                      height: '16px',
-                      background: '#333333',
-                      border: '1px solid #666666',
-                      marginTop: '-2px',
-                    }}
-                  />
-                  <div
-                    className="dc-hover-83f7e5cb"
-                    style={{
-                      width: '100%',
-                      transformOrigin: '50% -150px',
-                      transform: 'rotate(-2deg)',
-                      transition: 'transform 700ms cubic-bezier(.3,1.6,.4,1)',
-                    }}
-                  >
-                    {' '}
-                    <div
-                      style={{
-                        background: '#0d0d0d',
-                        border: '2px solid #333333',
-                        padding: '14px',
-                        boxShadow: '0 40px 80px -30px rgba(0,0,0,0.9)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '14px',
-                      }}
-                    >
-                      <div style={{ height: '10px', background: '#000000', border: '1px solid #333333' }} />
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'flex-start',
-                          gap: '12px',
-                        }}
-                      >
-                        <span
-                          style={{
-                            width: '12px',
-                            height: '12px',
-                            borderRadius: '50%',
-                            background: 'var(--yj-accent, #ff4d2e)',
-                          }}
-                        />
-                        <span
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-end',
-                            gap: '4px',
-                            fontFamily: 'Geist,sans-serif',
-                            fontWeight: '500',
-                            fontSize: '13px',
-                            letterSpacing: '0.18em',
-                            textTransform: 'uppercase',
-                            color: '#999999',
-                          }}
-                        >
-                          <span>Visitor · Your company, obviously</span>
-                          <span style={{ color: '#cccccc', letterSpacing: '0.08em' }}>London · 2026</span>
-                        </span>
-                      </div>
-                      <div style={{ aspectRatio: '4/5', position: 'relative', width: '100%', overflow: 'hidden' }}>
-                        {t(v.introImg)}
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <span
-                          style={{
-                            fontFamily: "Geist,'Geist Display',sans-serif",
-                            fontWeight: '700',
-                            fontSize: '22px',
-                            lineHeight: '0.9',
-                            textTransform: 'uppercase',
-                            color: '#f4f4f4',
-                          }}
-                        >
-                          Yashvi Jain
-                        </span>
-                        <span style={{ fontSize: '16px', color: '#999999' }}>{'Designer & strategist'}</span>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'flex-end',
-                          gap: '16px',
-                          paddingTop: '12px',
-                          borderTop: '2px solid #333333',
-                        }}
-                      >
-                        <span style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <span
-                            style={{
-                              width: '150px',
-                              height: '30px',
-                              background:
-                                'repeating-linear-gradient(90deg,#cccccc 0 2px,transparent 2px 4px,#cccccc 4px 5px,transparent 5px 8px,#cccccc 8px 11px,transparent 11px 12px)',
-                            }}
-                          />
-                          <span
-                            style={{
-                              fontFamily: 'Geist,sans-serif',
-                              fontWeight: '500',
-                              fontSize: '13px',
-                              letterSpacing: '0.14em',
-                              color: '#8c8c8c',
-                            }}
-                          >
-                            YJ2026UAL0001
-                          </span>
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: "Geist,'Geist Display',sans-serif",
-                            fontWeight: '700',
-                            fontSize: '28px',
-                            lineHeight: '1',
-                            color: '#f4f4f4',
-                          }}
-                        >
-                          YJ-01
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Portrait: plain black-and-white photo, no frame or badge */}
                 <div
                   data-yj-rv="up"
                   style={{
-                    gridColumn: 'span 2',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '24px',
-                    alignItems: 'flex-start',
+                    flex: '1 1 300px',
+                    maxWidth: '460px',
+                    aspectRatio: '4/5',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    borderRadius: '4px',
+                    background: '#141414',
+                    filter: 'grayscale(1)',
                   }}
                 >
+                  {t(v.introImg)}
+                </div>
+                <div data-yj-rv="up" style={{ flex: '2 1 440px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '28px' }}>
                   <div
                     style={{
                       fontFamily: 'Geist,sans-serif',
@@ -1266,49 +1102,73 @@ function template(v) {
                   <p
                     style={{
                       margin: '0',
-                      fontSize: 'clamp(20px,2vw,28px)',
-                      lineHeight: '1.12',
-                      letterSpacing: '-0.015em',
+                      fontSize: 'clamp(22px,2.2vw,32px)',
+                      lineHeight: '1.15',
+                      letterSpacing: '-0.02em',
                       fontWeight: '500',
                       textWrap: 'pretty',
+                      maxWidth: '34ch',
                     }}
                   >
                     {t(v.tcsWord)}
-                    {
-                      ' years at TCS and an MA in Design Management taught me the screen is rarely the problem. I design, research and think my way to the real one, with '
-                    }
-                    <span style={{ fontFamily: 'Geist,sans-serif', fontWeight: '600' }}>
-                      actual intelligence
-                    </span>
+                    {' years at TCS and an MA in Design Management taught me the screen is rarely the problem. I design, research and think my way to the real one, with '}
+                    <span style={{ fontWeight: '600' }}>actual intelligence</span>
                     {' first and '}
-                    <span
-                      style={{
-                        fontFamily: 'Geist,sans-serif',
-                        fontStyle: 'normal',
-                        fontWeight: '600',
-                        color: 'var(--yj-accent, #ff4d2e)',
-                      }}
-                    >
-                      artificial intelligence
-                    </span>
+                    <span style={{ fontWeight: '600', color: 'var(--yj-accent, #ff4d2e)' }}>artificial intelligence</span>
                     {' to move faster.'}
                   </p>
-                  <button
-                    className="dc-hover-98a7b991"
-                    data-yj-mag="1"
-                    onClick={v.goApproach}
-                    style={{
-                      all: 'unset',
-                      cursor: 'pointer',
-                      padding: '12px 22px',
-                      borderRadius: '999px',
-                      border: '1.5px solid #f4f4f4',
-                      fontSize: '17px',
-                      fontWeight: '500',
-                    }}
-                  >
-                    How I work →
-                  </button>
+                  <dl style={{ margin: '0', borderBottom: '1px solid #262626', maxWidth: '640px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
+                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Based in</dt>
+                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>London, UK · open to roles</dd>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
+                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Experience</dt>
+                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>{t(v.tcsWord)} years, TCS Interactive</dd>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
+                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Education</dt>
+                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>MA Design Management, UAL London College of Communication</dd>
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
+                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Focus</dt>
+                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>Health tech · Pharma · Life sciences · Socio-cultural probes</dd>
+                    </div>
+                  </dl>
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <button
+                      className="dc-hover-98a7b991"
+                      data-yj-mag="1"
+                      onClick={v.goApproach}
+                      style={{
+                        all: 'unset',
+                        cursor: 'pointer',
+                        padding: '12px 22px',
+                        borderRadius: '999px',
+                        border: '1.5px solid #f4f4f4',
+                        fontSize: '17px',
+                        fontWeight: '500',
+                      }}
+                    >
+                      How I work →
+                    </button>
+                    <a
+                      href="uploads/assets-1790874602631-0p68.pdf"
+                      target="_blank"
+                      rel="noopener"
+                      style={{
+                        padding: '12px 22px',
+                        borderRadius: '999px',
+                        background: 'var(--yj-accent, #b6f23a)',
+                        color: '#000000',
+                        textDecoration: 'none',
+                        fontSize: '17px',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Download CV ↓
+                    </a>
+                  </div>
                 </div>
               </section>
               <section style={{ maxWidth: '1600px', margin: '0 auto', padding: '96px clamp(20px,7vw,128px) 120px' }}>
