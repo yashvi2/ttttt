@@ -1192,7 +1192,8 @@ Agent:`;
       goHome:() => this.go('home'), goContact:() => this.go('contact'), goApproach:() => this.go('approach'),
       isHome:s.screen === 'home', isCase:s.screen === 'case', isApproach:s.screen === 'approach', isExp:s.screen === 'experience', isContact:s.screen === 'contact',
       showCta: s.screen !== 'contact',
-      introImg: h(K, {key:'intro', level, parallax:50}, this.portrait('50% 35%')),
+      // About portrait: cut out of its background (scripts/cutout.py) so it sits straight on the page
+      introImg: h(K, {key:'intro', level, parallax:50}, h('div', {style:{position:'absolute', inset:0}}, h('img', {src:__R('assets/web/assets/yashvi-cutout.webp'), alt:'Portrait of Yashvi Jain', style:{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'contain', objectPosition:'50% 100%'}}))),
       aboutImg: h(K, {key:'about', level, parallax:60}, this.portrait('50% 30%')),
       caseHero: h(K, {key:'hero' + s.ci, level, parallax:90}, this.pic(cur)),
       secFig: h(K, {key:`fig${s.ci}-${s.si}`, level, parallax:40},

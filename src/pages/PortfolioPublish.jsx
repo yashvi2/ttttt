@@ -1077,9 +1077,12 @@ function template(v) {
                     aspectRatio: '4/5',
                     position: 'relative',
                     overflow: 'hidden',
-                    borderRadius: '4px',
-                    background: '#141414',
                     filter: 'grayscale(1)',
+                    // the photo is cropped at the knees and the leg leaves the frame on the right, so fade both edges into the page
+                    maskImage: 'linear-gradient(180deg,#000 80%,transparent 100%),linear-gradient(90deg,#000 86%,transparent 100%)',
+                    maskComposite: 'intersect',
+                    WebkitMaskImage: 'linear-gradient(180deg,#000 80%,transparent 100%),linear-gradient(90deg,#000 86%,transparent 100%)',
+                    WebkitMaskComposite: 'source-in',
                   }}
                 >
                   {t(v.introImg)}
