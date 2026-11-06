@@ -511,7 +511,7 @@ class Component extends DCLogic {
     const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
-    const cond = "Oswald, 'Arial Narrow', sans-serif", sans = 'Geist, sans-serif';
+    const sans = 'Geist, sans-serif', cond = sans;
     const corner = {fontFamily:sans, fontSize:13, lineHeight:1.5, letterSpacing:'.06em', textTransform:'uppercase', maxWidth:340, margin:0};
     const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
@@ -529,18 +529,18 @@ class Component extends DCLogic {
           boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
         h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
         h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, borderRadius:14, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
-        h('div', {style:{fontFamily:cond, fontWeight:700, fontSize:'clamp(34px, 11vw, 64px)', lineHeight:.92, letterSpacing:'.005em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
-        h('div', {style:{marginTop:8, fontFamily:cond, fontWeight:500, fontSize:'clamp(13px, 4vw, 19px)', lineHeight:1.1, letterSpacing:'.03em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
+        h('div', {style:{fontFamily:cond, fontWeight:800, fontSize:'clamp(30px, 9.4vw, 52px)', lineHeight:.9, letterSpacing:'-0.035em', textTransform:'uppercase'}}, 'Yashvi', h('br'), 'Jain'),
+        h('div', {style:{marginTop:10, fontFamily:cond, fontWeight:600, fontSize:'clamp(12px, 3.6vw, 16px)', lineHeight:1.15, letterSpacing:'.02em', textTransform:'uppercase'}}, 'Product & service', h('br'), 'designer'),
         h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-start', gap:6, padding:'10px 0'}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:10, letterSpacing:'.16em', textTransform:'uppercase', opacity:.7}}, 'Domains'),
           h('div', {ref:tagBox, style:{position:'relative', flex:1, minHeight:'clamp(92px, 27vw, 118px)', clipPath:'inset(0 -24px 0 -24px)'}},
-            TAGS.map((t, i) => h('span', {key:t, ref:e => { tagEls.current[i] = e; }, style:{position:'absolute', left:0, top:0, opacity:0, willChange:'transform', fontFamily:cond, fontWeight:600, fontSize:'clamp(9px, 2.5vw, 12px)', letterSpacing:'.05em', textTransform:'uppercase', lineHeight:1, padding:'6px 9px', borderRadius:999, whiteSpace:'nowrap',
+            TAGS.map((t, i) => h('span', {key:t, ref:e => { tagEls.current[i] = e; }, style:{position:'absolute', left:0, top:0, opacity:0, willChange:'transform', fontFamily:cond, fontWeight:600, fontSize:'clamp(9px, 2.4vw, 11px)', letterSpacing:'.04em', textTransform:'uppercase', lineHeight:1, padding:'6px 9px', borderRadius:999, whiteSpace:'nowrap',
                 ...(i % 3 === 0 ? {background:'#0a0a0a', color:green, border:'1.5px solid #0a0a0a'} : {background:'#ffffff', color:'#0a0a0a', border:'1.5px solid #0a0a0a'}), boxShadow:'0 3px 0 rgba(0,0,0,.85)'}}, t)))),
         h('div', {style:{display:'flex', justifyContent:'flex-end', alignItems:'flex-end', gap:8}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('section', {ref:wrap, 'aria-label':'Introduction',
         style:{position:'relative', height:'100svh', minHeight:620, background:'#000000', color:ink, overflow:'hidden'}},
-      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(17vw + 28px)}}'),
+      h('style', null, '@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(14vw + 28px)}}'),
       h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
       h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(120px, 17vh, 160px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24, zIndex:1}},
         h('div', {style:corner},
@@ -548,13 +548,13 @@ class Component extends DCLogic {
           h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
       h('div', {ref:nameRef, 'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
-          fontWeight:700, fontSize:'clamp(60px, 17vw, 340px)', lineHeight:1, letterSpacing:'-0.01em', textTransform:'uppercase', pointerEvents:'none', willChange:'transform'}},
+          fontWeight:800, fontSize:'clamp(50px, 14vw, 290px)', lineHeight:1, letterSpacing:'-0.045em', textTransform:'uppercase', pointerEvents:'none', willChange:'transform'}},
         h('span', {ref:wordA, style:{display:'inline-block'}}, 'Yashvi'), ' ', h('span', {ref:wordB, style:{display:'inline-block', color:green}}, 'Jain')),
       h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
         h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
         [0].map(ri => h('g', {key:ri},
           h('path', {ref:straps[ri], fill:'none', stroke:'#141414', strokeWidth:30, strokeLinecap:'butt', strokeLinejoin:'round'}),
-          h('text', {fill:green, fontFamily:cond, fontWeight:500, fontSize:13, letterSpacing:'.14em', dominantBaseline:'central'},
+          h('text', {fill:green, fontFamily:cond, fontWeight:600, fontSize:11, letterSpacing:'.16em', dominantBaseline:'central'},
             h('textPath', {href:'#yjStrapPath' + ri, startOffset:'0'}, print))))),
       idCard(0));
   };

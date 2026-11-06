@@ -204,9 +204,9 @@ function template(v) {
                   Selected work
                   <span
                     style={{
-                      fontFamily: "'Instrument Serif',serif",
-                      fontStyle: 'italic',
-                      fontWeight: '400',
+                      fontFamily: 'Geist,sans-serif',
+                      fontStyle: 'normal',
+                      fontWeight: '500',
                       fontStretch: '100%',
                       textTransform: 'none',
                       color: 'var(--yj-accent, #ff4d2e)',
@@ -266,9 +266,9 @@ function template(v) {
                             style={{
                               all: 'unset',
                               cursor: 'pointer',
-                              fontFamily: "'Instrument Serif',serif",
-                              fontStyle: 'italic',
-                              fontSize: '38px',
+                              fontFamily: 'Geist,sans-serif',
+                              fontStyle: 'normal',
+                              fontSize: '28px', fontWeight: '600', letterSpacing: '-0.02em',
                               lineHeight: '1.05',
                             }}
                             type="reset"
@@ -1277,15 +1277,15 @@ function template(v) {
                     {
                       ' years at TCS and an MA in Design Management taught me the screen is rarely the problem. I design, research and think my way to the real one, with '
                     }
-                    <span style={{ fontFamily: "'Instrument Serif',serif", fontStyle: 'italic', fontWeight: '400' }}>
+                    <span style={{ fontFamily: 'Geist,sans-serif', fontWeight: '600' }}>
                       actual intelligence
                     </span>
                     {' first and '}
                     <span
                       style={{
-                        fontFamily: "'Instrument Serif',serif",
-                        fontStyle: 'italic',
-                        fontWeight: '400',
+                        fontFamily: 'Geist,sans-serif',
+                        fontStyle: 'normal',
+                        fontWeight: '600',
                         color: 'var(--yj-accent, #ff4d2e)',
                       }}
                     >
@@ -1339,10 +1339,10 @@ function template(v) {
                     <h2
                       style={{
                         margin: '0',
-                        fontFamily: "'Instrument Serif',serif",
-                        fontStyle: 'italic',
-                        fontWeight: '400',
-                        fontSize: 'clamp(28px,3.2vw,48px)',
+                        fontFamily: 'Geist,sans-serif',
+                        fontStyle: 'normal',
+                        fontWeight: '600', letterSpacing: '-0.02em',
+                        fontSize: 'clamp(26px,2.6vw,40px)',
                         lineHeight: '1',
                         color: '#f4f4f4',
                       }}
@@ -1398,8 +1398,8 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Instrument Serif',serif",
-                            fontSize: '72px',
+                            fontFamily: 'Geist,sans-serif',
+                            fontSize: '64px', fontWeight: '700',
                             lineHeight: '0.6',
                             color: 'var(--yj-accent, #ff4d2e)',
                             height: '32px',
@@ -1524,8 +1524,8 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Instrument Serif',serif",
-                              fontStyle: 'italic',
+                              fontFamily: 'Geist,sans-serif',
+                              fontStyle: 'normal',
                               fontSize: 'clamp(24px,2.2vw,32px)',
                               lineHeight: '1.05',
                             }}
@@ -8509,7 +8509,7 @@ export default defineScreen({
   css: screenCss,
   links: [
     '_ds/modernist-f6c1caa7-5cac-451a-a099-225de5c74272/styles.css',
-    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&family=Oswald:wght@500;700&display=swap',
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap',
   ],
   defaults: {
     accent: '#b6f23a',
