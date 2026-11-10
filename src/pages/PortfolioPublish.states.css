@@ -85,3 +85,18 @@
 
 /* Nothing may widen the page sideways (keeps phones from zooming out) */
 html,body{overflow-x:clip}
+
+/* About: photo goes from b/w to colour and zooms slightly on hover; tag slides up; headline word gets a drawn underline */
+.yj-ab-photo img{filter:grayscale(1);transition:filter 700ms ease,transform 900ms cubic-bezier(.2,.7,.2,1)}
+.yj-ab-photo:hover img{filter:grayscale(0);transform:scale(1.04)}
+.yj-ab-tag{transform:translateY(8px);opacity:.92;transition:transform 500ms cubic-bezier(.2,.7,.2,1),opacity 500ms}
+.yj-ab-photo:hover .yj-ab-tag{transform:none;opacity:1}
+.yj-ab-hl{color:var(--yj-accent,#b6f23a);background:linear-gradient(currentColor,currentColor) 0 92%/0% 3px no-repeat;transition:background-size 1100ms cubic-bezier(.2,.7,.2,1) 200ms}
+.yj-about:hover .yj-ab-hl,.yj-about.yj-in .yj-ab-hl{background-size:100% 3px}
+.yj-ab-stat{transition:border-color 400ms}
+.yj-ab-stat:hover{border-top-color:var(--yj-accent,#b6f23a)}
+@media (max-width:640px){
+  .yj-ab-stat{flex:1 1 0 !important;min-width:0}
+  .yj-ab-stat > div:first-child{font-size:40px !important}
+  .yj-ab-stat > div:last-child{font-size:10px !important;letter-spacing:.1em !important}
+}

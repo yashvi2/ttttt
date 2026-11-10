@@ -1059,6 +1059,7 @@ function template(v) {
               </section>{' '}
               <section
                 id="yj-about"
+                className="yj-about"
                 style={{
                   maxWidth: '1600px',
                   margin: '0 auto',
@@ -1066,107 +1067,48 @@ function template(v) {
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: 'clamp(32px,5vw,88px)',
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                 }}
               >
-                {/* Portrait: plain black-and-white photo, no frame or badge */}
+                {/* Portrait: black and white, turns to colour and leans in on hover */}
                 <div
                   data-yj-rv="up"
-                  style={{
-                    flex: '1 1 300px',
-                    maxWidth: '460px',
-                    aspectRatio: '4/5',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    borderRadius: '4px',
-                    background: '#141414',
-                    filter: 'grayscale(1)',
-                  }}
+                  className="yj-ab-photo"
+                  style={{ flex: '1 1 280px', maxWidth: '420px', aspectRatio: '4/5', position: 'relative', overflow: 'hidden', borderRadius: '4px', background: '#141414' }}
                 >
                   {t(v.introImg)}
+                  <span className="yj-ab-tag" style={{ position: 'absolute', left: '16px', bottom: '16px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    London · open to roles
+                  </span>
                 </div>
-                <div data-yj-rv="up" style={{ flex: '2 1 440px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '28px' }}>
-                  <div
-                    style={{
-                      fontFamily: 'Geist,sans-serif',
-                      fontWeight: '500',
-                      fontSize: '13px',
-                      letterSpacing: '0.14em',
-                      textTransform: 'uppercase',
-                      color: '#999999',
-                    }}
-                  >
+                <div data-yj-rv="up" style={{ flex: '2 1 440px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '36px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#999999' }}>
                     (About) — From interfaces to services
                   </div>
-                  <p
-                    style={{
-                      margin: '0',
-                      fontFamily: "'Gloock',Georgia,serif",
-                      fontSize: 'clamp(26px,2.5vw,40px)',
-                      lineHeight: '1.16',
-                      letterSpacing: '-0.015em',
-                      fontWeight: '400',
-                      color: '#bdbdbd',
-                      textWrap: 'pretty',
-                      maxWidth: '30ch',
-                    }}
-                  >
-                    {t(v.tcsWord)}
-                    {' years at TCS and an MA in Design Management taught me the screen is rarely the problem. I design, research and think my way to the real one, with '}
-                    <span style={{ color: '#f4f4f4' }}>actual intelligence</span>
-                    {' first and '}
-                    <span style={{ color: 'var(--yj-accent, #ff4d2e)' }}>artificial intelligence</span>
-                    {' to move faster.'}
-                  </p>
-                  <dl style={{ margin: '0', borderBottom: '1px solid #262626', maxWidth: '640px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
-                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Based in</dt>
-                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>London, UK · open to roles</dd>
+                  <h2 style={{ margin: '0', fontFamily: "'Gloock',Georgia,serif", fontWeight: '400', fontSize: 'clamp(44px,5.4vw,92px)', lineHeight: '0.98', letterSpacing: '-0.035em', color: '#f4f4f4', maxWidth: '14ch' }}>
+                    The screen is rarely the <span className="yj-ab-hl">problem.</span>
+                  </h2>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0 clamp(14px,3vw,32px)', maxWidth: '680px' }}>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
+                      <div style={{ fontFamily: "'Gloock',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>{t(v.tcsYrs)}</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Years at TCS{" "}Interactive</div>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
-                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Experience</dt>
-                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>{t(v.tcsWord)} years, TCS Interactive</dd>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
+                      <div style={{ fontFamily: "'Gloock',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>MA</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Design Management{" "}UAL</div>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
-                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Education</dt>
-                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>MA Design Management, UAL London College of Communication</dd>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
+                      <div style={{ fontFamily: "'Gloock',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>4</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Domains, from pharma to social</div>
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'clamp(92px,22%,170px) 1fr', gap: '16px', padding: '14px 0', borderTop: '1px solid #262626' }}>
-                      <dt style={{ margin: '0', fontSize: '12px', fontWeight: '500', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#8a8a8a', paddingTop: '3px' }}>Focus</dt>
-                      <dd style={{ margin: '0', fontSize: 'clamp(15px,1.15vw,17px)', lineHeight: '1.4', color: '#f4f4f4' }}>Health tech · Pharma · Life sciences · Socio-cultural probes</dd>
-                    </div>
-                  </dl>
+                  </div>
                   <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    <button
-                      className="dc-hover-98a7b991"
-                      data-yj-mag="1"
-                      onClick={v.goApproach}
-                      style={{
-                        all: 'unset',
-                        cursor: 'pointer',
-                        padding: '12px 22px',
-                        borderRadius: '999px',
-                        border: '1.5px solid #f4f4f4',
-                        fontSize: '17px',
-                        fontWeight: '500',
-                      }}
-                    >
+                    <button className="dc-hover-98a7b991" data-yj-mag="1" onClick={v.goApproach}
+                      style={{ all: 'unset', cursor: 'pointer', padding: '12px 22px', borderRadius: '999px', border: '1.5px solid #f4f4f4', fontSize: '17px', fontWeight: '500' }}>
                       How I work →
                     </button>
-                    <a
-                      href="uploads/assets-1790874602631-0p68.pdf"
-                      target="_blank"
-                      rel="noopener"
-                      style={{
-                        padding: '12px 22px',
-                        borderRadius: '999px',
-                        background: 'var(--yj-accent, #b6f23a)',
-                        color: '#000000',
-                        textDecoration: 'none',
-                        fontSize: '17px',
-                        fontWeight: '500',
-                      }}
-                    >
+                    <a href="uploads/assets-1790874602631-0p68.pdf" target="_blank" rel="noopener"
+                      style={{ padding: '12px 22px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', textDecoration: 'none', fontSize: '17px', fontWeight: '500' }}>
                       Download CV ↓
                     </a>
                   </div>

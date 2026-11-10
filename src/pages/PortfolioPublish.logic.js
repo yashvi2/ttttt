@@ -669,6 +669,10 @@ Agent:`;
   }
   componentDidMount() {
     setTimeout(() => this.syncTone(), 300);
+    // About: draw the headline underline once the section scrolls into view
+    this._abIO = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('yj-in')), {threshold:.35});
+    this._abArm = () => { const a = document.getElementById('yj-about'); if (a && !a._yjObs) { a._yjObs = 1; this._abIO.observe(a); } };
+    setTimeout(this._abArm, 400);
     window.addEventListener('keydown', this._mvK = e => { if (e.key === 'Escape' && this.state.mvRules) this.setState({mvRules:false}); });
     this._fcT = setInterval(() => { if (document.hidden || this.state.lb || this.state.fcHold) return; const n = 5; this.setState(s => ({fcI:((s.fcI || 0) + 1) % n})); }, 5000);
     window.addEventListener('scroll', this._mvS = () => { cancelAnimationFrame(this._mvR); this._mvR = requestAnimationFrame(() => this.onMvScroll()); }, {passive:true});
@@ -704,6 +708,7 @@ Agent:`;
   }
   componentDidUpdate() {
     setTimeout(() => this.syncTone(), 60);
+    if (this._abArm) setTimeout(this._abArm, 80);
     if (this._mvS) this._mvS(); setTimeout(() => { this.armDrops(); this.armMotion(); }, 0); this.syncHz(); this.syncMz(); const c = this.chatRef.current; if (c) c.scrollTop = c.scrollHeight; this.applyAccent(); (this.props.customCursor ?? true) ? this.mountCursor() : this.unmountCursor(); }
   syncJourney() {
     const t = this.jRef.current; if (!t || this._jUser) return;
@@ -1286,7 +1291,7 @@ Agent:`;
             on:() => this.setState({sortHov:g.k}), off:() => this.setState(st => st.sortHov === g.k ? {sortHov:null, sortItem:null} : null),
             rk: top[0], rv: String(top[1]), count:String(g.items.length).padStart(2, '0'),
             items:g.items.map(([k, v], ii) => { const act = sel === ii; return {k, v:String(v), w: v * 10 + '%', hgt: (v * 10) + '%', lc: act ? 'var(--yj-accent, #ff4d2e)' : (on ? '#f4f4f4' : '#8c8c8c'), lw: act ? '4px' : '2px', rowBg: act ? '#3a2260' : 'transparent', rowFg: act ? '#f4f4f4' : '#bbbbbb',
-              pick:() => this.setState({sortHov:g.k, sortItem:[g.k, ii]})}; })}; })}; })(), protoUrl: cur.proto || '#', wTabs: this._wTabs, tcsWord: TCS_WORD, nowYear: NOW.getFullYear(),
+              pick:() => this.setState({sortHov:g.k, sortItem:[g.k, ii]})}; })}; })}; })(), protoUrl: cur.proto || '#', wTabs: this._wTabs, tcsWord: TCS_WORD, tcsYrs: TCS_YRS, nowYear: NOW.getFullYear(),
       offClock:[
         {n:'01', k:'Bakeaway', src:__R('assets/web/assets/about/bakery.webp'), alt:'Chocolate mirror-glaze cake by Bakeaway', slot:'about-bake', ph:'Drop a Bakeaway bake', v:'My home bakery. Every order is made from scratch, by hand, start to finish.', link:'A recipe is a service blueprint: the steps are simple, the care isn’t.', href:'https://www.instagram.com/bakeaway_yashvijain/', cta:'@bakeaway_yashvijain'},
         {n:'02', k:'Travel', src:__R('assets/web/assets/about/travel.webp'), alt:'Yashvi walking towards the sea at sunset', slot:'about-travel', ph:'Drop a travel photo', v:'New places, with no fixed itinerary. I watch how people move through streets, stations and markets.', link:'It’s fieldwork I don’t have to write up.', href:'', cta:''},
