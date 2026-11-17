@@ -6965,6 +6965,7 @@ function template(v) {
           ) : null}
           {v.isApproach ? (
             <>
+              {t(v.aboutBento)}
               {' '}
               <section
                 style={{

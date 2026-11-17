@@ -814,6 +814,84 @@ class Component extends DCLogic {
       p.items.map(it => h('button', {key:it.key, onClick:it.onClick, 'aria-current':it.on ? 'page' : undefined, className:it.on ? 'yj-dock-on' : ''}, it.label)));
   };
 
+  static AboutBento = function AboutBento(p) {
+    // About as a bento page in the home system: yellow/black/white/grey,
+    // Schibsted Grotesk 600/400, flat tiles, no cards inside tiles.
+    const h = React.createElement;
+    const YEL = '#ffd60a', INK = '#111111', PAPER = '#ffffff', GREY = '#6b6b6b', LINE = '#e3e3e0';
+    const F = "'Schibsted Grotesk', sans-serif";
+    const [open, setOpen] = React.useState('tcs');
+    const label = (t, x) => h('span', {style:{fontSize:14, color:GREY, ...x}}, t);
+    const H = (t, x) => h('h3', {style:{margin:0, fontFamily:F, fontWeight:600, letterSpacing:'-0.03em', ...x}}, t);
+    const tile = (cls, kids, x) => h('div', {className:'yj-ab-t ' + cls, style:x}, ...[].concat(kids));
+    const exp = [...p.timeline].filter(t => t.id !== 'halls').sort((a, b) => b.s - a.s);
+    return h('div', {className:'yj-abg', role:'region', 'aria-label':'About Yashvi Jain'},
+      h('style', null, `
+        .yj-abg{box-sizing:border-box;padding:28px 28px 110px;background:#f6f6f3;font-family:${F};color:${INK};display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:28px;
+          background-image:radial-gradient(circle, #e4e3de 1px, transparent 1.2px);background-size:24px 24px}
+        .yj-ab-t{box-sizing:border-box;background:${PAPER};border-radius:18px;padding:clamp(20px, 2vw, 32px);min-width:0;display:flex;flex-direction:column;gap:16px;animation:yjAbRise 600ms cubic-bezier(.2,.7,.2,1) both}
+        @keyframes yjAbRise{from{opacity:0;translate:0 20px}}
+        .yj-ab-in{grid-column:span 8;background:${YEL};justify-content:space-between;min-height:460px}
+        .yj-ab-ph{grid-column:span 4;padding:0;background:#e6e6e3 center 28%/cover no-repeat;filter:grayscale(1);min-height:460px}
+        .yj-ab-ex{grid-column:span 8}.yj-ab-sk{grid-column:span 4}
+        .yj-ab-rc{grid-column:span 6}.yj-ab-ce{grid-column:span 3}.yj-ab-to{grid-column:span 3}
+        .yj-ab-oc{grid-column:span 4;padding:0;position:relative;overflow:hidden;min-height:360px;justify-content:flex-end;color:#fff;text-decoration:none}
+        .yj-ab-oc .yj-ab-img{position:absolute;inset:0;background:center/cover no-repeat;filter:grayscale(1);transition:filter 500ms ease,transform 900ms cubic-bezier(.2,.7,.2,1)}
+        .yj-ab-oc:hover .yj-ab-img{filter:none;transform:scale(1.04)}
+        .yj-ab-oc .yj-ab-cap{position:relative;padding:22px;background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0));display:flex;flex-direction:column;gap:6px}
+        .yj-ab-cta{grid-column:span 12;background:${INK};color:#fff;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}
+        .yj-ab-row{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:14px 0;border-top:1px solid ${LINE};font-family:${F};width:100%}
+        .yj-ab-row:hover .yj-ab-rt{text-decoration:underline;text-underline-offset:4px}
+        .yj-ab-row:focus-visible,.yj-ab-btn:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-ab-pts{grid-column:1 / -1;margin:6px 0 0;padding-left:18px;color:#333;font-size:15px;line-height:1.5}
+        .yj-ab-chip{font-size:13px;padding:5px 11px;border:1px solid ${INK};border-radius:999px;white-space:nowrap}
+        .yj-ab-btn{all:unset;cursor:pointer;font-family:${F};font-weight:600;font-size:15px;padding:12px 20px;border-radius:999px;background:${YEL};color:${INK}}
+        .yj-ab-btn.alt{background:transparent;color:#fff;border:1px solid #fff}
+        @media (max-width:1000px){.yj-ab-in,.yj-ab-ex,.yj-ab-rc,.yj-ab-cta{grid-column:span 12}.yj-ab-ph,.yj-ab-sk,.yj-ab-oc{grid-column:span 6}.yj-ab-ce,.yj-ab-to{grid-column:span 6}}
+        @media (max-width:640px){.yj-abg{padding:16px 16px 110px;gap:18px}.yj-abg > *{grid-column:span 12 !important}.yj-ab-in,.yj-ab-ph{min-height:320px}}
+        @media (prefers-reduced-motion:reduce){.yj-ab-t{animation:none}}
+      `),
+      tile('yj-ab-in', [
+        h('span', {style:{display:'flex', justifyContent:'space-between', fontSize:14}}, h('span', null, 'About'), h('span', null, 'London · open to roles')),
+        h('div', {style:{display:'flex', flexDirection:'column', gap:20}},
+          h('h1', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(40px, 4.6vw, 76px)', letterSpacing:'-0.05em', lineHeight:.95}}, 'Where actual intelligence', h('br'), 'meets artificial intelligence.'),
+          h('p', {style:{margin:0, fontSize:'clamp(16px, 1.25vw, 19px)', lineHeight:1.5, maxWidth:'56ch'}},
+            'Four years designing at TCS, and I’ve just completed an MA in Design Management at UAL. I bring the human part (curiosity, empathy, judgement) and use AI to move faster, never to think for me. Every brief starts with two questions: why this, and who is it for?'),
+          h('span', {style:{display:'flex', flexWrap:'wrap', gap:8}}, ['4+ years at TCS', 'MA Design Management, UAL', 'B.Des Product Design', 'Healthcare & pharma'].map(k => h('span', {key:k, className:'yj-ab-chip'}, k))))]),
+      h('div', {className:'yj-ab-t yj-ab-ph', role:'img', 'aria-label':'Portrait of Yashvi Jain', style:{backgroundImage:`url(${p.portrait})`}}),
+      tile('yj-ab-ex', [
+        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, H('Experience & education'), label('Tap a role for details')),
+        h('div', null, exp.map(t => h('button', {key:t.id, className:'yj-ab-row', 'aria-expanded':open === t.id, onClick:() => setOpen(open === t.id ? null : t.id)},
+          h('span', null, h('span', {className:'yj-ab-rt', style:{display:'block', fontWeight:600, fontSize:'clamp(17px, 1.3vw, 20px)', letterSpacing:'-0.01em'}}, t.title), label(t.org)),
+          h('span', {style:{fontSize:14, color:GREY, textAlign:'right', whiteSpace:'nowrap'}}, t.dates, ' ', h('span', {'aria-hidden':true, style:{display:'inline-block', marginLeft:8, transition:'transform 250ms', transform:open === t.id ? 'rotate(45deg)' : 'none'}}, '+')),
+          open === t.id ? h('ul', {className:'yj-ab-pts'}, t.pts.map((x, i) => h('li', {key:i}, x))) : null)))]),
+      tile('yj-ab-sk', [H('Skills'),
+        ...p.skills.map(g => h('div', {key:g.t, style:{display:'flex', flexDirection:'column', gap:8}}, label(g.t),
+          h('span', {style:{display:'flex', flexWrap:'wrap', gap:6}}, g.items.map(k => h('span', {key:k, className:'yj-ab-chip'}, k)))))]),
+      tile('yj-ab-rc', [H('What colleagues say'),
+        ...p.recs.map(r => h('figure', {key:r.name, style:{margin:0, paddingTop:14, borderTop:'1px solid ' + LINE, display:'flex', gap:14, alignItems:'flex-start'}},
+          h('img', {src:r.img, alt:'', width:44, height:44, style:{width:44, height:44, borderRadius:'50%', objectFit:'cover', filter:'grayscale(1)', flex:'none'}}),
+          h('span', {style:{display:'flex', flexDirection:'column', gap:6}},
+            h('blockquote', {style:{margin:0, fontSize:16, lineHeight:1.45}}, '“' + r.quote + '”'),
+            h('figcaption', {style:{fontSize:14}}, h('b', {style:{fontWeight:600}}, r.name), label(' · ' + r.role)))))]),
+      tile('yj-ab-ce', [H('Certifications'),
+        ...p.certs.map(c => h('div', {key:c.title, style:{display:'flex', gap:12, alignItems:'center', paddingTop:12, borderTop:'1px solid ' + LINE}},
+          h('img', {src:c.logo, alt:c.org, style:{width:40, height:40, objectFit:'contain', filter:'brightness(0)', flex:'none'}}),
+          h('span', null, h('span', {style:{display:'block', fontWeight:600, fontSize:15, lineHeight:1.3}}, c.title), label(c.org + ' · ' + c.date))))]),
+      tile('yj-ab-to', [H('Tools'), h('span', {style:{display:'flex', flexWrap:'wrap', gap:6}}, p.tools.map(k => h('span', {key:k, className:'yj-ab-chip'}, k))),
+        label('Off the clock ↓', {marginTop:'auto'})]),
+      ...p.offClock.map(o => h(o.href ? 'a' : 'div', {key:o.k, className:'yj-ab-t yj-ab-oc', ...(o.href ? {href:o.href, target:'_blank', rel:'noopener'} : {})},
+        h('span', {className:'yj-ab-img', 'aria-hidden':true, style:{backgroundImage:`url(${o.src})`}}),
+        h('span', {className:'yj-ab-cap'},
+          h('span', {style:{fontWeight:600, fontSize:22, letterSpacing:'-0.02em'}}, o.k + (o.href ? ' ↗' : '')),
+          h('span', {style:{fontSize:14, lineHeight:1.45, opacity:.9}}, o.v)))),
+      tile('yj-ab-cta', [
+        h('span', {style:{fontWeight:600, fontSize:'clamp(26px, 2.6vw, 40px)', letterSpacing:'-0.04em'}}, 'Let’s work together.'),
+        h('span', {style:{display:'flex', gap:10, flexWrap:'wrap'}},
+          h('button', {className:'yj-ab-btn', onClick:p.onContact}, 'Contact me →'),
+          h('a', {className:'yj-ab-btn alt', href:p.cv, target:'_blank', rel:'noopener'}, 'Download CV ↓'))]));
+  };
+
   static BentoHome = function BentoHome(p) {
     // The landing page as one screen-filling bento grid (no scroll, no nav
     // bar on desktop). One visual system throughout:
@@ -958,8 +1036,9 @@ class Component extends DCLogic {
       ['assets/logos/britishcouncil-white.png', 'British Council', 26], ['assets/logos/ime.png', 'Indian Music Experience Museum', 34]];
     const logos = tile('lg', {style:{flexDirection:'row', alignItems:'center', gap:'clamp(16px, 3vw, 56px)', padding:'0 clamp(18px, 1.8vw, 30px)'}},
       label('Worked with', {flex:'none', whiteSpace:'nowrap'}),
-      h('span', {style:{flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'clamp(16px, 3vw, 48px)', minWidth:0}},
-        LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}}))));
+      h('span', {className:'yj-lg-view', style:{flex:1, minWidth:0, overflow:'hidden'}},
+        h('span', {className:'yj-lg-track'}, [0, 1].map(k => h('span', {key:k, className:'yj-lg-set', 'aria-hidden':k === 1 ? true : undefined},
+          LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt:k ? '' : alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}})))))));
 
     // Dashboard ↔ Projects, switched in place from the floating dock.
     const view = p.view || 'dash';
@@ -1041,6 +1120,11 @@ class Component extends DCLogic {
         .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
         .yj-sl-on{opacity:1;transform:scale(1)}
         .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
+        .yj-lg-view{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+        .yj-lg-track{display:flex;width:max-content;animation:yjLgScroll 28s linear infinite}
+        .yj-lg-view:hover .yj-lg-track{animation-play-state:paused}
+        .yj-lg-set{display:flex;align-items:center;gap:clamp(48px, 6vw, 96px);padding-right:clamp(48px, 6vw, 96px)}
+        @keyframes yjLgScroll{to{transform:translateX(-50%)}}
         .yj-bento > *{animation:yjRise 700ms cubic-bezier(.2,.7,.2,1) both}
         .yj-bento > :nth-child(2){animation-delay:0ms}.yj-bento > :nth-child(3){animation-delay:80ms}.yj-bento > :nth-child(4){animation-delay:160ms}
         .yj-bento > :nth-child(5){animation-delay:240ms}.yj-bento > :nth-child(6){animation-delay:320ms}.yj-bento > :nth-child(7){animation-delay:400ms}
@@ -1077,12 +1161,11 @@ class Component extends DCLogic {
           .yj-pj-kinds{display:inline}
           .yj-pj-stat{display:none}
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
-          .yj-a-lg > span:last-child{flex-wrap:wrap;justify-content:flex-start !important;gap:20px 28px !important}
-          .yj-a-lg .yj-logo{max-width:40% !important;height:24px !important}
+          .yj-a-lg .yj-lg-view{width:100%}
           .yj-st-tulips{width:84px;right:14px;top:70px}
           .yj-st-coffee{width:70px;right:16px;top:14px}
         }
-        @media (prefers-reduced-motion:reduce){.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
@@ -1896,6 +1979,16 @@ Agent:`;
         {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')},
         {key:'about', label:'About', on:s.screen === 'approach', onClick:() => this.go('approach')},
         {key:'contact', label:'Contact', on:s.screen === 'contact', onClick:() => this.go('contact')}]}),
+      aboutBento: s.screen === 'approach' ? h(Component.AboutBento, {timeline:TIMELINE, portrait:__R('assets/web/assets/yashvi.webp'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onContact:() => this.go('contact'),
+        skills:[{t:'Strategy', items:['Stakeholder engagement','Cross-functional teamwork','Insight communication','Concept development']}, {t:'Research', items:['Discovery research','Interviews','Usability testing','Workshop facilitation','Co-design','Qualitative synthesis']}, {t:'Service design', items:['Service blueprints','Journey mapping','Process mapping','User flows','Personas']}, {t:'Inclusive practice', items:['Accessibility','Lived-experience insight','Inclusive communication','Vulnerable users']}],
+        tools:['Figma','Adobe CS','Microsoft 365','ChatGPT','Claude','UX Pilot'],
+        certs:[{title:'Enterprise Design Thinking Practitioner', org:'IBM', logo:__R('assets/certs/ibm.svg'), date:'Nov 2025'}, {title:'Customer Experience (CX) Foundations', org:'LinkedIn', logo:__R('assets/certs/linkedin.png'), date:'Mar 2024'}],
+        recs:[{name:'Siddhartha Gigoo', role:'Head of TCS Interactive Design Studios', img:__R('assets/web/assets/recs/siddhartha.webp'), quote:'An exceptional designer. Continues to make us proud.'},
+          {name:'Arpit Vyas', role:'Product Experience Strategist', img:__R('assets/recs/arpit.jpeg'), quote:'She approached every project with a thoughtful design mindset… she took full ownership of her responsibilities and delivered.'},
+          {name:'Geetanjali Chuttani', role:'Associate Design Director, UX', img:__R('assets/recs/geet.jpeg'), quote:'Her ability to understand and articulate complex design requirements is matched only by her strong sense of aesthetics and usability.'}],
+        offClock:[{k:'Bakeaway', src:__R('assets/web/assets/about/bakery.webp'), href:'https://www.instagram.com/bakeaway_yashvijain/', v:'My home bakery. A recipe is a service blueprint: the steps are simple, the care isn’t.'},
+          {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
+          {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
       landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
         projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),

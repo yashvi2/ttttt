@@ -141,3 +141,8 @@ html[data-yj-screen="home"] .dc-hover-e246ab14{display:none !important}
 .yj-dock button:focus-visible{outline:2px solid #ffd60a;outline-offset:2px}
 html:not([data-yj-screen="home"]) body{padding-bottom:84px}
 @media (max-width:420px){.yj-dock button{padding:9px 12px;font-size:13px}}
+
+/* About is now a bento page; the old long-form layout is hidden */
+html[data-yj-screen="approach"] main > :not(.yj-abg){display:none !important}
+html[data-yj-screen="approach"] footer{display:none !important}
+html[data-yj-screen="approach"] body{padding-bottom:0}
