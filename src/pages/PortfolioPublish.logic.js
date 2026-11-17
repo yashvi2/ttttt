@@ -1723,7 +1723,7 @@ class Component extends DCLogic {
         .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
         .yj-link:hover{text-decoration-thickness:2px}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
-        .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 8px;border-radius:999px;background:${YEL};color:${INK}}
+        .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
@@ -1842,8 +1842,9 @@ class Component extends DCLogic {
           h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(44px, min(6vw, 10vh), 104px)', letterSpacing:'-0.06em', lineHeight:.82}},
             ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
               w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
-          h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'40ch'}},
-            'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
+          h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'100%'}},
+            h('span', {style:{display:'block'}}, 'Research, strategy and design for health, pharma and social change.'),
+            h('span', {style:{display:'block'}}, 'Four years at TCS; MA Design Management, UAL.')),
           h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
             ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
       h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow),
