@@ -896,15 +896,43 @@ class Component extends DCLogic {
     // Playable card from The Script (What It Takes to Move). Real prompts and
     // answers from the two editions. Tap: back -> prompt -> answer -> next edition.
     const h = React.createElement;
-    const ROUNDS = [
-      {ed:'Family Edition', bg:'#0c2410', fg:'#f2f7ef', stripe:'#9be34a', ans:'#e9f5e4', ansFg:'#0c2410',
-        q:'My son gets a curfew of midnight, my daughter gets 8pm, and if I’m honest the real reason is ____.', a:'“It’s different for girls.” No further explanation given.'},
-      {ed:'Friend Group Edition', bg:'#16161a', fg:'#f4f4f4', stripe:'#e4405f', ans:'#ececec', ansFg:'#16161a',
-        q:'I laughed along when my friend made that comment about his girlfriend instead of saying anything, because ____.', a:'Something I laughed at that I actually didn’t find funny.'}];
-    const [step, setStep] = React.useState(0);
-    const r = ROUNDS[Math.floor(step / 3) % ROUNDS.length], st = step % 3;
-    const next = () => setStep(n => (n + 1) % (ROUNDS.length * 3));
-    const label = st === 0 ? 'Tap to draw a card' : st === 1 ? 'Tap to play an answer' : 'Tap for the next edition';
+    // Family Edition deck, transcribed from the MA appendix (Deck 1: black prompt cards, white answer cards).
+    const FAMILY = {ed:'Family Edition', bg:'#0c2410', fg:'#f2f7ef', stripe:'#9be34a', ans:'#e9f5e4', ansFg:'#0c2410',
+      qs:['My son gets a curfew of midnight, my daughter gets 8pm, and if I’m honest the real reason is ____.',
+        'I never taught my son to cook or do laundry because ____.',
+        'The real reason I started saving for my daughter’s wedding before I ever asked about her career is ____.',
+        'I told my son “don’t cry, be a man” because that’s exactly what my father told me, and I never stopped to ask ____.',
+        'My wife quit her job after marriage and I didn’t, and the honest reason is ____.',
+        'I expect my daughter-in-law to adjust to this house more than I expect my son to, because ____.',
+        'The first thing I ask my daughter after dark is what she was wearing, and the real reason I ask that first is ____.',
+        'If my son told me he wanted to be a stay-at-home father, my first thought honestly would be ____.',
+        'I’ve watched my mother serve everyone before herself my whole life, and I never once asked her ____.',
+        '“Log kya kahenge” still runs this house, and if I’m honest, the actual fear underneath it is ____.',
+        'I never told my son it was okay to fail at something, because I was taught ____.',
+        'When my daughter said she wanted a love marriage instead of an arranged one, my first reaction came from ____.',
+        'I’ve never actually asked my own father why ____.',
+        'If my son earned less than his wife, the thing I’d actually be worried about is ____.'],
+      as:['Whatever Dada said in 1987 and nobody’s allowed to question since', 'My mother’s silence, which everyone mistakes for peace',
+        'A rule that only exists because my brother is a boy', '“It’s different for girls.” No further explanation given.',
+        'Fear of the building WhatsApp group finding out', 'Something Chachi said once that became law', 'My dad’s ego wearing a “tradition” costume',
+        'The same fight my parents have never actually resolved', 'Whatever keeps my mother small and my father comfortable',
+        'A boundary that appeared the day I turned 13', 'My grandmother’s trauma, repackaged as “advice”', 'The thing nobody in this house has therapy for',
+        'My dad’s fear of being questioned, dressed up as “respect”', 'Something that would never survive one honest conversation',
+        'The wedding my parents are already planning that I never agreed to', 'My mother’s dreams, quietly buried under mine',
+        'A double standard nobody in this house will admit out loud', 'Whatever the relatives decided was “shameful” this year',
+        'My father’s silence when it should have been an apology', 'The comparison to my cousin that never actually stops',
+        'A rule that exists purely so nobody has to have a hard conversation', 'My mother apologising for something that was never her fault',
+        'Something my dad still hasn’t forgiven his own father for', 'The gap between what my parents preach and what they actually do']};
+    const FRIENDS = {ed:'Friend Group Edition', bg:'#16161a', fg:'#f4f4f4', stripe:'#e4405f', ans:'#ececec', ansFg:'#16161a',
+      qs:['I laughed along when my friend made that comment about his girlfriend instead of saying anything, because ____.'],
+      as:['Something I laughed at that I actually didn’t find funny']};
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const deal = n => { const d = n % 3 === 2 ? FRIENDS : FAMILY; return {...d, q:pick(d.qs), a:pick(d.as)}; };
+    const [round, setRound] = React.useState(() => ({n:0, ...FAMILY, q:FAMILY.qs[0], a:FAMILY.as[3]}));
+    const [st, setSt] = React.useState(0);
+    const r = round;
+    const next = () => { if (st < 2) setSt(st + 1); else { setRound(x => ({n:x.n + 1, ...deal(x.n + 1)})); setSt(1); } };
+    const label = st === 0 ? 'Tap to draw a card' : st === 1 ? 'Tap to play an answer' : 'Tap to draw again';
     const stripes = col => h('svg', {viewBox:'0 0 100 140', preserveAspectRatio:'none', 'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%'}},
       h('path', {d:'M-10 18 C 20 6 45 30 70 14 S 110 4 120 10', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}),
       h('path', {d:'M-10 128 C 25 110 50 140 80 118 S 112 112 120 120', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}));
@@ -919,6 +947,7 @@ class Component extends DCLogic {
           h('span', {className:'yj-sc-face yj-sc-back', style:{background:r.bg}}, stripes(r.stripe), logo(r.fg, 'clamp(22px, 1.9vw, 30px)')),
           h('span', {className:'yj-sc-face yj-sc-front', style:{background:r.bg, color:r.fg}}, stripes(r.stripe + '66'), h('span', {className:'yj-sc-txt'}, r.q), h('span', {className:'yj-sc-mark'}, logo(r.fg, 11))))),
       h('span', {className:'yj-sc-cap'}, h('b', null, st === 0 ? 'Play The Script' : r.ed), ' · ', label),
+      st > 0 ? h('span', {key:'ct', className:'yj-sc-cnt'}, (r.n + 1) + (r.n ? ' rounds' : ' round') + ' · ' + (FAMILY.qs.length + FRIENDS.qs.length) + ' prompts, ' + (FAMILY.as.length + FRIENDS.as.length) + ' answers in this deck') : null,
       h('span', {className:'yj-sc-sr', 'aria-live':'polite'}, st === 1 ? 'Prompt: ' + r.q : st === 2 ? 'Answer: ' + r.a : ''));
   };
 
@@ -1208,6 +1237,7 @@ class Component extends DCLogic {
         .yj-sc-ans{display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0;transform:translate(10%, 4%) rotate(4deg);transition:opacity 300ms ease,transform 600ms cubic-bezier(.3,1.4,.4,1);z-index:2}
         .yj-sc-ans.on{opacity:1;transform:translate(34%, 18%) rotate(9deg)}
         .yj-sc-cap{font-family:${F};font-size:12px;white-space:nowrap}
+        .yj-sc-cnt{display:none}
         .yj-sc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
         .yj-st-coffee{width:clamp(72px, 5.8vw, 104px);right:clamp(16px, 1.8vw, 28px);bottom:clamp(16px, 1.8vw, 28px)}
         @media (hover:none){.yj-pj-thumb{display:none}}
