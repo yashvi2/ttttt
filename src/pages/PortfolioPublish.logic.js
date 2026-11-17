@@ -814,6 +814,64 @@ class Component extends DCLogic {
       p.items.map(it => h('button', {key:it.key, onClick:it.onClick, 'aria-current':it.on ? 'page' : undefined, className:it.on ? 'yj-dock-on' : ''}, it.label)));
   };
 
+  static ContactBento = function ContactBento(p) {
+    // Contact in the dashboard system: one yellow focal tile, flat white tiles,
+    // the actions recruiters use (copy email, LinkedIn, CV), and the agent as an option.
+    const h = React.createElement;
+    const YEL = '#ffd60a', INK = '#111111', GREY = '#6b6b6b', LINE = '#e3e3e0';
+    const F = "'Schibsted Grotesk', sans-serif", EMAIL = 'yashvi.jain.yj@gmail.com';
+    const [copied, setCopied] = React.useState(false);
+    const copy = async () => { try { await navigator.clipboard.writeText(EMAIL); } catch (_) { const ta = document.createElement('textarea'); ta.value = EMAIL; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); } setCopied(true); setTimeout(() => setCopied(false), 1800); };
+    const london = () => new Date().toLocaleTimeString('en-GB', {timeZone:'Europe/London', hour:'2-digit', minute:'2-digit'});
+    const [now, setNow] = React.useState(london());
+    React.useEffect(() => { const t = setInterval(() => setNow(london()), 20000); return () => clearInterval(t); }, []);
+    const label = t => h('span', {style:{fontSize:14, color:GREY}}, t);
+    const row = (k, v, act) => h('div', {key:k, className:'yj-ct2-row'}, h('span', null, label(k), h('span', {style:{display:'block', fontSize:17, fontWeight:600, marginTop:2, wordBreak:'break-word'}}, v)), act);
+    return h('div', {className:'yj-ct2', role:'region', 'aria-label':'Contact Yashvi Jain'},
+      h('style', null, `
+        .yj-ct2{box-sizing:border-box;min-height:100svh;padding:28px 28px 110px;background:#f6f6f3;font-family:${F};color:${INK};display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:minmax(0,auto);gap:28px;align-content:start;
+          background-image:radial-gradient(circle, #e4e3de 1px, transparent 1.2px);background-size:24px 24px}
+        .yj-ct2 > div{box-sizing:border-box;background:#fff;border-radius:18px;padding:clamp(20px,2vw,32px);min-width:0;animation:yjCtRise 600ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-ct2 > div:nth-child(3){animation-delay:80ms}.yj-ct2 > div:nth-child(4){animation-delay:160ms}.yj-ct2 > div:nth-child(5){animation-delay:240ms}
+        @keyframes yjCtRise{from{opacity:0;translate:0 18px}}
+        .yj-ct2-hero{grid-column:span 7;background:${YEL} !important;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:420px}
+        .yj-ct2-hero h1{margin:0;font-weight:600;font-size:clamp(44px,5.4vw,88px) !important;line-height:.95 !important;letter-spacing:-0.05em !important}
+        .yj-ct2-ways{grid-column:span 5;display:flex;flex-direction:column}
+        .yj-ct2-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-top:1px solid ${LINE}}
+        .yj-ct2-row:first-of-type{border-top:0}
+        .yj-ct2-btn{all:unset;cursor:pointer;box-sizing:border-box;font-family:${F};font-size:15px;font-weight:600;padding:11px 18px;border-radius:999px;border:1.5px solid ${INK};color:${INK};white-space:nowrap;text-decoration:none;transition:background 200ms ease,color 200ms ease}
+        .yj-ct2-btn:hover{background:${INK};color:#fff}
+        .yj-ct2-btn.solid{background:${INK};color:#fff}.yj-ct2-btn.solid:hover{background:#333}
+        .yj-ct2-btn:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-ct2-info{grid-column:span 4}.yj-ct2-agent{grid-column:span 8;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+        .yj-ct2-info dl{margin:0;display:grid;gap:14px}.yj-ct2-info dd{margin:2px 0 0;font-size:17px;font-weight:600}
+        .yj-ct2-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:${INK};margin-right:8px;animation:yjCtLive 2s ease-in-out infinite}
+        @keyframes yjCtLive{50%{opacity:.25}}
+        @media (max-width:980px){.yj-ct2-hero,.yj-ct2-ways,.yj-ct2-info,.yj-ct2-agent{grid-column:span 12}}
+        @media (max-width:640px){.yj-ct2{padding:16px 16px 110px;gap:18px}.yj-ct2-hero{min-height:300px}}
+        @media (prefers-reduced-motion:reduce){.yj-ct2 > div,.yj-ct2-dot{animation:none}}
+      `),
+      h('div', {className:'yj-ct2-hero'},
+        h('span', {style:{display:'flex', justifyContent:'space-between', fontSize:14, flexWrap:'wrap', gap:8}}, h('span', null, 'Contact'), h('span', null, h('span', {className:'yj-ct2-dot', 'aria-hidden':true}), 'Open to roles · London ' + now)),
+        h('div', null,
+          h('h1', null, 'Got a role, a project, or a wicked problem?'),
+          h('p', {style:{margin:'18px 0 0', fontSize:'clamp(16px,1.3vw,19px)', lineHeight:1.5, maxWidth:'44ch'}}, 'Half-formed ideas welcome. A role, a project or just a coffee chat: I usually reply within a day.'))),
+      h('div', {className:'yj-ct2-ways'},
+        h('h2', {style:{margin:'0 0 8px', fontWeight:600, letterSpacing:'-0.03em'}}, 'Reach me'),
+        row('Email', EMAIL, h('button', {className:'yj-ct2-btn solid', onClick:copy, 'aria-live':'polite'}, copied ? 'Copied ✓' : 'Copy email')),
+        row('LinkedIn', 'Yashvi Jain', h('a', {className:'yj-ct2-btn', href:p.linkedin, target:'_blank', rel:'noopener'}, 'Open profile ↗')),
+        row('CV', 'One page, PDF', h('a', {className:'yj-ct2-btn', href:p.cv, target:'_blank', rel:'noopener'}, 'Download ↓'))),
+      h('div', {className:'yj-ct2-info'},
+        h('dl', null,
+          h('div', null, h('dt', null, label('Based in')), h('dd', null, 'London, UK')),
+          h('div', null, h('dt', null, label('Looking for')), h('dd', null, 'Product & service design roles')),
+          h('div', null, h('dt', null, label('Sectors')), h('dd', null, 'Health, pharma, public services')))),
+      h('div', {className:'yj-ct2-agent'},
+        h('div', {style:{maxWidth:'52ch'}}, h('h2', {style:{margin:'0 0 6px', fontWeight:600, letterSpacing:'-0.03em'}}, 'Prefer to ask questions first?'),
+          h('p', {style:{margin:0, fontSize:16, lineHeight:1.5, color:'#444'}}, 'My portfolio agent can answer questions about my work and experience, any time. It passes the conversation on to me if you’d like a reply.')),
+        h('button', {className:'yj-ct2-btn', onClick:p.onAgent}, 'Ask my agent →')));
+  };
+
   static AboutBento = function AboutBento(p) {
     // About as a bento page in the home system: yellow/black/white/grey,
     // Schibsted Grotesk 600/400, flat tiles, no cards inside tiles.
@@ -1322,7 +1380,7 @@ class Component extends DCLogic {
     const h = React.createElement;
     const YEL = '#ffd60a', INK = '#111111', PAPER = '#ffffff', GREY = '#6b6b6b', LINE = '#e3e3e0', BG = '#f6f6f3';
     const F = "'Schibsted Grotesk', sans-serif";
-    const M = 'clamp(17px, min(1.75vw, 3.1vh), 26px)', S = 14;
+    const M = 'clamp(16px, min(1.4vw, 2.5vh), 21px)', S = 14;
     const label = (txt, extra) => h('span', {style:{fontSize:S, fontWeight:400, color:GREY, ...extra}}, txt);
     const title = (txt, extra) => h('span', {style:{fontSize:M, fontWeight:600, letterSpacing:'-0.02em', lineHeight:1.15, ...extra}}, txt);
     const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, lineHeight:1}}, '→');
@@ -1499,7 +1557,7 @@ class Component extends DCLogic {
 
     return h(React.Fragment, null, view === 'proj' ? projectsView : null, h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento' + (view === 'proj' ? ' yj-hide' : ''), style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
-        .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px 28px 84px;display:grid;gap:28px;
+        .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr)) clamp(48px, 7vh, 76px);
           grid-template-areas:
             "in in in in in in ph ph ph ab ab ab"
@@ -1554,7 +1612,7 @@ class Component extends DCLogic {
         .yj-wl{display:inline-block;animation:yjWl 800ms cubic-bezier(.3,1.5,.4,1) both;transition:transform 400ms cubic-bezier(.3,1.8,.4,1)}
         @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
         .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
-        @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px 20px 74px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
+        @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
         .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
         .yj-sl-on{opacity:1;transform:scale(1)}
         .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
@@ -1634,7 +1692,7 @@ class Component extends DCLogic {
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London ' + now)),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
-          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(52px, min(7.6vw, 12.8vh), 140px)', letterSpacing:'-0.065em', lineHeight:.82}},
+          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(44px, min(6vw, 10vh), 104px)', letterSpacing:'-0.06em', lineHeight:.82}},
             ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
               w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
           h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'40ch'}},
@@ -2466,6 +2524,7 @@ Agent:`;
         {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
         {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')}]}),
       moveSimple: s.screen === 'case' && CASES[s.ci] && CASES[s.ci].id === 'move' ? h(Component.CaseMoveSimple, {c:CASES[s.ci]}) : null,
+      contactBento: s.screen === 'contact' ? h(Component.ContactBento, {cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', onAgent:() => this.setState({chatOpen:true})}) : null,
       aboutBento: s.screen === 'approach' ? h(Component.AboutBento, {timeline:TIMELINE, portrait:__R('assets/web/assets/yashvi.webp'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onContact:() => this.go('contact'),
         skills:[{t:'Strategy', items:['Stakeholder engagement','Cross-functional teamwork','Insight communication','Concept development']}, {t:'Research', items:['Discovery research','Interviews','Usability testing','Workshop facilitation','Co-design','Qualitative synthesis']}, {t:'Service design', items:['Service blueprints','Journey mapping','Process mapping','User flows','Personas']}, {t:'Inclusive practice', items:['Accessibility','Lived-experience insight','Inclusive communication','Vulnerable users']}],
         tools:['Figma','Adobe CS','Microsoft 365','ChatGPT','Claude','UX Pilot'],

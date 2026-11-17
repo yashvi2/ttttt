@@ -7860,6 +7860,7 @@ function template(v) {
           ) : null}
           {v.isContact ? (
             <>
+              {t(v.contactBento)}
               {' '}
               <section
                 style={{
