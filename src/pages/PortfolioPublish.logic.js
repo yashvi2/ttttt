@@ -2018,10 +2018,9 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       dock: h(Component.Dock, {items:[
-        {key:'dash', label:'Dashboard', on:s.screen === 'home' && s.homeView !== 'proj', onClick:() => this.go('home')},
-        {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')},
-        {key:'about', label:'About', on:s.screen === 'approach', onClick:() => this.go('approach')},
-        {key:'contact', label:'Contact', on:s.screen === 'contact', onClick:() => this.go('contact')}]}),
+        // Two views only, like the reference: About and Contact are reached from dashboard tiles.
+        {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
+        {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')}]}),
       aboutBento: s.screen === 'approach' ? h(Component.AboutBento, {timeline:TIMELINE, portrait:__R('assets/web/assets/yashvi.webp'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onContact:() => this.go('contact'),
         skills:[{t:'Strategy', items:['Stakeholder engagement','Cross-functional teamwork','Insight communication','Concept development']}, {t:'Research', items:['Discovery research','Interviews','Usability testing','Workshop facilitation','Co-design','Qualitative synthesis']}, {t:'Service design', items:['Service blueprints','Journey mapping','Process mapping','User flows','Personas']}, {t:'Inclusive practice', items:['Accessibility','Lived-experience insight','Inclusive communication','Vulnerable users']}],
         tools:['Figma','Adobe CS','Microsoft 365','ChatGPT','Claude','UX Pilot'],
