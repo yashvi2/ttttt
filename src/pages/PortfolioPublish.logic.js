@@ -950,24 +950,70 @@ class Component extends DCLogic {
     const play = [['Read', 'The judge reads a fill-in-the-blank prompt.'], ['Answer', 'Everyone plays the most convincing white card.'], ['Judge', 'Answers are read out anonymously.'], ['Win on realism', 'The most “heard-it-before” line takes the round.'], ['Talk', 'Then the table talks about why it sounded so familiar.']];
     const T = c.testing || {}, O = c.outcome || {}, PL = c.plan || {};
     const yr = v => String(Math.floor(v));
+    // --- Data visualisation (single red hue; values from the case data only) ---
+    const waffle = (n, of) => h('div', {className:'viz-waffle', role:'img', 'aria-label':n + ' out of ' + of},
+      ...Array.from({length:of}, (_, i) => h('span', {key:i, className:i < n ? 'on' : ''})));
+    const bars = (rows, max, label) => h('figure', {className:'viz viz-bars'},
+      h('figcaption', null, label),
+      h('div', {role:'list'}, ...rows.map(([k, v]) => h('div', {key:k, role:'listitem', className:'viz-row', tabIndex:0, 'aria-label':k + ': ' + v},
+        h('span', {className:'viz-k'}, k),
+        h('span', {className:'viz-track'}, h('span', {className:'viz-bar', style:{width:(v / max * 100) + '%'}}), h('b', null, v)),
+        h('span', {className:'viz-tip', role:'tooltip'}, k + ': ' + v)))));
+    const LEVELS = ['Low', 'Medium', 'High'];
+    const dots = (rows, label, note) => h('figure', {className:'viz viz-dots'},
+      h('figcaption', null, label),
+      h('div', {className:'viz-dots-head', 'aria-hidden':true}, h('span'), ...LEVELS.map(l => h('span', {key:l}, l))),
+      ...rows.map(([k, lv, why]) => h('div', {key:k, className:'viz-dot-row', tabIndex:0, 'aria-label':k + ': ' + LEVELS[lv] + ' engagement. ' + why},
+        h('span', {className:'viz-k'}, k),
+        ...LEVELS.map((l, i) => h('span', {key:l, className:'viz-cell'}, i === lv ? h('i', {className:'viz-dot l' + i}) : h('i', {className:'viz-tick'}))),
+        h('span', {className:'viz-tip', role:'tooltip'}, why))),
+      note ? h('p', {className:'viz-note'}, note) : null);
+    const gantt = (road, ms) => {
+      const t0 = 2026.5, t1 = 2032.4, X = v => ((v - t0) / (t1 - t0) * 100) + '%', W = (a2, b2) => ((b2 - a2) / (t1 - t0) * 100) + '%';
+      const years = [2027, 2028, 2029, 2030, 2031, 2032];
+      return h('figure', {className:'viz viz-gantt'},
+        h('div', {className:'viz-legend'}, ...[['S', 'Short term'], ['M', 'Mid term'], ['L', 'Long term']].map(([k, l]) => h('span', {key:k}, h('i', {className:'g' + k}), l))),
+        h('div', {className:'viz-g-plot'},
+          h('div', {className:'viz-g-axis', 'aria-hidden':true},
+            ...years.map(y => h('span', {key:y, className:'viz-g-year', style:{left:X(y)}}, h('em', null, "'" + String(y).slice(2)))),
+            ms ? h('span', {className:'viz-g-ms', style:{left:X(ms.at)}}, h('em', null, 'Mid-point review')) : null),
+          ...road.map(r => h('div', {key:r.k, className:'viz-g-row', tabIndex:0, 'aria-label':r.k + ', ' + r.segs.map(sg => yr(sg[0]) + ' to ' + yr(sg[1])).join(' then ')},
+            h('span', {className:'viz-g-k'}, r.k),
+            h('span', {className:'viz-g-track'}, ...r.segs.map((sg, i) => h('span', {key:i, className:'viz-g-bar g' + sg[2], style:{left:X(sg[0]), width:W(sg[0], sg[1])}}))),
+            h('span', {className:'viz-tip', role:'tooltip'}, r.k + ' · ' + yr(r.segs[0][0]) + '–' + yr(r.segs[r.segs.length - 1][1]))))));
+    };
+    // Graphic language from the project itself: The Script's brush arcs and the red halftone prints.
+    const arcs = (col, op, cls) => h('svg', {className:'fb-arcs ' + (cls || ''), viewBox:'0 0 300 400', preserveAspectRatio:'none', 'aria-hidden':true},
+      h('path', {d:'M-20 70 C 60 10 140 120 230 50 S 320 20 330 40', stroke:col, strokeWidth:30, fill:'none', strokeLinecap:'round', opacity:op}),
+      h('path', {d:'M-30 110 C 40 60 120 150 210 95', stroke:col, strokeWidth:16, fill:'none', strokeLinecap:'round', opacity:op * .6}),
+      h('path', {d:'M-20 370 C 70 300 160 410 250 330 S 320 300 330 310', stroke:col, strokeWidth:30, fill:'none', strokeLinecap:'round', opacity:op}));
+    const halftone = (src, pos) => h('img', {className:'fb-ht', src:__R(src), alt:'', 'aria-hidden':true, style:{objectPosition:pos || '50% 50%'}});
     const EASTD = {Easy:'Simple to start, nothing to set up.', Attractive:'Fun enough to choose freely.', Social:'Seen and shared among peers.', Timely:'Arrives when the habit is forming.'};
-    const P = (eyebrowTxt, title, ...kids) => h('div', {className:'fb-in-page'}, h('div', {className:'fb-eye'}, eyebrowTxt), h('h4', {className:'fb-h'}, title), ...kids);
+    const P = (eyebrowTxt, title, ...kids) => h('div', {className:'fb-in-page'}, h('svg', {className:'fb-corner', viewBox:'0 0 120 120', 'aria-hidden':true}, h('path', {d:'M10 -10 C 30 50 80 40 130 70', stroke:RED, strokeWidth:14, fill:'none', strokeLinecap:'round'})), h('div', {className:'fb-eye'}, eyebrowTxt), h('h4', {className:'fb-h'}, title), ...kids);
     const para = t => h('p', {className:'fb-p'}, t);
     const hz = k => (PL.road || []).flatMap(r => r.segs.filter(sg => sg[2] === k).map(sg => [r.k, yr(sg[0]) + (yr(sg[1]) !== yr(sg[0]) ? '–' + yr(sg[1]).slice(2) : '')]));
     const HZ = Object.fromEntries((PL.horizons || []).map(x => [x.hz, x]));
     const list = rows => h('ul', {className:'fb-list'}, ...rows.map(([k, v], i) => h('li', {key:i}, h('span', null, k), h('b', null, v))));
     const book = [
-      h('div', {className:'fb-cv'}, h('div', {className:'fb-eye', style:{color:'#fff'}}, 'What It Takes to Move · Strategy'), h('div', {className:'fb-cv-t'}, 'Change that outlasts the game.'), h('div', {className:'fb-cv-s'}, 'A six-year service and toolkit plan · 2026–2032'), h('div', {className:'fb-cv-hint'}, 'Turn the page →')),
+      h('div', {className:'fb-cv'}, halftone('assets/web/assets/ma/game-family-ht.webp', '50% 40%'), arcs('#fff', .9), h('div', {className:'fb-eye', style:{color:'#fff'}}, 'What It Takes to Move · Strategy'), h('div', {className:'fb-cv-t'}, 'Change that outlasts the game.'), h('div', {className:'fb-cv-s'}, 'A six-year service and toolkit plan · 2026–2032'), h('div', {className:'fb-cv-hint'}, 'Turn the page →')),
       P('The idea', 'Six years, one habit at a time.', para(PL.p), para('This booklet walks through how the change is built, stage by stage, and when each piece rolls out.')),
       P('The model', PL.ladderH || 'How the behaviour changes', para(PL.ladderP), h('div', {className:'fb-east'}, ...Object.entries(EASTD).map(([k, d]) => h('div', {key:k}, h('b', null, k), h('span', null, d))))),
-      ...(PL.stages || []).map((st, i, all) => P('Stage ' + (i + 1) + ' of 5', st.k, h('div', {className:'fb-shift'}, st.shift), para(st.d),
+      ...(PL.stages || []).map((st, i, all) => P('Stage ' + (i + 1) + ' of 5', st.k, h('div', {className:'fb-bignum', 'aria-hidden':true}, '0' + (i + 1)), h('div', {className:'fb-shift'}, st.shift), para(st.d),
         h('div', {className:'fb-ladder', 'aria-hidden':true}, ...all.map((x, j) => h('div', {key:j, className:j === i ? 'on' : j < i ? 'past' : ''}, h('span', {style:{height:(28 + j * 18) + '%'}}), h('em', null, x.k)))),
         h('div', {className:'fb-tags'}, h('span', {className:'fb-tags-k'}, 'EAST:'), ...st.east.map(e => h('span', {key:e}, e))))),
       P('Two phases', 'Enable first, then engage.', ...(PL.bands || []).map(bd => h('div', {key:bd.k, className:'fb-band'}, h('b', null, bd.k), h('span', null, bd.when))), para('Awareness, Desire and Knowledge are built first through the toolkit; Ability and Reinforcement follow once partners and training are in place.')),
       ...['S', 'M', 'L'].map(k => P('Roadmap · ' + (HZ[k] ? HZ[k].when : ''), (HZ[k] ? HZ[k].k : k) + ': ' + (HZ[k] ? HZ[k].d.toLowerCase() : ''), list(hz(k)),
         k === 'L' && PL.milestone ? h('div', {className:'fb-band'}, h('b', null, PL.milestone.k), h('span', null, yr(PL.milestone.at))) : null)),
+      P('Roadmap · 2026–2032', 'Every workstream at a glance.', gantt(PL.road || [], PL.milestone)),
+      P('Success metrics', 'How we’ll know it’s working.', h('div', {className:'fb-metrics'}, ...[
+        ['Awareness', 'Families who can name a norm after one game', 'A short self-check card before and after play. It shows whether the game makes an invisible rule visible.'],
+        ['Desire', 'Boys who opt in to a second peer session', 'Coming back by choice is the signal. It separates real interest from going along with a teacher.'],
+        ['Knowledge', 'Correct answers on bystander scenarios', 'The same scenarios before and after each workshop. It tests whether people know what to do, not just that they should.'],
+        ['Ability', 'Bystander actions reported in the moment', 'Short diary prompts after training. They capture whether people actually stepped in, and how.'],
+        ['Reinforcement', 'How “normal” the new behaviour feels', 'Repeated norm-perception surveys in homes and schools to 2032, reviewed at the 2029 mid-point.']]
+        .map(([st, m, d], i) => h('div', {key:st, className:'fb-metric'}, h('span', {className:'fb-metric-n'}, '0' + (i + 1)), h('div', null, h('div', {className:'fb-metric-st'}, st), h('b', null, m), h('p', null, d)))))),
       ...(PL.phases || []).map(ph => P('Where it plays · ' + ph.when, ph.k, para(ph.goal), h('ul', {className:'fb-bul'}, ...ph.acts.map((x, i) => h('li', {key:i}, x))), h('div', {className:'fb-note'}, h('b', null, ph.sigK + ': '), ph.sig))),
-      h('div', {className:'fb-cv'}, h('div', {className:'fb-cv-t', style:{fontSize:'clamp(26px, 2.6vw, 38px)'}}, 'From noticing a norm to defending a new one.'), h('div', {className:'fb-cv-s'}, 'Reviewed continuously, with a mid-point evaluation in 2029.'), h('div', {className:'fb-cv-hint'}, '← Back to the start'))];
+      h('div', {className:'fb-cv'}, halftone('assets/web/assets/ma/game-classroom-ht.webp', '50% 60%'), arcs('#fff', .9, 'flip'), h('div', {className:'fb-cv-t', style:{fontSize:'clamp(26px, 2.6vw, 38px)'}}, 'From noticing a norm to defending a new one.'), h('div', {className:'fb-cv-s'}, 'Reviewed continuously, with a mid-point evaluation in 2029.'), h('div', {className:'fb-cv-hint'}, '← Back to the start'))];
     if (book.length % 2) book.splice(book.length - 1, 0, P('Notes', 'Measured all the way.', para('Longitudinal mapping and review run from 2027 to 2032, so each phase is judged on what changed, not on what shipped.')));
 
     return h('article', {className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
@@ -1059,7 +1105,15 @@ class Component extends DCLogic {
         .fb-list li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid ${LINE}}.fb-list b{color:${RED};font-weight:600;white-space:nowrap}
         .fb-bul{margin:0;padding-left:18px;font-size:clamp(13px,1vw,14.5px);line-height:1.5;color:${BODY}}
         .fb-note{margin-top:auto;font-size:13px;line-height:1.45;background:#fff;border-radius:10px;padding:10px 12px;color:${BODY}}
-        .fb-cv{display:flex;flex-direction:column;justify-content:center;gap:14px;height:100%}
+        .fb-cv{position:relative;display:flex;flex-direction:column;justify-content:center;gap:14px;height:100%}
+        .fb-cv > :not(.fb-ht):not(.fb-arcs){position:relative;z-index:2}
+        .fb-arcs{position:absolute;inset:calc(-1 * clamp(20px,3vw,40px));width:calc(100% + 2 * clamp(20px,3vw,40px));height:calc(100% + 2 * clamp(20px,3vw,40px));pointer-events:none;z-index:1}
+        .fb-arcs.flip{transform:scaleX(-1)}
+        .fb-ht{position:absolute;right:calc(-1 * clamp(20px,3vw,40px));bottom:calc(-1 * clamp(20px,3vw,40px));width:78%;height:62%;object-fit:cover;filter:brightness(0) invert(1);opacity:.22;mix-blend-mode:screen;pointer-events:none;z-index:0;-webkit-mask-image:linear-gradient(200deg,#000 40%,transparent 95%);mask-image:linear-gradient(200deg,#000 40%,transparent 95%)}
+        .fb-in-page{position:relative}
+        .fb-in-page > *{position:relative;z-index:1}
+        .fb-corner{position:absolute !important;top:calc(-1 * clamp(20px,3vw,40px));right:calc(-1 * clamp(20px,3vw,40px));width:clamp(70px,8vw,110px);height:auto;opacity:.16;z-index:0 !important}
+        .fb-bignum{position:absolute !important;right:0;top:20px;font-size:clamp(70px,9vw,130px);line-height:1;font-weight:600;letter-spacing:-0.05em;color:transparent;-webkit-text-stroke:1.5px ${RED};opacity:.35;z-index:0 !important}
         .fb-cv-t{font-size:clamp(30px,3.4vw,48px);line-height:1;letter-spacing:-0.04em;font-weight:600}
         .fb-cv-s{font-size:15px;opacity:.9}.fb-cv-hint{margin-top:24px;font-size:13px;opacity:.75}
         .fb-bar{display:flex;align-items:center;gap:16px;font-size:14px;color:${MUTE}}
@@ -1068,6 +1122,48 @@ class Component extends DCLogic {
         .fb-bar button:focus-visible{outline:2px solid ${RED};outline-offset:2px}
         .fb-bar button:disabled{opacity:.3;cursor:default}
         @media (prefers-reduced-motion:reduce){.fb-leaf,.fb-in{animation:none}}
+        .viz{margin:0;position:relative}
+        .viz figcaption{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:${MUTE};margin-bottom:10px}
+        .viz-tip{position:absolute;z-index:5;left:0;top:-30px;background:${INK};color:#fff;font-size:12px;line-height:1.3;padding:6px 9px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 150ms ease}
+        .viz-row,.viz-dot-row,.viz-g-row{position:relative;outline:none}
+        .viz-row:hover .viz-tip,.viz-row:focus-visible .viz-tip,.viz-dot-row:hover .viz-tip,.viz-dot-row:focus-visible .viz-tip,.viz-g-row:hover .viz-tip,.viz-g-row:focus-visible .viz-tip{opacity:1}
+        .viz-row:focus-visible,.viz-dot-row:focus-visible,.viz-g-row:focus-visible{box-shadow:0 0 0 2px ${RED};border-radius:6px}
+        .viz-waffle{display:grid;grid-template-columns:repeat(20,1fr);gap:2px;margin-top:10px}
+        .viz-waffle span{aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,.25)}.viz-waffle span.on{background:#fff}
+        .viz-bars [role=list]{display:flex;flex-direction:column;gap:10px}
+        .viz-row{display:grid;grid-template-columns:minmax(140px, 220px) 1fr;gap:14px;align-items:center;font-size:14px;color:${BODY}}
+        .viz-track{position:relative;display:flex;align-items:center;gap:8px;height:22px}
+        .viz-bar{display:block;height:100%;background:${RED};border-radius:0 4px 4px 0;min-width:4px}
+        .viz-track b{font-size:14px;color:${INK};font-weight:600}
+        .viz-row:hover .viz-bar{filter:brightness(1.12)}
+        .viz-dots-head,.viz-dot-row{display:grid;grid-template-columns:minmax(120px, 200px) repeat(3, 1fr);gap:8px;align-items:center}
+        .viz-dots-head{font-size:12px;color:${MUTE};text-align:center;border-bottom:1px solid ${LINE};padding-bottom:6px;margin-bottom:4px}
+        .viz-dot-row{padding:7px 0;border-bottom:1px solid ${LINE};font-size:14px;color:${BODY}}
+        .viz-cell{display:flex;justify-content:center}
+        .viz-tick{width:6px;height:6px;border-radius:50%;background:${LINE}}
+        .viz-dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+        .viz-dot.l2{background:${RED}}.viz-dot.l1{background:#e07f7f}.viz-dot.l0{background:#f2c4c4}
+        .viz-note{font-size:12.5px;color:${MUTE};margin:8px 0 0}
+        .viz-legend{display:flex;gap:12px;font-size:11.5px;color:${MUTE};margin-bottom:8px}
+        .viz-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+        .gS{background:#f0a3a3}.gM{background:#dc4b4b}.gL{background:#8e0d12}
+        .viz-g-plot{position:relative;display:flex;flex-direction:column;gap:4px;padding:18px 0 20px}
+        .viz-g-axis{position:absolute;left:38%;right:0;top:0;bottom:0;pointer-events:none}
+        .viz-g-year{position:absolute;top:14px;bottom:18px;width:1px;background:${LINE}}
+        .viz-g-year em{position:absolute;top:-14px;transform:translateX(-50%);font-style:normal;font-size:10.5px;color:${MUTE}}
+        .viz-g-ms{position:absolute;top:14px;bottom:18px;width:0;border-left:1.5px dashed ${RED}}
+        .viz-g-ms em{position:absolute;bottom:-17px;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-size:10.5px;color:${RED}}
+        .viz-g-row{display:grid;grid-template-columns:38% 1fr;align-items:center;gap:0;font-size:clamp(10px,.85vw,11.5px);color:${BODY};min-height:18px}
+        .viz-g-k{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:8px}
+        .viz-g-track{position:relative;height:9px}
+        .viz-g-bar{position:absolute;top:0;bottom:0;border-radius:4px;box-shadow:0 0 0 1px #fbf8f2}
+        .fb-metrics{display:flex;flex-direction:column;gap:8px;overflow:hidden}
+        .fb-metric{display:grid;grid-template-columns:auto 1fr;gap:10px;padding-top:7px;border-top:1px solid ${LINE}}
+        .fb-metric-n{font-size:12px;font-weight:600;color:${RED};padding-top:2px}
+        .fb-metric-st{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:${MUTE}}
+        .fb-metric b{display:block;font-size:clamp(12.5px,1vw,14px);line-height:1.3;color:${INK}}
+        .fb-metric p{margin:2px 0 0;font-size:clamp(11px,.85vw,12.5px);line-height:1.4;color:${BODY}}
+        @media (max-width:560px){.viz-row{grid-template-columns:1fr;gap:4px}.viz-dots-head,.viz-dot-row{grid-template-columns:1fr repeat(3, 44px)}}
         @media (max-width:980px){.mvs-sum-rows{grid-template-columns:1fr}.mvs-hero::before{background:linear-gradient(0deg, rgba(120,8,12,.95) 0%, rgba(150,10,16,.8) 55%, rgba(0,0,0,.1) 100%)}.mvs-facts,.mvs-stats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.mvs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media (max-width:560px){.mvs-facts,.mvs-stats,.g2,.g3,.g4,.mvs-steps{grid-template-columns:1fr}.mvs-chips{border-radius:16px}}
       `),
@@ -1088,7 +1184,7 @@ class Component extends DCLogic {
             h('div', null, h('h3', null, 'The problem'), h('p', null, 'Safety in Delhi’s public transport is treated as a woman’s job. She changes routes, clothes and timings, while the norms behind the risk go unchallenged.')),
             h('div', null, h('h3', null, 'What I did'), h('p', null, 'Researched with women and experts in India and the UK, moved the problem to where norms are learned, and designed The Script: a card game for families and friend groups.')),
             h('div', null, h('h3', null, 'The result'), h('p', null, 'In testing, kids named stereotypes aloud and picked the game up fastest. Women carried the conversation home, and mixed-age groups talked most.'))),
-          h('div', {className:'mvs-stats'}, stat('95%', 'of women in Delhi say fear of harassment limits how they travel', true), stat('7', 'women in focus groups'), stat('7', 'expert interviews, 4 in India and 3 in the UK'), stat('2', 'editions of the game, tested with families and friend groups'))),
+          h('div', {className:'mvs-stats'}, h('div', {className:'mvs-stat dark'}, h('b', null, '95%'), h('span', null, 'of women in Delhi say fear of harassment limits how they travel'), waffle(95, 100)), stat('7', 'women in focus groups'), stat('7', 'expert interviews, 4 in India and 3 in the UK'), stat('2', 'editions of the game, tested with families and friend groups'))),
         h('nav', {className:'mvs-chips', 'aria-label':'Chapters'},
           ...[['context','Context'],['research','Research'],['insight','Insight'],['script','The Script'],['testing','Testing'],['plan','The plan'],['reflect','Looking back']].map(([id, k]) => h('a', {key:id, href:'#mvs-' + id, onClick:e => { e.preventDefault(); const el = document.getElementById('mvs-' + id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); }}, k))),
         chap('context', '01', 'Context and users', S('The brief').h || 'Safety is treated as a woman’s job.', S('The brief').p,
@@ -1097,6 +1193,7 @@ class Component extends DCLogic {
           h('div', {className:'mvs-grid g3', style:{marginBottom:16}},
             ...[['assets/web/assets/focus-group.webp', 'Focus group with women from Delhi'], ['assets/web/assets/ma/expert-interview.webp', 'Expert interview'], ['assets/web/assets/ma/exhibit-visitor-hq.webp', 'A visitor answering a prompt at the UAL exhibition']]
               .map(([src, k]) => h('figure', {key:src, style:{margin:0}}, h('div', {className:'mvs-ph', style:{aspectRatio:'4/3'}}, img(src, k)), h('figcaption', {className:'mvs-who'}, k)))),
+          h('div', {style:{marginBottom:24}}, bars([['Women in focus groups', 7], ['Audio diaries of journeys', 4], ['Expert interviews, India', 4], ['Expert interviews, UK', 3]], 8, 'Who I heard from (people and diaries)')),
           h('div', {className:'mvs-grid g3'}, ...experts.map(([w, r, q]) => card([h('p', {className:'mvs-q', style:{marginTop:0}}, '“' + q + '”'), h('div', {className:'mvs-who'}, w + ' · ' + r)])))),
         chap('insight', '03', 'Insight', S('Insights').h ? S('Insights').h.replace(' .', '.') : 'Every path led back to how men behave and are raised.', S('Insights').p,
           h('div', {className:'mvs-grid g2'},
@@ -1107,6 +1204,14 @@ class Component extends DCLogic {
             h('div', {className:'mvs-ph', style:{aspectRatio:'4/3'}}, img(it.src, it.k)), h('figcaption', {className:'mvs-who'}, h('b', {style:{color:INK}}, it.k), ' · ', it.d)))),
           h('ol', {className:'mvs-steps', 'aria-label':'How a round works'}, ...play.map(([k, d]) => h('li', {key:k}, h('b', null, k), d)))),
         chap('testing', '05', 'Testing', T.h || 'What testing showed.', T.p,
+          h('div', {style:{marginBottom:24}}, dots([
+            ['Kids', 2, 'More willing to name stereotypes aloud, and picked up the mechanics faster.'],
+            ['Women', 2, 'High engagement; carried the conversation home.'],
+            ['Mixed-age groups', 2, 'Richer discussion than single-generation tables.'],
+            ['Boys with boys', 2, 'More open and less guarded than in mixed-gender groups.'],
+            ['Adults', 1, 'Softened answers or slipped into teaching mode.'],
+            ['Older men', 0, 'Limited engagement, as expected: the game targets younger boys.']],
+            'Observed engagement in playtests', 'Qualitative: based on facilitator observation across family, friend-group and mixed-age tables, not a survey score.')),
           h('div', {className:'mvs-grid g3', style:{marginBottom:16}}, ...(T.findings || []).map(f => card([h('div', {className:'mvs-k'}, f.k), h('p', {style:{margin:'8px 0 0', lineHeight:1.5, color:BODY}}, f.v)]))),
           h('div', {className:'mvs-grid g2'}, ...(T.imgs || []).map(m => h('div', {key:m.src, className:'mvs-ph', style:{aspectRatio:'16/10'}}, img(m.src, m.k))))),
         chap('plan', '06', 'The plan', 'A six-year plan, in a booklet.', 'The game starts the conversation; this plan keeps it going. Flip through the booklet: tap the pages, use the buttons, or the arrow keys.',
