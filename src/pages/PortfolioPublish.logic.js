@@ -1685,13 +1685,26 @@ class Component extends DCLogic {
       h('div', {className:'yj-pv-head'},
         h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
         h('div', {style:{display:'flex', gap:8, flexWrap:'wrap'}}, cats.map(k => h('button', {key:k, onClick:() => setCat(k), 'aria-pressed':cat === k, className:'yj-chip' + (cat === k ? ' yj-chip-on' : '')},
-          k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))))),
+          k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))),
+          h('button', {className:'yj-chip', onClick:() => { const el = document.getElementById('yj-play'); el && el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }}, 'Play ↓'))),
       h('div', {className:'yj-pv-grid', onMouseMove:pillMove, onMouseLeave:() => setPv(false)},
         shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}}, c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
           h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
             h('span', {style:{fontWeight:600, fontSize:17, letterSpacing:'-0.01em'}}, c.short),
             h('span', {style:{fontSize:13, color:GREY, textAlign:'right'}}, [c.years, c.origin, c.stat || c.cat].filter(Boolean).join(' · ')))))),
+      h('section', {id:'yj-play', className:'yj-play', 'aria-labelledby':'yj-play-h'},
+        h('div', {className:'yj-play-head'},
+          h('h2', {id:'yj-play-h', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(28px, 2.8vw, 44px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Play'),
+          h('p', {style:{margin:0, fontSize:15, lineHeight:1.5, color:GREY, maxWidth:'46ch'}}, 'Rough, fast, for fun. Where I test ideas without a brief. Some become real work. Most just teach me something.')),
+        h('div', {className:'yj-play-grid'}, ...[
+          {k:'Zine', t:'The Cost of a Trace', ar:'1.41/1', el:h(Component.Zine), cls:'w2'},
+          {k:'Installation', t:'The Cost of a Trace, in the room', n:'Shown at UAL Net Zero', ar:'4/5', el:h(Component.Fade)},
+          {k:'Object', t:'3D printed clay pots', ar:'4/5', el:h('img', {src:__R('assets/web/uploads/IMG_2555-frame.webp'), alt:'3D printed clay pot', loading:'lazy'})},
+          {k:'Photo', t:'Shroom spotter, field notes', ar:'1/1', el:h('img', {src:__R('assets/web/uploads/IMG_0139.webp'), alt:'Mushrooms spotted on a walk', loading:'lazy'})},
+        ].map((it, i) => h('figure', {key:i, className:'yj-play-it ' + (it.cls || '') + ' r' + i},
+          h('div', {className:'yj-play-m', style:{aspectRatio:it.ar}}, it.el),
+          h('figcaption', null, h('span', {className:'yj-play-k'}, it.k), h('span', {className:'yj-play-t'}, it.t), it.n ? h('span', {className:'yj-play-n'}, it.n) : null))))),
       h('span', {ref:pill, className:'yj-pv-pill', 'aria-hidden':true, style:{opacity:pv ? 1 : 0}}, 'View case study ↗'));
 
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
@@ -1740,6 +1753,22 @@ class Component extends DCLogic {
         @keyframes yjSunSpin{to{transform:rotate(360deg)}}
         @media (prefers-reduced-motion:reduce){[style*="yjSunSpin"]{animation:none !important}}
         .yj-bento [hidden]{display:none !important}
+        .yj-play{margin-top:clamp(56px, 8vw, 110px);padding-top:28px;border-top:1px solid ${LINE};scroll-margin-top:20px}
+        .yj-play-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:clamp(24px, 3vw, 40px)}
+        .yj-play-grid{display:grid;grid-template-columns:repeat(5, minmax(0, 1fr));gap:clamp(20px, 2.4vw, 36px);align-items:start}
+        .yj-play-it{margin:0;min-width:0;transition:transform 450ms cubic-bezier(.2,.7,.2,1)}
+        .yj-play-it.w2{grid-column:span 2}
+        .yj-play-it.r0{transform:rotate(-1deg)}.yj-play-it.r1{transform:rotate(1.2deg) translateY(28px)}.yj-play-it.r2{transform:rotate(-1.4deg) translateY(-6px)}.yj-play-it.r3{transform:rotate(.8deg) translateY(40px)}
+        .yj-play-it:hover{transform:rotate(0) translateY(-4px)}
+        .yj-play-m{position:relative;overflow:hidden;border-radius:12px;background:#111;box-shadow:0 18px 36px -22px rgba(0,0,0,.45)}
+        .yj-play-m > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+        .yj-play-it figcaption{display:flex;flex-direction:column;gap:3px;padding:12px 2px 0}
+        .yj-play-k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${GREY}}
+        .yj-play-t{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+        .yj-play-n{font-size:13px;color:${GREY}}
+        @media (max-width:1100px){.yj-play-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}.yj-play-it.w2{grid-column:span 2}}
+        @media (max-width:640px){.yj-play-grid{grid-template-columns:1fr}.yj-play-it.w2{grid-column:auto}.yj-play-it[class*=' r']{transform:none}}
+        @media (prefers-reduced-motion:reduce){.yj-play-it{transition:none}.yj-play-it:hover{transform:inherit}}
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
