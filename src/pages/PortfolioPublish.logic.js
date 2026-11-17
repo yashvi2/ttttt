@@ -785,7 +785,7 @@ class Component extends DCLogic {
     // One style throughout: flat tiles, one blue, one typeface, no cards
     // inside tiles.
     const h = React.createElement;
-    const BLUE = '#1338d6', INK = '#111111', PAPER = '#ffffff', BG = '#e8e9ee', MUTE = '#6b6f7a';
+    const RED = '#d23a24', GREEN = '#1d6b3f', INK = '#111111', PAPER = '#ffffff', BG = '#efeee9', MUTE = '#6b6f7a';
     const F = "'Schibsted Grotesk', sans-serif";
     const tile = (area, props, ...kids) => {
       const {blue, onClick, href, label, style, className:cn, ...rest} = props || {};
@@ -793,7 +793,7 @@ class Component extends DCLogic {
       return h(tag, {...rest, className:'yj-bt yj-a-' + area + (cn ? ' ' + cn : '') + (onClick || href ? ' yj-bt-go' : '') + (blue ? ' yj-bt-blue' : ''), 'aria-label':label, onClick, href,
         ...(href ? {target:'_blank', rel:'noopener'} : {}),
         style:{boxSizing:'border-box', border:0, margin:0, textAlign:'left', textDecoration:'none', font:'inherit', width:'100%', height:'100%', position:'relative', overflow:'hidden', borderRadius:18,
-          background:blue ? BLUE : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(18px, 1.8vw, 30px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
+          background:blue ? RED : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(18px, 1.8vw, 30px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
           cursor:onClick || href ? 'pointer' : 'default', fontFamily:F, minWidth:0, minHeight:0, ...style}}, ...kids);
     };
     const small = (txt, extra) => h('span', {style:{fontSize:13, fontWeight:400, color:'inherit', opacity:.6, ...extra}}, txt);
@@ -838,7 +838,7 @@ class Component extends DCLogic {
           h('path', {d:'M90 70 C 90 54 98 46 108 44 C 118 48 124 56 124 70 C 124 84 116 90 108 90 C 98 90 90 84 90 70Z', fill:'#ffd23f'})),
         coffee: h('svg', {viewBox:'0 0 140 140'},
           h('path', {d:'M48 40 C 40 30 56 24 48 12 M68 40 C 60 30 76 24 68 12 M88 40 C 80 30 96 24 88 12', stroke:'#111', strokeWidth:4, fill:'none', strokeLinecap:'round'}),
-          h('ellipse', {cx:70, cy:122, rx:58, ry:12, fill:'#1338d6'}),
+          h('ellipse', {cx:70, cy:122, rx:58, ry:12, fill:'#1d6b3f'}),
           h('path', {d:'M106 64 C 132 62 132 102 104 98', stroke:'#f3ece0', strokeWidth:10, fill:'none'}),
           h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', fill:'#f3ece0'}),
           h('rect', {x:31, y:70, width:78, height:14, fill:'#ff5a1f'}),
@@ -867,7 +867,7 @@ class Component extends DCLogic {
     const follow = e => { const t = thumb.current; if (t) t.style.transform = `translate(${e.clientX + 28}px, ${e.clientY - 150}px)`; };
     const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
       h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, small('Selected work'),
-        h('button', {onClick:p.onWork, className:'yj-pj-all', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:14, fontWeight:600, color:BLUE}}, 'All work (' + list.length + ') →')),
+        h('button', {onClick:p.onWork, className:'yj-pj-all', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:14, fontWeight:600, color:GREEN}}, 'All work (' + list.length + ') →')),
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
         list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
@@ -881,7 +881,7 @@ class Component extends DCLogic {
 
     return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{background:BG}},
       h('style', null, `
-        .yj-bento{box-sizing:border-box;height:100svh;min-height:640px;padding:16px;display:grid;gap:16px;
+        .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
           grid-template-areas:
             "in in in in in in ph ph ph ab ab ab"
@@ -892,19 +892,19 @@ class Component extends DCLogic {
             "pj pj pj pj pj pj pj pj pj rc rc rc"}
         .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-wk{grid-area:wk}.yj-a-ab{grid-area:ab}.yj-a-cv{grid-area:cv}.yj-a-li{grid-area:li}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-tk{grid-area:tk}
         .yj-bt{transition:background-color 250ms ease,color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
-        .yj-bt-go:hover{background:#f3f5fc !important}
+        .yj-bt-go:hover{background:#eef5ef !important}
         .yj-bt-img{filter:grayscale(1);transition:filter 400ms ease}
         .yj-bt-go:hover .yj-bt-img,.yj-bt-go:focus-visible .yj-bt-img{filter:none}
         .yj-bt-link:hover{text-decoration-thickness:2px}
         .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px);opacity:1}
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
         .yj-bt-go:active{transform:scale(.98)}
-        .yj-bt-go:focus-visible{outline:3px solid ${BLUE};outline-offset:2px}
+        .yj-bt-go:focus-visible{outline:3px solid ${GREEN};outline-offset:2px}
         .yj-pj-row{transition:color 200ms ease, padding-left 300ms cubic-bezier(.2,.7,.2,1)}
-        .yj-pj-row:hover{color:${BLUE};padding-left:8px !important}
+        .yj-pj-row:hover{color:${GREEN};padding-left:8px !important}
         @media (hover:none){.yj-pj-thumb{display:none}}
         .yj-pj-all:hover{text-decoration:underline;text-underline-offset:4px}
-        .yj-pj-all:focus-visible,.yj-pj-row:focus-visible{outline:2px solid ${BLUE};outline-offset:2px}
+        .yj-pj-all:focus-visible,.yj-pj-row:focus-visible{outline:2px solid ${GREEN};outline-offset:2px}
         .yj-st{position:absolute;z-index:5;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
           transform:rotate(var(--r));transition:transform 300ms cubic-bezier(.3,1.6,.4,1);
           filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.18))}
@@ -923,7 +923,7 @@ class Component extends DCLogic {
           .yj-bento .yj-bt-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:220px !important}
           .yj-bento .yj-bt-p{min-height:0 !important}
-          .yj-bento{padding:12px;gap:12px}
+          .yj-bento{padding:16px;gap:18px}
           .yj-st-tulips{width:96px;right:14px;bottom:auto;top:64px}
           .yj-st-sea{width:70px;left:auto;right:-8px;bottom:-14px}
           .yj-st-coffee{width:56px;right:-10px;bottom:-30px}
@@ -953,7 +953,7 @@ class Component extends DCLogic {
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           small('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
-            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? INK : '#d5d8e0', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
+            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? GREEN : '#d5d8e0', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
         h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:10}},
           h('span', {style:{fontWeight:500, fontSize:'clamp(18px, 1.7vw, 26px)', letterSpacing:'-0.02em', lineHeight:1.25}}, '“' + r.q + '”'),
           h('span', {style:{display:'flex', alignItems:'center', gap:12}},
