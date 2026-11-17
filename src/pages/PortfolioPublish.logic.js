@@ -64,7 +64,7 @@ const CASES = [
         {k:'Family Edition', d:'Played at home, where curfews and chores are first explained.', src:'assets/web/assets/ma/game-family.webp'},
         {k:'Friend Group Edition', d:'Played in a circle at school, with a rotating judge each round.', src:'assets/web/assets/ma/game-classroom.webp'},
         {k:'Campaign poster', d:'What It Takes to Move: the street voice of the project.', src:'assets/web/assets/ma/ma-poster-wall-web.webp', tall:true},
-        {k:'Postcard', d:'“She shouldn’t have to plan her journey around someone’s behaviour.”', src:'assets/web/assets/ma/postcard-she.webp', tall:true},
+        {k:'Postcard', d:'Front and back: “She shouldn’t have to plan her journey around someone’s behaviour.”', src:'assets/web/assets/ma/postcard-mockup.webp', tall:true},
         {k:'Finish', d:'Rounded corners, matte textured finish, premium cardstock.', src:'assets/web/assets/ma/game-c.webp'}]},
     secs:[
       {k:'The brief', phase:'Discover', layer:'Strategy', h:'Safety is treated as a woman’s job.', p:'Women change routes, clothing, timings and behaviour to manage risk. Pepper spray, keys between fingers, fake calls: safety is sold individually, while the system that creates the risk stays unchanged.', fig:'poster', src:'assets/web/assets/ma/ma-poster-wall-web.webp', pos:'50% 50%', zoom:1, ar:'595/842'},
