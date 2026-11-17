@@ -662,12 +662,26 @@ class Component extends DCLogic {
     const wordmark = T('yj-br-a', {background:C.blue, display:'flex', alignItems:'center', justifyContent:'center'},
       h('span', {style:{fontFamily:sans, fontWeight:900, fontSize:'clamp(64px, 8.4vw, 150px)', letterSpacing:'-0.06em', lineHeight:.8, color:C.cream}}, 'yashvi'));
 
-    const achieve = T('yj-br-b', {background:C.cream, display:'flex', flexDirection:'column', alignItems:'center', padding:'18px 22px 26px', color:C.ink},
+    // Achievement tile: a 3D chrome-and-copper tulip trophy (three.js, loaded
+    // on demand). Without WebGL the big "70%" shows in its place.
+    const cv = React.useRef(null), [is3d, set3d] = React.useState(false);
+    React.useEffect(() => {
+      let off = null, dead = false;
+      const probe = document.createElement('canvas');
+      if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return;
+      import('../three/trophy.js').then(m => {
+        if (dead || !cv.current) return;
+        try { off = m.mountTrophy(cv.current, {onReady:() => !dead && set3d(true)}); } catch (e) { console.warn('3D tile unavailable', e); }
+      }).catch(() => {});
+      return () => { dead = true; off && off(); };
+    }, []);
+    const achieve = T('yj-br-b', {background:C.cream, display:'flex', flexDirection:'column', alignItems:'center', padding:'18px 22px 22px', color:C.ink},
       h('div', {style:{alignSelf:'stretch', display:'flex', alignItems:'center', justifyContent:'space-between', fontFamily:disp, fontSize:20}},
         h('span', {'aria-hidden':true, style:{fontFamily:sans, fontSize:20}}, '←'), 'Achievement', h('span', {style:{width:20}})),
-      h('div', {style:{flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:10}},
-        h('div', {style:{fontFamily:disp, fontSize:'clamp(64px, 6.4vw, 112px)', lineHeight:.9, letterSpacing:'-0.03em'}}, '70%'),
-        h('div', {style:{fontFamily:sans, fontSize:15, color:C.soft, textAlign:'center', maxWidth:'22ch'}}, 'fewer errors in J&J’s AI risk tools')),
+      h('div', {style:{flex:1, alignSelf:'stretch', position:'relative', minHeight:0}},
+        h('canvas', {ref:cv, 'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', display:'block', opacity:is3d ? 1 : 0, transition:'opacity .8s ease'}}),
+        is3d ? null : h('div', {style:{position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:disp, fontSize:'clamp(64px, 6.4vw, 112px)', letterSpacing:'-0.03em'}}, '70%')),
+      h('div', {style:{fontFamily:disp, fontSize:'clamp(13px, 1.2vw, 18px)', border:'1.5px solid ' + C.ink, borderRadius:4, padding:'4px 10px', whiteSpace:'nowrap', margin:'4px 0 12px', textAlign:'center'}}, '70% fewer errors · J&J'),
       chip('AVA & Dosing Error →', {onClick:p.onWork}, false));
 
     const card = T('yj-br-c', {background:C.cream, display:'flex', alignItems:'center', justifyContent:'center', padding:'clamp(16px, 2.4vw, 40px)'},
@@ -726,7 +740,7 @@ class Component extends DCLogic {
         .yj-br-note{animation:yjBrNote 900ms cubic-bezier(.2,1.3,.4,1) 400ms both}
         @keyframes yjBrNote{from{transform:translateY(24px);opacity:0}}
         @media (max-width:820px){
-          .yj-brand{height:auto !important;grid-template-columns:1fr 1fr !important;grid-template-rows:170px auto 260px 150px 230px !important}
+          .yj-brand{height:auto !important;grid-template-columns:1fr 1fr !important;grid-template-rows:170px auto 360px 150px 230px !important}
           .yj-brand .yj-br-a{grid-column:1 / span 2;grid-row:1}
           .yj-brand .yj-br-c{grid-column:1 / span 2;grid-row:2}
           .yj-brand .yj-br-b{grid-column:1;grid-row:3}
@@ -1495,7 +1509,7 @@ Agent:`;
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
-      landingHero: h(Component.SceneHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
+      landingHero: h(Component.BrandHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',

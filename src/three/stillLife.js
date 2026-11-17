@@ -22,7 +22,7 @@ function seaTexture() {
   const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
-function lathe(points, segments = 64) {
+export function lathe(points, segments = 64) {
   return new THREE.LatheGeometry(points.map(([x, y]) => new THREE.Vector2(x, y)), segments);
 }
 
@@ -38,7 +38,7 @@ function frame(w, h, map) {
   return g;
 }
 
-function tulip(color, height, lean) {
+export function tulip(color, height, lean) {
   const g = new THREE.Group();
   const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0, 0), new THREE.Vector3(lean * 0.4, height * 0.5, 0.02), new THREE.Vector3(lean, height, 0)]);
   const stem = new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.018, 8), new THREE.MeshStandardMaterial({ color: COL.stem, roughness: 0.6 }));
