@@ -274,6 +274,7 @@ function template(v) {
                           >
                             {t(c?.short)}
                           </button>
+                          <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.45', color: '#cfcfcf', maxWidth: '34ch' }}>{t(c?.cardLine)}</p>
                           <span style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             <span
                               style={{
@@ -1209,7 +1210,7 @@ function template(v) {
                         >
                           “
                         </span>
-                        <p style={{ margin: '0', fontSize: '17px', lineHeight: '1.5', textWrap: 'pretty', flex: '1' }}>
+                        <p className="yj-rec-q" onClick={(e) => e.currentTarget.classList.toggle('yj-open')} style={{ margin: '0', fontSize: '17px', lineHeight: '1.5', textWrap: 'pretty', flex: '1' }}>
                           {t(r?.quote)}
                         </p>
                         <div
@@ -7272,187 +7273,12 @@ function template(v) {
                         </button>
                       </div>
                     </div>
-                    <div
-                      data-yj-drop="1"
-                      style={{
-                        position: 'relative',
-                        flex: '0 1 300px',
-                        maxWidth: '320px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        margin: '0 auto',
-                        alignSelf: 'stretch',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '34px',
-                          height: '80px',
-                          background: '#1f2329',
-                          borderLeft: '1px solid #333333',
-                          borderRight: '1px solid #333333',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <span
-                          style={{
-                            writingMode: 'vertical-rl',
-                            transform: 'rotate(180deg)',
-                            fontFamily: 'Geist,sans-serif',
-                            fontWeight: '500',
-                            fontSize: '13px',
-                            letterSpacing: '0.24em',
-                            textTransform: 'uppercase',
-                            color: '#999999',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          Yashvi Jain · Yashvi Jain · Yashvi Jain
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          width: '64px',
-                          height: '16px',
-                          background: '#333333',
-                          border: '1px solid #666666',
-                          marginTop: '-2px',
-                        }}
-                      />
-                      <div
-                        className="dc-hover-83f7e5cb"
-                        style={{
-                          width: '100%',
-                          flex: '1',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          transformOrigin: '50% -90px',
-                          transform: 'rotate(-2deg)',
-                          transition: 'transform 700ms cubic-bezier(.3,1.6,.4,1)',
-                        }}
-                      >
-                        <div
-                          style={{
-                            flex: '1',
-                            background: '#0d0d0d',
-                            border: '2px solid #333333',
-                            padding: '14px',
-                            boxShadow: '0 40px 80px -30px rgba(0,0,0,0.9)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '14px',
-                          }}
-                        >
-                          <div style={{ height: '10px', background: '#000000', border: '1px solid #333333' }} />
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'flex-start',
-                              gap: '12px',
-                            }}
-                          >
-                            <span
-                              style={{
-                                width: '12px',
-                                height: '12px',
-                                borderRadius: '50%',
-                                background: 'var(--yj-accent, #ff4d2e)',
-                              }}
-                            />
-                            <span
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-end',
-                                gap: '4px',
-                                fontFamily: 'Geist,sans-serif',
-                                fontWeight: '500',
-                                fontSize: '13px',
-                                letterSpacing: '0.18em',
-                                textTransform: 'uppercase',
-                                color: '#999999',
-                              }}
-                            >
-                              <span>Visitor · Your company, obviously</span>
-                              <span style={{ color: '#cccccc', letterSpacing: '0.08em' }}>London · 2026</span>
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              flex: '1',
-                              minHeight: '160px',
-                              position: 'relative',
-                              width: '100%',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {t(v.aboutImg)}
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                            <span
-                              style={{
-                                fontFamily: "Geist,'Geist Display',sans-serif",
-                                fontWeight: '700',
-                                fontSize: '22px',
-                                lineHeight: '0.9',
-                                textTransform: 'uppercase',
-                                color: '#f4f4f4',
-                              }}
-                            >
-                              Yashvi Jain
-                            </span>
-                            <span style={{ fontSize: '15px', color: '#999999' }}>Designer · Researcher · Thinker</span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'flex-end',
-                              gap: '16px',
-                              paddingTop: '12px',
-                              borderTop: '2px solid #333333',
-                            }}
-                          >
-                            <span style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                              <span
-                                style={{
-                                  width: '150px',
-                                  height: '30px',
-                                  background:
-                                    'repeating-linear-gradient(90deg,#cccccc 0 2px,transparent 2px 4px,#cccccc 4px 5px,transparent 5px 8px,#cccccc 8px 11px,transparent 11px 12px)',
-                                }}
-                              />
-                              <span
-                                style={{
-                                  fontFamily: 'Geist,sans-serif',
-                                  fontWeight: '500',
-                                  fontSize: '13px',
-                                  letterSpacing: '0.14em',
-                                  color: '#8c8c8c',
-                                }}
-                              >
-                                YJ2026UAL0001
-                              </span>
-                            </span>
-                            <span
-                              style={{
-                                fontFamily: "Geist,'Geist Display',sans-serif",
-                                fontWeight: '700',
-                                fontSize: '28px',
-                                lineHeight: '1',
-                                color: '#f4f4f4',
-                              }}
-                            >
-                              YJ-01
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                    {/* Portrait, matching the home About section (no ID card) */}
+                    <div className="yj-ab-photo" style={{ position: 'relative', flex: '0 1 320px', maxWidth: '340px', width: '100%', aspectRatio: '4/5', overflow: 'hidden', borderRadius: '4px', background: '#141414', margin: '0 auto', alignSelf: 'flex-start' }}>
+                      {t(v.aboutImg)}
+                      <span className="yj-ab-tag" style={{ position: 'absolute', left: '14px', bottom: '14px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                        London · open to roles
+                      </span>
                     </div>
                   </div>
                 </div>{' '}

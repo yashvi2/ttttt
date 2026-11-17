@@ -100,3 +100,17 @@ html,body{overflow-x:clip}
   .yj-ab-stat > div:first-child{font-size:40px !important}
   .yj-ab-stat > div:last-child{font-size:10px !important;letter-spacing:.1em !important}
 }
+
+/* One contact action: the header CTA pill duplicates the Contact link, so it is hidden everywhere */
+.yj-hdr-cta{display:none !important}
+/* Touch screens have no hover, so the card's "Get nosy" button is always shown there */
+@media (hover:none){.dc-hover-78f5b1a8{opacity:1 !important;transform:none !important}}
+@media (max-width:640px){
+  /* Client logos: smaller cells so several show at once */
+  .yj-logo-track > div{min-width:150px !important;padding:16px 12px !important}
+  .yj-logo-track img{width:110px !important;height:36px !important}
+  .yj-logo-track span{font-size:10px !important;letter-spacing:.1em !important;white-space:normal !important}
+  /* Recommendations: three lines, tap to read the rest */
+  .yj-rec-q{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;font-size:16px !important}
+  .yj-rec-q.yj-open{-webkit-line-clamp:unset;display:block}
+}

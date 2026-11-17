@@ -4,7 +4,7 @@ import { DCLogic } from '../dc/DCLogic.js';
 import { __R } from '../dc/resources.js';
 
 const CASES = [
-  { id:'move', accent:'#ff3b1f', num:'01', short:'What It Takes to Move', title:'Shifting the work of women’s safety onto society', org:'UAL · London College of Communication', sector:'Public safety', cat:'Service design', disc:['Research','Strategy'], role:'MA Design Management — research, strategy & design', years:'2025–26',
+  { id:'move', cardLine:'A card game that got families and teens naming stereotypes aloud in testing.', accent:'#ff3b1f', num:'01', short:'What It Takes to Move', title:'Shifting the work of women’s safety onto society', org:'UAL · London College of Communication', sector:'Public safety', cat:'Service design', disc:['Research','Strategy'], role:'MA Design Management — research, strategy & design', years:'2025–26',
     tags:['Service design','Research','Strategy'], src:'assets/web/assets/ma/ma-poster-wall-web.webp', tone:'#930000', banner:'poster', alt:'What It Takes to Move — poster', posterAR:'4/3', cardPos:'50% 50%',
     question:'How might strategic communication design shift women’s safety in Delhi’s public transit from an individual burden to a shared civic responsibility?',
     bet:'Stereotypes are learned at home and among friends. Surface them through play instead of accusation, and teenagers can unlearn what adults defend.',
@@ -125,13 +125,13 @@ const CASES = [
       {k:'Synthesis', layer:'UX proof', h:'What visitors said, mapped to where it happened.', p:'Personas and low-fidelity blueprints connected feedback to specific moments in the visit.', fig:'low-fidelity blueprint'},
       {k:'Recommendation', layer:'Strategy', h:'Test fast, hand over ready.', p:'Rapid prototypes tested concepts quickly; the ones that survived were written up as implementation-ready recommendations.', fig:'prototype iterations'},
       {k:'Reflection', layer:'Reflection', h:'The best ideas came from the room.', p:'Co-design changes who holds the brief — and the strongest ideas came from visitors, not the studio.', fig:'visitor quote wall'}]},
-  { id:'ava', num:'04', short:'AVA & Dosing Error', title:'A design system for J&J’s AI risk tools', org:'Johnson & Johnson · TCS Interactive', sector:'Healthcare', cat:'UX', disc:['Strategy','Co-design'], role:'UI/UX Designer', years:'2025',
+  { id:'ava', cardLine:'70% fewer errors, with components reused across 3–4 more products.', num:'04', short:'AVA & Dosing Error', title:'A design system for J&J’s AI risk tools', org:'Johnson & Johnson · TCS Interactive', sector:'Healthcare', cat:'UX', disc:['Strategy','Co-design'], role:'UI/UX Designer', years:'2025',
     tags:['Design system','Data UX','Healthcare'], src:'assets/web/assets/ava/hero-mock.webp', tone:'#0b111d',
     question:'How might one design language make AI risk scores readable across clinical quality tools?',
     bet:'Build the system from the densest screens first, and the rest follows.', result:'70% lower error rate; components reused across 3–4 more products.',
     summary:'Unifying the UI of two AI-driven clinical quality platforms with one modular design system.',
     img:'risk overview dashboard', methods:['workshops','prototyping','usability'], secs:[]},
-  { id:'pfizer', num:'05', short:'Pfizer.com', title:'Bringing Pentagram’s Pfizer rebrand to the web', org:'Pfizer · Tata Consultancy Services', sector:'Healthcare', cat:'UX', disc:['Strategy','Co-design'], role:'UI Lead', years:'2024–25',
+  { id:'pfizer', cardLine:'Led the UI of pfizer.com through Pentagram’s rebrand; it became Pfizer’s design system.', num:'05', short:'Pfizer.com', title:'Bringing Pentagram’s Pfizer rebrand to the web', org:'Pfizer · Tata Consultancy Services', sector:'Healthcare', cat:'UX', disc:['Strategy','Co-design'], role:'UI Lead', years:'2024–25',
     tags:['Design system','Accessibility','Corporate UI'], src:'assets/web/assets/pfizer/home.webp', tone:'#0000c9',
     question:'How might a new brand become one accessible UI for every Pfizer page?',
     bet:'Set the rules once on pfizer.com, and every other team can follow them.', result:'pfizer.com live in the new brand; its system now guides internal pages and dashboards.',
@@ -512,7 +512,7 @@ class Component extends DCLogic {
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
     const sans = 'Geist, sans-serif', cond = sans, display = "'Gloock', Georgia, serif";
-    const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#cfcfcf', maxWidth:330, margin:0};
+    const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#cfcfcf', maxWidth:420, margin:0};
     const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
     const idCard = ri => h('div', {key:ri, ref:cards[ri], className:'yj-card', role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Drag it, or click to see selected work',
@@ -544,7 +544,8 @@ class Component extends DCLogic {
       h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
       h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(120px, 17vh, 160px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24, zIndex:1}},
         h('div', {style:corner},
-          h('p', {style:{margin:0}}, 'Product & service designer, working across research, strategy & design.'),
+          h('p', {style:{margin:0, fontSize:'clamp(22px, 2vw, 30px)', lineHeight:1.15, letterSpacing:'-0.015em', color:'#f4f4f4', fontWeight:500}}, 'Product & service designer'),
+          h('p', {style:{margin:'8px 0 0'}}, 'Research, strategy & design for health, pharma and social change.'),
           h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
         h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
       h('div', {ref:nameRef, 'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
@@ -1093,7 +1094,7 @@ Agent:`;
     const cats = CATS.filter(f => f !== 'Play').map(f => { const on = wc === f; return {label:f, count: String(f === 'Play' ? 7 : CASES.filter(c => c.id !== 'halls' && inCat(c, f)).length).padStart(2,'0'), onClick:() => this.setState({wcat:f}),
       bg: on ? CREAM : 'transparent', fg: on ? INK : CREAM, line: on ? CREAM : '#666666'}; });
     const covReveal = {care:'wipe', cray:'circle', ime:'diag', halls:'wipe'};
-    const cases = CASES.map((c, i) => ({...c, open:() => this.openCase(i), ctaO: s.hovCase === c.id ? 1 : 0, ctaY: s.hovCase === c.id ? '0px' : '8px',
+    const cases = CASES.map((c, i) => ({...c, cardLine:c.cardLine || '', open:() => this.openCase(i), ctaO: s.hovCase === c.id ? 1 : 0, ctaY: s.hovCase === c.id ? '0px' : '8px',
       hovOn:() => this.setState({hovCase:c.id}), hovOff:() => this.setState(st => st.hovCase === c.id ? {hovCase:null} : null),
       cover: h(K, {key:'cov' + c.id, level, parallax:40, label:c.title, onClick:() => this.openCase(i)}, this.pic(c, false))})).filter(c => c.id !== 'halls');
     const workList = cases.filter(c => ['move', 'pfizer', 'ava'].includes(c.id) && (s.filter === 'All' || c.tags.includes(s.filter)));
@@ -1322,7 +1323,7 @@ Agent:`;
         onEnter:() => this.setState({ctaHover:true}), onLeave:() => this.setState({ctaHover:false}), onClick:() => this.go('contact'),
         faces:[
           h('div', {style:{position:'absolute', inset:0, background:RED, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
-            h('span', {style:{font:`12px ${MONO}`, letterSpacing:'0.16em', textTransform:'uppercase'}}, '(Designer · Researcher · Thinker — open to roles)'),
+            h('span', {style:{font:`12px ${MONO}`, letterSpacing:'0.16em', textTransform:'uppercase'}}, '(Product & service designer — open to roles)'),
             h('span', {style:{fontFamily:"'Gloock',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
           h('div', {style:{position:'absolute', inset:0, background:CREAM, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`13px ${MONO}`, letterSpacing:'0.08em', textTransform:'uppercase', color:RED}}, '(Get in touch)'),
