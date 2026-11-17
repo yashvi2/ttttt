@@ -1280,6 +1280,8 @@ class Component extends DCLogic {
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
         .yj-hide{display:none !important}
+        @keyframes yjSunSpin{to{transform:rotate(360deg)}}
+        @media (prefers-reduced-motion:reduce){[style*="yjSunSpin"]{animation:none !important}}
         .yj-bento [hidden]{display:none !important}
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
@@ -2119,7 +2121,7 @@ Agent:`;
       open:() => window.open(PROTO_URL, '_blank', 'noopener'), ctaO: s.hovCase === 'askbeta' ? 1 : 0, ctaY: s.hovCase === 'askbeta' ? '0px' : '8px',
       hovOn:() => this.setState({hovCase:'askbeta'}), hovOff:() => this.setState(st => st.hovCase === 'askbeta' ? {hovCase:null} : null),
       cover: h('a', {href:PROTO_URL, target:'_blank', rel:'noopener', 'aria-label':'Open the Ask Beta prototype', style:{position:'absolute', inset:0, display:'block', background:'#f4b73a', color:'#141210', overflow:'hidden', textDecoration:'none', fontFamily:"Inter, 'Schibsted Grotesk', sans-serif"}},
-        h('span', {'aria-hidden':true, style:{position:'absolute', right:'-18%', top:'-14%', width:'78%', aspectRatio:'1', borderRadius:'50%', background:'radial-gradient(circle at 40% 40%, #ffe7a3, #f7c75a 60%, #f4b73a)'}}),
+        h('img', {src:__R('assets/askbeta-sun.svg'), alt:'', 'aria-hidden':true, style:{position:'absolute', right:'6%', top:'8%', width:'34%', maxWidth:200, height:'auto', animation:'yjSunSpin 40s linear infinite'}}),
         h('span', {style:{position:'absolute', left:'8%', bottom:'9%', right:'8%', display:'flex', flexDirection:'column', gap:'0.4em'}},
           h('span', {style:{fontSize:'clamp(12px,1vw,14px)', fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', opacity:.7}}, 'Live prototype ↗'),
           h('span', {style:{fontSize:'clamp(34px,4vw,60px)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:.95}}, 'Ask Beta'),
@@ -2229,7 +2231,7 @@ Agent:`;
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
       landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Personal'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Personal'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
