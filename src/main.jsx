@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/base.css';
+import './styles/type.css';
 import './dc/resources.js';
 import Portfolio from './pages/PortfolioPublish.jsx';
 

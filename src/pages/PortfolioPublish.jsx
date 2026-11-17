@@ -261,7 +261,7 @@ function template(v) {
                           style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px' }}
                         >
                           <button
-                            className="dc-hover-bac46065"
+                            className="dc-hover-bac46065 yj-h3"
                             onClick={c?.open}
                             style={{
                               all: 'unset',
