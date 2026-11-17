@@ -892,6 +892,41 @@ class Component extends DCLogic {
           h('a', {className:'yj-ab-btn alt', href:p.cv, target:'_blank', rel:'noopener'}, 'Download CV ↓'))]));
   };
 
+  static FlipBook = function FlipBook(p) {
+    // A booklet of the six-year plan. Desktop shows two-page spreads and turns a
+    // real leaf in 3D; phones show one page at a time. Arrow keys work too.
+    const h = React.createElement, pages = p.pages, N = pages.length;
+    const [wide, setWide] = React.useState(() => typeof matchMedia === 'undefined' || matchMedia('(min-width: 820px)').matches);
+    React.useEffect(() => { const m = matchMedia('(min-width: 820px)'); const f = () => setWide(m.matches); m.addEventListener('change', f); return () => m.removeEventListener('change', f); }, []);
+    const still = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = wide ? 2 : 1, last = wide ? N - 2 : N - 1;
+    const [at, setAt] = React.useState(0), [turn, setTurn] = React.useState(null);
+    React.useEffect(() => { setAt(a => wide ? a - (a % 2) : a); }, [wide]);
+    const go = dir => {
+      if (turn) return;
+      const to = Math.max(0, Math.min(last, at + dir * step)); if (to === at) return;
+      if (still || !wide) { setAt(to); return; }
+      setTurn(dir); setTimeout(() => { setAt(to); setTurn(null); }, 720);
+    };
+    const pg = i => i >= 0 && i < N ? h('div', {className:'fb-page' + (i === 0 || i === N - 1 ? ' fb-cover' : '')}, pages[i], i > 0 && i < N - 1 ? h('span', {className:'fb-num'}, i) : null) : h('div', {className:'fb-page fb-blank'});
+    let left, right, leaf = null;
+    if (wide) {
+      if (turn === 1) { left = pg(at); right = pg(at + 3); leaf = h('div', {className:'fb-leaf fwd'}, h('div', {className:'fb-side front'}, pg(at + 1)), h('div', {className:'fb-side back'}, pg(at + 2))); }
+      else if (turn === -1) { left = pg(at - 2); right = pg(at + 1); leaf = h('div', {className:'fb-leaf bwd'}, h('div', {className:'fb-side front'}, pg(at)), h('div', {className:'fb-side back'}, pg(at - 1))); }
+      else { left = pg(at); right = pg(at + 1); }
+    }
+    const label = wide ? `Pages ${at + 1}–${Math.min(N, at + 2)} of ${N}` : `Page ${at + 1} of ${N}`;
+    return h('div', {className:'fb', role:'region', 'aria-roledescription':'booklet', 'aria-label':p.title, tabIndex:0,
+        onKeyDown:e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } }},
+      h('div', {className:'fb-book' + (wide ? ' wide' : '')},
+        wide ? h(React.Fragment, null, h('div', {className:'fb-half l', onClick:() => go(-1)}, left), h('div', {className:'fb-half r', onClick:() => go(1)}, right), leaf, h('span', {className:'fb-spine', 'aria-hidden':true}))
+          : h('div', {key:at, className:'fb-half single' + (still ? '' : ' fb-in'), onClick:() => go(1)}, pg(at))),
+      h('div', {className:'fb-bar'},
+        h('button', {onClick:() => go(-1), disabled:at === 0, 'aria-label':'Previous page'}, '← Back'),
+        h('span', {'aria-live':'polite'}, label),
+        h('button', {onClick:() => go(1), disabled:at >= last, 'aria-label':'Next page'}, 'Turn page →')));
+  };
+
   static CaseMoveSimple = function CaseMoveSimple(p) {
     // What It Takes to Move, rebuilt in the AVA case-study structure: hero, facts,
     // summary card, six numbered chapters, results, looking back. Own red accent.
@@ -913,7 +948,28 @@ class Component extends DCLogic {
       ['Dr Sarah Lewis', 'Criminologist', 'Redesign the system, not the individual.'],
       ['Amy Tempest', 'Transport for London', 'Lighting helps. Community consultation is the real lever.']];
     const play = [['Read', 'The judge reads a fill-in-the-blank prompt.'], ['Answer', 'Everyone plays the most convincing white card.'], ['Judge', 'Answers are read out anonymously.'], ['Win on realism', 'The most “heard-it-before” line takes the round.'], ['Talk', 'Then the table talks about why it sounded so familiar.']];
-    const T = c.testing || {}, O = c.outcome || {};
+    const T = c.testing || {}, O = c.outcome || {}, PL = c.plan || {};
+    const yr = v => String(Math.floor(v));
+    const EASTD = {Easy:'Simple to start, nothing to set up.', Attractive:'Fun enough to choose freely.', Social:'Seen and shared among peers.', Timely:'Arrives when the habit is forming.'};
+    const P = (eyebrowTxt, title, ...kids) => h('div', {className:'fb-in-page'}, h('div', {className:'fb-eye'}, eyebrowTxt), h('h4', {className:'fb-h'}, title), ...kids);
+    const para = t => h('p', {className:'fb-p'}, t);
+    const hz = k => (PL.road || []).flatMap(r => r.segs.filter(sg => sg[2] === k).map(sg => [r.k, yr(sg[0]) + (yr(sg[1]) !== yr(sg[0]) ? '–' + yr(sg[1]).slice(2) : '')]));
+    const HZ = Object.fromEntries((PL.horizons || []).map(x => [x.hz, x]));
+    const list = rows => h('ul', {className:'fb-list'}, ...rows.map(([k, v], i) => h('li', {key:i}, h('span', null, k), h('b', null, v))));
+    const book = [
+      h('div', {className:'fb-cv'}, h('div', {className:'fb-eye', style:{color:'#fff'}}, 'What It Takes to Move · Strategy'), h('div', {className:'fb-cv-t'}, 'Change that outlasts the game.'), h('div', {className:'fb-cv-s'}, 'A six-year service and toolkit plan · 2026–2032'), h('div', {className:'fb-cv-hint'}, 'Turn the page →')),
+      P('The idea', 'Six years, one habit at a time.', para(PL.p), para('This booklet walks through how the change is built, stage by stage, and when each piece rolls out.')),
+      P('The model', PL.ladderH || 'How the behaviour changes', para(PL.ladderP), h('div', {className:'fb-east'}, ...Object.entries(EASTD).map(([k, d]) => h('div', {key:k}, h('b', null, k), h('span', null, d))))),
+      ...(PL.stages || []).map((st, i, all) => P('Stage ' + (i + 1) + ' of 5', st.k, h('div', {className:'fb-shift'}, st.shift), para(st.d),
+        h('div', {className:'fb-ladder', 'aria-hidden':true}, ...all.map((x, j) => h('div', {key:j, className:j === i ? 'on' : j < i ? 'past' : ''}, h('span', {style:{height:(28 + j * 18) + '%'}}), h('em', null, x.k)))),
+        h('div', {className:'fb-tags'}, h('span', {className:'fb-tags-k'}, 'EAST:'), ...st.east.map(e => h('span', {key:e}, e))))),
+      P('Two phases', 'Enable first, then engage.', ...(PL.bands || []).map(bd => h('div', {key:bd.k, className:'fb-band'}, h('b', null, bd.k), h('span', null, bd.when))), para('Awareness, Desire and Knowledge are built first through the toolkit; Ability and Reinforcement follow once partners and training are in place.')),
+      ...['S', 'M', 'L'].map(k => P('Roadmap · ' + (HZ[k] ? HZ[k].when : ''), (HZ[k] ? HZ[k].k : k) + ': ' + (HZ[k] ? HZ[k].d.toLowerCase() : ''), list(hz(k)),
+        k === 'L' && PL.milestone ? h('div', {className:'fb-band'}, h('b', null, PL.milestone.k), h('span', null, yr(PL.milestone.at))) : null)),
+      ...(PL.phases || []).map(ph => P('Where it plays · ' + ph.when, ph.k, para(ph.goal), h('ul', {className:'fb-bul'}, ...ph.acts.map((x, i) => h('li', {key:i}, x))), h('div', {className:'fb-note'}, h('b', null, ph.sigK + ': '), ph.sig))),
+      h('div', {className:'fb-cv'}, h('div', {className:'fb-cv-t', style:{fontSize:'clamp(26px, 2.6vw, 38px)'}}, 'From noticing a norm to defending a new one.'), h('div', {className:'fb-cv-s'}, 'Reviewed continuously, with a mid-point evaluation in 2029.'), h('div', {className:'fb-cv-hint'}, '← Back to the start'))];
+    if (book.length % 2) book.splice(book.length - 1, 0, P('Notes', 'Measured all the way.', para('Longitudinal mapping and review run from 2027 to 2032, so each phase is judged on what changed, not on what shipped.')));
+
     return h('article', {className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
       h('style', null, `
         .mvs{--red:${RED};font-family:${F};color:${INK};background:#fff;padding:clamp(20px, 3vw, 40px) max(clamp(20px, 5vw, 80px), env(safe-area-inset-right, 0px)) 40px max(clamp(20px, 5vw, 80px), env(safe-area-inset-left, 0px))}
@@ -960,6 +1016,58 @@ class Component extends DCLogic {
         .mvs-steps li{counter-increment:s;background:${SOFT};border-radius:14px;padding:16px;font-size:14px;line-height:1.45;color:${BODY}}
         .mvs-steps li::before{content:"0" counter(s);display:block;color:${RED};font-weight:600;font-size:12px;letter-spacing:.1em;margin-bottom:8px}
         .mvs-steps b{display:block;color:${INK};font-size:16px;margin-bottom:4px}
+        .fb{outline:none;display:flex;flex-direction:column;align-items:center;gap:16px}
+        .fb:focus-visible .fb-book{box-shadow:0 0 0 3px ${RED}, 0 40px 70px -40px rgba(0,0,0,.5)}
+        .fb-book{position:relative;width:100%;max-width:440px;aspect-ratio:3/4;perspective:2200px;border-radius:6px;box-shadow:0 40px 70px -40px rgba(0,0,0,.5)}
+        .fb-book.wide{max-width:1040px;aspect-ratio:3/2;display:grid;grid-template-columns:1fr 1fr}
+        .fb-half{position:relative;min-width:0;cursor:pointer}
+        .fb-half.single{position:absolute;inset:0}
+        .fb-in{animation:fbIn 450ms cubic-bezier(.2,.7,.2,1)}
+        @keyframes fbIn{from{opacity:0;transform:translateX(14px)}}
+        .fb-page{position:absolute;inset:0;background:#fbf8f2;color:${INK};overflow:hidden;padding:clamp(20px,3vw,40px);box-sizing:border-box}
+        .fb-half.l .fb-page{border-radius:6px 0 0 6px;background-image:linear-gradient(270deg, rgba(0,0,0,.08), rgba(0,0,0,0) 12%)}
+        .fb-half.r .fb-page{border-radius:0 6px 6px 0;background-image:linear-gradient(90deg, rgba(0,0,0,.1), rgba(0,0,0,0) 12%)}
+        .fb-half.single .fb-page{border-radius:6px}
+        .fb-page.fb-blank{background:transparent;box-shadow:none}
+        .fb-page.fb-cover{background:${RED};color:#fff}
+        .fb-spine{position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-1px);background:rgba(0,0,0,.12);pointer-events:none}
+        .fb-leaf{position:absolute;top:0;bottom:0;left:50%;width:50%;transform-style:preserve-3d;transform-origin:left center;z-index:3;pointer-events:none}
+        .fb-leaf.fwd{animation:fbFwd 720ms cubic-bezier(.45,.05,.3,1) forwards}
+        .fb-leaf.bwd{left:0;transform-origin:right center;animation:fbBwd 720ms cubic-bezier(.45,.05,.3,1) forwards}
+        @keyframes fbFwd{to{transform:rotateY(-180deg)}}
+        @keyframes fbBwd{to{transform:rotateY(180deg)}}
+        .fb-side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+        .fb-side.back{transform:rotateY(180deg)}
+        .fb-side .fb-page{box-shadow:0 0 30px rgba(0,0,0,.18)}
+        .fb-num{position:absolute;bottom:14px;right:20px;font-size:12px;color:${MUTE}}
+        .fb-half.l .fb-num,.fb-leaf.fwd .back .fb-num,.fb-leaf.bwd .front .fb-num{right:auto;left:20px}
+        .fb-in-page{display:flex;flex-direction:column;gap:10px;height:100%}
+        .fb-eye{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:${RED};font-weight:600}
+        .fb-h{margin:0;font-size:clamp(20px,2vw,28px) !important;line-height:1.1 !important;letter-spacing:-0.025em !important;font-weight:600}
+        .fb-p{margin:0;font-size:clamp(13px,1.05vw,15px);line-height:1.55;color:${BODY}}
+        .fb-shift{font-size:clamp(20px,2.1vw,30px);line-height:1.15;color:${RED};font-weight:500;letter-spacing:-0.02em}
+        .fb-ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;align-items:end;flex:1;min-height:90px;margin-top:8px}
+        .fb-ladder div{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;height:100%}
+        .fb-ladder span{display:block;border-radius:6px 6px 2px 2px;background:${LINE}}
+        .fb-ladder .past span{background:#e9b9b9}.fb-ladder .on span{background:${RED}}
+        .fb-ladder em{font-style:normal;font-size:clamp(9px,.75vw,11px);color:${MUTE};text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fb-ladder .on em{color:${RED};font-weight:600}
+        .fb-tags-k{border:0 !important;padding-left:0 !important;color:${MUTE} !important}
+        .fb-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}.fb-tags span{font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${RED};color:${RED}}
+        .fb-east{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}.fb-east div{background:#fff;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:13px;color:${BODY}}.fb-east b{color:${INK}}
+        .fb-band{display:flex;justify-content:space-between;gap:12px;border-top:1px solid ${LINE};padding-top:8px;font-size:14px}.fb-band span{color:${MUTE};white-space:nowrap}
+        .fb-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;font-size:clamp(12.5px,1vw,14px)}
+        .fb-list li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid ${LINE}}.fb-list b{color:${RED};font-weight:600;white-space:nowrap}
+        .fb-bul{margin:0;padding-left:18px;font-size:clamp(13px,1vw,14.5px);line-height:1.5;color:${BODY}}
+        .fb-note{margin-top:auto;font-size:13px;line-height:1.45;background:#fff;border-radius:10px;padding:10px 12px;color:${BODY}}
+        .fb-cv{display:flex;flex-direction:column;justify-content:center;gap:14px;height:100%}
+        .fb-cv-t{font-size:clamp(30px,3.4vw,48px);line-height:1;letter-spacing:-0.04em;font-weight:600}
+        .fb-cv-s{font-size:15px;opacity:.9}.fb-cv-hint{margin-top:24px;font-size:13px;opacity:.75}
+        .fb-bar{display:flex;align-items:center;gap:16px;font-size:14px;color:${MUTE}}
+        .fb-bar button{all:unset;cursor:pointer;font-family:${F};font-weight:600;font-size:14px;color:${INK};padding:9px 16px;border-radius:999px;border:1px solid ${INK}}
+        .fb-bar button:hover:not(:disabled){background:${INK};color:#fff}
+        .fb-bar button:focus-visible{outline:2px solid ${RED};outline-offset:2px}
+        .fb-bar button:disabled{opacity:.3;cursor:default}
+        @media (prefers-reduced-motion:reduce){.fb-leaf,.fb-in{animation:none}}
         @media (max-width:980px){.mvs-sum-rows{grid-template-columns:1fr}.mvs-hero::before{background:linear-gradient(0deg, rgba(120,8,12,.95) 0%, rgba(150,10,16,.8) 55%, rgba(0,0,0,.1) 100%)}.mvs-facts,.mvs-stats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.mvs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media (max-width:560px){.mvs-facts,.mvs-stats,.g2,.g3,.g4,.mvs-steps{grid-template-columns:1fr}.mvs-chips{border-radius:16px}}
       `),
@@ -982,7 +1090,7 @@ class Component extends DCLogic {
             h('div', null, h('h3', null, 'The result'), h('p', null, 'In testing, kids named stereotypes aloud and picked the game up fastest. Women carried the conversation home, and mixed-age groups talked most.'))),
           h('div', {className:'mvs-stats'}, stat('95%', 'of women in Delhi say fear of harassment limits how they travel', true), stat('7', 'women in focus groups'), stat('7', 'expert interviews, 4 in India and 3 in the UK'), stat('2', 'editions of the game, tested with families and friend groups'))),
         h('nav', {className:'mvs-chips', 'aria-label':'Chapters'},
-          ...[['context','Context'],['research','Research'],['insight','Insight'],['script','The Script'],['testing','Testing'],['reflect','Looking back']].map(([id, k]) => h('a', {key:id, href:'#mvs-' + id, onClick:e => { e.preventDefault(); const el = document.getElementById('mvs-' + id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); }}, k))),
+          ...[['context','Context'],['research','Research'],['insight','Insight'],['script','The Script'],['testing','Testing'],['plan','The plan'],['reflect','Looking back']].map(([id, k]) => h('a', {key:id, href:'#mvs-' + id, onClick:e => { e.preventDefault(); const el = document.getElementById('mvs-' + id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); }}, k))),
         chap('context', '01', 'Context and users', S('The brief').h || 'Safety is treated as a woman’s job.', S('The brief').p,
           h('div', {className:'mvs-grid g4'}, ...(c.voices || []).map(v => card([h('div', {className:'mvs-k'}, v.theme), h('p', {className:'mvs-q'}, '“' + v.prompt + '”'), h('div', {className:'mvs-who'}, v.who + ', audio diary')])))),
         chap('research', '02', 'Research', 'Focus groups, audio diaries and experts.', S('Research').p,
@@ -1001,7 +1109,9 @@ class Component extends DCLogic {
         chap('testing', '05', 'Testing', T.h || 'What testing showed.', T.p,
           h('div', {className:'mvs-grid g3', style:{marginBottom:16}}, ...(T.findings || []).map(f => card([h('div', {className:'mvs-k'}, f.k), h('p', {style:{margin:'8px 0 0', lineHeight:1.5, color:BODY}}, f.v)]))),
           h('div', {className:'mvs-grid g2'}, ...(T.imgs || []).map(m => h('div', {key:m.src, className:'mvs-ph', style:{aspectRatio:'16/10'}}, img(m.src, m.k))))),
-        chap('reflect', '06', 'Looking back', 'What worked, and what comes next.', null,
+        chap('plan', '06', 'The plan', 'A six-year plan, in a booklet.', 'The game starts the conversation; this plan keeps it going. Flip through the booklet: tap the pages, use the buttons, or the arrow keys.',
+          h(Component.FlipBook, {title:'Six-year behaviour-change plan booklet', pages:book})),
+        chap('reflect', '07', 'Looking back', 'What worked, and what comes next.', null,
           h('div', {className:'mvs-grid g3'},
             card([h('div', {className:'mvs-k'}, 'What worked'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, 'Play lowered the stakes. People named stereotypes in a game that they would not name in a lecture.')]),
             card([h('div', {className:'mvs-k'}, 'What I learned'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, S('Reflection').p)]),
