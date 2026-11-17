@@ -936,7 +936,7 @@ class Component extends DCLogic {
     const S = k => (c.secs || []).find(x => x.k === k) || {};
     const img = (src, alt, x) => h('img', {src:__R(src), alt, loading:'lazy', style:{display:'block', width:'100%', height:'100%', objectFit:'cover', borderRadius:12, ...x}});
     const eyebrow = (n, k) => h('div', {className:'mvs-eye'}, h('span', null, n), ' · ', k);
-    const chap = (id, n, k, title, lede, ...kids) => h('section', {id:'mvs-' + id, className:'mvs-sec', 'aria-labelledby':'mvs-h-' + id},
+    const chap = (id, n, k, title, lede, ...kids) => h('section', {id:'mvs-' + id, className:'mvs-sec', 'data-rv':'', 'aria-labelledby':'mvs-h-' + id},
       eyebrow(n, k), h('h2', {id:'mvs-h-' + id}, title), lede ? h('p', {className:'mvs-lede'}, lede) : null, ...kids);
     const card = (kids, x) => h('div', {className:'mvs-card', style:x}, ...[].concat(kids));
     const stat = (n, k, dark) => h('div', {className:'mvs-stat' + (dark ? ' dark' : '')}, h('b', null, n), h('span', null, k));
@@ -949,29 +949,41 @@ class Component extends DCLogic {
       ['Amy Tempest', 'Transport for London', 'Lighting helps. Community consultation is the real lever.']];
     const play = [['Read', 'The judge reads a fill-in-the-blank prompt.'], ['Answer', 'Everyone plays the most convincing white card.'], ['Judge', 'Answers are read out anonymously.'], ['Win on realism', 'The most “heard-it-before” line takes the round.'], ['Talk', 'Then the table talks about why it sounded so familiar.']];
     const T = c.testing || {}, O = c.outcome || {}, PL = c.plan || {};
+    // Motion: reveal sections and draw charts once, as they scroll into view.
+    // Content is visible by default; motion is only armed when JS runs and the
+    // viewer hasn't asked for reduced motion.
+    const root = React.useRef(null);
+    React.useEffect(() => {
+      const el = root.current; if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      const items = el.querySelectorAll('[data-rv]');
+      el.classList.add('mvs-motion');
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); } }), {rootMargin:'0px 0px -12% 0px', threshold:0.08});
+      items.forEach(n => { const r = n.getBoundingClientRect(); if (r.top < innerHeight * .9) n.classList.add('rv-in'); else io.observe(n); });
+      return () => io.disconnect();
+    }, []);
     const yr = v => String(Math.floor(v));
     // --- Data visualisation (single red hue; values from the case data only) ---
-    const waffle = (n, of) => h('div', {className:'viz-waffle', role:'img', 'aria-label':n + ' out of ' + of},
-      ...Array.from({length:of}, (_, i) => h('span', {key:i, className:i < n ? 'on' : ''})));
-    const bars = (rows, max, label) => h('figure', {className:'viz viz-bars'},
+    const waffle = (n, of) => h('div', {className:'viz-waffle', 'data-rv':'', role:'img', 'aria-label':n + ' out of ' + of},
+      ...Array.from({length:of}, (_, i) => h('span', {key:i, className:i < n ? 'on' : '', style:{'--i':i}})));
+    const bars = (rows, max, label) => h('figure', {className:'viz viz-bars', 'data-rv':''},
       h('figcaption', null, label),
       h('div', {role:'list'}, ...rows.map(([k, v]) => h('div', {key:k, role:'listitem', className:'viz-row', tabIndex:0, 'aria-label':k + ': ' + v},
         h('span', {className:'viz-k'}, k),
-        h('span', {className:'viz-track'}, h('span', {className:'viz-bar', style:{width:(v / max * 100) + '%'}}), h('b', null, v)),
+        h('span', {className:'viz-track'}, h('span', {className:'viz-bar', style:{width:(v / max * 100) + '%', '--i':rows.findIndex(x => x[0] === k)}}), h('b', null, v)),
         h('span', {className:'viz-tip', role:'tooltip'}, k + ': ' + v)))));
     const LEVELS = ['Low', 'Medium', 'High'];
-    const dots = (rows, label, note) => h('figure', {className:'viz viz-dots'},
+    const dots = (rows, label, note) => h('figure', {className:'viz viz-dots', 'data-rv':''},
       h('figcaption', null, label),
       h('div', {className:'viz-dots-head', 'aria-hidden':true}, h('span'), ...LEVELS.map(l => h('span', {key:l}, l))),
       ...rows.map(([k, lv, why]) => h('div', {key:k, className:'viz-dot-row', tabIndex:0, 'aria-label':k + ': ' + LEVELS[lv] + ' engagement. ' + why},
         h('span', {className:'viz-k'}, k),
-        ...LEVELS.map((l, i) => h('span', {key:l, className:'viz-cell'}, i === lv ? h('i', {className:'viz-dot l' + i}) : h('i', {className:'viz-tick'}))),
+        ...LEVELS.map((l, i) => h('span', {key:l, className:'viz-cell'}, i === lv ? h('i', {className:'viz-dot l' + i, style:{'--i':rows.findIndex(x => x[0] === k)}}) : h('i', {className:'viz-tick'}))),
         h('span', {className:'viz-tip', role:'tooltip'}, why))),
       note ? h('p', {className:'viz-note'}, note) : null);
     const gantt = (road, ms) => {
       const t0 = 2026.5, t1 = 2032.4, X = v => ((v - t0) / (t1 - t0) * 100) + '%', W = (a2, b2) => ((b2 - a2) / (t1 - t0) * 100) + '%';
       const years = [2027, 2028, 2029, 2030, 2031, 2032];
-      return h('figure', {className:'viz viz-gantt'},
+      return h('figure', {className:'viz viz-gantt', 'data-rv':''},
         h('div', {className:'viz-legend'}, ...[['S', 'Short term'], ['M', 'Mid term'], ['L', 'Long term']].map(([k, l]) => h('span', {key:k}, h('i', {className:'g' + k}), l))),
         h('div', {className:'viz-g-plot'},
           h('div', {className:'viz-g-axis', 'aria-hidden':true},
@@ -979,7 +991,7 @@ class Component extends DCLogic {
             ms ? h('span', {className:'viz-g-ms', style:{left:X(ms.at)}}, h('em', null, 'Mid-point review')) : null),
           ...road.map(r => h('div', {key:r.k, className:'viz-g-row', tabIndex:0, 'aria-label':r.k + ', ' + r.segs.map(sg => yr(sg[0]) + ' to ' + yr(sg[1])).join(' then ')},
             h('span', {className:'viz-g-k'}, r.k),
-            h('span', {className:'viz-g-track'}, ...r.segs.map((sg, i) => h('span', {key:i, className:'viz-g-bar g' + sg[2], style:{left:X(sg[0]), width:W(sg[0], sg[1])}}))),
+            h('span', {className:'viz-g-track'}, ...r.segs.map((sg, i) => h('span', {key:i, className:'viz-g-bar g' + sg[2], style:{left:X(sg[0]), width:W(sg[0], sg[1]), '--i':road.indexOf(r)}}))),
             h('span', {className:'viz-tip', role:'tooltip'}, r.k + ' · ' + yr(r.segs[0][0]) + '–' + yr(r.segs[r.segs.length - 1][1]))))));
     };
     // Graphic language from the project itself: The Script's brush arcs and the red halftone prints.
@@ -1016,10 +1028,28 @@ class Component extends DCLogic {
       h('div', {className:'fb-cv'}, halftone('assets/web/assets/ma/game-classroom-ht.webp', '50% 60%'), arcs('#fff', .9, 'flip'), h('div', {className:'fb-cv-t', style:{fontSize:'clamp(26px, 2.6vw, 38px)'}}, 'From noticing a norm to defending a new one.'), h('div', {className:'fb-cv-s'}, 'Reviewed continuously, with a mid-point evaluation in 2029.'), h('div', {className:'fb-cv-hint'}, '← Back to the start'))];
     if (book.length % 2) book.splice(book.length - 1, 0, P('Notes', 'Measured all the way.', para('Longitudinal mapping and review run from 2027 to 2032, so each phase is judged on what changed, not on what shipped.')));
 
-    return h('article', {className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
+    return h('article', {ref:root, className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
       h('style', null, `
         .mvs{--red:${RED};font-family:${F};color:${INK};background:#fff;padding:clamp(20px, 3vw, 40px) max(clamp(20px, 5vw, 80px), env(safe-area-inset-right, 0px)) 40px max(clamp(20px, 5vw, 80px), env(safe-area-inset-left, 0px))}
         .mvs-in{max-width:1240px;margin:0 auto}
+        .mvs-motion [data-rv]{--ease:cubic-bezier(.2,.7,.2,1)}
+        .mvs-motion .mvs-sec[data-rv]{opacity:0;transform:translateY(18px);transition:opacity 700ms var(--ease),transform 700ms var(--ease)}
+        .mvs-motion .mvs-sec.rv-in{opacity:1;transform:none}
+        .mvs-motion .viz-bars .viz-bar{transform:scaleX(0);transform-origin:left;transition:transform 900ms var(--ease) calc(var(--i, 0) * 90ms + 150ms)}
+        .mvs-motion .viz-bars.rv-in .viz-bar{transform:none}
+        .mvs-motion .viz-bars .viz-track b{opacity:0;transition:opacity 400ms ease calc(var(--i, 0) * 90ms + 800ms)}
+        .mvs-motion .viz-bars.rv-in .viz-track b{opacity:1}
+        .mvs-motion .viz-waffle span.on{opacity:.25;transition:opacity 250ms ease calc(var(--i) * 9ms + 200ms)}
+        .mvs-motion .viz-waffle.rv-in span.on{opacity:1}
+        .mvs-motion .viz-dots .viz-dot{transform:scale(0);transition:transform 450ms cubic-bezier(.3,1.6,.4,1) calc(var(--i, 0) * 110ms + 200ms)}
+        .mvs-motion .viz-dots.rv-in .viz-dot{transform:none}
+        .mvs-motion .viz-gantt .viz-g-bar{clip-path:inset(0 100% 0 0);transition:clip-path 800ms var(--ease) calc(var(--i, 0) * 60ms + 150ms)}
+        .mvs-motion .viz-gantt.rv-in .viz-g-bar{clip-path:inset(0 0 0 0)}
+        .mvs-card,.mvs-ph{transition:transform 350ms cubic-bezier(.2,.7,.2,1),box-shadow 350ms ease}
+        .mvs-card:hover,.mvs-ph:hover{transform:translateY(-3px);box-shadow:0 14px 26px -18px rgba(0,0,0,.35)}
+        .mvs-ph img{transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
+        .mvs-ph:hover img{transform:scale(1.03)}
+        @media (prefers-reduced-motion:reduce){.mvs-card,.mvs-ph,.mvs-ph img{transition:none}.mvs-card:hover,.mvs-ph:hover,.mvs-ph:hover img{transform:none}}
         .mvs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(460px, 64vh, 680px);background:${RED} right 20% center/auto 130% no-repeat;color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden;isolation:isolate}
         .mvs-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(140,10,14,.97) 0%, rgba(150,10,16,.9) 42%, rgba(150,10,16,.15) 70%, rgba(0,0,0,0) 85%), linear-gradient(0deg, rgba(0,0,0,.35), rgba(0,0,0,0) 45%)}
         .mvs-hero > div{max-width:620px}
