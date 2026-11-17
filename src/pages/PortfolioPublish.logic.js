@@ -560,6 +560,95 @@ class Component extends DCLogic {
       idCard(0));
   };
 
+  static BentoHero = function BentoHero(p) {
+    // Home hero: a bento grid built on three things Yashvi loves, tulips,
+    // coffee and the sea. The name appears once, in the main tile.
+    const h = React.createElement;
+    const ink = '#141414', grey = '#55514b';
+    const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Schibsted Grotesk', sans-serif";
+    const tile = (extra) => ({position:'relative', borderRadius:22, overflow:'hidden', ...extra});
+    const cap = (k, v, color) => h('div', {style:{position:'absolute', left:20, right:20, bottom:18, color, fontFamily:sans}},
+      h('div', {style:{fontSize:12, fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', opacity:.75}}, k),
+      h('div', {style:{marginTop:4, fontFamily:disp, fontSize:'clamp(20px, 1.7vw, 26px)', lineHeight:1.1, letterSpacing:'-0.01em'}}, v));
+    const btn = (label, props, solid) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, padding:'13px 22px', borderRadius:999, fontFamily:sans, fontSize:16, fontWeight:500,
+      ...(solid ? {background:ink, color:'#f4f1ea'} : {border:'1.5px solid ' + ink, color:ink})}}, label);
+
+    // Sea: three layered waves drifting at different speeds
+    const wave = (d, fill, dur, delay, op) => h('path', {d, fill, opacity:op, className:'yj-wave', style:{animationDuration:dur + 's', animationDelay:delay + 's'}});
+    const W1 = 'M0 60 C 150 20 300 100 450 60 S 750 20 900 60 S 1200 100 1350 60 S 1650 20 1800 60 V 200 H 0 Z';
+    const sea = h('div', {className:'yj-bt yj-bt-sea', style:tile({background:'linear-gradient(180deg,#d6ecf3 0%,#a9d3e3 45%,#5e9fbe 100%)'})},
+      h('span', {'aria-hidden':true, className:'yj-sun', style:{position:'absolute', right:'14%', top:'16%', width:'18%', aspectRatio:'1', borderRadius:'50%', background:'radial-gradient(circle,#fff7e0 0 45%,rgba(255,247,224,0) 70%)'}}),
+      h('svg', {'aria-hidden':true, viewBox:'0 0 900 200', preserveAspectRatio:'none', style:{position:'absolute', left:0, bottom:0, width:'200%', height:'62%'}},
+        wave(W1, '#7fb7cf', 14, 0, .7), wave(W1.replace(/60/g, '85'), '#4f8fb0', 10, -3, .85), wave(W1.replace(/60/g, '115'), '#2f6f95', 7, -1, 1)),
+      cap('The sea', 'Calm on top, deep research underneath.', '#ffffff'));
+
+    // Tulips: three stems that sway, each at its own pace
+    const tulip = (x, hgt, col, dur, rot) => h('g', {className:'yj-tulip', style:{transformOrigin:`${x}px 300px`, animationDuration:dur + 's', '--r':rot + 'deg'}},
+      h('path', {d:`M${x} 300 C ${x - 4} ${300 - hgt * .5} ${x + 4} ${300 - hgt * .8} ${x} ${300 - hgt}`, stroke:'#3f7a4a', strokeWidth:5, fill:'none', strokeLinecap:'round'}),
+      h('path', {d:`M${x} ${300 - hgt * .35} C ${x - 34} ${300 - hgt * .5} ${x - 36} ${300 - hgt * .75} ${x - 8} ${300 - hgt * .8} C ${x - 14} ${300 - hgt * .6} ${x - 6} ${300 - hgt * .45} ${x} ${300 - hgt * .35}`, fill:'#5b9a64'}),
+      h('path', {d:`M${x - 22} ${300 - hgt - 6} C ${x - 24} ${300 - hgt - 40} ${x - 12} ${300 - hgt - 52} ${x - 6} ${300 - hgt - 44} L ${x} ${300 - hgt - 58} L ${x + 6} ${300 - hgt - 44} C ${x + 12} ${300 - hgt - 52} ${x + 24} ${300 - hgt - 40} ${x + 22} ${300 - hgt - 6} C ${x + 14} ${300 - hgt + 8} ${x - 14} ${300 - hgt + 8} ${x - 22} ${300 - hgt - 6} Z`, fill:col}));
+    const tulips = h('div', {className:'yj-bt yj-bt-tulip', style:tile({background:'#f7dbe0'})},
+      h('svg', {'aria-hidden':true, viewBox:'0 0 260 300', style:{position:'absolute', right:'-4%', top:'4%', height:'70%'}},
+        tulip(80, 150, '#e0566f', 4.2, 4), tulip(135, 190, '#f08aa0', 5.1, -3), tulip(188, 135, '#d63f5c', 4.6, 5)),
+      cap('Tulips', 'Ideas need a season to bloom.', '#5a1f2c'));
+
+    // Coffee: a cup with rising steam; the tile is the contact prompt
+    const steam = (x, delay) => h('path', {className:'yj-steam', d:`M${x} 120 C ${x - 14} 100 ${x + 14} 86 ${x} 64 C ${x - 12} 46 ${x + 10} 34 ${x} 18`, stroke:'#8a6a52', strokeWidth:5, fill:'none', strokeLinecap:'round', style:{animationDelay:delay + 's'}});
+    const coffee = h('div', {className:'yj-bt yj-bt-coffee', style:{borderRadius:22}}, h('button', {onClick:p.onContact, 'aria-label':'Contact: let’s talk over coffee', style:{all:'unset', boxSizing:'border-box', display:'block', width:'100%', height:'100%', minHeight:180, position:'relative', borderRadius:22, overflow:'hidden', cursor:'pointer', background:'#ead9c4'}},
+      h('svg', {'aria-hidden':true, viewBox:'0 0 260 300', style:{position:'absolute', left:'50%', top:'6%', height:'68%', transform:'translateX(-50%)'}},
+        steam(110, 0), steam(140, .9), steam(170, 1.7),
+        h('ellipse', {cx:140, cy:262, rx:96, ry:16, fill:'#d8c2a6'}),
+        h('path', {d:'M66 140 H214 L202 236 C 199 252 186 262 170 262 H110 C 94 262 81 252 78 236 Z', fill:'#fffaf2'}),
+        h('path', {d:'M214 160 C 252 160 252 214 206 214', stroke:'#fffaf2', strokeWidth:14, fill:'none'}),
+        h('ellipse', {cx:140, cy:142, rx:74, ry:12, fill:'#6b4a35'}),
+        h('path', {d:'M128 140 C 132 132 148 132 152 140 C 148 146 132 146 128 140 Z', fill:'#e8d3b8'})),
+      cap('Coffee', 'Let’s talk over coffee →', '#3b2618')));
+
+    const main = h('div', {className:'yj-bt yj-bt-main', style:tile({background:'#fffdf8', padding:'clamp(24px, 3.2vw, 48px)', display:'flex', flexDirection:'column', justifyContent:'space-between', gap:28, border:'1px solid #e6e1d6'})},
+      h('div', {style:{fontFamily:sans, fontSize:13, fontWeight:500, letterSpacing:'.14em', textTransform:'uppercase', color:grey, display:'flex', alignItems:'center', gap:10}},
+        h('span', {style:{width:8, height:8, borderRadius:'50%', background:'var(--yj-accent, #b6f23a)', boxShadow:'0 0 0 4px rgba(182,242,58,.25)'}}), 'London · open to roles'),
+      h('div', null,
+        h('h1', {style:{margin:0, fontFamily:disp, fontWeight:400, color:ink}}, 'Yashvi Jain'),
+        h('p', {style:{margin:'18px 0 0', fontFamily:sans, fontSize:'clamp(18px, 1.5vw, 22px)', lineHeight:1.4, color:ink, maxWidth:'30ch'}},
+          'Product & service designer for health, pharma and social change.'),
+        h('p', {style:{margin:'10px 0 0', fontFamily:sans, fontSize:16, lineHeight:1.5, color:grey, maxWidth:'44ch'}},
+          'Four years at TCS on J&J and Pfizer, and an MA in Design Management from UAL.')),
+      h('div', {style:{display:'flex', gap:12, flexWrap:'wrap'}},
+        btn('Selected work ↓', {onClick:p.onWork}, true),
+        btn('Download CV', {href:p.cv, target:'_blank', rel:'noopener'}, false)));
+
+    return h('section', {'aria-label':'Introduction', className:'yj-bento',
+        style:{boxSizing:'border-box', minHeight:'100svh', padding:'clamp(96px, 13vh, 120px) clamp(16px, 4vw, 56px) clamp(24px, 4vh, 48px)', background:'#f4f1ea', display:'grid',
+          gridTemplateColumns:'repeat(12, 1fr)', gridTemplateRows:'1fr 1fr', gap:'clamp(10px, 1.2vw, 16px)'}},
+      h('style', null, `
+        .yj-bento .yj-bt-main{grid-column:1 / span 6;grid-row:1 / span 2}
+        .yj-bento .yj-bt-sea{grid-column:7 / span 6;grid-row:1}
+        .yj-bento .yj-bt-tulip{grid-column:7 / span 3;grid-row:2}
+        .yj-bento .yj-bt-coffee{grid-column:10 / span 3;grid-row:2}
+        .yj-bento .yj-bt{transition:transform 500ms cubic-bezier(.2,.7,.2,1), box-shadow 500ms}
+        .yj-bento .yj-bt:not(.yj-bt-main):hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 24px 40px -24px rgba(0,0,0,.35)}
+        .yj-wave{animation:yjWave linear infinite}
+        @keyframes yjWave{to{transform:translateX(-50%)}}
+        .yj-tulip{animation:yjSway ease-in-out infinite alternate}
+        @keyframes yjSway{from{transform:rotate(calc(var(--r) * -1))}to{transform:rotate(var(--r))}}
+        .yj-bt-tulip:hover .yj-tulip{animation-duration:1.4s !important}
+        .yj-steam{stroke-dasharray:140;animation:yjSteam 2.8s ease-in-out infinite;opacity:0}
+        @keyframes yjSteam{0%{stroke-dashoffset:140;opacity:0;transform:translateY(10px)}40%{opacity:.8}100%{stroke-dashoffset:0;opacity:0;transform:translateY(-14px)}}
+        .yj-sun{animation:yjSun 6s ease-in-out infinite alternate}
+        @keyframes yjSun{to{transform:translateY(8px) scale(1.05)}}
+        @media (max-width:820px){
+          .yj-bento{grid-template-columns:1fr 1fr !important;grid-template-rows:auto 200px 200px !important;min-height:auto !important}
+          .yj-bento .yj-bt-main{grid-column:1 / span 2;grid-row:1}
+          .yj-bento .yj-bt-sea{grid-column:1 / span 2;grid-row:2}
+          .yj-bento .yj-bt-tulip{grid-column:1;grid-row:3}
+          .yj-bento .yj-bt-coffee{grid-column:2;grid-row:3}
+          .yj-bento .yj-bt-tulip svg{height:50% !important}
+        }
+        @media (prefers-reduced-motion:reduce){.yj-wave,.yj-tulip,.yj-steam,.yj-sun{animation:none !important}.yj-steam{opacity:.5}}
+      `),
+      main, sea, tulips, coffee);
+  };
+
   static Louvre = function Louvre(p) {
     const h = React.createElement, ref = React.useRef(null);
     const [sz, setSz] = React.useState({w:0,h:0}), [hot, setHot] = React.useState({}), [mx, setMx] = React.useState(null);
@@ -1198,7 +1287,7 @@ Agent:`;
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
-      landingHero: h(Component.LandingHero, {cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
+      landingHero: h(Component.BentoHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
