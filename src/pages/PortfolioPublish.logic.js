@@ -1257,7 +1257,7 @@ class Component extends DCLogic {
           .yj-sc-in{right:14px;top:104px;transform:none}
           .yj-sc-deck{width:78px}
           .yj-sc-txt{font-size:7px}
-          .yj-a-in .yj-in-p{padding-right:92px}
+
           .yj-sc-cap{display:none}
           .yj-st-coffee{width:64px;right:16px;bottom:14px;top:auto}
         }
@@ -1265,7 +1265,6 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
-        h(Component.ScriptCard, {className:'yj-sc-in'}),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
