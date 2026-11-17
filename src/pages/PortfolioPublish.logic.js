@@ -780,27 +780,30 @@ class Component extends DCLogic {
   };
 
   static BentoHome = function BentoHome(p) {
-    // The whole landing page as one screen-filling bento grid: no scroll and
-    // no separate nav bar on desktop; Work, About and Contact are tiles.
-    // One style throughout: flat tiles, one blue, one typeface, no cards
-    // inside tiles.
+    // The landing page as one screen-filling bento grid (no scroll, no nav
+    // bar on desktop). One visual system throughout:
+    //   colour  — yellow (the one colour block), black, white, grey
+    //   type    — Schibsted Grotesk, weights 600/400, sizes L / M / S
+    //   stickers — two, both black line drawings on white die-cut stickers
     const h = React.createElement;
-    const RED = '#d23a24', GREEN = '#1d6b3f', INK = '#111111', PAPER = '#ffffff', BG = '#f5f4f0', MUTE = '#6b6f7a';
+    const YEL = '#ffd60a', INK = '#111111', PAPER = '#ffffff', GREY = '#6b6b6b', LINE = '#e3e3e0', BG = '#f6f6f3';
     const F = "'Schibsted Grotesk', sans-serif";
+    const M = 'clamp(20px, 1.75vw, 26px)', S = 14;
+    const label = (txt, extra) => h('span', {style:{fontSize:S, fontWeight:400, color:GREY, ...extra}}, txt);
+    const title = (txt, extra) => h('span', {style:{fontSize:M, fontWeight:600, letterSpacing:'-0.02em', lineHeight:1.15, ...extra}}, txt);
+    const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, lineHeight:1}}, '→');
+
     const tile = (area, props, ...kids) => {
-      const {blue, onClick, href, label, style, className:cn, ...rest} = props || {};
+      const {yellow, onClick, href, label:aria, style, className:cn, ...rest} = props || {};
       const tag = href ? 'a' : onClick ? 'button' : 'div';
-      return h(tag, {...rest, className:'yj-bt yj-a-' + area + (cn ? ' ' + cn : '') + (onClick || href ? ' yj-bt-go' : '') + (blue ? ' yj-bt-blue' : ''), 'aria-label':label, onClick, href,
+      return h(tag, {...rest, className:'yj-bt yj-a-' + area + (cn ? ' ' + cn : '') + (onClick || href ? ' yj-bt-go' : ''), 'aria-label':aria, onClick, href,
         ...(href ? {target:'_blank', rel:'noopener'} : {}),
         style:{boxSizing:'border-box', border:0, margin:0, textAlign:'left', textDecoration:'none', font:'inherit', width:'100%', height:'100%', position:'relative', overflow:'hidden', borderRadius:18,
-          background:blue ? RED : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(18px, 1.8vw, 30px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
+          background:yellow ? YEL : PAPER, color:INK, padding:'clamp(18px, 1.8vw, 30px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
           cursor:onClick || href ? 'pointer' : 'default', fontFamily:F, minWidth:0, minHeight:0, ...style}}, ...kids);
     };
-    const small = (txt, extra) => h('span', {style:{fontSize:13, fontWeight:400, color:'inherit', opacity:.6, ...extra}}, txt);
-    const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, lineHeight:1, opacity:.55}}, '→');
-    const big = (txt) => h('span', {style:{fontWeight:600, fontSize:'clamp(22px, 2vw, 30px)', letterSpacing:'-0.03em', lineHeight:1}}, txt);
-    const navTile = (area, label, hint, onClick) => tile(area, {onClick, label}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, big(label), arrow), small(hint));
 
+    // Recommendations rotate every 5s; pause on hover, stop under reduced motion.
     const RECS = [
       {img:__R('assets/web/assets/recs/siddhartha.webp'), who:'Siddhartha Gigoo', role:'Head of TCS Interactive', q:'An exceptional designer. Continues to make us proud.'},
       {img:__R('assets/recs/arpit.jpeg'), who:'Arpit Vyas', role:'Product Experience Strategist', q:'A thoughtful design mindset… she took full ownership and delivered.'},
@@ -811,75 +814,60 @@ class Component extends DCLogic {
       const t = setInterval(() => { if (!hold.current && !document.hidden) setRi(i => (i + 1) % RECS.length); }, 5000);
       return () => clearInterval(t);
     }, []);
-    // haptics: short buzz on taps where the browser supports it
+    // Haptics: a short buzz on taps where the browser supports it.
     React.useEffect(() => {
       if (!('vibrate' in navigator)) return;
       const tap = e => { if (e.pointerType !== 'mouse' && e.target.closest && e.target.closest('button, a')) { try { navigator.vibrate(10); } catch (_) {} } };
       document.addEventListener('pointerdown', tap, {passive:true});
       return () => document.removeEventListener('pointerdown', tap);
     }, []);
-    // Personality stickers: die-cut flat illustrations (white edge, soft
-    // shadow) stuck over tile edges. They can be dragged anywhere.
+    const r = RECS[ri];
+
+    // Stickers: black line drawings on white die-cut stickers. Draggable.
     const Sticker = ({kind, className, rot}) => {
       const ref = React.useRef(null), st = React.useRef({x:0, y:0, sx:0, sy:0, on:false});
       const down = e => { const s0 = st.current; s0.on = true; s0.sx = e.clientX - s0.x; s0.sy = e.clientY - s0.y; e.currentTarget.setPointerCapture(e.pointerId); ref.current.classList.add('yj-st-drag'); try { navigator.vibrate && navigator.vibrate(8); } catch (_) {} };
       const move = e => { const s0 = st.current; if (!s0.on) return; s0.x = e.clientX - s0.sx; s0.y = e.clientY - s0.sy; ref.current.style.translate = s0.x + 'px ' + s0.y + 'px'; };
       const up = () => { st.current.on = false; ref.current && ref.current.classList.remove('yj-st-drag'); };
-      const art = {
-        tulips: h('svg', {viewBox:'0 0 140 150'},
-          h('path', {d:'M70 148 C 68 120 70 96 70 70', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
-          h('path', {d:'M70 148 C 62 118 48 98 34 82', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
-          h('path', {d:'M70 148 C 80 120 94 100 108 86', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
-          h('path', {d:'M70 140 C 50 128 40 112 42 96 C 58 104 66 120 70 140Z', fill:'#47a866'}),
-          h('path', {d:'M72 138 C 92 130 104 116 104 102 C 88 108 78 122 72 138Z', fill:'#47a866'}),
-          h('path', {d:'M52 48 C 52 30 60 22 70 18 C 80 22 88 30 88 48 C 88 64 80 72 70 72 C 60 72 52 64 52 48Z', fill:'#f6a9c6'}),
-          h('path', {d:'M60 26 L66 42 L70 18 L74 42 L80 26', fill:'#e77fa6'}),
-          h('path', {d:'M18 66 C 16 50 22 42 32 38 C 42 40 50 48 50 62 C 50 76 42 84 34 84 C 24 84 19 76 18 66Z', fill:'#ff5a1f'}),
-          h('path', {d:'M90 70 C 90 54 98 46 108 44 C 118 48 124 56 124 70 C 124 84 116 90 108 90 C 98 90 90 84 90 70Z', fill:'#ffd23f'})),
-        coffee: h('svg', {viewBox:'0 0 140 140'},
-          h('path', {d:'M48 40 C 40 30 56 24 48 12 M68 40 C 60 30 76 24 68 12 M88 40 C 80 30 96 24 88 12', stroke:'#111', strokeWidth:4, fill:'none', strokeLinecap:'round'}),
-          h('ellipse', {cx:70, cy:122, rx:58, ry:12, fill:'#1d6b3f'}),
-          h('path', {d:'M106 64 C 132 62 132 102 104 98', stroke:'#f3ece0', strokeWidth:10, fill:'none'}),
-          h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', fill:'#f3ece0'}),
-          h('rect', {x:31, y:70, width:78, height:14, fill:'#ff5a1f'}),
-          h('ellipse', {cx:70, cy:52, rx:42, ry:7, fill:'#6b4226'})),
-        sea: h('svg', {viewBox:'0 0 130 130'},
-          h('circle', {cx:65, cy:65, r:60, fill:'#bfe3f5'}),
-          h('circle', {cx:84, cy:46, r:16, fill:'#ffd23f'}),
-          h('clipPath', {id:'yjSeaClip'}, h('circle', {cx:65, cy:65, r:60})),
-          h('g', {clipPath:'url(#yjSeaClip)'},
-            h('path', {d:'M0 74 Q 16 64 32 74 T 64 74 T 96 74 T 128 74 T 160 74 V130 H0Z', fill:'#5aa7d6'}),
-            h('path', {d:'M0 92 Q 16 82 32 92 T 64 92 T 96 92 T 128 92 T 160 92 V130 H0Z', fill:'#1338d6'})))
-      }[kind];
-      return h('span', {ref, className:'yj-st ' + className, role:'img', 'aria-label':kind === 'tulips' ? 'Tulips sticker' : kind === 'coffee' ? 'Coffee sticker' : 'Sea sticker',
+      const ink = {stroke:INK, strokeWidth:4, fill:'none', strokeLinecap:'round', strokeLinejoin:'round'};
+      const art = kind === 'tulips'
+        ? h('svg', {viewBox:'0 0 140 160'},
+            h('path', {d:'M70 152 V78 M70 152 C 62 122 50 104 36 90 M70 152 C 80 124 92 106 106 94', ...ink}),
+            h('path', {d:'M70 140 C 52 130 44 116 46 100 C 60 108 67 122 70 140 Z M72 136 C 90 128 98 116 98 102 C 84 108 76 120 72 136 Z', ...ink, fill:PAPER}),
+            h('path', {d:'M54 52 C 54 32 62 24 70 20 C 78 24 86 32 86 52 C 86 68 79 78 70 78 C 61 78 54 68 54 52 Z M62 26 L66 46 L70 20 L74 46 L78 26', ...ink, fill:YEL}),
+            h('path', {d:'M20 70 C 18 54 24 46 32 42 C 42 44 48 52 48 66 C 48 80 42 88 34 88 C 26 88 21 80 20 70 Z', ...ink, fill:PAPER}),
+            h('path', {d:'M92 76 C 92 60 98 52 106 48 C 116 52 122 60 122 74 C 122 88 115 94 107 94 C 98 94 92 88 92 76 Z', ...ink, fill:PAPER}))
+        : h('svg', {viewBox:'0 0 140 140'},
+            h('path', {d:'M50 40 C 42 30 58 24 50 12 M70 40 C 62 30 78 24 70 12 M90 40 C 82 30 98 24 90 12', ...ink}),
+            h('path', {d:'M106 64 C 130 62 130 100 104 98', ...ink, strokeWidth:5}),
+            h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', ...ink, fill:PAPER}),
+            h('path', {d:'M31 72 H109 L107 86 H33 Z', ...ink, fill:YEL}),
+            h('path', {d:'M16 126 H124', ...ink, strokeWidth:5}));
+      return h('span', {ref, className:'yj-st ' + className, role:'img', 'aria-label':kind === 'tulips' ? 'Tulips sticker' : 'Coffee sticker',
         onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up, style:{'--r':rot + 'deg'}}, art);
     };
 
-    const r = RECS[ri];
-
-    // All case studies in one tile: a list on the left, the hovered or
-    // focused project's image on the right.
+    // All case studies in one tile; a small cover thumbnail follows the
+    // pointer on hover (hover-capable devices only).
     const list = (p.projects || []).filter(Boolean);
-    const [pi, setPi] = React.useState(0);
-    const cur = list[pi] || list[0];
-    // Hover thumbnail that follows the pointer (hover-capable devices only).
     const thumb = React.useRef(null), [hv, setHv] = React.useState(-1);
     const follow = e => { const t = thumb.current; if (t) t.style.transform = `translate(${e.clientX + 28}px, ${e.clientY - 150}px)`; };
     const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
-      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, small('Selected work'),
-        h('button', {onClick:p.onWork, className:'yj-pj-all', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:14, fontWeight:600, color:GREEN}}, 'All work (' + list.length + ') →')),
+      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, label('Selected work'),
+        h('button', {onClick:p.onWork, className:'yj-link', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:S, fontWeight:600, color:INK}}, 'All work (' + list.length + ') →')),
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
         list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
-            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0 6px', borderBottom:'1.5px solid ' + INK, fontFamily:F}},
-          h('span', {style:{minWidth:0, fontWeight:700, fontSize:'clamp(17px, 1.6vw, 26px)', letterSpacing:'-0.01em', lineHeight:1.05, textTransform:'uppercase'}},
-            c.short, h('sup', {style:{fontWeight:400, fontStyle:'italic', fontSize:'.5em', letterSpacing:0, marginLeft:'.35em', textTransform:'none', verticalAlign:'.9em'}}, c.years || '')),
-          h('span', {className:'yj-pj-meta', style:{flex:'none', fontSize:'clamp(12px, .95vw, 14px)', fontStyle:'italic', whiteSpace:'nowrap'}}, '(' + c.kinds + ')')))),
+            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
+          title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, (c.years ? c.years + ' · ' : '') + c.kinds)))),
       h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
           opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
-        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : '#f4b73a', display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:800, fontSize:22, letterSpacing:'-0.03em', color:INK}}, c.pic || c.short))));
+        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))));
 
-    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #c9c7bf 1.2px, transparent 1.4px)', backgroundSize:'22px 22px', backgroundPosition:'-11px -11px'}},
+    const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
+
+    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
         .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
@@ -890,77 +878,68 @@ class Component extends DCLogic {
             "pj pj pj pj pj pj pj pj pj rc rc rc"
             "pj pj pj pj pj pj pj pj pj rc rc rc"
             "pj pj pj pj pj pj pj pj pj rc rc rc"}
-        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-wk{grid-area:wk}.yj-a-ab{grid-area:ab}.yj-a-cv{grid-area:cv}.yj-a-li{grid-area:li}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-tk{grid-area:tk}
-        .yj-bt{transition:background-color 250ms ease,color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
-        .yj-bt-go:hover{background:#eef5ef !important}
-        .yj-bt-img{filter:grayscale(1);transition:filter 400ms ease}
-        .yj-bt-go:hover .yj-bt-img,.yj-bt-go:focus-visible .yj-bt-img{filter:none}
-        .yj-bt-link:hover{text-decoration-thickness:2px}
-        .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px);opacity:1}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}
+        .yj-bt{transition:background-color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
+        .yj-bt-go:hover{background:#f3f3f0 !important}
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
+        .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px)}
         .yj-bt-go:active{transform:scale(.98)}
-        .yj-bt-go:focus-visible{outline:3px solid ${GREEN};outline-offset:2px}
-        .yj-pj-row{transition:color 200ms ease, padding-left 300ms cubic-bezier(.2,.7,.2,1)}
-        .yj-pj-row:hover{color:${GREEN};padding-left:8px !important}
-        @media (hover:none){.yj-pj-thumb{display:none}}
-        .yj-pj-all:hover{text-decoration:underline;text-underline-offset:4px}
-        .yj-pj-all:focus-visible,.yj-pj-row:focus-visible{outline:2px solid ${GREEN};outline-offset:2px}
+        .yj-bento :focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+        .yj-link:hover{text-decoration-thickness:2px}
+        .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
+        .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
+        .yj-bt-q{animation:yjBtQ 500ms cubic-bezier(.2,.7,.2,1) both}
+        @keyframes yjBtQ{from{opacity:0;transform:translateY(8px)}}
         .yj-st{position:absolute;z-index:5;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
           transform:rotate(var(--r));transition:transform 300ms cubic-bezier(.3,1.6,.4,1);
-          filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.18))}
+          filter:drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.14))}
         .yj-st svg{display:block;width:100%;height:auto;pointer-events:none}
         .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.06)}
         .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
-        .yj-st-tulips{width:clamp(110px, 11vw, 190px);right:7%;bottom:9%}
-        .yj-st-sea{width:clamp(70px, 6.4vw, 110px);left:-34px;bottom:12%}
-        .yj-st-coffee{width:clamp(90px, 8vw, 140px);right:clamp(18px, 2vw, 32px);bottom:clamp(18px, 2vw, 32px)}
-        .yj-bt-q{animation:yjBtQ 500ms cubic-bezier(.2,.7,.2,1) both}
-        @keyframes yjBtQ{from{opacity:0;transform:translateY(8px)}}
+        .yj-st-tulips{width:clamp(110px, 10vw, 170px);right:7%;bottom:9%}
+        .yj-st-coffee{width:clamp(90px, 7.5vw, 130px);right:clamp(18px, 2vw, 32px);bottom:clamp(18px, 2vw, 32px)}
+        @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
-          .yj-bento{height:auto;min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
+          .yj-bento{height:auto;min-height:0;padding:16px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
             grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "rc rc"}
-          .yj-bento .yj-bt{min-height:96px !important}
-          .yj-bento .yj-bt-in{min-height:300px !important}
-          .yj-bento .yj-a-ph{min-height:220px !important}
-          .yj-bento .yj-bt-p{min-height:0 !important}
-          .yj-bento{padding:16px;gap:18px}
-          .yj-st-tulips{width:96px;right:14px;bottom:auto;top:64px}
-          .yj-st-sea{width:70px;left:auto;right:-8px;bottom:-14px}
-          .yj-st-coffee{width:56px;right:-10px;bottom:-30px}
+          .yj-bento .yj-bt{min-height:110px !important}
+          .yj-bento .yj-a-in{min-height:300px !important}
+          .yj-bento .yj-a-ph{min-height:240px !important}
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
+          .yj-st-tulips{width:92px;right:14px;bottom:auto;top:64px}
+          .yj-st-coffee{width:58px;right:-8px;bottom:-24px}
         }
         @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
-      // intro: the one focal point
-      tile('in', {blue:true, className:'yj-bt-in', style:{overflow:'visible', zIndex:3}},
+      // intro: the one colour block
+      tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
         h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
-        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:14}},
+        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S}},
           h('span', null, 'Product & service designer'),
-          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:'#ffffff'}}), 'Open to roles · London')),
+          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London')),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(14px, 2vh, 22px)'}},
-          h('h1', {style:{margin:0, fontFamily:F, fontWeight:900, fontSize:'clamp(64px, 8.2vw, 148px)', letterSpacing:'-0.06em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
-          h('span', {style:{fontSize:'clamp(15px, 1.15vw, 18px)', lineHeight:1.45, maxWidth:'38ch', opacity:.9}},
+          h('h1', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(64px, 8.2vw, 148px)', letterSpacing:'-0.065em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
+          h('span', {style:{fontSize:'clamp(15px, 1.15vw, 18px)', lineHeight:1.45, maxWidth:'38ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
-          h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-bt-link', style:{color:'#ffffff', fontSize:15, fontWeight:500, textDecoration:'underline', textUnderlineOffset:4, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
-      tile('ph', {label:'Portrait of Yashvi Jain', style:{overflow:'visible', zIndex:2, padding:0, background:`#dfe3ee url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}, h(Sticker, {kind:'sea', className:'yj-st-sea', rot:-10})),
-      // navigation, stacked where people expect it
+          h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-link', style:{color:INK, fontSize:S, fontWeight:600, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
+      tile('ph', {label:'Portrait of Yashvi Jain', style:{padding:0, background:`#e6e6e3 url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}),
       navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
-      h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}}, navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
+      h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
+        navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
       projects,
-      // recommendation (rotates)
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
-          small('What colleagues say'),
+          label('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
-            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? GREEN : '#d5d8e0', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
-        h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:10}},
-          h('span', {style:{fontWeight:500, fontSize:'clamp(18px, 1.7vw, 26px)', letterSpacing:'-0.02em', lineHeight:1.25}}, '“' + r.q + '”'),
+            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? INK : LINE, transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
+        h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:14}},
+          title('“' + r.q + '”', {fontWeight:400, lineHeight:1.25}),
           h('span', {style:{display:'flex', alignItems:'center', gap:12}},
-            h('img', {src:r.img, alt:'', width:44, height:44, style:{width:44, height:44, borderRadius:'50%', objectFit:'cover', flex:'none'}}),
-            h('span', {style:{display:'flex', flexDirection:'column', gap:2, minWidth:0}},
-              h('span', {style:{fontSize:14, fontWeight:600}}, r.who),
-              small(r.role))))));
+            h('img', {src:r.img, alt:'', width:40, height:40, style:{width:40, height:40, borderRadius:'50%', objectFit:'cover', flex:'none', filter:'grayscale(1)'}}),
+            h('span', {style:{display:'flex', flexDirection:'column', gap:2, minWidth:0, fontSize:S}},
+              h('span', {style:{fontWeight:600}}, r.who), label(r.role))))));
   };
 
   static SceneHero = function SceneHero(p) {
