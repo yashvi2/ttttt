@@ -816,7 +816,7 @@ class Component extends DCLogic {
     const h = React.createElement;
     const YEL = '#ffd60a', INK = '#111111', PAPER = '#ffffff', GREY = '#6b6b6b', LINE = '#e3e3e0', BG = '#f6f6f3';
     const F = "'Schibsted Grotesk', sans-serif";
-    const M = 'clamp(20px, 1.75vw, 26px)', S = 14;
+    const M = 'clamp(17px, min(1.75vw, 3.1vh), 26px)', S = 14;
     const label = (txt, extra) => h('span', {style:{fontSize:S, fontWeight:400, color:GREY, ...extra}}, txt);
     const title = (txt, extra) => h('span', {style:{fontSize:M, fontWeight:600, letterSpacing:'-0.02em', lineHeight:1.15, ...extra}}, txt);
     const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, lineHeight:1}}, '→');
@@ -888,10 +888,7 @@ class Component extends DCLogic {
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
           title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))),
-      h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
-          opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
-        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))));
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
@@ -901,21 +898,52 @@ class Component extends DCLogic {
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
         CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
 
+    // Portrait tile: a slow Ken Burns slideshow of real project imagery,
+    // starting on the portrait. Black and white keeps it in the system.
+    const SLIDES = [
+      {src:'assets/web/assets/yashvi.webp', pos:'50% 28%', cap:'Yashvi Jain'},
+      {src:'assets/web/assets/ma/game-family.webp', cap:'Family playtest · What It Takes to Move'},
+      {src:'assets/web/assets/ma/exhibit-visitor-hq.webp', cap:'Exhibition · What It Takes to Move'},
+      {src:'assets/web/assets/cray/test-kanika.webp', cap:'Usability testing · CRAY'},
+      {src:'assets/web/assets/ma/expert-interview.webp', cap:'Expert interview · What It Takes to Move'},
+      {src:'assets/web/assets/ma/testing-1.webp', cap:'Prototype testing · What It Takes to Move'}];
+    const [si, setSi] = React.useState(0);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = setInterval(() => { if (!document.hidden) setSi(i => (i + 1) % SLIDES.length); }, 4200);
+      return () => clearInterval(t);
+    }, []);
+    const slideshow = tile('ph', {label:'Portrait of Yashvi Jain and photos from her projects', style:{padding:0, background:'#e6e6e3'}},
+      SLIDES.map((sl, i) => h('span', {key:sl.src, className:'yj-sl' + (i === si ? ' yj-sl-on' : ''), 'aria-hidden':true,
+        style:{position:'absolute', inset:0, background:`url(${__R(sl.src)}) ${sl.pos || '50% 50%'}/cover no-repeat`, filter:'grayscale(1)'}})),
+      h('span', {key:'cap' + si, className:'yj-bt-q', style:{position:'absolute', left:14, bottom:14, right:14, display:'flex', justifyContent:'space-between', alignItems:'center', gap:8, fontSize:13, fontWeight:600}},
+        h('span', {style:{background:PAPER, color:INK, padding:'5px 10px', borderRadius:999, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}, SLIDES[si].cap),
+        h('span', {style:{background:PAPER, color:INK, padding:'5px 10px', borderRadius:999, flex:'none'}}, (si + 1) + '/' + SLIDES.length)));
+
+    // Companies worked with: one black logo strip.
+    // [src, name, height in px] — heights balance each logo's visual weight
+    const LOGOS = [['assets/logos/tcs-mark.png', 'Tata Consultancy Services', 22], ['assets/logos/jnj.svg', 'Johnson & Johnson', 14], ['assets/logos/pfizer-white.svg', 'Pfizer', 34],
+      ['assets/logos/britishcouncil-white.png', 'British Council', 26], ['assets/logos/ime.png', 'Indian Music Experience Museum', 34]];
+    const logos = tile('lg', {style:{flexDirection:'row', alignItems:'center', gap:'clamp(16px, 3vw, 56px)', padding:'0 clamp(18px, 1.8vw, 30px)'}},
+      label('Worked with', {flex:'none', whiteSpace:'nowrap'}),
+      h('span', {style:{flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'clamp(16px, 3vw, 48px)', minWidth:0}},
+        LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}}))));
+
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
 
     return h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
         .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
-          grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
+          grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr)) clamp(48px, 7vh, 76px);
           grid-template-areas:
             "in in in in in in ph ph ph ab ab ab"
             "in in in in in in ph ph ph tk tk tk"
             "in in in in in in ph ph ph tk tk tk"
             "pj pj pj pj pj pj cu cu cu rc rc rc"
             "pj pj pj pj pj pj cu cu cu rc rc rc"
-            "pj pj pj pj pj pj cu cu cu rc rc rc"}
-        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-cu{grid-area:cu}
-        .yj-bento{perspective:1400px}
+            "pj pj pj pj pj pj cu cu cu rc rc rc"
+            "lg lg lg lg lg lg lg lg lg lg lg lg"}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-cu{grid-area:cu}.yj-a-lg{grid-area:lg}
         .yj-bt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
           box-shadow:var(--sx,0px) var(--sy,0px) 0 -6px rgba(0,0,0,0), 0 1px 0 rgba(0,0,0,.04);
           transition:background-color 250ms ease,transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms cubic-bezier(.2,.7,.2,1);will-change:transform}
@@ -931,6 +959,15 @@ class Component extends DCLogic {
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
+        .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
+        .yj-sl-on{opacity:1;transform:scale(1)}
+        .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
+        .yj-bento > *{animation:yjRise 700ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-bento > :nth-child(2){animation-delay:0ms}.yj-bento > :nth-child(3){animation-delay:80ms}.yj-bento > :nth-child(4){animation-delay:160ms}
+        .yj-bento > :nth-child(5){animation-delay:240ms}.yj-bento > :nth-child(6){animation-delay:320ms}.yj-bento > :nth-child(7){animation-delay:400ms}
+        .yj-bento > :nth-child(8){animation-delay:480ms}.yj-bento > :nth-child(9){animation-delay:560ms}
+        @keyframes yjRise{from{opacity:0;translate:0 24px}}
         .yj-tl{transform-box:fill-box;transform-origin:50% 100%;animation:yjBloom 700ms cubic-bezier(.3,1.6,.4,1) both}
         .yj-tl1{animation-delay:500ms}.yj-tl2{animation-delay:800ms}.yj-tl3{animation-delay:1100ms}
         @keyframes yjBloom{from{transform:scale(0)}}
@@ -953,17 +990,20 @@ class Component extends DCLogic {
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
           .yj-bento{height:auto;min-height:0;padding:16px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
-            grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "cu cu" "rc rc"}
+            grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "cu cu" "rc rc" "lg lg"}
           .yj-bento .yj-bt{min-height:110px !important}
           .yj-bento .yj-a-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:240px !important}
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
           .yj-pj-kinds{display:inline}
+          .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
+          .yj-a-lg > span:last-child{flex-wrap:wrap;justify-content:flex-start !important;gap:20px 28px !important}
+          .yj-a-lg .yj-logo{max-width:40% !important;height:24px !important}
           .yj-st-tulips{width:92px;right:14px;bottom:auto;top:64px}
           .yj-st-coffee{width:58px;right:-8px;bottom:-24px}
         }
-        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on{animation:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *{animation:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
@@ -971,17 +1011,21 @@ class Component extends DCLogic {
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S}},
           h('span', null, 'Product & service designer'),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London')),
-        h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(14px, 2vh, 22px)'}},
-          h('h1', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(64px, 8.2vw, 148px)', letterSpacing:'-0.065em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
-          h('span', {style:{fontSize:'clamp(15px, 1.15vw, 18px)', lineHeight:1.45, maxWidth:'38ch'}},
+        h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
+          h('h1', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(56px, min(8.2vw, 14.5vh), 148px)', letterSpacing:'-0.065em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
+          h('span', {style:{fontSize:'clamp(14px, min(1.15vw, 2.2vh), 18px)', lineHeight:1.45, maxWidth:'38ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
           h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-link', style:{color:INK, fontSize:S, fontWeight:600, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
-      tile('ph', {label:'Portrait of Yashvi Jain', style:{padding:0, background:`#e6e6e3 url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}),
+      slideshow,
       navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
       projects,
       currently,
+      h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
+          opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
+        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
+      logos,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
