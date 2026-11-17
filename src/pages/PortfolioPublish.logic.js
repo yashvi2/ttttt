@@ -740,6 +740,105 @@ class Component extends DCLogic {
       wordmark, achieve, card, note, chat, motifs);
   };
 
+  static SceneHero = function SceneHero(p) {
+    // Home hero as a staged still life: blue wall, cream floor, a framed
+    // portrait and sea painting, tulips on a stool, a lamp and a coffee.
+    const h = React.createElement;
+    const C = {blue:'#1338d6', floor:'#e9e0d0', cream:'#f3ece0', pink:'#f6a9c6', orange:'#ff5a1f', ink:'#141414', wood:'#c99a63'};
+    const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Schibsted Grotesk', sans-serif", mono = "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace";
+    const wrap = React.useRef(null);
+    React.useEffect(() => {
+      const el = wrap.current; if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let raf = 0, mx = 0, my = 0, x = 0, y = 0;
+      const move = e => { const r = el.getBoundingClientRect(); mx = (e.clientX - r.left) / r.width - .5; my = (e.clientY - r.top) / r.height - .5; };
+      const tick = () => { x += (mx - x) * .06; y += (my - y) * .06; el.style.setProperty('--px', x.toFixed(3)); el.style.setProperty('--py', y.toFixed(3)); raf = requestAnimationFrame(tick); };
+      el.addEventListener('pointermove', move); raf = requestAnimationFrame(tick);
+      return () => { cancelAnimationFrame(raf); el.removeEventListener('pointermove', move); };
+    }, []);
+    const layer = (depth, style, ...kids) => { const {className, ...st} = style; return h('div', {className, style:{position:'absolute', transform:`translate3d(calc(var(--px,0) * ${depth}px), calc(var(--py,0) * ${depth * .6}px), 0)`, ...st}}, ...kids); };
+    const pill = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:999, background:C.pink, color:C.ink, fontFamily:sans, fontSize:15, fontWeight:600}}, label);
+
+    // framed pictures on the wall
+    const frame = (w, inner, tilt) => h('div', {style:{width:w, background:'#f7f2e8', padding:'clamp(6px,.7vw,12px)', boxShadow:'0 2px 0 rgba(0,0,0,.08), 0 24px 40px -22px rgba(0,0,0,.55)', transform:`rotate(${tilt}deg)`}},
+      h('div', {style:{border:'6px solid #2a2320', overflow:'hidden', position:'relative'}}, inner));
+    const portrait = frame('clamp(150px, 15vw, 250px)', h('img', {src:__R('assets/web/assets/yashvi.webp'), alt:'Portrait of Yashvi Jain', style:{display:'block', width:'100%', aspectRatio:'4/5', objectFit:'cover', objectPosition:'50% 28%'}}), -1.5);
+    const seaArt = frame('clamp(110px, 10vw, 170px)', h('svg', {viewBox:'0 0 160 110', style:{display:'block', width:'100%'}, 'aria-hidden':true},
+      h('rect', {width:160, height:110, fill:'#cfe6ef'}), h('circle', {cx:118, cy:30, r:13, fill:'#fff3d6'}),
+      h('path', {className:'yj-sc-wave', d:'M-40 66 Q -20 56 0 66 T 40 66 T 80 66 T 120 66 T 160 66 T 200 66 V110 H-40Z', fill:'#6fa7c2'}),
+      h('path', {className:'yj-sc-wave yj-sc-wave2', d:'M-40 80 Q -20 70 0 80 T 40 80 T 80 80 T 120 80 T 160 80 T 200 80 V110 H-40Z', fill:'#2f6f95'})), 2);
+
+    // tulips in a pink vase on a wooden stool
+    const tulipSvg = h('svg', {viewBox:'0 0 220 360', style:{display:'block', width:'100%', overflow:'visible'}, 'aria-hidden':true},
+      ...[[70, 120, '#e0566f', 3.4], [110, 150, '#ffffff', 4.2], [150, 115, '#ff5a1f', 3.8]].map(([x, t, col, d], i) => h('g', {key:i, className:'yj-sc-tulip', style:{transformOrigin:'110px 210px', animationDuration:d + 's'}},
+        h('path', {d:`M110 210 Q ${(x + 110) / 2} ${t + 50} ${x} ${t}`, stroke:'#3f7a4a', strokeWidth:5, fill:'none'}),
+        h('path', {d:`M${x - 18} ${t + 4} C ${x - 20} ${t - 26} ${x - 10} ${t - 36} ${x - 5} ${t - 30} L ${x} ${t - 42} L ${x + 5} ${t - 30} C ${x + 10} ${t - 36} ${x + 20} ${t - 26} ${x + 18} ${t + 4} C ${x + 10} ${t + 14} ${x - 10} ${t + 14} ${x - 18} ${t + 4} Z`, fill:col}))),
+      h('path', {d:'M78 200 C 70 230 72 262 86 276 H134 C 148 262 150 230 142 200 Z', fill:C.pink}),
+      h('ellipse', {cx:110, cy:200, rx:32, ry:7, fill:'#e98fb1'}),
+      h('rect', {x:30, y:276, width:160, height:16, rx:4, fill:C.wood}),
+      h('rect', {x:52, y:292, width:16, height:68, fill:'#b48552'}), h('rect', {x:152, y:292, width:16, height:68, fill:'#b48552'}),
+      h('rect', {x:96, y:292, width:28, height:68, fill:'#a87c4b'}));
+
+    // orange floor lamp and a side table with a steaming coffee
+    const lampSvg = h('svg', {viewBox:'0 0 200 520', style:{display:'block', width:'100%', overflow:'visible'}, 'aria-hidden':true},
+      h('path', {d:'M60 80 L 120 40 L 150 70 L 100 120 Z', fill:C.orange}),
+      h('ellipse', {cx:96, cy:104, rx:26, ry:9, fill:'#ffd2a8', transform:'rotate(-42 96 104)'}),
+      h('path', {d:'M130 56 C 160 40 175 70 165 120 L 150 500', stroke:C.orange, strokeWidth:7, fill:'none', strokeLinecap:'round'}),
+      h('ellipse', {cx:150, cy:505, rx:46, ry:10, fill:C.orange}));
+    const coffeeSvg = h('svg', {viewBox:'0 0 200 260', style:{display:'block', width:'100%', overflow:'visible'}, 'aria-hidden':true},
+      [70, 92, 114].map((x, i) => h('path', {key:i, className:'yj-sc-steam', d:`M${x} 70 C ${x - 10} 54 ${x + 10} 44 ${x} 26 C ${x - 8} 14 ${x + 8} 6 ${x} -6`, stroke:'#ffffff', strokeWidth:4, fill:'none', strokeLinecap:'round', style:{animationDelay:(i * .8) + 's'}})),
+      h('path', {d:'M48 80 H136 L130 140 C 129 150 121 156 111 156 H73 C 63 156 55 150 54 140 Z', fill:C.cream}),
+      h('path', {d:'M136 92 C 158 92 158 126 132 126', stroke:C.cream, strokeWidth:9, fill:'none'}),
+      h('ellipse', {cx:92, cy:81, rx:44, ry:6, fill:'#6b4a35'}),
+      h('rect', {x:10, y:156, width:170, height:12, rx:3, fill:C.wood}),
+      h('rect', {x:84, y:168, width:22, height:92, fill:'#a87c4b'}), h('ellipse', {cx:95, cy:258, rx:40, ry:6, fill:'#a87c4b'}));
+
+    return h('section', {ref:wrap, 'aria-label':'Introduction', className:'yj-scene',
+        style:{position:'relative', height:'100svh', minHeight:640, overflow:'hidden', background:C.blue, color:C.cream}},
+      h('style', null, `
+        .yj-scene .yj-sc-floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:${C.floor}}
+        .yj-sc-tulip{animation:yjScSway ease-in-out infinite alternate}
+        .yj-sc-tulip:nth-child(2){animation-direction:alternate-reverse}
+        @keyframes yjScSway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+        .yj-sc-wave{animation:yjScWave 6s linear infinite}.yj-sc-wave2{animation-duration:4s}
+        @keyframes yjScWave{to{transform:translateX(40px)}}
+        .yj-sc-steam{stroke-dasharray:110;opacity:0;animation:yjScSteam 2.6s ease-in-out infinite}
+        @keyframes yjScSteam{0%{stroke-dashoffset:110;opacity:0}40%{opacity:.9}100%{stroke-dashoffset:0;opacity:0;transform:translateY(-10px)}}
+        .yj-scene .yj-sc-notes{position:absolute;left:calc(5% + clamp(150px, 16vw, 250px) + 32px);bottom:6%;font-family:${mono};font-size:clamp(11px,.85vw,13px);line-height:1.9;color:#5b5348;letter-spacing:.04em}
+        @media (max-width:820px){
+          .yj-scene .yj-sc-floor{height:38% !important}
+          .yj-scene .yj-sc-stool{left:3% !important;width:30vw !important;bottom:37% !important}
+          .yj-scene .yj-sc-lamp,.yj-scene .yj-sc-sea,.yj-sc-hide-m{display:none !important}
+          .yj-scene .yj-sc-coffee{right:4% !important;width:26vw !important;bottom:37% !important}
+          .yj-scene .yj-sc-portrait{top:23% !important}
+          .yj-scene .yj-sc-notes{left:16px;right:16px;bottom:44px}
+        }
+        @media (prefers-reduced-motion:reduce){.yj-sc-tulip,.yj-sc-wave,.yj-sc-steam{animation:none !important}.yj-sc-steam{opacity:.6}}
+      `),
+      h('div', {className:'yj-sc-floor'}),
+      // wordmark
+      layer(6, {left:0, right:0, top:'clamp(80px, 11vh, 110px)', textAlign:'center', whiteSpace:'nowrap'},
+        h('h1', {style:{margin:0, display:'inline-flex', alignItems:'baseline', gap:'.04em', color:C.cream, fontWeight:400}},
+          h('span', {style:{fontFamily:sans, fontWeight:900, fontSize:'clamp(56px, 10vw, 168px)', letterSpacing:'-0.055em', lineHeight:.85}}, 'YASHVI'),
+          h('span', {'aria-hidden':true, style:{display:'inline-block', width:'.16em', height:'.16em', borderRadius:'50%', background:C.orange, fontSize:'clamp(56px, 10vw, 168px)', margin:'0 .02em'}}),
+          h('span', {style:{fontFamily:disp, fontSize:'clamp(46px, 8vw, 136px)', letterSpacing:'-0.02em', lineHeight:.85}}, 'jain'))),
+      // wall art
+      layer(14, {className:'yj-sc-portrait', left:'50%', top:'38%', marginLeft:'clamp(-125px, -7.5vw, -75px)'}, portrait),
+      layer(18, {className:'yj-sc-sea', left:'calc(50% + clamp(110px, 11vw, 190px))', top:'40%'}, seaArt),
+      // floor objects
+      layer(26, {className:'yj-sc-stool', left:'5%', bottom:'15%', width:'clamp(150px, 16vw, 250px)'}, tulipSvg),
+      layer(30, {className:'yj-sc-lamp', right:'7%', bottom:'17%', width:'clamp(110px, 10vw, 170px)'}, lampSvg),
+      layer(34, {className:'yj-sc-coffee', right:'18%', bottom:'14%', width:'clamp(110px, 11vw, 180px)'}, coffeeSvg),
+      // typewriter notes and actions
+      h('div', {className:'yj-sc-notes'},
+        h('div', null, h('span', {style:{color:C.orange}}, '> '), 'product & service designer.'),
+        h('div', null, h('span', {style:{color:C.orange}}, '> '), 'research, strategy & design for health, pharma, social change.'),
+        h('div', null, h('span', {style:{color:C.orange}}, '> '), 'four years at tcs. ma, design management, ual.'),
+        h('div', {style:{display:'flex', gap:10, marginTop:14, flexWrap:'wrap'}},
+          pill('Selected work ↓', {onClick:p.onWork}), pill('Download CV', {href:p.cv, target:'_blank', rel:'noopener'}))),
+      h('div', {style:{position:'absolute', left:'clamp(16px, 3vw, 40px)', right:'clamp(16px, 3vw, 40px)', bottom:14, display:'flex', justifyContent:'space-between', fontFamily:mono, fontSize:11, letterSpacing:'.14em', textTransform:'uppercase', color:'#6f675b'}},
+        h('span', null, 'Yashvi Jain · London'), h('span', {className:'yj-sc-hide-m'}, 'scroll'), h('span', null, 'Open to roles')));
+  };
+
   static Louvre = function Louvre(p) {
     const h = React.createElement, ref = React.useRef(null);
     const [sz, setSz] = React.useState({w:0,h:0}), [hot, setHot] = React.useState({}), [mx, setMx] = React.useState(null);
@@ -1378,7 +1477,7 @@ Agent:`;
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
-      landingHero: h(Component.BrandHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
+      landingHero: h(Component.SceneHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
