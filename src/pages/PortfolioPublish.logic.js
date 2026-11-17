@@ -814,6 +814,64 @@ class Component extends DCLogic {
       p.items.map(it => h('button', {key:it.key, onClick:it.onClick, 'aria-current':it.on ? 'page' : undefined, className:it.on ? 'yj-dock-on' : ''}, it.label)));
   };
 
+  // Generative music for the turntable: one original, royalty-free piece per mood, made in the
+  // browser with the Web Audio API (nothing is downloaded). Starts only after a click.
+  static Music = (() => {
+    const N = n => 440 * Math.pow(2, (n - 69) / 12);
+    const SONGS = {
+      Happy:{bpm:112, wave:'triangle', swing:0, arp:[0, 4, 7, 12, 7, 4, 0, 7], chords:[[60, 64, 67], [55, 59, 62], [57, 60, 64], [53, 57, 60]], bass:[48, 43, 45, 41], lp:5200, crackle:0.012},
+      Calm:{bpm:58, wave:'sine', swing:0, arp:[0, 7, 12, 16], chords:[[62, 66, 69, 73], [55, 59, 62, 66]], bass:[38, 43], lp:2400, crackle:0.01, pad:true},
+      Focus:{bpm:88, wave:'sine', swing:0, arp:[0, 7, 12, 7, 3, 7, 12, 15], chords:[[57, 60, 64], [53, 57, 60], [60, 64, 67], [55, 59, 62]], bass:[45, 41, 48, 43], lp:3200, crackle:0.008},
+      Nostalgic:{bpm:74, wave:'triangle', swing:0.18, arp:[0, 4, 7, 11, 7, 4], chords:[[53, 57, 60, 64], [52, 55, 59, 62], [50, 53, 57, 60], [48, 52, 55, 59]], bass:[41, 40, 38, 36], lp:1900, crackle:0.03, detune:9},
+      Night:{bpm:68, wave:'sine', swing:0.22, arp:[0, 3, 7, 10, 14, 10], chords:[[50, 53, 57, 60, 64], [55, 59, 62, 65, 69], [48, 52, 55, 59, 62], [57, 61, 64, 67]], bass:[38, 43, 36, 45], lp:2200, crackle:0.02, trem:true}};
+    let ctx = null, master = null, filt = null, noise = null, timer = null, song = null, step = 0, next = 0, on = false;
+    const voice = (f, t, dur, vol, wave, det) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = wave; o.frequency.value = f; if (det) o.detune.value = (Math.random() - 0.5) * det;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + Math.min(0.03, dur * 0.2));
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(filt); o.start(t); o.stop(t + dur + 0.05);
+    };
+    const crackle = amt => {
+      const len = ctx.sampleRate * 2, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() < 0.0009 ? (Math.random() * 2 - 1) * 0.9 : 0) + (Math.random() * 2 - 1) * 0.02;
+      const src = ctx.createBufferSource(), g = ctx.createGain(), hp = ctx.createBiquadFilter();
+      hp.type = 'highpass'; hp.frequency.value = 1200; g.gain.value = amt * 6;
+      src.buffer = buf; src.loop = true; src.connect(hp); hp.connect(g); g.connect(master); src.start(); return src;
+    };
+    const tick = () => {
+      const S = song, beat = 60 / S.bpm / 2; // eighth notes
+      while (next < ctx.currentTime + 0.25) {
+        const bar = Math.floor(step / 8) % S.chords.length, ch = S.chords[bar], i = step % 8;
+        const sw = (step % 2) ? beat * S.swing : 0, t = next + sw;
+        if (i === 0) {
+          ch.forEach(n => voice(N(n), t, beat * (S.pad ? 8 : 6), S.pad ? 0.05 : 0.035, S.pad ? 'sine' : 'sine', S.detune));
+          voice(N(S.bass[bar]), t, beat * 4, 0.11, 'sine');
+        }
+        if (i === 4) voice(N(S.bass[bar] + 7), t, beat * 3, 0.06, 'sine');
+        const a = S.arp[step % S.arp.length];
+        if (!S.pad || i % 2 === 0) voice(N(ch[0] + 12 + a), t, beat * (S.pad ? 3 : 1.6), S.trem ? 0.045 : 0.05, S.wave, S.detune);
+        next += beat; step++;
+      }
+    };
+    return {
+      moods:Object.keys(SONGS),
+      playing:() => on,
+      play(m) {
+        const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
+        if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.7; master.connect(ctx.destination); filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.connect(master); }
+        ctx.resume(); this.stop(true);
+        song = SONGS[m] || SONGS.Happy; filt.frequency.value = song.lp; step = 0; next = ctx.currentTime + 0.05;
+        noise = crackle(song.crackle); timer = setInterval(tick, 60); tick(); on = true; return true;
+      },
+      stop(keep) {
+        clearInterval(timer); timer = null; if (noise) { try { noise.stop(); } catch (e) {} noise = null; }
+        if (!keep && ctx) { master.gain.setTargetAtTime(0, ctx.currentTime, 0.05); setTimeout(() => { if (!on && ctx) master.gain.value = 0.7; }, 300); }
+        if (keep && ctx) master.gain.value = 0.7;
+        on = false;
+      }};
+  })();
+
   static ContactBento = function ContactBento(p) {
     // Contact in the dashboard system: one yellow focal tile, flat white tiles,
     // the actions recruiters use (copy email, LinkedIn, CV), and the agent as an option.
@@ -1652,6 +1710,9 @@ class Component extends DCLogic {
     const MOODS = Object.keys(CRATE);
     const [mood, setMood] = React.useState('Happy'), [ti, setTi] = React.useState(0), [song, setSong] = React.useState('');
     const vnHold = React.useRef(false), spRef = React.useRef(null);
+    const [playing, setPlaying] = React.useState(false);
+    React.useEffect(() => () => Component.Music.stop(), []);
+    const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
     React.useEffect(() => {
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const t = setInterval(() => { if (!document.hidden && !vnHold.current) setTi(i => (i + 1) % 4); }, 7000);
@@ -1663,20 +1724,21 @@ class Component extends DCLogic {
     const step = d => setTi(i => (i + d + 4) % 4);
     const vinyl = tile('vn', {style:{gap:10}, onMouseEnter:() => { vnHold.current = true; }, onMouseLeave:() => { vnHold.current = false; }, onFocus:() => { vnHold.current = true; }, onBlur:() => { vnHold.current = false; }},
       h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:8}}, label('On the turntable'), label(String(ti + 1) + ' / 4')),
-      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); setTi(0); }}, m))),
+      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); setTi(0); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in'},
         h('span', {className:'yj-vn-spin'},
           h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
-          h('span', {className:'yj-vn-label', 'aria-hidden':true}, h('b', null, trk), h('i', null, art))),
+          h('span', {className:'yj-vn-label', 'aria-hidden':true}, playing ? h('b', null, mood) : h('b', null, trk), playing ? h('i', null, 'Side A · original') : h('i', null, art))),
         h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
       h('span', {className:'yj-vn-now', 'aria-live':'polite'},
-        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(-1), 'aria-label':'Previous song'}, '‹'),
+        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play a free ' + mood.toLowerCase() + ' track'}, playing ? '❚❚' : '▶'),
+        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(-1), 'aria-label':'Previous suggested song'}, '‹'),
         h('span', {style:{minWidth:0, flex:1, textAlign:'center', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', fontSize:13}}, h('b', {style:{fontWeight:600}}, trk), ' · ', art),
         h('button', {type:'button', className:'yj-vn-step', onClick:() => step(1), 'aria-label':'Next song'}, '›')),
       h('form', {className:'yj-vn-form', role:'search', onSubmit:e => { e.preventDefault(); spRef.current && spRef.current.click(); }},
         h('label', {htmlFor:'yj-song', style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', whiteSpace:'nowrap'}}, 'Search for a different song on Spotify'),
         h('input', {id:'yj-song', type:'search', value:song, onChange:e => setSong(e.target.value), placeholder:'Or search a song…', autoComplete:'off', enterKeyHint:'search'}),
-        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Play ' + (song.trim() || trk + ' by ' + art) + ' on Spotify, opens in a new tab'}, 'Play ↗')));
+        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Find ' + (song.trim() || trk + ' by ' + art) + ' on Spotify, opens in a new tab'}, 'Spotify ↗')));
 
     // Portrait tile: a slow Ken Burns slideshow of real project imagery,
     // starting on the portrait. Black and white keeps it in the system.
@@ -1776,6 +1838,9 @@ class Component extends DCLogic {
         .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
+        .yj-vn-play{all:unset;cursor:pointer;flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:${YEL};color:${INK};font-size:11px;line-height:1}
+        .yj-vn-play.on{background:${INK};color:#fff}
+        .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
           background:conic-gradient(from 20deg, transparent 0deg, rgba(255,255,255,.16) 28deg, transparent 58deg, transparent 180deg, rgba(255,255,255,.12) 208deg, transparent 238deg);
           -webkit-mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%);mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%)}
