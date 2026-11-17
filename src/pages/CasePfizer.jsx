@@ -480,6 +480,7 @@ function template(v) {
               </div>
             </dl>{' '}
           </section>{' '}
+{t(v.glance)}
           <section
             data-mv="context"
             aria-label="The context"

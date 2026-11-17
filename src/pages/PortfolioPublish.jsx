@@ -1923,17 +1923,27 @@ function template(v) {
           ) : null}
           {v.isAva ? (
             <>
-              <CaseAva mvRef={v.mvRef} nextBanner={v.nextBanner} />
+              <CaseAva mvRef={v.mvRef} nextBanner={v.nextBanner} glance={v.glance} />
             </>
           ) : null}
           {v.isIme ? (
             <>
-              <CaseBirdsong ime={v.ime} mvRef={v.mvRef} nextBanner={v.nextBanner} />
+              <CaseBirdsong ime={v.ime} mvRef={v.mvRef} nextBanner={v.nextBanner} glance={v.glance} />
             </>
           ) : null}
           {v.isPfizer ? (
             <>
-              <CasePfizer mvRef={v.mvRef} nextBanner={v.nextBanner} />
+              <CasePfizer mvRef={v.mvRef} nextBanner={v.nextBanner} glance={v.glance} />
+            </>
+          ) : null}
+          {v.isCray ? (
+            <>
+              {t(v.craySimple)}
+              <div style={{ background: '#ffffff', padding: '80px 12px 12px' }}>
+                <div style={{ height: '60vh', minHeight: '420px', position: 'relative', overflow: 'hidden', borderRadius: '22px' }}>
+                  {t(v.nextBanner)}
+                </div>
+              </div>
             </>
           ) : null}
           {v.isCaseStd ? (

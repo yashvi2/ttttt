@@ -950,6 +950,143 @@ class Component extends DCLogic {
           h('a', {className:'yj-ab-btn alt', href:p.cv, target:'_blank', rel:'noopener'}, 'Download CV ↓'))]));
   };
 
+  static Glance = function Glance(p) {
+    // The shared "at a glance" card every case study opens with.
+    const h = React.createElement, A = p.accent || '#c4161c', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664';
+    const F = "'Schibsted Grotesk', system-ui, sans-serif";
+    return h('section', {className:'gl', 'aria-label':'At a glance', style:{fontFamily:F, color:INK, maxWidth:1240, margin:'0 auto', padding:(p.rows ? '56px' : '20px') + ' max(clamp(20px,5vw,80px), env(safe-area-inset-left, 0px)) 8px', boxSizing:'border-box'}},
+      h('style', null, `.gl-card{background:#f6f5f4;border-radius:18px;padding:clamp(20px,3vw,36px);display:grid;gap:22px}
+        .gl-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+        .gl-k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;font-weight:600;line-height:1.3}
+        .gl-rows p{margin:0;font-size:16px;line-height:1.55;color:${BODY}}
+        .gl-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+        .gl-stat{background:#fff;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+        .gl-stat b{font-size:clamp(28px,3vw,44px);letter-spacing:-0.04em;line-height:1;font-weight:600}
+        .gl-stat span{font-size:14px;line-height:1.4;color:${BODY}}
+        .gl-note{font-size:13px;color:${MUTE};margin:14px 2px 0;display:flex;gap:8px;align-items:baseline}
+        @media (max-width:900px){.gl-rows{grid-template-columns:1fr}}`),
+      p.rows ? h('div', {className:'gl-card'},
+        h('div', {className:'gl-rows'}, ...p.rows.map(([k, v]) => h('div', {key:k}, h('div', {className:'gl-k', role:'heading', 'aria-level':3, style:{color:A}}, k), h('p', null, v)))),
+        p.stats ? h('div', {className:'gl-stats'}, ...p.stats.map(([n, k]) => h('div', {key:k, className:'gl-stat'}, h('b', {style:{color:A}}, n), h('span', null, k)))) : null) : null,
+      p.note ? h('p', {className:'gl-note'}, h('span', {'aria-hidden':true}, '🔒'), p.note) : null);
+  };
+
+  static CaseCraySimple = function CaseCraySimple(p) {
+    // CRAY in the AVA/Move case-study structure, with its own purple accent.
+    const h = React.createElement, c = p.c;
+    const A = '#7a3fc4', A2 = '#b46cf5', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664', LINE = '#e3e1df', SOFT = '#f6f5f4', TINT = '#f3ecfc';
+    const F = "'Schibsted Grotesk', system-ui, sans-serif";
+    const S = k => (c.secs || []).find(x => x.k === k) || {};
+    const img = (src, alt, x) => h('img', {src:__R(src), alt, loading:'lazy', style:{display:'block', width:'100%', height:'100%', objectFit:'cover', borderRadius:12, ...x}});
+    const chap = (id, n, k, title, lede, ...kids) => h('section', {id:'cvs-' + id, className:'cvs-sec', 'data-rv':'', 'aria-labelledby':'cvs-h-' + id},
+      h('div', {className:'cvs-eye'}, h('span', null, n), ' · ', k), h('h2', {id:'cvs-h-' + id}, title), lede ? h('p', {className:'cvs-lede'}, lede) : null, ...kids);
+    const card = (kids, x) => h('div', {className:'cvs-card', style:x}, ...[].concat(kids));
+    const root = React.useRef(null);
+    React.useEffect(() => {
+      const el = root.current; if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      el.classList.add('cvs-motion');
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); } }), {rootMargin:'0px 0px -12% 0px', threshold:0.08});
+      el.querySelectorAll('[data-rv]').forEach(n => { if (n.getBoundingClientRect().top < innerHeight * .9) n.classList.add('rv-in'); else io.observe(n); });
+      return () => io.disconnect();
+    }, []);
+    const J = (S('Insight').journey || {}), T = c.testing || {}, SOL = S('Solution');
+    return h('article', {ref:root, className:'cvs', 'aria-label':'Case study: CRAY, care for stray'},
+      h('style', null, `
+        .cvs{font-family:${F};color:${INK};background:#fff;padding:clamp(20px,3vw,40px) max(clamp(20px,5vw,80px), env(safe-area-inset-right, 0px)) 40px max(clamp(20px,5vw,80px), env(safe-area-inset-left, 0px))}
+        .cvs-in{max-width:1240px;margin:0 auto}
+        .cvs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(440px,60vh,640px);border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden;isolation:isolate;color:#fff;background:${A} center/cover no-repeat}
+        .cvs-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(70,24,128,.94) 0%, rgba(90,36,150,.82) 40%, rgba(0,0,0,0) 75%)}
+        .cvs-hero > div{max-width:620px}
+        .cvs-hero h1{font-size:clamp(38px,5vw,76px) !important;line-height:.98 !important;letter-spacing:-0.045em !important;margin:14px 0 18px;font-weight:600}
+        .cvs-hero p{font-size:clamp(16px,1.3vw,20px);line-height:1.5;margin:0;max-width:40ch;opacity:.95}
+        .cvs-tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+        .cvs-title{margin:56px 0 28px;display:grid;gap:18px}
+        .cvs-title h2{font-size:clamp(34px,4.2vw,60px) !important;letter-spacing:-0.04em !important;line-height:1 !important;margin:0;font-weight:600}
+        .cvs-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;border-top:1px solid ${LINE};padding-top:18px;margin:0}
+        .cvs-facts dt{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:${MUTE};margin-bottom:6px}
+        .cvs-facts dd{margin:0;font-size:15px;line-height:1.45}
+        .cvs-sum{background:${SOFT};border-radius:18px;padding:clamp(20px,3vw,36px);display:grid;gap:22px}
+        .cvs-sum-rows{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+        .cvs-sum-rows h3{font-size:12px !important;letter-spacing:.12em !important;text-transform:uppercase;color:${A};margin:0 0 8px;font-weight:600}
+        .cvs-sum-rows p{margin:0;font-size:16px;line-height:1.55;color:${BODY}}
+        .cvs-chips{position:sticky;top:12px;z-index:5;display:flex;gap:6px;flex-wrap:wrap;margin:28px 0 0;padding:8px;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid ${LINE};border-radius:999px;width:max-content;max-width:100%}
+        .cvs-chips a{font-size:13px;color:${INK};text-decoration:none;padding:6px 12px;border-radius:999px}
+        .cvs-chips a:hover,.cvs-chips a:focus-visible{background:${TINT};color:${A};outline:none}
+        .cvs-sec{padding:88px 0 0;scroll-margin-top:80px}
+        .cvs-eye{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${MUTE};margin-bottom:12px}.cvs-eye span{color:${A};font-weight:600}
+        .cvs-sec h2{font-size:clamp(28px,3vw,44px) !important;letter-spacing:-0.035em !important;line-height:1.05 !important;margin:0 0 14px;font-weight:600;max-width:24ch}
+        .cvs-lede{font-size:17px;line-height:1.6;color:${BODY};margin:0 0 28px;max-width:62ch}
+        .cvs-card{background:${SOFT};border-radius:16px;padding:20px 22px;min-width:0;transition:transform 350ms cubic-bezier(.2,.7,.2,1)}
+        .cvs-card:hover{transform:translateY(-3px)}
+        .cvs-grid{display:grid;gap:16px}.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+        .cvs-k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:${A};font-weight:600}
+        .cvs-p{margin:8px 0 0;line-height:1.55;color:${BODY};font-size:15.5px}
+        .cvs-ph{border-radius:12px;overflow:hidden;background:${SOFT}}
+        .cvs-cap{font-size:13px;color:${MUTE};margin-top:8px}
+        .cvs-jr{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;position:relative}
+        .cvs-jr::before{content:'';position:absolute;left:4%;right:4%;top:15px;height:2px;background:${LINE}}
+        .cvs-st{position:relative;display:flex;flex-direction:column;gap:8px}
+        .cvs-st i{width:32px;height:32px;border-radius:50%;background:${A};color:#fff;font-style:normal;font-size:12px;font-weight:600;display:grid;place-items:center;box-shadow:0 0 0 4px #fff}
+        .cvs-st b{font-size:15px}.cvs-pain{font-size:13.5px;line-height:1.45;color:${BODY};background:#fff3f1;border-radius:10px;padding:10px}
+        .cvs-opp{font-size:13.5px;line-height:1.45;color:${INK};background:${TINT};border-radius:10px;padding:10px}
+        .cvs-sort{display:grid;gap:10px;max-width:560px}
+        .cvs-sort-row{display:grid;grid-template-columns:150px 1fr 44px;align-items:center;gap:12px;font-size:14px;color:${BODY}}
+        .cvs-sort-row span.t{height:20px;background:${LINE};border-radius:4px;position:relative;overflow:hidden}
+        .cvs-sort-row span.t i{position:absolute;inset:0 auto 0 0;background:${A};border-radius:0 4px 4px 0}
+        .cvs-person{display:grid;grid-template-rows:auto 1fr;gap:12px}
+        .cvs-said{font-size:16px;line-height:1.4;font-weight:500;margin:8px 0}
+        .cvs-fix{font-size:14px;line-height:1.45;color:${INK};background:${TINT};border-radius:10px;padding:10px 12px}
+        .cvs-btn{display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:15px;color:#fff;background:${A};padding:12px 20px;border-radius:999px;text-decoration:none}
+        .cvs-btn:hover{background:#5d2ea0}.cvs-btn:focus-visible{outline:2px solid ${A};outline-offset:3px}
+        .cvs-motion .cvs-sec[data-rv]{opacity:0;transform:translateY(18px);transition:opacity 700ms cubic-bezier(.2,.7,.2,1),transform 700ms cubic-bezier(.2,.7,.2,1)}
+        .cvs-motion .cvs-sec.rv-in{opacity:1;transform:none}
+        .cvs-motion .cvs-sort-row i{transform:scaleX(0);transform-origin:left;transition:transform 900ms cubic-bezier(.2,.7,.2,1) 200ms}
+        .cvs-motion .rv-in .cvs-sort-row i{transform:none}
+        @media (max-width:980px){.cvs-facts,.c4{grid-template-columns:repeat(2,minmax(0,1fr))}.cvs-sum-rows{grid-template-columns:repeat(2,minmax(0,1fr))}.cvs-jr{grid-template-columns:1fr}.cvs-jr::before{display:none}.c3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media (max-width:560px){.cvs-facts,.c2,.c3,.c4,.cvs-sum-rows{grid-template-columns:1fr}.cvs-chips{border-radius:16px}.cvs-sort-row{grid-template-columns:110px 1fr 40px}}
+        @media (prefers-reduced-motion:reduce){.cvs-card{transition:none}.cvs-card:hover{transform:none}}
+      `),
+      h('div', {className:'cvs-in'},
+        h('header', {className:'cvs-hero', role:'img', 'aria-label':'A photographer crouches to pet two street dogs on an Indian street', style:{backgroundImage:`url(${__R('assets/web/assets/cray/insight-dogs.webp')})`}},
+          h('div', null, h('div', {className:'cvs-tag'}, 'Animal welfare · UX · Self-initiated'),
+            h('h1', null, 'Turning goodwill for strays into action.'),
+            h('p', null, c.summary))),
+        h('div', {className:'cvs-title'},
+          h('div', {className:'cvs-eye'}, h('span', null, 'Case study 02'), ' · Self-initiated'),
+          h('h2', null, 'CRAY — Care for stray'),
+          h('dl', {className:'cvs-facts'}, ...[['My role', c.role], ['Methods', 'Survey, persona journey, card sort, prototyping, usability testing'], ['Output', 'Live prototype and an icon-led v2'], ['Timeline', c.years]].map(([k, v]) => h('div', {key:k}, h('dt', null, k), h('dd', null, v))))),
+        h('div', {className:'cvs-sum'},
+          h('div', {className:'cvs-sum-rows'}, ...(c.tldr || []).map(x => h('div', {key:x.k}, h('h3', null, x.k), h('p', null, x.v)))),
+          c.proto ? h('div', null, h('a', {className:'cvs-btn', href:c.proto, target:'_blank', rel:'noopener'}, 'Try the live prototype ↗')) : null),
+        h('nav', {className:'cvs-chips', 'aria-label':'Chapters'},
+          ...[['why','Why'],['insight','Insight'],['structure','Structure'],['solution','Solution'],['testing','Testing'],['reflect','Looking back']].map(([id, k]) => h('a', {key:id, href:'#cvs-' + id, onClick:e => { e.preventDefault(); const el = document.getElementById('cvs-' + id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); }}, k))),
+        chap('why', '01', 'Why', S('Why').h, S('Why').p,
+          h('div', {className:'cvs-grid c2'}, ...(S('Why').ww || []).map(x => card([h('div', {className:'cvs-k'}, x.k), h('p', {className:'cvs-p'}, x.v)])))),
+        chap('insight', '02', 'Insight', S('Insight').h, S('Insight').p,
+          h('div', {className:'cvs-eye', style:{marginTop:8}}, h('span', null, 'Persona journey'), ' · ' + (J.name || '').trim() + ', ' + (J.role || '') + '. ' + (J.need || '')),
+          h('div', {className:'cvs-jr', role:'list'}, ...(J.stages || []).map(st => h('div', {key:st.n, className:'cvs-st', role:'listitem'},
+            h('i', null, st.n), h('b', null, st.k), h('div', {className:'cvs-pain'}, h('span', {className:'cvs-k', style:{display:'block', color:'#b3261e', marginBottom:4}}, 'Pain'), st.pain), h('div', {className:'cvs-opp'}, h('span', {className:'cvs-k', style:{display:'block', marginBottom:4}}, 'Opportunity · ' + st.feat), st.opp))))),
+        chap('structure', '03', 'Structure', S('Structure').h, S('Structure').p,
+          h('figure', {className:'cvs-sort', style:{margin:'0 0 24px'}},
+            h('figcaption', {className:'cvs-k', style:{color:MUTE, marginBottom:6}}, '“All animals in shelter”: card-sort agreement'),
+            ...[['Under Home', 3], ['Under Adoption', 9]].map(([k, v]) => h('div', {key:k, className:'cvs-sort-row', role:'img', 'aria-label':k + ': ' + v + ' out of 10'}, h('span', null, k), h('span', {className:'t'}, h('i', {style:{width:v * 10 + '%'}})), h('b', null, v + '/10')))),
+          h('div', {className:'cvs-ph', style:{aspectRatio:'16/8'}}, img('assets/web/assets/cray/cardsort-ia.webp', 'Card sort results and the four-tab information architecture'))),
+        chap('solution', '04', 'Solution', SOL.h, SOL.p,
+          h('div', {className:'cvs-grid c3', style:{marginBottom:16}}, ...(SOL.ww || []).map(x => card([h('div', {className:'cvs-k'}, x.k), h('p', {className:'cvs-p'}, x.v)]))),
+          h('div', {className:'cvs-grid c2'},
+            h('figure', {style:{margin:0}}, h('div', {className:'cvs-ph', style:{aspectRatio:'4/3'}}, img('assets/web/assets/cray/flow-wireframes.webp', 'User flow and wireframes')), h('figcaption', {className:'cvs-cap'}, 'User flow and wireframes')),
+            h('figure', {style:{margin:0}}, h('div', {className:'cvs-ph', style:{aspectRatio:'4/3'}}, img('assets/web/assets/cray/phone-hands.webp', 'CRAY on a phone')), h('figcaption', {className:'cvs-cap'}, 'The prototype in hand')))),
+        chap('testing', '05', 'Testing', T.h, T.p,
+          h('div', {className:'cvs-grid c4'}, ...(T.people || []).map(pp => h('div', {key:pp.name, className:'cvs-person'},
+            h('div', {className:'cvs-ph', style:{aspectRatio:'1/1'}}, img(pp.src, pp.name + ' testing CRAY')),
+            h('div', null, h('div', {className:'cvs-k'}, pp.name + ' · ' + pp.role), h('div', {style:{fontSize:13, color:MUTE, marginTop:4}}, 'Task: ' + pp.task), h('p', {className:'cvs-said'}, '“' + pp.said + '”'), h('div', {className:'cvs-fix'}, h('b', null, 'Fix: '), pp.fix)))))),
+        chap('reflect', '06', 'Looking back', S('Reflection').h, null,
+          h('div', {className:'cvs-grid c2'},
+            card([h('div', {className:'cvs-k'}, 'What I learned'), h('p', {className:'cvs-p'}, S('Reflection').p)]),
+            card([h('div', {className:'cvs-k', style:{color:'#fff'}}, 'Next'), h('p', {className:'cvs-p', style:{color:'#fff'}}, ((S('Reflection').ww || [])[0] || {}).v)], {background:A}))),
+        p.next || null));
+  };
+
   static FlipBook = function FlipBook(p) {
     // A booklet of the six-year plan. Desktop shows two-page spreads and turns a
     // real leaf in 3D; phones show one page at a time. Arrow keys work too.
@@ -1484,32 +1621,20 @@ class Component extends DCLogic {
     const follow = e => { const t = thumb.current; if (t) t.style.transform = `translate(${e.clientX + 28}px, ${e.clientY - 150}px)`; };
     const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
       h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, label('Selected work'),
-        h('button', {onClick:p.onWork, className:'yj-link', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:S, fontWeight:600, color:INK}}, 'All work (' + list.length + ') →')),
+        h('span', {style:{display:'flex', gap:14, alignItems:'baseline', flexWrap:'wrap', justifyContent:'flex-end'}},
+          list.find(c => c.id === 'move') ? h('button', {className:'yj-pj-plan', 'data-drop':'', onClick:() => { list.find(c => c.id === 'move').open(); let n = 0; const t = setInterval(() => { const el = document.getElementById('mvs-plan'); if (el || ++n > 30) { clearInterval(t); el && el.scrollIntoView({behavior:'smooth', block:'start'}); } }, 100); }}, '📖 Six-year plan booklet ↗') : null,
+          h('button', {onClick:p.onWork, className:'yj-link', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:S, fontWeight:600, color:INK}}, 'All work (' + list.length + ') →'))),
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
         list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
-          title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
+          title(h('span', null, h('span', {className:'yj-pj-t'}, c.short), c.star ? h('span', {className:'yj-pj-star', title:'Start here'}, '★ Start here') : null), {minWidth:0}),
           h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
-
-    // Landing graphics: one language of thin tone-on-tone line art, only in empty space.
-    const gTulip = h('svg', {className:'yj-g yj-g-tulip', viewBox:'0 0 300 420', 'aria-hidden':true, fill:'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round'},
-      h('path', {d:'M150 420 C 150 330 146 250 150 170'}),
-      h('path', {d:'M150 330 C 110 300 70 300 40 250 C 90 250 130 270 150 310'}),
-      h('path', {d:'M151 280 C 190 250 230 250 262 205 C 214 206 176 228 152 262'}),
-      h('path', {d:'M150 170 C 104 168 92 112 104 64 C 120 84 134 92 150 96 C 166 92 180 84 196 64 C 208 112 196 168 150 170 Z'}),
-      h('path', {d:'M150 96 C 140 70 142 40 150 20 C 158 40 160 70 150 96'}),
-      ...[0, 1, 2, 3].map(i => h('path', {key:i, d:`M${20 + i * 14} ${400 - i * 6} C ${80 + i * 20} ${360 - i * 30} ${220 - i * 10} ${380 - i * 24} ${290 - i * 6} ${330 - i * 22}`, opacity:.5 - i * .1})));
-    const gRings = h('svg', {className:'yj-g yj-g-rings', viewBox:'0 0 200 200', 'aria-hidden':true, fill:'none', stroke:'currentColor', strokeWidth:1.5},
-      ...[90, 70, 50, 30].map(r => h('circle', {key:r, cx:200, cy:0, r:r * 1.6})), h('circle', {cx:200, cy:0, r:12, fill:'currentColor', stroke:'none'}));
-    const gQuote = h('svg', {className:'yj-g yj-g-quote', viewBox:'0 0 120 100', 'aria-hidden':true},
-      h('path', {fill:'currentColor', d:'M8 92 C 8 50 22 22 52 8 L 58 20 C 40 30 32 44 32 56 L 50 56 L 50 92 Z M66 92 C 66 50 80 22 110 8 L 116 20 C 98 30 90 44 90 56 L 108 56 L 108 92 Z'}));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
     const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
-      gRings,
       h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8}),
       label('Looking for'),
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
@@ -1587,6 +1712,11 @@ class Component extends DCLogic {
           transition:background-color 250ms ease,transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms cubic-bezier(.2,.7,.2,1);will-change:transform}
         .yj-bt.yj-tilt{--sc:1.012;transition:background-color 250ms ease,transform 120ms linear,box-shadow 120ms linear;
           box-shadow:var(--sx,0px) var(--sy,14px) 34px -14px rgba(0,0,0,.28), 0 1px 0 rgba(0,0,0,.04)}
+.yj-ab-star{box-shadow:none !important}.yj-bt-go.yj-ab-star:hover{background:transparent !important}
+        .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${YEL};stroke:${INK};stroke-width:3;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
+        .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06)}
+        @media (max-width:820px){.yj-ab-star{flex-direction:column !important;align-items:flex-start !important;justify-content:center !important;gap:10px !important}.yj-spark{height:72px}}
+        @media (prefers-reduced-motion:reduce){.yj-spark{transition:none}.yj-ab-star:hover .yj-spark{transform:none}}
         .yj-bt-go:hover{background:#f3f3f0 !important}
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
         .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px)}
@@ -1595,14 +1725,12 @@ class Component extends DCLogic {
         .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
         .yj-link:hover{text-decoration-thickness:2px}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
+        .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 8px;border-radius:999px;background:${YEL};color:${INK}}
+        .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
+        .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
-        .yj-g{position:absolute;pointer-events:none;z-index:0}
         .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
-        .yj-g-tulip{right:4%;bottom:0;height:92%;width:auto;color:#e8bc00}
-        .yj-g-rings{right:0;top:0;width:58%;height:auto;color:${LINE};border-top-right-radius:18px}
-        .yj-g-quote{left:clamp(18px, 1.8vw, 30px);top:58px;width:clamp(56px, 5vw, 84px);height:auto;color:#efefeb}
-        @media (prefers-reduced-motion:no-preference){.yj-g-tulip path{stroke-dasharray:900;stroke-dashoffset:900;animation:yjDraw 2.4s cubic-bezier(.4,0,.2,1) .4s forwards}}
         @keyframes yjDraw{to{stroke-dashoffset:0}}
         .yj-hide{display:none !important}
         @keyframes yjSunSpin{to{transform:rotate(360deg)}}
@@ -1693,7 +1821,6 @@ class Component extends DCLogic {
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
           .yj-pj-kinds{display:inline}
-          .yj-g-tulip{height:70%;right:2%;opacity:.7}
           .yj-pj-stat{display:none}
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
           .yj-a-lg .yj-lg-view{width:100%}
@@ -1709,7 +1836,6 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
-        gTulip,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
@@ -1723,7 +1849,10 @@ class Component extends DCLogic {
           h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
             ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
       h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow, h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:-8})),
-      navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
+      tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
+        h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
+          h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})),
+        h('span', {style:{display:'flex', flexDirection:'column', gap:4, minWidth:0}}, h('span', {style:{display:'flex', gap:10, alignItems:'baseline'}}, title('About'), arrow), label('Experience, skills and CV'))),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         tile('tk', {'data-fit':'', style:{justifyContent:'flex-start', gap:6}},
           h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', flexWrap:'wrap', gap:'4px 12px', marginBottom:6}},
@@ -1740,7 +1869,6 @@ class Component extends DCLogic {
         list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
       logos,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
-        gQuote,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
@@ -2160,6 +2288,7 @@ Agent:`;
   mvVals(s, cur) {
     if (s.screen === 'case' && cur.id === 'pfizer') return {isMove:false, isIme:false, isAva:false, isPfizer:true, isCaseStd:false, mvRef:this.mvRef};
     if (s.screen === 'case' && cur.id === 'ava') return {isMove:false, isIme:false, isAva:true, isCaseStd:false, mvRef:this.mvRef};
+    if (s.screen === 'case' && cur.id === 'cray') return {isMove:false, isIme:false, isAva:false, isPfizer:false, isCaseStd:false, isCray:true, mvRef:this.mvRef};
     if (s.screen === 'case' && cur.id === 'ime') { const o = f => () => this.setState({lb:__R('assets/web/assets/ime/' + f.replace(/\.\w+$/, '.webp')), lbAlt:f}); const Y = {c:'#ec3013', w:600}, N = {c:'#201e1d', w:400};
       return {isMove:false, isIme:true, isCaseStd:false, mvRef:this.mvRef, ime:{paper:(this.props.imeTexture ?? 'paper') === 'paper' ? 'url(' + __R('assets/web/assets/ime/paper.webp') + ')' : 'none',
         open:Object.fromEntries(['dull-world.jpg', 'utopia.jpg', 'mac-1.png', 'mac-2.png', 'mac-3.png', 'research-visits.png', 'physical.png', 'visit-1.png', 'visit-2.png', 'visit-3.png', 'visit-4.png', 'phys-1.png', 'phys-2.png', 'phys-3.png', 'phys-4.png', 'phys-5.png', 'phys-6.png', 'phys-7.png', 'phys-8.png', 'phys-9.png', 'textures.png', 'logo-sketches.png', 'logo-final.png', 'madhubani.png', 'illustrations.png', 'ia.png', 'content-ideation.png', 'wireframes.png', 'concept-board.png', 'references.png'].map(f => [f.replace(/\W/g, '_'), o(f)])),
@@ -2547,6 +2676,17 @@ Agent:`;
         // Two views only, like the reference: About and Contact are reached from dashboard tiles.
         {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
         {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')}]}),
+      craySimple: s.screen === 'case' && CASES[s.ci] && CASES[s.ci].id === 'cray' ? h(Component.CaseCraySimple, {c:CASES[s.ci]}) : null,
+      glance: s.screen !== 'case' || !CASES[s.ci] ? null : ({
+        pfizer: h(Component.Glance, {accent:'#0000c9', note:'Shared as a portfolio sample. Some screens are simplified, and confidential client data is not shown.',
+          rows:[['The problem', 'Pfizer’s first formal brand, created by Pentagram, had to work across a very large website and many teams, accessibly and consistently.'],
+            ['What I did', 'As UI lead, I set up the UI system and components for pfizer.com and led the offshore design team building it.'],
+            ['The result', 'pfizer.com is live in the new brand, and its system now guides Pfizer’s internal pages and dashboards.']]}),
+        ime: h(Component.Glance, {accent:'#ec3013',
+          rows:[['The problem', 'Birdsong, an exhibition on songbirds and music, lived in one room in one city, so few people could see it.'],
+            ['What I did', 'One of six interns mentored for six months. I ran co-design sessions with visitors and designed interfaces for both the physical and the virtual exhibition.'],
+            ['The result', 'A live virtual exhibition on the Indian Music Experience Museum website, open to anyone, anywhere.']]}),
+        ava: h(Component.Glance, {note:'Shared as a portfolio sample. Some screens are simplified, and confidential client data is not shown.'})})[CASES[s.ci].id] || null,
       moveSimple: s.screen === 'case' && CASES[s.ci] && CASES[s.ci].id === 'move' ? h(Component.CaseMoveSimple, {c:CASES[s.ci]}) : null,
       contactBento: s.screen === 'contact' ? h(Component.ContactBento, {cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', onAgent:() => this.setState({chatOpen:true})}) : null,
       aboutBento: s.screen === 'approach' ? h(Component.AboutBento, {timeline:TIMELINE, portrait:__R('assets/web/assets/yashvi.webp'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onContact:() => this.go('contact'),
@@ -2560,7 +2700,7 @@ Agent:`;
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
       landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Personal'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Personal'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), star:id === 'ava' || id === 'move', stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',

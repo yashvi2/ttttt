@@ -462,6 +462,7 @@ function template(v) {
             </div>
           </div>
         </section>{' '}
+        {t(v.glance)}
         <nav
           aria-label="Case study sections"
           style={{
