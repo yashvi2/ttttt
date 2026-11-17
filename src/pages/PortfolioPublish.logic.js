@@ -779,6 +779,121 @@ class Component extends DCLogic {
       wordmark, achieve, card, note, chat, motifs);
   };
 
+  static BentoHome = function BentoHome(p) {
+    // The whole landing page as one screen-filling bento grid: no scroll and
+    // no separate nav bar on desktop; Work, About and Contact are tiles.
+    // One style throughout: flat tiles, one blue, one typeface, no cards
+    // inside tiles.
+    const h = React.createElement;
+    const BLUE = '#1338d6', INK = '#111111', PAPER = '#ffffff', BG = '#e8e9ee', MUTE = '#6b6f7a';
+    const F = "'Schibsted Grotesk', sans-serif";
+    const tile = (area, props, ...kids) => {
+      const {blue, onClick, href, label, style, className:cn, ...rest} = props || {};
+      const tag = href ? 'a' : onClick ? 'button' : 'div';
+      return h(tag, {...rest, className:'yj-bt yj-a-' + area + (cn ? ' ' + cn : '') + (onClick || href ? ' yj-bt-go' : '') + (blue ? ' yj-bt-blue' : ''), 'aria-label':label, onClick, href,
+        ...(href ? {target:'_blank', rel:'noopener'} : {}),
+        style:{boxSizing:'border-box', border:0, margin:0, textAlign:'left', textDecoration:'none', font:'inherit', width:'100%', height:'100%', position:'relative', overflow:'hidden', borderRadius:14,
+          background:blue ? BLUE : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(14px, 1.5vw, 24px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
+          cursor:onClick || href ? 'pointer' : 'default', fontFamily:F, minWidth:0, minHeight:0, ...style}}, ...kids);
+    };
+    const small = (txt, extra) => h('span', {style:{fontSize:13, fontWeight:500, letterSpacing:'.02em', opacity:.75, ...extra}}, txt);
+    const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:'clamp(22px, 2vw, 30px)', lineHeight:1}}, '→');
+    const big = (txt) => h('span', {style:{fontWeight:800, fontSize:'clamp(28px, 3vw, 48px)', letterSpacing:'-0.04em', lineHeight:.95}}, txt);
+
+    const RECS = [
+      {who:'Siddhartha Gigoo', role:'Head of TCS Interactive', q:'An exceptional designer. Continues to make us proud.'},
+      {who:'Arpit Vyas', role:'Product Experience Strategist', q:'A thoughtful design mindset… she took full ownership and delivered.'},
+      {who:'Geetanjali Chuttani', role:'Associate Design Director, UX', q:'Her communication skills are outstanding.'}];
+    const [ri, setRi] = React.useState(0), hold = React.useRef(false);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = setInterval(() => { if (!hold.current && !document.hidden) setRi(i => (i + 1) % RECS.length); }, 5000);
+      return () => clearInterval(t);
+    }, []);
+    // haptics: short buzz on taps where the browser supports it
+    React.useEffect(() => {
+      if (!('vibrate' in navigator)) return;
+      const tap = e => { if (e.pointerType !== 'mouse' && e.target.closest && e.target.closest('button, a')) { try { navigator.vibrate(10); } catch (_) {} } };
+      document.addEventListener('pointerdown', tap, {passive:true});
+      return () => document.removeEventListener('pointerdown', tap);
+    }, []);
+    const r = RECS[ri];
+
+    const proj = (area, c, n) => c ? tile(area, {onClick:c.open, label:'Open case study: ' + c.short, className:'yj-bt-p', style:{padding:0}},
+      h('span', {style:{display:'block', flex:1, minHeight:0, background:`#dfe3ee url(${__R(c.src)}) ${c.cardPos || '50% 50%'}/cover no-repeat`}}),
+      h('span', {style:{display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:12, padding:'clamp(12px, 1.2vw, 18px)'}},
+        h('span', {style:{display:'flex', flexDirection:'column', gap:4, minWidth:0}},
+          small(n + ' · ' + c.sector),
+          h('span', {style:{fontWeight:700, fontSize:'clamp(17px, 1.45vw, 22px)', letterSpacing:'-0.02em', lineHeight:1.1}}, c.short),
+          c.stat ? h('span', {style:{fontSize:13, color:BLUE, fontWeight:600}}, c.stat) : null),
+        arrow)) : null;
+    const [p1, p2, p3] = p.projects || [];
+
+    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{background:BG}},
+      h('style', null, `
+        .yj-bento{box-sizing:border-box;height:100svh;min-height:600px;padding:8px;display:grid;gap:8px;
+          grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
+          grid-template-areas:
+            "in in in in in in ph ph ph wk wk wk"
+            "in in in in in in ph ph ph ab ab ab"
+            "in in in in in in ph ph ph cv cv li"
+            "p1 p1 p1 p2 p2 p2 p3 p3 p3 rc rc rc"
+            "p1 p1 p1 p2 p2 p2 p3 p3 p3 rc rc rc"
+            "p1 p1 p1 p2 p2 p2 p3 p3 p3 tk tk tk"}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-wk{grid-area:wk}.yj-a-ab{grid-area:ab}.yj-a-cv{grid-area:cv}.yj-a-li{grid-area:li}.yj-a-p1{grid-area:p1}.yj-a-p2{grid-area:p2}.yj-a-p3{grid-area:p3}.yj-a-rc{grid-area:rc}.yj-a-tk{grid-area:tk}
+        .yj-bt{transition:background-color 250ms ease,color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
+        .yj-bt-go:hover{background:${BLUE} !important;color:#fff !important}
+        .yj-bt-blue.yj-bt-go:hover{background:${INK} !important}
+        .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px)}
+        .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
+        .yj-bt-go:active{transform:scale(.98)}
+        .yj-bt-go:focus-visible{outline:3px solid ${BLUE};outline-offset:2px}
+        .yj-bt-q{animation:yjBtQ 500ms cubic-bezier(.2,.7,.2,1) both}
+        @keyframes yjBtQ{from{opacity:0;transform:translateY(8px)}}
+        @media (max-width:820px),(max-height:560px){
+          .yj-bento{height:auto;min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
+            grid-template-areas:"in in" "ph wk" "ph ab" "cv li" "p1 p1" "p2 p3" "rc rc" "tk tk"}
+          .yj-bento .yj-bt{min-height:96px !important}
+          .yj-bento .yj-bt-in{min-height:300px !important}
+          .yj-bento .yj-a-ph{min-height:220px !important}
+          .yj-bento .yj-bt-p{min-height:280px !important}
+        }
+        @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}}
+      `),
+      // intro
+      tile('in', {blue:true, className:'yj-bt-in'},
+        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12}},
+          small('Product & service designer'),
+          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8, fontSize:13, fontWeight:600}},
+            h('span', {style:{width:8, height:8, borderRadius:'50%', background:'#ffffff'}}), 'Open to roles · London')),
+        h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(12px, 1.6vh, 20px)'}},
+          h('h1', {style:{margin:0, fontFamily:F, fontWeight:900, fontSize:'clamp(64px, 8.2vw, 148px)', letterSpacing:'-0.06em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
+          h('span', {style:{fontSize:'clamp(15px, 1.2vw, 19px)', lineHeight:1.35, maxWidth:'36ch'}},
+            'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'))),
+      // portrait
+      tile('ph', {label:'Portrait of Yashvi Jain', style:{padding:0, background:`#dfe3ee url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}),
+      // navigation tiles
+      tile('wk', {onClick:p.onWork, label:'Work'}, small('0' + (p.count || 6) + ' projects'), h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end'}}, big('Work'), arrow)),
+      tile('ab', {onClick:p.onAbout, label:'About'}, small('Story, skills, CV'), h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end'}}, big('About'), arrow)),
+      tile('cv', {href:p.cv, label:'Download CV (PDF)'}, small('PDF'), h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end', gap:8}}, h('span', {style:{fontWeight:700, fontSize:'clamp(17px, 1.45vw, 22px)', letterSpacing:'-0.02em'}}, 'Download CV'), h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:22}}, '↓'))),
+      tile('li', {href:p.linkedin, label:'LinkedIn'}, small('Profile'), h('span', {style:{fontWeight:700, fontSize:'clamp(17px, 1.45vw, 22px)', letterSpacing:'-0.02em'}}, 'in ↗')),
+      // projects
+      h(React.Fragment, null,
+        proj('p1', p1, '01'), proj('p2', p2, '02'), proj('p3', p3, '03')),
+      // recommendation (rotates)
+      tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
+        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
+          small('What colleagues say'),
+          h('span', {'aria-hidden':true, style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1),
+            style:{all:'unset', cursor:'pointer', width:i === ri ? 18 : 7, height:7, borderRadius:999, background:i === ri ? BLUE : '#cfd3dc', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
+        h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:10}},
+          h('span', {style:{fontWeight:600, fontSize:'clamp(17px, 1.5vw, 23px)', letterSpacing:'-0.02em', lineHeight:1.2}}, '“' + r.q + '”'),
+          h('span', {style:{fontSize:13, color:MUTE}}, r.who + ' · ' + r.role))),
+      // contact
+      tile('tk', {blue:true, onClick:p.onContact, label:'Contact Yashvi'},
+        small('Say hello'), h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'flex-end'}}, big('Let’s talk'), arrow)));
+  };
+
   static SceneHero = function SceneHero(p) {
     // Home hero as a staged still life: blue wall, cream floor, a framed
     // portrait and sea painting, tulips on a stool, a lamp and a coffee.
@@ -1005,6 +1120,7 @@ Agent:`;
       .catch(() => done("I couldn't reach my brain just now — email Yashvi directly at yashvi.jain.yj@gmail.com and she'll reply herself."));
   }
   componentDidMount() {
+    document.documentElement.dataset.yjScreen = this.state.screen;
     setTimeout(() => this.syncTone(), 300); this._toneT = setInterval(() => this.syncTone(), 900);
     // About: draw the headline underline once the section scrolls into view
     this._abIO = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('yj-in')), {threshold:.35});
@@ -1044,6 +1160,7 @@ Agent:`;
     }, 500);
   }
   componentDidUpdate() {
+    document.documentElement.dataset.yjScreen = this.state.screen;
     setTimeout(() => this.syncTone(), 60);
     if (this._abArm) setTimeout(this._abArm, 80);
     if (this._mvS) this._mvS(); setTimeout(() => { this.armDrops(); this.armMotion(); }, 0); this.syncHz(); this.syncMz(); const c = this.chatRef.current; if (c) c.scrollTop = c.scrollHeight; this.applyAccent(); (this.props.customCursor ?? true) ? this.mountCursor() : this.unmountCursor(); }
@@ -1534,7 +1651,8 @@ Agent:`;
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
-      landingHero: h(Component.BrandHero, {onContact:() => this.go('contact'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onWork:() => { const w = document.getElementById('yj-work'); if (w) w.scrollIntoView({behavior:'smooth', block:'start'}); }}),
+      landingHero: h(Component.BentoHome, {onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
+        projects:['ava', 'move', 'pfizer'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, stat:id === 'ava' ? '70% fewer errors' : id === 'pfizer' ? 'Became Pfizer’s design system' : 'Tested with families and teens'}; })}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',

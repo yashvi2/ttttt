@@ -120,3 +120,14 @@ html,body{overflow-x:clip}
 /* Light theme: client and certificate logos are white artwork, so print them in ink */
 .yj-logo-track img{filter:brightness(0) !important;opacity:.85}
 .yj-cert-logo{filter:brightness(0) !important;opacity:.85}
+
+/* Home is a single bento screen: no separate nav bar, nothing below it. */
+html[data-yj-screen="home"] .yj-hdr{display:none !important}
+html[data-yj-screen="home"] main > section:not(.yj-bento),
+html[data-yj-screen="home"] main > div,
+html[data-yj-screen="home"] footer{display:none !important}
+@media (min-width:821px) and (min-height:561px){
+  html[data-yj-screen="home"], html[data-yj-screen="home"] body{overflow:hidden}
+}
+/* the Let's talk tile replaces the floating chat button on the home grid */
+html[data-yj-screen="home"] .dc-hover-e246ab14{display:none !important}
