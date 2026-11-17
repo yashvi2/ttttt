@@ -1622,7 +1622,6 @@ class Component extends DCLogic {
     const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
       h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, label('Selected work'),
         h('span', {style:{display:'flex', gap:14, alignItems:'baseline', flexWrap:'wrap', justifyContent:'flex-end'}},
-          list.find(c => c.id === 'move') ? h('button', {className:'yj-pj-plan', 'data-drop':'', onClick:() => { list.find(c => c.id === 'move').open(); let n = 0; const t = setInterval(() => { const el = document.getElementById('mvs-plan'); if (el || ++n > 30) { clearInterval(t); el && el.scrollIntoView({behavior:'smooth', block:'start'}); } }, 100); }}, '📖 Six-year plan booklet ↗') : null,
           h('button', {onClick:p.onWork, className:'yj-link', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:S, fontWeight:600, color:INK}}, 'All work (' + list.length + ') →'))),
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
         list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
@@ -1635,7 +1634,6 @@ class Component extends DCLogic {
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
     const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
-      h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8}),
       label('Looking for'),
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
         CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
@@ -1713,7 +1711,7 @@ class Component extends DCLogic {
         .yj-bt.yj-tilt{--sc:1.012;transition:background-color 250ms ease,transform 120ms linear,box-shadow 120ms linear;
           box-shadow:var(--sx,0px) var(--sy,14px) 34px -14px rgba(0,0,0,.28), 0 1px 0 rgba(0,0,0,.04)}
 .yj-ab-star{box-shadow:none !important}.yj-bt-go.yj-ab-star:hover{background:transparent !important}
-        .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${YEL};stroke:${INK};stroke-width:3;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
+        .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${YEL};stroke:none;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
         .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06)}
         @media (max-width:820px){.yj-ab-star{flex-direction:column !important;align-items:flex-start !important;justify-content:center !important;gap:10px !important}.yj-spark{height:72px}}
         @media (prefers-reduced-motion:reduce){.yj-spark{transition:none}.yj-ab-star:hover .yj-spark{transform:none}}
@@ -1848,7 +1846,7 @@ class Component extends DCLogic {
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
           h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
             ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
-      h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow, h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:-8})),
+      h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow),
       tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
         h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
           h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})),
