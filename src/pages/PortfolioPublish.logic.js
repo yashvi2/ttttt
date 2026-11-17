@@ -1585,7 +1585,7 @@ class Component extends DCLogic {
       const fit = () => el.querySelectorAll('[data-fit]').forEach(t => {
         const drops = [...t.querySelectorAll('[data-drop]')];
         drops.forEach(d => { d.hidden = false; });
-        const over = () => { const tb = t.getBoundingClientRect().bottom - 14; return [...t.children].some(c => c.getBoundingClientRect().bottom > tb + 0.5) || t.scrollHeight > t.clientHeight + 1; };
+        const over = () => { const tb = t.getBoundingClientRect().bottom - 14; return [...t.children].filter(c => !c.classList.contains('yj-g')).some(c => c.getBoundingClientRect().bottom > tb + 0.5) || t.scrollHeight > t.clientHeight + 1; };
         for (const d of drops) { if (!over()) break; d.hidden = true; }
       });
       fit(); const ro = new ResizeObserver(fit); ro.observe(el);
@@ -1617,18 +1617,22 @@ class Component extends DCLogic {
     // All case studies in one tile; a small cover thumbnail follows the
     // pointer on hover (hover-capable devices only).
     const list = (p.projects || []).filter(Boolean);
+    const top = ['ava', 'move', 'askbeta'].map(id => list.find(c => c.id === id)).filter(Boolean);
+    const rest = list.filter(c => !top.includes(c));
     const thumb = React.useRef(null), [hv, setHv] = React.useState(-1);
     const follow = e => { const t = thumb.current; if (t) t.style.transform = `translate(${e.clientX + 28}px, ${e.clientY - 150}px)`; };
     const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
-      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, label('Selected work'),
-        h('span', {style:{display:'flex', gap:14, alignItems:'baseline', flexWrap:'wrap', justifyContent:'flex-end'}},
-          h('button', {onClick:p.onWork, className:'yj-link', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:S, fontWeight:600, color:INK}}, 'All work (' + list.length + ') →'))),
+      label('Selected work'),
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
-        list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
+        top.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
-          title(h('span', null, h('span', {className:'yj-pj-t'}, c.short), c.star ? h('span', {className:'yj-pj-star', title:'Start here'}, '★ Start here') : null), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
+          title(h('span', null, h('span', {className:'yj-pj-t'}, c.short), c.star ? h('span', {className:'yj-pj-star', title:'Start here'}, h('svg', {viewBox:'0 0 410 442', 'aria-hidden':true, style:{width:9, height:'auto', fill:'currentColor', marginRight:5, verticalAlign:'-1px'}}, h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})), 'Start here') : null), {minWidth:0}),
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds)))),
+        h('button', {onClick:p.onWork, onMouseEnter:() => setHv(-1), className:'yj-pj-row yj-pj-all', 'aria-label':'View all ' + list.length + ' projects',
+            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
+          title(h('span', null, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)), {minWidth:0}),
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, rest.map(c => c.short.replace(/ — .*/, '')).join(' · '), ' →'))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
@@ -1724,11 +1728,13 @@ class Component extends DCLogic {
         .yj-link:hover{text-decoration-thickness:2px}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
+        .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
         .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
+        @media (max-width:820px){.yj-shp-in{display:none}}
         @keyframes yjDraw{to{stroke-dashoffset:0}}
         .yj-hide{display:none !important}
         @keyframes yjSunSpin{to{transform:rotate(360deg)}}
@@ -1865,7 +1871,7 @@ class Component extends DCLogic {
       currently,
       h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
           opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
-        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
+        top.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
       logos,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
