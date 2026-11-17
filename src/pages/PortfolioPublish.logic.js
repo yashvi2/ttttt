@@ -1492,10 +1492,24 @@ class Component extends DCLogic {
           title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
           h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
 
+    // Landing graphics: one language of thin tone-on-tone line art, only in empty space.
+    const gTulip = h('svg', {className:'yj-g yj-g-tulip', viewBox:'0 0 300 420', 'aria-hidden':true, fill:'none', stroke:'currentColor', strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round'},
+      h('path', {d:'M150 420 C 150 330 146 250 150 170'}),
+      h('path', {d:'M150 330 C 110 300 70 300 40 250 C 90 250 130 270 150 310'}),
+      h('path', {d:'M151 280 C 190 250 230 250 262 205 C 214 206 176 228 152 262'}),
+      h('path', {d:'M150 170 C 104 168 92 112 104 64 C 120 84 134 92 150 96 C 166 92 180 84 196 64 C 208 112 196 168 150 170 Z'}),
+      h('path', {d:'M150 96 C 140 70 142 40 150 20 C 158 40 160 70 150 96'}),
+      ...[0, 1, 2, 3].map(i => h('path', {key:i, d:`M${20 + i * 14} ${400 - i * 6} C ${80 + i * 20} ${360 - i * 30} ${220 - i * 10} ${380 - i * 24} ${290 - i * 6} ${330 - i * 22}`, opacity:.5 - i * .1})));
+    const gRings = h('svg', {className:'yj-g yj-g-rings', viewBox:'0 0 200 200', 'aria-hidden':true, fill:'none', stroke:'currentColor', strokeWidth:1.5},
+      ...[90, 70, 50, 30].map(r => h('circle', {key:r, cx:200, cy:0, r:r * 1.6})), h('circle', {cx:200, cy:0, r:12, fill:'currentColor', stroke:'none'}));
+    const gQuote = h('svg', {className:'yj-g yj-g-quote', viewBox:'0 0 120 100', 'aria-hidden':true},
+      h('path', {fill:'currentColor', d:'M8 92 C 8 50 22 22 52 8 L 58 20 C 40 30 32 44 32 56 L 50 56 L 50 92 Z M66 92 C 66 50 80 22 110 8 L 116 20 C 98 30 90 44 90 56 L 108 56 L 108 92 Z'}));
+
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
     const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
+      gRings,
       h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8}),
       label('Looking for'),
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
@@ -1583,6 +1597,13 @@ class Component extends DCLogic {
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        .yj-g{position:absolute;pointer-events:none;z-index:0}
+        .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
+        .yj-g-tulip{right:4%;bottom:0;height:92%;width:auto;color:#e8bc00}
+        .yj-g-rings{right:0;top:0;width:58%;height:auto;color:${LINE};border-top-right-radius:18px}
+        .yj-g-quote{left:clamp(18px, 1.8vw, 30px);top:58px;width:clamp(56px, 5vw, 84px);height:auto;color:#efefeb}
+        @media (prefers-reduced-motion:no-preference){.yj-g-tulip path{stroke-dasharray:900;stroke-dashoffset:900;animation:yjDraw 2.4s cubic-bezier(.4,0,.2,1) .4s forwards}}
+        @keyframes yjDraw{to{stroke-dashoffset:0}}
         .yj-hide{display:none !important}
         @keyframes yjSunSpin{to{transform:rotate(360deg)}}
         @media (prefers-reduced-motion:reduce){[style*="yjSunSpin"]{animation:none !important}}
@@ -1672,6 +1693,7 @@ class Component extends DCLogic {
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
           .yj-pj-kinds{display:inline}
+          .yj-g-tulip{height:70%;right:2%;opacity:.7}
           .yj-pj-stat{display:none}
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
           .yj-a-lg .yj-lg-view{width:100%}
@@ -1687,6 +1709,7 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
+        gTulip,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
@@ -1717,6 +1740,7 @@ class Component extends DCLogic {
         list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
       logos,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
+        gQuote,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
