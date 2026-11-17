@@ -653,14 +653,15 @@ class Component extends DCLogic {
     // Home hero as a brand-board bento: plum frame, dusty blue, cream,
     // terracotta and mauve tiles. The wordmark is the only place the name appears.
     const h = React.createElement;
-    const C = {frame:'#2b1418', blue:'#9bb8c0', cream:'#f1ede2', ink:'#2b1418', terra:'#8f3b2c', soft:'#6d5a55'};
+    // bright board: light grey frame, white and lime-gradient tiles, one black tile
+    const C = {frame:'#efefec', blue:'linear-gradient(135deg,#f8fde3 0%,#d8f468 100%)', cream:'#ffffff', ink:'#111111', terra:'#0b0b0b', soft:'#5a5a5a', lime:'#d4f25c'};
     const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Schibsted Grotesk', sans-serif";
     const T = (cls, style, ...kids) => h('div', {className:'yj-br ' + cls, style:{position:'relative', overflow:'hidden', borderRadius:6, ...style}}, ...kids);
     const chip = (label, props, dark) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:6, padding:'7px 12px', borderRadius:4,
       fontFamily:sans, fontSize:13, fontWeight:500, background:dark ? C.ink : '#ffffff', color:dark ? C.cream : C.ink, boxShadow:'0 1px 0 rgba(0,0,0,.08)'}}, label);
 
     const wordmark = T('yj-br-a', {background:C.blue, display:'flex', alignItems:'center', justifyContent:'center'},
-      h('span', {style:{fontFamily:sans, fontWeight:900, fontSize:'clamp(64px, 8.4vw, 150px)', letterSpacing:'-0.06em', lineHeight:.8, color:C.cream}}, 'yashvi'));
+      h('span', {style:{fontFamily:sans, fontWeight:900, fontSize:'clamp(64px, 8.4vw, 150px)', letterSpacing:'-0.06em', lineHeight:.8, color:C.ink}}, 'yashvi'));
 
     // Achievement tile: a 3D chrome-and-copper tulip trophy (three.js, loaded
     // on demand). Without WebGL the big "70%" shows in its place.
@@ -685,44 +686,67 @@ class Component extends DCLogic {
       chip('AVA & Dosing Error →', {onClick:p.onWork}, false));
 
     const card = T('yj-br-c', {background:C.cream, display:'flex', alignItems:'center', justifyContent:'center', padding:'clamp(16px, 2.4vw, 40px)'},
-      h('div', {className:'yj-br-card', style:{width:'100%', maxWidth:340, background:C.blue, borderRadius:'18px 46px 18px 18px', padding:14, boxShadow:'0 30px 50px -30px rgba(43,20,24,.6)', display:'flex', flexDirection:'column', gap:14}},
+      h('div', {className:'yj-br-card', style:{width:'100%', maxWidth:340, background:C.blue, borderRadius:'18px 46px 18px 18px', padding:14, boxShadow:'0 30px 50px -30px rgba(0,0,0,.3)', display:'flex', flexDirection:'column', gap:14}},
         h('div', {style:{aspectRatio:'4/3.4', borderRadius:'10px 36px 10px 10px', overflow:'hidden', background:'#ddd'}},
           h('img', {src:__R('assets/web/assets/yashvi.webp'), alt:'Portrait of Yashvi Jain', style:{width:'100%', height:'100%', objectFit:'cover', objectPosition:'50% 28%', display:'block'}})),
-        h('div', {style:{fontFamily:disp, fontSize:'clamp(28px, 2.6vw, 42px)', lineHeight:1, letterSpacing:'-0.02em', color:'#ffffff', padding:'0 4px'}}, 'Product &', h('br'), 'service designer'),
-        h('div', {style:{display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'0 4px 2px', color:'#ffffff'}},
+        h('div', {style:{fontFamily:disp, fontSize:'clamp(28px, 2.6vw, 42px)', lineHeight:1, letterSpacing:'-0.02em', color:C.ink, padding:'0 4px'}}, 'Product &', h('br'), 'service designer'),
+        h('div', {style:{display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'0 4px 2px', color:C.ink}},
           h('span', {style:{fontFamily:sans, fontSize:30, fontWeight:500, lineHeight:1}}, '4', h('span', {style:{fontSize:12, marginLeft:4}}, 'yrs at TCS')),
           chip('Download CV →', {href:p.cv, target:'_blank', rel:'noopener'}, false))));
 
-    const note = T('yj-br-d', {background:'linear-gradient(180deg,#a9c4cb 0%,#7c8f97 100%)', display:'flex', alignItems:'center', justifyContent:'center', padding:18},
-      h('div', {className:'yj-br-note', style:{width:'100%', maxWidth:380, display:'flex', gap:14, alignItems:'center', padding:12, borderRadius:16, background:'rgba(255,255,255,.28)', backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,.4)', position:'relative', color:'#ffffff'}},
-        h('img', {src:__R('assets/web/assets/recs/siddhartha.webp'), alt:'', style:{width:56, height:56, borderRadius:10, objectFit:'cover', flex:'none'}}),
-        h('div', null,
-          h('div', {style:{fontFamily:sans, fontSize:11, opacity:.8}}, 'Siddhartha Gigoo · Head of TCS Interactive'),
-          h('div', {style:{fontFamily:sans, fontSize:'clamp(16px, 1.3vw, 19px)', lineHeight:1.2, marginTop:3}}, 'An exceptional designer. Continues to make us proud.')),
-        h('span', {style:{position:'absolute', top:-8, right:-8, width:22, height:22, borderRadius:'50%', background:'#ffffff', color:C.ink, fontFamily:sans, fontSize:11, fontWeight:600, display:'flex', alignItems:'center', justifyContent:'center'}}, '3')));
+    // Recommendations rotate every 5s in the same glass card (paused while
+    // hovered or focused, and under reduced motion). Tap to see the next one.
+    const RECS = [
+      {img:__R('assets/web/assets/recs/siddhartha.webp'), who:'Siddhartha Gigoo · Head of TCS Interactive', q:'An exceptional designer. Continues to make us proud.'},
+      {img:__R('assets/recs/arpit.jpeg'), who:'Arpit Vyas · Product Experience Strategist', q:'A thoughtful design mindset… she took full ownership and delivered.'},
+      {img:__R('assets/recs/geet.jpeg'), who:'Geetanjali Chuttani · Associate Design Director, UX', q:'Her communication skills are outstanding.'}];
+    const [ri, setRi] = React.useState(0), hold = React.useRef(false);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = setInterval(() => { if (!hold.current && !document.hidden) setRi(i => (i + 1) % RECS.length); }, 5000);
+      return () => clearInterval(t);
+    }, []);
+    const r = RECS[ri];
+    const note = T('yj-br-d', {background:'linear-gradient(180deg,#d9eef9 0%,#f7faf0 100%)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:12, padding:18},
+      h('button', {key:ri, className:'yj-br-note', 'aria-live':'polite', 'aria-label':'Recommendation ' + (ri + 1) + ' of ' + RECS.length + '. Show next', onClick:() => setRi((ri + 1) % RECS.length),
+          onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }, onFocus:() => { hold.current = true; }, onBlur:() => { hold.current = false; },
+          style:{all:'unset', cursor:'pointer', boxSizing:'border-box', width:'100%', maxWidth:380, display:'flex', gap:14, alignItems:'center', padding:12, borderRadius:16, background:'rgba(255,255,255,.7)', backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)', border:'1px solid rgba(255,255,255,.9)', boxShadow:'0 20px 40px -28px rgba(0,0,0,.35)', position:'relative', color:C.ink}},
+        h('img', {src:r.img, alt:'', style:{width:56, height:56, borderRadius:10, objectFit:'cover', flex:'none'}}),
+        h('span', {style:{display:'block', minWidth:0}},
+          h('span', {style:{display:'block', fontFamily:sans, fontSize:11, opacity:.8}}, r.who),
+          h('span', {style:{display:'block', fontFamily:sans, fontSize:'clamp(15px, 1.25vw, 18px)', lineHeight:1.25, marginTop:3}}, '“' + r.q + '”')),
+        h('span', {style:{position:'absolute', top:-8, right:-8, minWidth:22, height:22, padding:'0 6px', boxSizing:'border-box', borderRadius:999, background:C.lime, color:C.ink, fontFamily:sans, fontSize:11, fontWeight:600, display:'flex', alignItems:'center', justifyContent:'center'}}, (ri + 1) + '/' + RECS.length)),
+      h('div', {'aria-hidden':true, style:{display:'flex', gap:6}}, RECS.map((_, i) => h('span', {key:i, style:{width:i === ri ? 18 : 6, height:6, borderRadius:999, background:i === ri ? C.ink : 'rgba(17,17,17,.2)', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}}))));
 
     const chat = T('yj-br-e', {background:C.terra, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16, padding:20, color:C.cream},
-      h('div', {'aria-hidden':true, style:{position:'absolute', inset:'-10%', backgroundImage:`url(${__R('assets/web/assets/about/bakery.webp')})`, backgroundSize:'cover', backgroundPosition:'50% 50%', filter:'blur(18px) saturate(.8)', opacity:.35}}),
-      h('span', {'aria-hidden':true, style:{position:'relative', width:44, height:44, borderRadius:'50%', background:'#e6c443', display:'flex', alignItems:'center', justifyContent:'center'}},
-        h('span', {style:{width:14, height:14, borderRadius:'50%', background:C.cream, boxShadow:'0 0 0 4px #e6c443, 0 0 0 6px ' + C.cream}})),
+      h('div', {'aria-hidden':true, style:{position:'absolute', inset:'-10%', backgroundImage:`url(${__R('assets/web/assets/about/bakery.webp')})`, backgroundSize:'cover', backgroundPosition:'50% 50%', filter:'blur(18px) saturate(.8)', opacity:.22}}),
+      h('span', {'aria-hidden':true, style:{position:'relative', width:44, height:44, borderRadius:'50%', background:C.lime, display:'flex', alignItems:'center', justifyContent:'center'}},
+        h('span', {style:{width:14, height:14, borderRadius:'50%', background:C.cream, boxShadow:'0 0 0 4px #d4f25c, 0 0 0 6px ' + C.cream}})),
       h('div', {style:{position:'relative', fontFamily:sans, fontSize:13, opacity:.85}}, 'What’s next?'),
       h('button', {onClick:p.onContact, 'aria-label':'Contact Yashvi', style:{all:'unset', cursor:'pointer', position:'relative', display:'flex', alignItems:'center', gap:14, padding:'12px 12px 12px 18px', borderRadius:10, background:'rgba(255,255,255,.14)', border:'1px solid rgba(255,255,255,.3)', backdropFilter:'blur(8px)', fontFamily:disp, fontSize:'clamp(16px, 1.3vw, 20px)'}},
         'Let’s talk over coffee', h('span', {style:{width:30, height:30, borderRadius:6, background:'#ffffff', color:C.ink, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:sans, fontSize:16}}, '↑')));
 
-    const mini = (title, line, bg, dot) => h('div', {className:'yj-br-mini', style:{flex:'none', width:'clamp(170px, 15vw, 230px)', height:'86%', borderRadius:14, background:bg, padding:'18px 16px', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between', color:'#ffffff', boxShadow:'0 20px 30px -24px rgba(0,0,0,.5)'}},
-      h('div', {style:{fontFamily:disp, fontSize:'clamp(22px, 1.9vw, 30px)', lineHeight:1, letterSpacing:'-0.01em'}}, title),
-      h('div', {style:{display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:10}},
-        h('div', {style:{fontFamily:sans, fontSize:13, lineHeight:1.3}}, line),
-        h('span', {'aria-hidden':true, style:{flex:'none', width:30, height:30, borderRadius:'50%', background:dot, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:sans, fontSize:16}}, '+')));
-    const motifs = T('yj-br-f', {background:C.cream, display:'flex', alignItems:'center'},
-      h('div', {className:'yj-br-track', style:{display:'flex', gap:14, alignItems:'center', height:'100%', padding:'0 0 0 22px', width:'max-content'}},
-        mini('The Tulips', 'Ideas need a season to bloom.', 'linear-gradient(180deg,#c9b3bf 0%,#6e4652 100%)', 'rgba(255,255,255,.35)'),
-        mini('The Sea', 'Calm on top, deep research underneath.', 'linear-gradient(180deg,#a7c6cf 0%,#3f6f84 100%)', 'rgba(255,255,255,.35)'),
-        mini('The Coffee', 'Every brief starts with a conversation.', 'linear-gradient(180deg,#d8b85a 0%,#7a5a2a 100%)', 'rgba(255,255,255,.35)'),
-        mini('The Tulips', 'Ideas need a season to bloom.', 'linear-gradient(180deg,#c9b3bf 0%,#6e4652 100%)', 'rgba(255,255,255,.35)')));
+    const mini = (title, line, bg) => h('div', {className:'yj-br-mini', style:{minWidth:0, borderRadius:14, background:bg, padding:'clamp(12px, 1.2vw, 18px)', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between', gap:10, color:C.ink, boxShadow:'0 20px 30px -26px rgba(0,0,0,.4)'}},
+      h('div', {style:{fontFamily:disp, fontSize:'clamp(20px, 1.9vw, 30px)', lineHeight:1, letterSpacing:'-0.01em'}}, title),
+      h('div', {style:{display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:8}},
+        h('div', {style:{fontFamily:sans, fontSize:'clamp(11px, .9vw, 13px)', lineHeight:1.3}}, line),
+        h('span', {'aria-hidden':true, style:{flex:'none', width:28, height:28, borderRadius:'50%', background:'rgba(255,255,255,.7)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:sans, fontSize:16}}, '+')));
+    const motifs = T('yj-br-f', {background:C.cream, display:'grid', gridTemplateColumns:'repeat(3, minmax(0, 1fr))', gap:'clamp(8px, .9vw, 14px)', padding:'clamp(10px, 1.4vw, 22px)'},
+      mini('The Tulips', 'Ideas need a season to bloom.', 'linear-gradient(180deg,#ffe6ee 0%,#ff9fbd 100%)'),
+      mini('The Sea', 'Calm on top, deep research underneath.', 'linear-gradient(180deg,#e6f5ff 0%,#7cc6f2 100%)'),
+      mini('The Coffee', 'Every brief starts with a conversation.', 'linear-gradient(180deg,#fff6cc 0%,#f6c445 100%)'));
+
+    // Haptics: a short buzz on every tap of a button or link (Android and
+    // other browsers that support navigator.vibrate; others just ignore it).
+    React.useEffect(() => {
+      if (!('vibrate' in navigator)) return;
+      const tap = e => { if (e.pointerType !== 'mouse' && e.target.closest && e.target.closest('button, a, [role="button"]')) { try { navigator.vibrate(10); } catch (_) {} } };
+      document.addEventListener('pointerdown', tap, {passive:true});
+      return () => document.removeEventListener('pointerdown', tap);
+    }, []);
 
     return h('section', {'aria-label':'Introduction', className:'yj-brand',
-        style:{boxSizing:'border-box', height:'100svh', minHeight:640, padding:'86px 10px 10px', background:C.frame, display:'grid',
+        style:{boxSizing:'border-box', height:'100svh', minHeight:640, padding:'112px 10px 10px', background:C.frame, display:'grid',
           gridTemplateColumns:'1fr 1fr 1.25fr', gridTemplateRows:'1fr 1fr 0.62fr', gap:10}},
       h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
       h('style', null, `
@@ -734,13 +758,14 @@ class Component extends DCLogic {
         .yj-brand .yj-br-f{grid-column:3;grid-row:2 / span 2}
         .yj-br-card{transition:transform 600ms cubic-bezier(.2,.7,.2,1)}
         .yj-br-c:hover .yj-br-card{transform:translateY(-6px) rotate(-1deg)}
-        .yj-br-track{animation:yjBrTrack 28s linear infinite}
-        .yj-br-f:hover .yj-br-track{animation-play-state:paused}
-        @keyframes yjBrTrack{to{transform:translateX(calc(-3 * (clamp(170px, 15vw, 230px) + 14px)))}}
-        .yj-br-note{animation:yjBrNote 900ms cubic-bezier(.2,1.3,.4,1) 400ms both}
-        @keyframes yjBrNote{from{transform:translateY(24px);opacity:0}}
+        .yj-brand button,.yj-brand a{transition:transform 160ms cubic-bezier(.3,1.6,.4,1)}
+        .yj-brand button:active,.yj-brand a:active{transform:scale(.95)}
+        .yj-br-mini{transition:transform 300ms cubic-bezier(.2,.7,.2,1)}
+        .yj-br-mini:hover{transform:translateY(-4px)}
+        .yj-br-note{animation:yjBrNote 600ms cubic-bezier(.2,1.3,.4,1) both}
+        @keyframes yjBrNote{from{transform:translateY(14px);opacity:0}}
         @media (max-width:820px){
-          .yj-brand{height:auto !important;grid-template-columns:1fr 1fr !important;grid-template-rows:170px auto 360px 150px 230px !important}
+          .yj-brand{height:auto !important;padding-top:72px !important;grid-template-columns:1fr 1fr !important;grid-template-rows:170px auto 360px 150px 230px !important}
           .yj-brand .yj-br-a{grid-column:1 / span 2;grid-row:1}
           .yj-brand .yj-br-c{grid-column:1 / span 2;grid-row:2}
           .yj-brand .yj-br-b{grid-column:1;grid-row:3}
@@ -749,7 +774,7 @@ class Component extends DCLogic {
           .yj-brand .yj-br-f{grid-column:1 / span 2;grid-row:5}
           .yj-brand .yj-br-b > div:nth-child(2) > div:first-child{font-size:56px !important}
         }
-        @media (prefers-reduced-motion:reduce){.yj-br-track,.yj-br-note{animation:none !important}}
+        @media (prefers-reduced-motion:reduce){.yj-br-note{animation:none !important}}
       `),
       wordmark, achieve, card, note, chat, motifs);
   };
