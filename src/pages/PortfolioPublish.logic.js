@@ -779,6 +779,34 @@ class Component extends DCLogic {
       wordmark, achieve, card, note, chat, motifs);
   };
 
+    // Stickers: black line drawings on white die-cut stickers. Draggable.
+  static YjSticker = function YjSticker({kind, className, rot}) {
+    const h = React.createElement, YEL = '#ffd60a', INK = '#111111', PAPER = '#ffffff';
+      const ref = React.useRef(null), st = React.useRef({x:0, y:0, sx:0, sy:0, on:false});
+      const down = e => { const s0 = st.current; s0.on = true; s0.x0 = s0.x; s0.y0 = s0.y; s0.sx = e.clientX - s0.x; s0.sy = e.clientY - s0.y; e.currentTarget.setPointerCapture(e.pointerId); ref.current.classList.add('yj-st-drag'); try { navigator.vibrate && navigator.vibrate(8); } catch (_) {} };
+      const move = e => { const s0 = st.current; if (!s0.on) return; s0.x = e.clientX - s0.sx; s0.y = e.clientY - s0.sy; ref.current.style.translate = s0.x + 'px ' + s0.y + 'px'; };
+      const moved = React.useRef(0), [full, setFull] = React.useState(false);
+      const up = e => { const s0 = st.current; if (s0.on && kind === 'coffee' && Math.hypot(e.clientX - s0.sx - s0.x0, e.clientY - s0.sy - s0.y0) < 4) { setFull(f => !f); try { navigator.vibrate && navigator.vibrate(12); } catch (_) {} } s0.on = false; ref.current && ref.current.classList.remove('yj-st-drag'); };
+      const ink = {stroke:INK, strokeWidth:4, fill:'none', strokeLinecap:'round', strokeLinejoin:'round'};
+      const art = kind === 'tulips'
+        ? h('svg', {viewBox:'0 0 140 160'},
+            h('path', {d:'M70 152 V78 M70 152 C 62 122 50 104 36 90 M70 152 C 80 124 92 106 106 94', ...ink}),
+            h('path', {d:'M70 140 C 52 130 44 116 46 100 C 60 108 67 122 70 140 Z M72 136 C 90 128 98 116 98 102 C 84 108 76 120 72 136 Z', ...ink, fill:PAPER}),
+            h('path', {className:'yj-tl yj-tl2', d:'M54 52 C 54 32 62 24 70 20 C 78 24 86 32 86 52 C 86 68 79 78 70 78 C 61 78 54 68 54 52 Z M62 26 L66 46 L70 20 L74 46 L78 26', ...ink, fill:YEL}),
+            h('path', {className:'yj-tl yj-tl1', d:'M20 70 C 18 54 24 46 32 42 C 42 44 48 52 48 66 C 48 80 42 88 34 88 C 26 88 21 80 20 70 Z', ...ink, fill:PAPER}),
+            h('path', {className:'yj-tl yj-tl3', d:'M92 76 C 92 60 98 52 106 48 C 116 52 122 60 122 74 C 122 88 115 94 107 94 C 98 94 92 88 92 76 Z', ...ink, fill:PAPER}))
+        : h('svg', {viewBox:'0 0 140 140'},
+            h('g', {className:'yj-steam' + (full ? ' yj-steam-on' : '')}, h('path', {d:'M50 40 C 42 30 58 24 50 12 M70 40 C 62 30 78 24 70 12 M90 40 C 82 30 98 24 90 12', ...ink})),
+            h('path', {d:'M106 64 C 130 62 130 100 104 98', ...ink, strokeWidth:5}),
+            h('clipPath', {id:'yjCup'}, h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z'})),
+            h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', fill:PAPER}),
+            h('rect', {className:'yj-cup-fill', x:20, y:54, width:100, height:70, fill:YEL, clipPath:'url(#yjCup)', style:{transform:`scaleY(${full ? 1 : .32})`}}),
+            h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', ...ink}),
+            h('path', {d:'M16 126 H124', ...ink, strokeWidth:5}));
+      return h('span', {ref, className:'yj-st ' + className, role:'img', 'aria-label':kind === 'tulips' ? 'Tulips sticker' : 'Coffee sticker. Click for a refill', title:kind === 'coffee' ? (full ? 'Click to drink' : 'Click for a refill') : undefined,
+        onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up, style:{'--r':rot + 'deg'}}, art);
+    };
+
   static BentoHome = function BentoHome(p) {
     // The landing page as one screen-filling bento grid (no scroll, no nav
     // bar on desktop). One visual system throughout:
@@ -822,30 +850,30 @@ class Component extends DCLogic {
       return () => document.removeEventListener('pointerdown', tap);
     }, []);
     const r = RECS[ri];
+    // Depth: tiles tilt toward the pointer in 3D (CSS perspective), with a
+    // shadow that shifts opposite the tilt. Mouse only; off for reduced motion.
+    const grid = React.useRef(null);
+    React.useEffect(() => {
+      const el = grid.current;
+      if (!el || !matchMedia('(hover:hover) and (pointer:fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let cur = null;
+      const reset = t => { if (t) { t.style.setProperty('--rx', '0deg'); t.style.setProperty('--ry', '0deg'); t.style.setProperty('--sx', '0px'); t.style.setProperty('--sy', '0px'); t.classList.remove('yj-tilt'); } };
+      const move = e => {
+        const t = e.target.closest && e.target.closest('.yj-bt');
+        if (t !== cur) { reset(cur); cur = t; }
+        if (!t) return;
+        const r0 = t.getBoundingClientRect(), x = (e.clientX - r0.left) / r0.width - .5, y = (e.clientY - r0.top) / r0.height - .5;
+        const k = Math.min(1, 380 / Math.max(r0.width, r0.height)) * 7;
+        t.classList.add('yj-tilt');
+        t.style.setProperty('--rx', (-y * k).toFixed(2) + 'deg'); t.style.setProperty('--ry', (x * k).toFixed(2) + 'deg');
+        t.style.setProperty('--sx', (-x * 18).toFixed(1) + 'px'); t.style.setProperty('--sy', (14 - y * 10).toFixed(1) + 'px');
+      };
+      const leave = () => { reset(cur); cur = null; };
+      el.addEventListener('pointermove', move); el.addEventListener('pointerleave', leave);
+      return () => { el.removeEventListener('pointermove', move); el.removeEventListener('pointerleave', leave); };
+    }, []);
 
-    // Stickers: black line drawings on white die-cut stickers. Draggable.
-    const Sticker = ({kind, className, rot}) => {
-      const ref = React.useRef(null), st = React.useRef({x:0, y:0, sx:0, sy:0, on:false});
-      const down = e => { const s0 = st.current; s0.on = true; s0.sx = e.clientX - s0.x; s0.sy = e.clientY - s0.y; e.currentTarget.setPointerCapture(e.pointerId); ref.current.classList.add('yj-st-drag'); try { navigator.vibrate && navigator.vibrate(8); } catch (_) {} };
-      const move = e => { const s0 = st.current; if (!s0.on) return; s0.x = e.clientX - s0.sx; s0.y = e.clientY - s0.sy; ref.current.style.translate = s0.x + 'px ' + s0.y + 'px'; };
-      const up = () => { st.current.on = false; ref.current && ref.current.classList.remove('yj-st-drag'); };
-      const ink = {stroke:INK, strokeWidth:4, fill:'none', strokeLinecap:'round', strokeLinejoin:'round'};
-      const art = kind === 'tulips'
-        ? h('svg', {viewBox:'0 0 140 160'},
-            h('path', {d:'M70 152 V78 M70 152 C 62 122 50 104 36 90 M70 152 C 80 124 92 106 106 94', ...ink}),
-            h('path', {d:'M70 140 C 52 130 44 116 46 100 C 60 108 67 122 70 140 Z M72 136 C 90 128 98 116 98 102 C 84 108 76 120 72 136 Z', ...ink, fill:PAPER}),
-            h('path', {d:'M54 52 C 54 32 62 24 70 20 C 78 24 86 32 86 52 C 86 68 79 78 70 78 C 61 78 54 68 54 52 Z M62 26 L66 46 L70 20 L74 46 L78 26', ...ink, fill:YEL}),
-            h('path', {d:'M20 70 C 18 54 24 46 32 42 C 42 44 48 52 48 66 C 48 80 42 88 34 88 C 26 88 21 80 20 70 Z', ...ink, fill:PAPER}),
-            h('path', {d:'M92 76 C 92 60 98 52 106 48 C 116 52 122 60 122 74 C 122 88 115 94 107 94 C 98 94 92 88 92 76 Z', ...ink, fill:PAPER}))
-        : h('svg', {viewBox:'0 0 140 140'},
-            h('path', {d:'M50 40 C 42 30 58 24 50 12 M70 40 C 62 30 78 24 70 12 M90 40 C 82 30 98 24 90 12', ...ink}),
-            h('path', {d:'M106 64 C 130 62 130 100 104 98', ...ink, strokeWidth:5}),
-            h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', ...ink, fill:PAPER}),
-            h('path', {d:'M31 72 H109 L107 86 H33 Z', ...ink, fill:YEL}),
-            h('path', {d:'M16 126 H124', ...ink, strokeWidth:5}));
-      return h('span', {ref, className:'yj-st ' + className, role:'img', 'aria-label':kind === 'tulips' ? 'Tulips sticker' : 'Coffee sticker',
-        onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up, style:{'--r':rot + 'deg'}}, art);
-    };
+    const Sticker = Component.YjSticker;
 
     // All case studies in one tile; a small cover thumbnail follows the
     // pointer on hover (hover-capable devices only).
@@ -860,14 +888,22 @@ class Component extends DCLogic {
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
           title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, (c.years ? c.years + ' · ' : '') + c.kinds)))),
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))),
       h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
           opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
         list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))));
 
+    // Currently: small, human, easy to update. Tulip season counts down live.
+    const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
+    const CURRENTLY = [['Drinking', 'Flat white, oat'], ['Tulip season in', tulipDays ? tulipDays + ' days' : 'Now'], ['Reading', 'Thinking in Systems']];
+    const currently = tile('cu', {},
+      label('Currently'),
+      h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
+        CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
+
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
 
-    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
+    return h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
         .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
@@ -875,43 +911,59 @@ class Component extends DCLogic {
             "in in in in in in ph ph ph ab ab ab"
             "in in in in in in ph ph ph tk tk tk"
             "in in in in in in ph ph ph tk tk tk"
-            "pj pj pj pj pj pj pj pj pj rc rc rc"
-            "pj pj pj pj pj pj pj pj pj rc rc rc"
-            "pj pj pj pj pj pj pj pj pj rc rc rc"}
-        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}
-        .yj-bt{transition:background-color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
+            "pj pj pj pj pj pj cu cu cu rc rc rc"
+            "pj pj pj pj pj pj cu cu cu rc rc rc"
+            "pj pj pj pj pj pj cu cu cu rc rc rc"}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-cu{grid-area:cu}
+        .yj-bento{perspective:1400px}
+        .yj-bt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
+          box-shadow:var(--sx,0px) var(--sy,0px) 0 -6px rgba(0,0,0,0), 0 1px 0 rgba(0,0,0,.04);
+          transition:background-color 250ms ease,transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms cubic-bezier(.2,.7,.2,1);will-change:transform}
+        .yj-bt.yj-tilt{--sc:1.012;transition:background-color 250ms ease,transform 120ms linear,box-shadow 120ms linear;
+          box-shadow:var(--sx,0px) var(--sy,14px) 34px -14px rgba(0,0,0,.28), 0 1px 0 rgba(0,0,0,.04)}
         .yj-bt-go:hover{background:#f3f3f0 !important}
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
         .yj-bt-go:hover .yj-bt-arrow{transform:translateX(4px)}
-        .yj-bt-go:active{transform:scale(.98)}
+        .yj-bt-go:active{--sc:.985}
         .yj-bento :focus-visible{outline:2px solid ${INK};outline-offset:3px}
         .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
         .yj-link:hover{text-decoration-thickness:2px}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
+        .yj-pj-kinds{display:none}
+        .yj-tl{transform-box:fill-box;transform-origin:50% 100%;animation:yjBloom 700ms cubic-bezier(.3,1.6,.4,1) both}
+        .yj-tl1{animation-delay:500ms}.yj-tl2{animation-delay:800ms}.yj-tl3{animation-delay:1100ms}
+        @keyframes yjBloom{from{transform:scale(0)}}
+        .yj-cup-fill{transform-box:fill-box;transform-origin:50% 100%;transition:transform 900ms cubic-bezier(.2,.7,.2,1)}
+        .yj-steam{opacity:.15;transition:opacity 600ms ease}
+        .yj-steam-on{opacity:1;animation:yjSteam 2.4s ease-in-out infinite}
+        @keyframes yjSteam{50%{transform:translateY(-4px);opacity:.55}}
+        .yj-st-coffee{cursor:pointer}
         .yj-bt-q{animation:yjBtQ 500ms cubic-bezier(.2,.7,.2,1) both}
         @keyframes yjBtQ{from{opacity:0;transform:translateY(8px)}}
         .yj-st{position:absolute;z-index:5;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
           transform:rotate(var(--r));transition:transform 300ms cubic-bezier(.3,1.6,.4,1);
-          filter:drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.14))}
+          filter:drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 10px 12px rgba(0,0,0,.18))}
+        .yj-st:hover{filter:drop-shadow(4px 0 0 #fff) drop-shadow(-4px 0 0 #fff) drop-shadow(0 4px 0 #fff) drop-shadow(0 -4px 0 #fff) drop-shadow(0 22px 18px rgba(0,0,0,.22))}
         .yj-st svg{display:block;width:100%;height:auto;pointer-events:none}
-        .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.06)}
+        .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.08) translateY(-6px)}
         .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
         .yj-st-tulips{width:clamp(110px, 10vw, 170px);right:7%;bottom:9%}
         .yj-st-coffee{width:clamp(90px, 7.5vw, 130px);right:clamp(18px, 2vw, 32px);bottom:clamp(18px, 2vw, 32px)}
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
           .yj-bento{height:auto;min-height:0;padding:16px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
-            grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "rc rc"}
+            grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "cu cu" "rc rc"}
           .yj-bento .yj-bt{min-height:110px !important}
           .yj-bento .yj-a-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:240px !important}
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
+          .yj-pj-kinds{display:inline}
           .yj-st-tulips{width:92px;right:14px;bottom:auto;top:64px}
           .yj-st-coffee{width:58px;right:-8px;bottom:-24px}
         }
-        @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on{animation:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
@@ -929,6 +981,7 @@ class Component extends DCLogic {
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
       projects,
+      currently,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
