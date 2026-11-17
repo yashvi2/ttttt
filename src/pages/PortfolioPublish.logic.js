@@ -792,8 +792,8 @@ class Component extends DCLogic {
       const tag = href ? 'a' : onClick ? 'button' : 'div';
       return h(tag, {...rest, className:'yj-bt yj-a-' + area + (cn ? ' ' + cn : '') + (onClick || href ? ' yj-bt-go' : '') + (blue ? ' yj-bt-blue' : ''), 'aria-label':label, onClick, href,
         ...(href ? {target:'_blank', rel:'noopener'} : {}),
-        style:{boxSizing:'border-box', border:0, margin:0, textAlign:'left', textDecoration:'none', font:'inherit', width:'100%', height:'100%', position:'relative', overflow:'hidden', borderRadius:14,
-          background:blue ? BLUE : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(14px, 1.5vw, 24px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
+        style:{boxSizing:'border-box', border:0, margin:0, textAlign:'left', textDecoration:'none', font:'inherit', width:'100%', height:'100%', position:'relative', overflow:'hidden', borderRadius:18,
+          background:blue ? BLUE : PAPER, color:blue ? '#ffffff' : INK, padding:'clamp(18px, 1.8vw, 30px)', display:'flex', flexDirection:'column', justifyContent:'space-between',
           cursor:onClick || href ? 'pointer' : 'default', fontFamily:F, minWidth:0, minHeight:0, ...style}}, ...kids);
     };
     const small = (txt, extra) => h('span', {style:{fontSize:13, fontWeight:400, color:'inherit', opacity:.6, ...extra}}, txt);
@@ -818,28 +818,78 @@ class Component extends DCLogic {
       document.addEventListener('pointerdown', tap, {passive:true});
       return () => document.removeEventListener('pointerdown', tap);
     }, []);
+    // Personality stickers: die-cut flat illustrations (white edge, soft
+    // shadow) stuck over tile edges. They can be dragged anywhere.
+    const Sticker = ({kind, className, rot}) => {
+      const ref = React.useRef(null), st = React.useRef({x:0, y:0, sx:0, sy:0, on:false});
+      const down = e => { const s0 = st.current; s0.on = true; s0.sx = e.clientX - s0.x; s0.sy = e.clientY - s0.y; e.currentTarget.setPointerCapture(e.pointerId); ref.current.classList.add('yj-st-drag'); try { navigator.vibrate && navigator.vibrate(8); } catch (_) {} };
+      const move = e => { const s0 = st.current; if (!s0.on) return; s0.x = e.clientX - s0.sx; s0.y = e.clientY - s0.sy; ref.current.style.translate = s0.x + 'px ' + s0.y + 'px'; };
+      const up = () => { st.current.on = false; ref.current && ref.current.classList.remove('yj-st-drag'); };
+      const art = {
+        tulips: h('svg', {viewBox:'0 0 140 150'},
+          h('path', {d:'M70 148 C 68 120 70 96 70 70', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
+          h('path', {d:'M70 148 C 62 118 48 98 34 82', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
+          h('path', {d:'M70 148 C 80 120 94 100 108 86', stroke:'#2f8a4e', strokeWidth:6, fill:'none', strokeLinecap:'round'}),
+          h('path', {d:'M70 140 C 50 128 40 112 42 96 C 58 104 66 120 70 140Z', fill:'#47a866'}),
+          h('path', {d:'M72 138 C 92 130 104 116 104 102 C 88 108 78 122 72 138Z', fill:'#47a866'}),
+          h('path', {d:'M52 48 C 52 30 60 22 70 18 C 80 22 88 30 88 48 C 88 64 80 72 70 72 C 60 72 52 64 52 48Z', fill:'#f6a9c6'}),
+          h('path', {d:'M60 26 L66 42 L70 18 L74 42 L80 26', fill:'#e77fa6'}),
+          h('path', {d:'M18 66 C 16 50 22 42 32 38 C 42 40 50 48 50 62 C 50 76 42 84 34 84 C 24 84 19 76 18 66Z', fill:'#ff5a1f'}),
+          h('path', {d:'M90 70 C 90 54 98 46 108 44 C 118 48 124 56 124 70 C 124 84 116 90 108 90 C 98 90 90 84 90 70Z', fill:'#ffd23f'})),
+        coffee: h('svg', {viewBox:'0 0 140 140'},
+          h('path', {d:'M48 40 C 40 30 56 24 48 12 M68 40 C 60 30 76 24 68 12 M88 40 C 80 30 96 24 88 12', stroke:'#111', strokeWidth:4, fill:'none', strokeLinecap:'round'}),
+          h('ellipse', {cx:70, cy:122, rx:58, ry:12, fill:'#1338d6'}),
+          h('path', {d:'M106 64 C 132 62 132 102 104 98', stroke:'#f3ece0', strokeWidth:10, fill:'none'}),
+          h('path', {d:'M28 50 H112 L104 110 C 102 118 96 122 88 122 H52 C 44 122 38 118 36 110 Z', fill:'#f3ece0'}),
+          h('rect', {x:31, y:70, width:78, height:14, fill:'#ff5a1f'}),
+          h('ellipse', {cx:70, cy:52, rx:42, ry:7, fill:'#6b4226'})),
+        sea: h('svg', {viewBox:'0 0 130 130'},
+          h('circle', {cx:65, cy:65, r:60, fill:'#bfe3f5'}),
+          h('circle', {cx:84, cy:46, r:16, fill:'#ffd23f'}),
+          h('clipPath', {id:'yjSeaClip'}, h('circle', {cx:65, cy:65, r:60})),
+          h('g', {clipPath:'url(#yjSeaClip)'},
+            h('path', {d:'M0 74 Q 16 64 32 74 T 64 74 T 96 74 T 128 74 T 160 74 V130 H0Z', fill:'#5aa7d6'}),
+            h('path', {d:'M0 92 Q 16 82 32 92 T 64 92 T 96 92 T 128 92 T 160 92 V130 H0Z', fill:'#1338d6'})))
+      }[kind];
+      return h('span', {ref, className:'yj-st ' + className, role:'img', 'aria-label':kind === 'tulips' ? 'Tulips sticker' : kind === 'coffee' ? 'Coffee sticker' : 'Sea sticker',
+        onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up, style:{'--r':rot + 'deg'}}, art);
+    };
+
     const r = RECS[ri];
 
-    const proj = (area, c) => c ? tile(area, {onClick:c.open, label:'Open case study: ' + c.short, className:'yj-bt-p', style:{padding:0}},
-      h('span', {className:'yj-bt-img', style:{display:'block', flex:1, minHeight:0, background:`#dfe3ee url(${__R(c.src)}) ${c.cardPos || '50% 50%'}/cover no-repeat`}}),
-      h('span', {style:{display:'flex', flexDirection:'column', gap:4, padding:'clamp(12px, 1.2vw, 18px)'}},
-        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:12}},
-          h('span', {style:{fontWeight:600, fontSize:'clamp(16px, 1.3vw, 19px)', letterSpacing:'-0.02em', lineHeight:1.2}}, c.short), arrow),
-        small(c.sector + (c.stat ? ' · ' + c.stat : '')))) : null;
-    const [p1, p2, p3] = p.projects || [];
+    // All case studies in one tile: a list on the left, the hovered or
+    // focused project's image on the right.
+    const list = (p.projects || []).filter(Boolean);
+    const [pi, setPi] = React.useState(0);
+    const cur = list[pi] || list[0];
+    const projects = tile('pj', {className:'yj-bt-p', style:{padding:0, flexDirection:'row', alignItems:'stretch'}},
+      h('div', {style:{flex:'1 1 55%', minWidth:0, display:'flex', flexDirection:'column', padding:'clamp(18px, 1.8vw, 30px)', gap:10}},
+        h('span', {style:{display:'flex', justifyContent:'space-between'}}, small('Selected work'), small(list.length + ' case studies')),
+        h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-end'}},
+          list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:() => setPi(i), onFocus:() => setPi(i), className:'yj-pj-row' + (i === pi ? ' yj-pj-on' : ''),
+              'aria-label':'Open case study: ' + c.short,
+              style:{all:'unset', boxSizing:'border-box', cursor:'pointer', display:'grid', gridTemplateColumns:'2.2em minmax(0,1fr) auto auto', alignItems:'baseline', columnGap:14, rowGap:2, padding:'clamp(9px, 1.5vh, 15px) 0', borderTop:'1px solid #e4e6ec', fontFamily:F}},
+            h('span', {style:{fontSize:13, opacity:.45}}, String(i + 1).padStart(2, '0')),
+            h('span', {style:{minWidth:0, fontWeight:600, fontSize:'clamp(16px, 1.3vw, 20px)', letterSpacing:'-0.02em', lineHeight:1.2}}, c.short),
+            h('span', {className:'yj-pj-meta', style:{fontSize:13, opacity:.6, textAlign:'right'}}, c.sector + (c.stat ? ' · ' + c.stat : '')),
+            h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, opacity:.55}}, '→'))))),
+      h('div', {className:'yj-pj-prev', 'aria-hidden':true, style:{flex:'1 1 45%', minWidth:0, margin:10, borderRadius:10, overflow:'hidden', background:BLUE, position:'relative'}},
+        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === pi ? 1 : 0, transition:'opacity 400ms ease',
+          background:c.src ? `#dfe3ee url(${__R(c.src)}) ${c.cardPos || '50% 50%'}/cover no-repeat` : BLUE,
+          color:'#fff', display:'flex', alignItems:'flex-end', padding:18, boxSizing:'border-box', fontFamily:F, fontWeight:700, fontSize:28, letterSpacing:'-0.03em'}}, c.src ? null : c.short))));
 
     return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{background:BG}},
       h('style', null, `
-        .yj-bento{box-sizing:border-box;height:100svh;min-height:600px;padding:8px;display:grid;gap:8px;
+        .yj-bento{box-sizing:border-box;height:100svh;min-height:640px;padding:16px;display:grid;gap:16px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
           grid-template-areas:
             "in in in in in in ph ph ph wk wk wk"
             "in in in in in in ph ph ph ab ab ab"
             "in in in in in in ph ph ph tk tk tk"
-            "p1 p1 p1 p2 p2 p2 p3 p3 p3 rc rc rc"
-            "p1 p1 p1 p2 p2 p2 p3 p3 p3 rc rc rc"
-            "p1 p1 p1 p2 p2 p2 p3 p3 p3 rc rc rc"}
-        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-wk{grid-area:wk}.yj-a-ab{grid-area:ab}.yj-a-cv{grid-area:cv}.yj-a-li{grid-area:li}.yj-a-p1{grid-area:p1}.yj-a-p2{grid-area:p2}.yj-a-p3{grid-area:p3}.yj-a-rc{grid-area:rc}.yj-a-tk{grid-area:tk}
+            "pj pj pj pj pj pj pj pj pj rc rc rc"
+            "pj pj pj pj pj pj pj pj pj rc rc rc"
+            "pj pj pj pj pj pj pj pj pj rc rc rc"}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-wk{grid-area:wk}.yj-a-ab{grid-area:ab}.yj-a-cv{grid-area:cv}.yj-a-li{grid-area:li}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-tk{grid-area:tk}
         .yj-bt{transition:background-color 250ms ease,color 250ms ease,transform 160ms cubic-bezier(.3,1.6,.4,1)}
         .yj-bt-go:hover{background:#f3f5fc !important}
         .yj-bt-img{filter:grayscale(1);transition:filter 400ms ease}
@@ -849,20 +899,43 @@ class Component extends DCLogic {
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
         .yj-bt-go:active{transform:scale(.98)}
         .yj-bt-go:focus-visible{outline:3px solid ${BLUE};outline-offset:2px}
+        .yj-pj-row{transition:color 200ms ease}
+        .yj-pj-row:hover,.yj-pj-on{color:${BLUE}}
+        .yj-pj-row:hover .yj-bt-arrow,.yj-pj-on .yj-bt-arrow{transform:translateX(4px);opacity:1}
+        .yj-pj-row:focus-visible{outline:2px solid ${BLUE};outline-offset:2px}
+        .yj-st{position:absolute;z-index:5;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+          transform:rotate(var(--r));transition:transform 300ms cubic-bezier(.3,1.6,.4,1);
+          filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 8px 10px rgba(0,0,0,.18))}
+        .yj-st svg{display:block;width:100%;height:auto;pointer-events:none}
+        .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.06)}
+        .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
+        .yj-st-tulips{width:clamp(110px, 11vw, 190px);right:7%;bottom:9%}
+        .yj-st-sea{width:clamp(70px, 6.4vw, 110px);left:-34px;bottom:12%}
+        .yj-st-coffee{width:clamp(66px, 5.6vw, 96px);right:22px;bottom:-30px}
         .yj-bt-q{animation:yjBtQ 500ms cubic-bezier(.2,.7,.2,1) both}
         @keyframes yjBtQ{from{opacity:0;transform:translateY(8px)}}
         @media (max-width:820px),(max-height:560px){
           .yj-bento{height:auto;min-height:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
-            grid-template-areas:"in in" "ph wk" "ph ab" "ph tk" "p1 p1" "p2 p3" "rc rc"}
+            grid-template-areas:"in in" "ph wk" "ph ab" "ph tk" "pj pj" "rc rc"}
           .yj-bento .yj-bt{min-height:96px !important}
           .yj-bento .yj-bt-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:220px !important}
-          .yj-bento .yj-bt-p{min-height:280px !important}
+          .yj-bento .yj-bt-p{min-height:0 !important}
+          .yj-pj-prev{display:none}
+          .yj-bento{padding:12px;gap:12px}
+          .yj-st-tulips{width:96px;right:14px;bottom:auto;top:64px}
+          .yj-st-sea{width:70px;left:auto;right:-8px;bottom:-14px}
+          .yj-st-coffee{width:56px;right:-10px;bottom:-30px}
+          .yj-pj-row{grid-template-columns:2.2em minmax(0,1fr) auto !important}
+          .yj-pj-meta{grid-column:2;grid-row:2;text-align:left !important}
+          .yj-pj-row .yj-bt-arrow{grid-column:3;grid-row:1}
         }
-        @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}}
+        @media (min-width:821px) and (max-width:1360px),(min-width:821px) and (max-height:820px){.yj-pj-meta{display:none}.yj-pj-row{padding-top:8px !important;padding-bottom:8px !important}}
+        @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one focal point
-      tile('in', {blue:true, className:'yj-bt-in'},
+      tile('in', {blue:true, className:'yj-bt-in', style:{overflow:'visible', zIndex:3}},
+        h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:14}},
           h('span', null, 'Product & service designer'),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:'#ffffff'}}), 'Open to roles · London')),
@@ -871,12 +944,12 @@ class Component extends DCLogic {
           h('span', {style:{fontSize:'clamp(15px, 1.15vw, 18px)', lineHeight:1.45, maxWidth:'38ch', opacity:.9}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
           h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-bt-link', style:{color:'#ffffff', fontSize:15, fontWeight:500, textDecoration:'underline', textUnderlineOffset:4, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
-      tile('ph', {label:'Portrait of Yashvi Jain', style:{padding:0, background:`#dfe3ee url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}),
+      tile('ph', {label:'Portrait of Yashvi Jain', style:{overflow:'visible', zIndex:2, padding:0, background:`#dfe3ee url(${__R('assets/web/assets/yashvi.webp')}) 50% 28%/cover no-repeat`}}, h(Sticker, {kind:'sea', className:'yj-st-sea', rot:-10})),
       // navigation, stacked where people expect it
       navTile('wk', 'Work', p.count + ' case studies', p.onWork),
-      navTile('ab', 'About', 'Background, skills, CV', p.onAbout),
-      navTile('tk', 'Contact', 'Let’s talk', p.onContact),
-      h(React.Fragment, null, proj('p1', p1), proj('p2', p2), proj('p3', p3)),
+      navTile('ab', 'About', 'Research, tulips and the sea', p.onAbout),
+      h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}}, navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
+      projects,
       // recommendation (rotates)
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
@@ -1646,7 +1719,7 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       landingHero: h(Component.BentoHome, {onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, stat:id === 'ava' ? '70% fewer errors' : id === 'pfizer' ? 'Pentagram rebrand' : 'Service design'}; })}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, stat:{ava:'70% fewer errors', pfizer:'Pentagram rebrand', move:'Service design', cray:'Mobile platform', ime:'Museum online', askbeta:'Live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
