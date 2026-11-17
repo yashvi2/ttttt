@@ -1641,19 +1641,42 @@ class Component extends DCLogic {
       label('Looking for'),
       h('span', {className:'yj-cu-l'},
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
-    // On the turntable: a spinning record and a search that opens the song on Spotify.
-    const [song, setSong] = React.useState('');
-    const spRef = React.useRef(null);
-    const spHref = song.trim() ? 'https://open.spotify.com/search/' + encodeURIComponent(song.trim()) : 'https://open.spotify.com/';
-    const vinyl = tile('vn', {style:{gap:12}},
-      label('On the turntable'),
+    // On the turntable: a mood crate of 20 well-known songs. The record moves through the
+    // chosen mood on its own; one click opens the current song (or a search) on Spotify.
+    const CRATE = {
+      Happy:['Here Comes the Sun|The Beatles', 'Walking on Sunshine|Katrina and the Waves', 'Happy|Pharrell Williams', 'Dancing Queen|ABBA'],
+      Calm:['Clair de Lune|Claude Debussy', 'River Flows in You|Yiruma', 'Weightless|Marconi Union', 'Holocene|Bon Iver'],
+      Focus:['Gymnopédie No. 1|Erik Satie', 'Experience|Ludovico Einaudi', 'Intro|The xx', 'Time|Hans Zimmer'],
+      Nostalgic:['Yesterday|The Beatles', 'Dreams|Fleetwood Mac', 'Bohemian Rhapsody|Queen', 'Tum Hi Ho|Arijit Singh'],
+      Night:['Fly Me to the Moon|Frank Sinatra', 'Feeling Good|Nina Simone', 'Redbone|Childish Gambino', 'Blinding Lights|The Weeknd']};
+    const MOODS = Object.keys(CRATE);
+    const [mood, setMood] = React.useState('Happy'), [ti, setTi] = React.useState(0), [song, setSong] = React.useState('');
+    const vnHold = React.useRef(false), spRef = React.useRef(null);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = setInterval(() => { if (!document.hidden && !vnHold.current) setTi(i => (i + 1) % 4); }, 7000);
+      return () => clearInterval(t);
+    }, [mood]);
+    const [trk, art] = CRATE[mood][ti].split('|');
+    const q = song.trim() || (trk + ' ' + art);
+    const spHref = 'https://open.spotify.com/search/' + encodeURIComponent(q);
+    const step = d => setTi(i => (i + d + 4) % 4);
+    const vinyl = tile('vn', {style:{gap:10}, onMouseEnter:() => { vnHold.current = true; }, onMouseLeave:() => { vnHold.current = false; }, onFocus:() => { vnHold.current = true; }, onBlur:() => { vnHold.current = false; }},
+      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:8}}, label('On the turntable'), label(String(ti + 1) + ' / 4')),
+      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); setTi(0); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in'},
-        h('img', {src:__R('assets/vinyl.webp'), alt:'A vinyl record spinning', className:'yj-vn-rec', width:640, height:640}),
+        h('span', {className:'yj-vn-spin'},
+          h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
+          h('span', {className:'yj-vn-label', 'aria-hidden':true}, h('b', null, trk), h('i', null, art))),
         h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
+      h('span', {className:'yj-vn-now', 'aria-live':'polite'},
+        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(-1), 'aria-label':'Previous song'}, '‹'),
+        h('span', {style:{minWidth:0, flex:1, textAlign:'center', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', fontSize:13}}, h('b', {style:{fontWeight:600}}, trk), ' · ', art),
+        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(1), 'aria-label':'Next song'}, '›')),
       h('form', {className:'yj-vn-form', role:'search', onSubmit:e => { e.preventDefault(); spRef.current && spRef.current.click(); }},
-        h('label', {htmlFor:'yj-song', style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', whiteSpace:'nowrap'}}, 'Search for a song on Spotify'),
-        h('input', {id:'yj-song', type:'search', value:song, onChange:e => setSong(e.target.value), placeholder:'Search a song…', autoComplete:'off', enterKeyHint:'search'}),
-        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Play on Spotify, opens in a new tab'}, 'Spotify ↗')));
+        h('label', {htmlFor:'yj-song', style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', whiteSpace:'nowrap'}}, 'Search for a different song on Spotify'),
+        h('input', {id:'yj-song', type:'search', value:song, onChange:e => setSong(e.target.value), placeholder:'Or search a song…', autoComplete:'off', enterKeyHint:'search'}),
+        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Play ' + (song.trim() || trk + ' by ' + art) + ' on Spotify, opens in a new tab'}, 'Play ↗')));
 
     // Portrait tile: a slow Ken Burns slideshow of real project imagery,
     // starting on the portrait. Black and white keeps it in the system.
@@ -1740,7 +1763,19 @@ class Component extends DCLogic {
         .yj-cu-l{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:baseline}
         .yj-vn-disc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 0}
         .yj-vn-in{position:relative;height:100%;max-height:100%;aspect-ratio:1;max-width:100%}
-        .yj-vn-rec{position:absolute;inset:0;width:100%;height:100%;animation:yjVinyl 1.8s linear infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+        .yj-vn-spin{position:absolute;inset:0;animation:yjVinyl 1.8s linear infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+        .yj-vn-rec{position:absolute;inset:0;width:100%;height:100%}
+        .yj-vn-label{position:absolute;left:50%;top:50%;width:30%;height:30%;transform:translate(-50%,-50%);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1px;padding:4%;box-sizing:border-box;color:#3a2f22;line-height:1.1;overflow:hidden}
+        .yj-vn-label b{font-size:clamp(6px, 0.62vw, 10px);font-weight:600;max-width:100%}
+        .yj-vn-label i{font-style:normal;font-size:clamp(5px, 0.5vw, 8px);opacity:.75;max-width:100%}
+        .yj-vn-moods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}
+        .yj-vn-moods::-webkit-scrollbar{display:none}
+        .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
+        .yj-vn-mood.on{background:${INK};border-color:${INK};color:#fff}
+        .yj-vn-mood:focus-visible,.yj-vn-step:focus-visible{outline:2px solid ${INK};outline-offset:2px}
+        .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
+        .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
+        .yj-vn-step:hover{border-color:${INK}}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
           background:conic-gradient(from 20deg, transparent 0deg, rgba(255,255,255,.16) 28deg, transparent 58deg, transparent 180deg, rgba(255,255,255,.12) 208deg, transparent 238deg);
           -webkit-mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%);mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%)}
@@ -1750,7 +1785,7 @@ class Component extends DCLogic {
         .yj-vn-form input:focus-visible{border-color:${INK}}
         .yj-vn-go{flex:none;display:inline-flex;align-items:center;font-size:13px;font-weight:600;color:#fff;background:${INK};border-radius:999px;padding:10px 14px;text-decoration:none;white-space:nowrap}
         .yj-vn-go:hover{background:#333}.yj-vn-go:focus-visible{outline:2px solid ${INK};outline-offset:2px}
-        @media (prefers-reduced-motion:reduce){.yj-vn-rec{animation-duration:12s}}
+        @media (prefers-reduced-motion:reduce){.yj-vn-spin{animation-duration:12s}}
         .yj-bt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
           box-shadow:var(--sx,0px) var(--sy,0px) 0 -6px rgba(0,0,0,0), 0 1px 0 rgba(0,0,0,.04);
           transition:background-color 250ms ease,transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms cubic-bezier(.2,.7,.2,1);will-change:transform}
