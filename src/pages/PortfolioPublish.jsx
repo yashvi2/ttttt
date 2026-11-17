@@ -155,6 +155,7 @@ function template(v) {
             </>
           ) : null}
         </header>
+        {t(v.dock)}
         <main style={{ flex: '1' }}>
           {v.isHome ? (
             <>

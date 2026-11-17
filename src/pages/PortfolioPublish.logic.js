@@ -807,6 +807,13 @@ class Component extends DCLogic {
         onPointerDown:down, onPointerMove:move, onPointerUp:up, onPointerCancel:up, style:{'--r':rot + 'deg'}}, art);
     };
 
+  static Dock = function Dock(p) {
+    // One floating navigation for every page (replaces the top bar).
+    const h = React.createElement;
+    return h('nav', {className:'yj-dock', 'aria-label':'Site'},
+      p.items.map(it => h('button', {key:it.key, onClick:it.onClick, 'aria-current':it.on ? 'page' : undefined, className:it.on ? 'yj-dock-on' : ''}, it.label)));
+  };
+
   static BentoHome = function BentoHome(p) {
     // The landing page as one screen-filling bento grid (no scroll, no nav
     // bar on desktop). One visual system throughout:
@@ -955,21 +962,19 @@ class Component extends DCLogic {
         LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}}))));
 
     // Dashboard ↔ Projects, switched in place from the floating dock.
-    const [view, setView] = React.useState('dash');
+    const view = p.view || 'dash';
     const [cat, setCat] = React.useState('All');
     const cats = ['All', ...Array.from(new Set(list.map(c => c.cat).filter(Boolean)))];
     const shown = list.filter(c => cat === 'All' || c.cat === cat);
     const pill = React.useRef(null), [pv, setPv] = React.useState(false);
     const pillMove = e => { const t = pill.current; if (t) t.style.transform = `translate(${e.clientX + 14}px, ${e.clientY + 14}px)`; };
-    const dock = h('nav', {className:'yj-dock', 'aria-label':'Home views'},
-      [['dash', 'Dashboard'], ['proj', 'Projects']].map(([k, l]) => h('button', {key:k, onClick:() => setView(k), 'aria-pressed':view === k, className:view === k ? 'yj-dock-on' : ''}, l)));
     const projectsView = h('div', {className:'yj-pv', role:'region', 'aria-label':'Selected work'},
       h('div', {className:'yj-pv-head'},
         h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
         h('div', {style:{display:'flex', gap:8, flexWrap:'wrap'}}, cats.map(k => h('button', {key:k, onClick:() => setCat(k), 'aria-pressed':cat === k, className:'yj-chip' + (cat === k ? ' yj-chip-on' : '')},
           k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))))),
       h('div', {className:'yj-pv-grid', onMouseMove:pillMove, onMouseLeave:() => setPv(false)},
-        shown.map(c => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); }, className:'yj-pv-card', 'aria-label':'Open case study: ' + c.short},
+        shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}}, c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
           h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
             h('span', {style:{fontWeight:600, fontSize:17, letterSpacing:'-0.01em'}}, c.short),
@@ -978,7 +983,7 @@ class Component extends DCLogic {
 
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
 
-    return h(React.Fragment, null, view === 'proj' ? projectsView : null, dock, h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento' + (view === 'proj' ? ' yj-hide' : ''), style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
+    return h(React.Fragment, null, view === 'proj' ? projectsView : null, h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento' + (view === 'proj' ? ' yj-hide' : ''), style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
         .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px 28px 84px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr)) clamp(48px, 7vh, 76px);
@@ -1007,24 +1012,21 @@ class Component extends DCLogic {
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
         .yj-hide{display:none !important}
-        .yj-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:5px;border-radius:999px;background:${INK};box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
-        .yj-dock button{all:unset;cursor:pointer;font-family:${F};font-size:14px;font-weight:600;color:#bdbdbd;padding:9px 18px;border-radius:999px;transition:background 250ms ease,color 250ms ease}
-        .yj-dock button:hover{color:#fff}
-        .yj-dock .yj-dock-on{background:${YEL};color:${INK}}
-        .yj-dock button:focus-visible{outline:2px solid ${YEL};outline-offset:2px}
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
         .yj-chip-n{font-size:12px;opacity:.6}
         .yj-chip-on{background:${INK};color:#fff}
         .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${INK};outline-offset:3px}
-        .yj-pv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+        .yj-pv-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(110px, 15vh, 150px);grid-auto-flow:dense;gap:28px}
+        .yj-pv-grid .yj-pv-s0{grid-column:span 4;grid-row:span 3}.yj-pv-grid .yj-pv-s1{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s2{grid-column:span 2;grid-row:span 3}
+        .yj-pv-grid .yj-pv-s3{grid-column:span 2;grid-row:span 4}.yj-pv-grid .yj-pv-s4{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s5{grid-column:span 4;grid-row:span 2}
         .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
-        .yj-pv-cover{position:relative;display:block;aspect-ratio:16/10;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
+        .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
         .yj-pv-card:hover .yj-pv-cover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(0,0,0,.45)}
         .yj-pv-pill{position:fixed;left:0;top:0;z-index:70;pointer-events:none;background:${YEL};color:${INK};font-family:${F};font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;transition:opacity 200ms ease;box-shadow:0 8px 20px -10px rgba(0,0,0,.4)}
         @media (hover:none){.yj-pv-pill{display:none}}
-        @media (max-width:820px){.yj-pv{height:auto;padding:16px 16px 96px}.yj-pv-grid{grid-template-columns:1fr;gap:20px}}
+        @media (max-width:820px){.yj-pv{height:auto;padding:16px 16px 96px}.yj-pv-grid{grid-template-columns:1fr;grid-auto-rows:auto;gap:20px}.yj-pv-card{grid-column:auto !important;grid-row:auto !important}.yj-pv-cover{flex:none;aspect-ratio:16/10}}
         .yj-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
         .yj-caret{display:inline-block;margin-left:1px;animation:yjCaret 1s steps(1) infinite}
         @keyframes yjCaret{50%{opacity:0}}
@@ -1461,7 +1463,12 @@ Agent:`;
       window.scrollTo({top: top + total * (i + 0.5) / 3, behavior:'smooth'});
     } else this.setState({face:i});
   }
-  go(screen, extra) { this.setState({screen, face:0, hp:0, ...(extra || {})}); window.scrollTo(0, 0); }
+  go(screen, extra) {
+    // Work lives on the home page as the Projects view; home itself opens on the dashboard.
+    if (screen === 'work') { screen = 'home'; extra = {homeView:'proj', ...(extra || {})}; }
+    else if (screen === 'home') extra = {homeView:'dash', ...(extra || {})};
+    this.setState({screen, face:0, hp:0, ...(extra || {})}); window.scrollTo(0, 0);
+  }
   openCase(i) { this.go('case', {ci:i, si:0, protoLoop:false}); this._pIn = false; this.protoArm(); }
 
   static caseBrief() {
@@ -1884,7 +1891,12 @@ Agent:`;
       chatSubmit: e => { e.preventDefault(); this.sendChat(this.state.chatInput); },
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
-      landingHero: h(Component.BentoHome, {onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
+      dock: h(Component.Dock, {items:[
+        {key:'dash', label:'Dashboard', on:s.screen === 'home' && s.homeView !== 'proj', onClick:() => this.go('home')},
+        {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')},
+        {key:'about', label:'About', on:s.screen === 'approach', onClick:() => this.go('approach')},
+        {key:'contact', label:'Contact', on:s.screen === 'contact', onClick:() => this.go('contact')}]}),
+      landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
         projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
