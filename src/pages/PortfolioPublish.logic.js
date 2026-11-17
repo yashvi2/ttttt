@@ -185,7 +185,7 @@ const TIMELINE = [
 ];
 const pct = v => ((v - T0) / (T1 - T0) * 100).toFixed(3) + '%';
 const INK = '#000000', CREAM = '#f4f4f4', RED = 'var(--yj-accent, #ff4d2e)';
-const MONO = "Geist,sans-serif", SERIF = "'Instrument Serif',serif";
+const MONO = "'Schibsted Grotesk',sans-serif", SERIF = "'Libre Caslon Text',Georgia,serif";
 const SCRIM = 'linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0) 42%)';
 const REVEAL = {
   wipe:['inset(0 100% 0 0)','inset(0 0% 0 0)'], rise:['inset(100% 0 0 0)','inset(0% 0 0 0)'],
@@ -424,7 +424,7 @@ class Component extends DCLogic {
     const TAGS = ['Health tech', 'Pharma', 'Life sciences', 'Socio-cultural probes'];
     const [grab, setGrab] = React.useState(-1);
     const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const S = React.useRef({N:16, vis:true, tags:null, hist:[], ropes:[{pts:[], rot:0, drag:null, fx:.5, fxm:.5, len:.34, lenm:.13, sw:.7}]});
+    const S = React.useRef({N:16, vis:true, tags:null, hist:[], ropes:[{pts:[], rot:0, drag:null, fx:.66, fxm:.5, len:.34, lenm:.13, sw:.7}]});
     const CLIP = 64;
     React.useEffect(() => {
       const s = S.current, N = s.N, el = wrap.current; let raf = 0, W, H, ay = -40;
@@ -511,7 +511,7 @@ class Component extends DCLogic {
     const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
-    const sans = 'Geist, sans-serif', cond = sans, display = "'Gloock', Georgia, serif";
+    const sans = "'Schibsted Grotesk', sans-serif", cond = sans, display = "'Libre Caslon Display', Georgia, serif";
     const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#cfcfcf', maxWidth:420, margin:0};
     const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
@@ -554,9 +554,9 @@ class Component extends DCLogic {
       h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
         h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
         [0].map(ri => h('g', {key:ri},
-          h('path', {ref:straps[ri], fill:'none', stroke:'#141414', strokeWidth:30, strokeLinecap:'butt', strokeLinejoin:'round'}),
-          h('text', {fill:green, fontFamily:cond, fontWeight:600, fontSize:11, letterSpacing:'.16em', dominantBaseline:'central'},
-            h('textPath', {href:'#yjStrapPath' + ri, startOffset:'0'}, print))))),
+          // plain woven strap: dark band with a faint edge highlight
+          h('path', {ref:straps[ri], fill:'none', stroke:'#2b2b2b', strokeWidth:22, strokeLinecap:'butt', strokeLinejoin:'round'}),
+          h('use', {href:'#yjStrapPath' + ri, fill:'none', stroke:'#3d3d3d', strokeWidth:14, strokeLinecap:'butt', strokeLinejoin:'round'})))),
       idCard(0));
   };
 
@@ -616,7 +616,7 @@ class Component extends DCLogic {
     Object.assign(el.style, {position:'fixed', left:'0', top:'0', width:'24px', height:'24px', marginLeft:'-12px', marginTop:'-12px', borderRadius:'50%', background:'#f4f4f4',
       mixBlendMode:'difference', pointerEvents:'none', zIndex:'10001', display:'flex', alignItems:'center', justifyContent:'center',
       transition:'width 450ms cubic-bezier(.22,1,.36,1), height 450ms cubic-bezier(.22,1,.36,1), margin 450ms cubic-bezier(.22,1,.36,1), opacity 250ms', opacity:'0', willChange:'transform'});
-    Object.assign(lab.style, {fontFamily:"Geist,sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#000000', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
+    Object.assign(lab.style, {fontFamily:"'Schibsted Grotesk',sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#000000', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
     el.appendChild(lab); document.body.appendChild(el); document.documentElement.classList.add('yj-cur');
     let tx = -100, ty = -100, x = -100, y = -100, size = 24;
     const setSize = (n, text) => { if (n === size && lab.textContent === (text || '')) return; size = n; el.style.width = el.style.height = n + 'px'; el.style.marginLeft = el.style.marginTop = (-n / 2) + 'px'; lab.textContent = text || ''; lab.style.opacity = text ? '1' : '0'; };
@@ -1089,7 +1089,7 @@ Agent:`;
     const CATS = ['All', 'Strategy', 'UX', 'Co-design', 'Service design'], wc = s.wcat || 'All';
     const inCat = (c, f) => f === 'All' || c.cat === f || (c.disc || []).includes(f);
     const isPlayTab = wc === 'Play';
-    const wTabs = [['Projects', 'All', String(CASES.filter(c => c.id !== 'halls').length).padStart(2,'0'), !isPlayTab], ['Play', 'Play', '07', isPlayTab]].map(([label, k, count, on]) => ({label, count, onClick:() => this.setState({wcat:k}), fg: on ? CREAM : '#8c8c8c', line: on ? 'var(--yj-accent, #ff4d2e)' : 'transparent'}));
+    const wTabs = [['Projects', 'All', String(CASES.filter(c => c.id !== 'halls').length + 1).padStart(2,'0'), !isPlayTab], ['Play', 'Play', '07', isPlayTab]].map(([label, k, count, on]) => ({label, count, onClick:() => this.setState({wcat:k}), fg: on ? CREAM : '#8c8c8c', line: on ? 'var(--yj-accent, #ff4d2e)' : 'transparent'}));
     this._wTabs = wTabs;
     const cats = CATS.filter(f => f !== 'Play').map(f => { const on = wc === f; return {label:f, count: String(f === 'Play' ? 7 : CASES.filter(c => c.id !== 'halls' && inCat(c, f)).length).padStart(2,'0'), onClick:() => this.setState({wcat:f}),
       bg: on ? CREAM : 'transparent', fg: on ? INK : CREAM, line: on ? CREAM : '#666666'}; });
@@ -1097,6 +1097,18 @@ Agent:`;
     const cases = CASES.map((c, i) => ({...c, cardLine:c.cardLine || '', open:() => this.openCase(i), ctaO: s.hovCase === c.id ? 1 : 0, ctaY: s.hovCase === c.id ? '0px' : '8px',
       hovOn:() => this.setState({hovCase:c.id}), hovOff:() => this.setState(st => st.hovCase === c.id ? {hovCase:null} : null),
       cover: h(K, {key:'cov' + c.id, level, parallax:40, label:c.title, onClick:() => this.openCase(i)}, this.pic(c, false))})).filter(c => c.id !== 'halls');
+    // Live prototypes that open in a new tab rather than as a case study page.
+    const PROTO_URL = 'https://parent-scam-sense.lovable.app';
+    cases.push({id:'askbeta', short:'Ask Beta', title:'Ask Beta: scam checks for parents', sector:'Consumer safety', years:'2026', cat:'UX', disc:['Co-design'], tags:['UX'], methods:[],
+      cardLine:'A mobile prototype that helps parents check a suspicious call or message before they act.',
+      open:() => window.open(PROTO_URL, '_blank', 'noopener'), ctaO: s.hovCase === 'askbeta' ? 1 : 0, ctaY: s.hovCase === 'askbeta' ? '0px' : '8px',
+      hovOn:() => this.setState({hovCase:'askbeta'}), hovOff:() => this.setState(st => st.hovCase === 'askbeta' ? {hovCase:null} : null),
+      cover: h('a', {href:PROTO_URL, target:'_blank', rel:'noopener', 'aria-label':'Open the Ask Beta prototype', style:{position:'absolute', inset:0, display:'block', background:'#f4b73a', color:'#141210', overflow:'hidden', textDecoration:'none', fontFamily:"Inter, 'Schibsted Grotesk', sans-serif"}},
+        h('span', {'aria-hidden':true, style:{position:'absolute', right:'-18%', top:'-14%', width:'78%', aspectRatio:'1', borderRadius:'50%', background:'radial-gradient(circle at 40% 40%, #ffe7a3, #f7c75a 60%, #f4b73a)'}}),
+        h('span', {style:{position:'absolute', left:'8%', bottom:'9%', right:'8%', display:'flex', flexDirection:'column', gap:'0.4em'}},
+          h('span', {style:{fontSize:'clamp(12px,1vw,14px)', fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', opacity:.7}}, 'Live prototype ↗'),
+          h('span', {style:{fontSize:'clamp(34px,4vw,60px)', fontWeight:800, letterSpacing:'-0.04em', lineHeight:.95}}, 'Ask Beta'),
+          h('span', {style:{fontSize:'clamp(14px,1.2vw,17px)', fontWeight:500, lineHeight:1.3, maxWidth:'22ch'}}, 'Is this call a scam? A calm second opinion for parents.')))});
     const workList = cases.filter(c => ['move', 'pfizer', 'ava'].includes(c.id) && (s.filter === 'All' || c.tags.includes(s.filter)));
     const catList = cases.filter(c => c.id !== 'halls' && inCat(c, s.wcat || 'All'));
     const filters = FILTERS.map(f => { const on = s.filter === f; return {label:f, count:String(f === 'All' ? CASES.length : CASES.filter(c => c.tags.includes(f)).length).padStart(2, '0'),
@@ -1324,10 +1336,10 @@ Agent:`;
         faces:[
           h('div', {style:{position:'absolute', inset:0, background:RED, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`12px ${MONO}`, letterSpacing:'0.16em', textTransform:'uppercase'}}, '(Product & service designer — open to roles)'),
-            h('span', {style:{fontFamily:"'Gloock',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
+            h('span', {style:{fontFamily:"'Libre Caslon Display',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
           h('div', {style:{position:'absolute', inset:0, background:CREAM, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`13px ${MONO}`, letterSpacing:'0.08em', textTransform:'uppercase', color:RED}}, '(Get in touch)'),
-            h('span', {style:{fontFamily:"'Gloock',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, "Let's frame it →"))]})
+            h('span', {style:{fontFamily:"'Libre Caslon Display',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, "Let's frame it →"))]})
     };
   }
 }
