@@ -962,6 +962,20 @@ class Component extends DCLogic {
     // Depth: tiles tilt toward the pointer in 3D (CSS perspective), with a
     // shadow that shifts opposite the tilt. Mouse only; off for reduced motion.
     const grid = React.useRef(null);
+    // Fit: if a tile's content overflows at this screen size, drop its
+    // optional extras ([data-drop]) one at a time until it fits.
+    React.useEffect(() => {
+      const el = grid.current; if (!el) return;
+      const fit = () => el.querySelectorAll('[data-fit]').forEach(t => {
+        const drops = [...t.querySelectorAll('[data-drop]')];
+        drops.forEach(d => { d.style.display = ''; });
+        const over = () => { const tb = t.getBoundingClientRect().bottom - 14; return [...t.children].some(c => c.getBoundingClientRect().bottom > tb + 0.5) || t.scrollHeight > t.clientHeight + 1; };
+        for (const d of drops) { if (!over()) break; d.style.display = 'none'; }
+      });
+      fit(); const ro = new ResizeObserver(fit); ro.observe(el);
+      document.fonts && document.fonts.ready.then(fit);
+      return () => ro.disconnect();
+    }, []);
     React.useEffect(() => {
       const el = grid.current;
       if (!el || !matchMedia('(hover:hover) and (pointer:fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1112,7 +1126,7 @@ class Component extends DCLogic {
         .yj-live{animation:yjLive 2s ease-in-out infinite}
         @keyframes yjLive{50%{opacity:.25}}
         .yj-ct-row a:hover,.yj-ct-row button:hover{text-decoration:underline;text-underline-offset:4px}
-        @media (min-width:821px) and (max-height:820px){.yj-chips{display:none !important}.yj-pj-row{padding:2px 0 !important}.yj-pj-row > span:first-child{font-size:clamp(16px, 2.6vh, 22px) !important}.yj-ct-row{padding:3px 0 !important}.yj-a-tk .yj-link{display:none}}
+        @media (min-width:821px) and (max-height:880px){.yj-pj-row{padding:2px 0 !important}.yj-pj-row > span:first-child{font-size:clamp(16px, 2.6vh, 22px) !important}.yj-ct-row{padding:3px 0 !important}}
         .yj-wl{display:inline-block;animation:yjWl 800ms cubic-bezier(.3,1.5,.4,1) both;transition:transform 400ms cubic-bezier(.3,1.8,.4,1)}
         @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
         .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
@@ -1168,26 +1182,26 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
-      tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
+      tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
         h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, 'I’m a ', h('b', {style:{fontWeight:600}}, typed), h('span', {className:'yj-caret'}, '|'))),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London ' + now)),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
-          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(56px, min(8.2vw, 14.5vh), 148px)', letterSpacing:'-0.065em', lineHeight:.82}},
+          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(52px, min(7.6vw, 12.8vh), 140px)', letterSpacing:'-0.065em', lineHeight:.82}},
             ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
               w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
-          h('span', {style:{fontSize:'clamp(14px, min(1.15vw, 2.2vh), 18px)', lineHeight:1.45, maxWidth:'38ch'}},
+          h('span', {style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'40ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
-          h('span', {className:'yj-chips', style:{display:'flex', flexWrap:'wrap', gap:8}},
-            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:13, padding:'5px 11px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
+          h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
+            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
       slideshow,
       navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
-        tile('tk', {style:{justifyContent:'flex-start', gap:6}},
-          h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:6}},
-            title('Contact'), h('button', {onClick:p.onContact, className:'yj-link', style:{all:'unset', cursor:'pointer', fontSize:S, fontWeight:600}}, 'Let’s talk over coffee →')),
+        tile('tk', {'data-fit':'', style:{justifyContent:'flex-start', gap:6}},
+          h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', flexWrap:'wrap', gap:'4px 12px', marginBottom:6}},
+            title('Contact'), h('button', {onClick:p.onContact, className:'yj-link', 'data-drop':'', style:{all:'unset', cursor:'pointer', fontSize:S, fontWeight:600}}, 'Let’s talk over coffee →')),
           [['Email', h('button', {onClick:copyEmail, 'aria-live':'polite', style:{all:'unset', cursor:'pointer', fontWeight:600}}, copied ? 'Copied ✓' : 'Copy email')],
            ['LinkedIn', h('a', {href:p.linkedin, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Open profile ↗')],
            ['CV', h('a', {href:p.cv, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Download PDF ↓')]]
