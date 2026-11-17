@@ -968,9 +968,9 @@ class Component extends DCLogic {
       const el = grid.current; if (!el) return;
       const fit = () => el.querySelectorAll('[data-fit]').forEach(t => {
         const drops = [...t.querySelectorAll('[data-drop]')];
-        drops.forEach(d => { d.style.display = ''; });
+        drops.forEach(d => { d.hidden = false; });
         const over = () => { const tb = t.getBoundingClientRect().bottom - 14; return [...t.children].some(c => c.getBoundingClientRect().bottom > tb + 0.5) || t.scrollHeight > t.clientHeight + 1; };
-        for (const d of drops) { if (!over()) break; d.style.display = 'none'; }
+        for (const d of drops) { if (!over()) break; d.hidden = true; }
       });
       fit(); const ro = new ResizeObserver(fit); ro.observe(el);
       document.fonts && document.fonts.ready.then(fit);
@@ -1011,14 +1011,14 @@ class Component extends DCLogic {
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
           title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
-    const CURRENTLY = [['Drinking', 'Flat white, oat'], ['Tulip season in', tulipDays ? tulipDays + ' days' : 'Now'], ['Reading', 'Thinking in Systems']];
+    const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
     const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
       h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8}),
-      label('Currently'),
+      label('Looking for'),
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
         CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
 
@@ -1071,7 +1071,7 @@ class Component extends DCLogic {
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}}, c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
           h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
             h('span', {style:{fontWeight:600, fontSize:17, letterSpacing:'-0.01em'}}, c.short),
-            h('span', {style:{fontSize:13, color:GREY, textAlign:'right'}}, (c.years ? c.years + ' · ' : '') + (c.stat || c.cat || '')))))),
+            h('span', {style:{fontSize:13, color:GREY, textAlign:'right'}}, [c.years, c.origin, c.stat || c.cat].filter(Boolean).join(' · ')))))),
       h('span', {ref:pill, className:'yj-pv-pill', 'aria-hidden':true, style:{opacity:pv ? 1 : 0}}, 'View case study ↗'));
 
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
@@ -1105,6 +1105,7 @@ class Component extends DCLogic {
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
         .yj-hide{display:none !important}
+        .yj-bento [hidden]{display:none !important}
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
@@ -1162,7 +1163,7 @@ class Component extends DCLogic {
         .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.08) translateY(-6px)}
         .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
         .yj-st-tulips{width:clamp(100px, 9vw, 160px);right:6%;top:22%}
-        .yj-st-coffee{width:clamp(80px, 6.5vw, 116px);right:clamp(16px, 1.8vw, 28px);top:clamp(16px, 1.8vw, 28px)}
+        .yj-st-coffee{width:clamp(72px, 5.8vw, 104px);right:clamp(16px, 1.8vw, 28px);bottom:clamp(16px, 1.8vw, 28px)}
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
           .yj-bento{height:auto;min-height:0;padding:16px 16px 90px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
@@ -1177,7 +1178,7 @@ class Component extends DCLogic {
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
           .yj-a-lg .yj-lg-view{width:100%}
           .yj-st-tulips{width:84px;right:14px;top:70px}
-          .yj-st-coffee{width:70px;right:16px;top:14px}
+          .yj-st-coffee{width:64px;right:16px;bottom:14px;top:auto}
         }
         @media (prefers-reduced-motion:reduce){.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
@@ -1186,7 +1187,7 @@ class Component extends DCLogic {
         h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
-            h('span', {'aria-hidden':true}, 'I’m a ', h('b', {style:{fontWeight:600}}, typed), h('span', {className:'yj-caret'}, '|'))),
+            h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London ' + now)),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
           h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(52px, min(7.6vw, 12.8vh), 140px)', letterSpacing:'-0.065em', lineHeight:.82}},
@@ -1651,7 +1652,7 @@ Agent:`;
     const tt = on ? (s.vT || 0) : 0, frac = Math.min(1, tt / tv.dur), w = tv.transcript.split(' '), wk = Math.round(w.length * frac);
     const pick = j => () => { if (playing != null && playing !== j) this.voiceToggle(j, V[j]); else this.setState({mvTrack:j}); };
     const act = s.mvAct || 'top', go = k => () => this.mvGo(k);
-    const NAV = [['top','Front page'],['method','Analysis'],['research','Investigation'],['insight','Findings'],['product','The Script'],['testing','Report card'],['strategy','The plan'],['reflect','Opinion']];
+    const NAV = [['top','Front page'],['summary','At a glance'],['insight','Findings'],['product','The Script'],['testing','Report card'],['reflect','Opinion']];
     const P = cur.plan, O = cur.outcome, T = cur.testing, F = S('Fieldwork'), fi = (F.imgs || []).map(x => ({...x, open:open(x.src, x.k)}));
     const items = O.items.map(o => ({...o, open:open(o.src, o.k)}));
     return {isMove:true, isCaseStd:false, mvRef:this.mvRef, mv:{
@@ -1741,9 +1742,37 @@ Agent:`;
         {who:'Susan Leadbetter', org:'WSP · Gender-inclusive design', cc:'UK', q:'Peer-led change among men beats top-down messaging.'},
         {who:'Dr Sarah Lewis', org:'Criminologist', cc:'UK', q:'Redesign the system, not the individual.'},
         {who:'Amy Tempest', org:'Transport for London', cc:'UK', q:'Lighting helps. Community consultation is the real lever.'}]].map(x => ({...x, ini:x.who.replace(/^Dr /, '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(), bar: x.cc === 'IN' ? '#c4161c' : '#141210', bg:'#ebe4d6'})),
+      summaryBlock:(() => {
+        // Recruiter summary: the whole case in one screen, in this case's own newspaper style.
+        const h = React.createElement, RED = '#c4161c', INK = '#141210', MUTE = '#6b625a', RULE = '#d9d2c7';
+        const SERIF = "'Source Serif 4', serif";
+        const fact = (k, v) => h('div', {key:k, style:{borderTop:'1px solid ' + INK, paddingTop:10}},
+          h('div', {style:{fontSize:12, letterSpacing:'.14em', textTransform:'uppercase', color:MUTE, marginBottom:6}}, k), h('div', {style:{fontSize:17, lineHeight:1.45}}, v));
+        const num = (n, k) => h('div', {key:k, style:{borderTop:'3px solid ' + RED, paddingTop:10}},
+          h('div', {style:{fontSize:'clamp(40px, 4vw, 64px)', lineHeight:1, color:RED, fontWeight:600, letterSpacing:'-0.02em'}}, n), h('div', {style:{fontSize:15, lineHeight:1.4, marginTop:6, color:INK}}, k));
+        const col = (i, k, v) => h('div', {key:k, style:{borderTop:'1px solid ' + INK, paddingTop:14}},
+          h('div', {style:{fontSize:13, letterSpacing:'.14em', textTransform:'uppercase', color:RED, marginBottom:10}}, i + ' · ' + k),
+          h('p', {style:{margin:0, fontSize:18, lineHeight:1.55, color:INK, textWrap:'pretty'}}, v));
+        return h('section', {'data-mv':'summary', 'aria-label':'At a glance', style:{boxSizing:'border-box', maxWidth:1600, margin:'0 auto', padding:'96px clamp(20px, 7vw, 128px) 40px', fontFamily:SERIF, color:INK}},
+          h('div', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:16, flexWrap:'wrap', borderBottom:'3px double ' + INK, paddingBottom:14, marginBottom:28}},
+            h('h2', {style:{margin:0, fontFamily:SERIF, fontWeight:600}}, 'At a glance'),
+            h('span', {style:{fontSize:14, color:MUTE}}, 'The case in one minute. Details follow below.')),
+          h('div', {className:'mv-sum-facts', style:{display:'grid', gridTemplateColumns:'repeat(3, minmax(0,1fr))', gap:24, marginBottom:40}},
+            fact('My role', 'Researcher and designer, from framing to testing. MA Design Management, UAL London College of Communication.'),
+            fact('Timeline', '11 months, 2025–26'),
+            fact('Methods', 'Focus groups, audio diaries, expert interviews, journey mapping, prototyping, user testing')),
+          h('div', {className:'mv-sum-nums', style:{display:'grid', gridTemplateColumns:'repeat(4, minmax(0,1fr))', gap:24, marginBottom:48}},
+            num('95%', 'of women in Delhi say fear of harassment restricts how they travel'), num('7', 'women in focus groups'),
+            num('7', 'expert interviews, 4 in India and 3 in the UK'), num('6', 'primary research methods')),
+          h('div', {className:'mv-sum-cols', style:{display:'grid', gridTemplateColumns:'repeat(4, minmax(0,1fr))', gap:28}},
+            col('01', 'Problem', 'Safety in Delhi’s public transport is treated as a woman’s job. She changes routes, clothes and timings, while the norms behind the risk go unchallenged.'),
+            col('02', 'What I did', 'I moved the question from unsafe journeys to where those norms are learned: at home and among friends. Then I designed The Script, a card game in two editions that brings stereotypes to the table through play.'),
+            col('03', 'How it went', 'In testing, kids named stereotypes aloud and picked the game up fastest. Women carried the conversation home, and mixed-age groups talked most.'),
+            col('04', 'What I learned', 'The game assumes confident readers, which excludes the people safety work already misses. The next version is oral and picture-led.')));
+      })(),
       skillsTop:[
-        {n:'01', k:'Strategy', d:'Systems framing and a six-year behaviour-change plan to 2032.', see:'The plan', go:go('strategy')},
-        {n:'02', k:'Service design', d:'One intervention across home and friend groups, built from 7 expert interviews.', see:'Investigation', go:go('research')},
+        {n:'01', k:'Strategy', d:'Reframed safety from a woman’s job to a shared civic responsibility.', see:'At a glance', go:go('summary')},
+        {n:'02', k:'Service design', d:'One intervention across home and friend groups, built from 7 expert interviews.', see:'At a glance', go:go('summary')},
         {n:'03', k:'Product design', d:'The Script: a card game prototyped and tested with families.', see:'The Script', go:go('product')}],
       mq:Object.fromEntries([['script_red_backs','Friend Group Edition: card backs'],['script_red_prompt','Friend Group Edition: prompt and answer'],['script_box','Box'],['script_card_1','Card back, light'],['script_card_2','Answer card'],['script_card_3','Card back, dark'],['script_card_4','Prompt card'],['script_spread','Three cards']].map(([key, k]) => [key, open(__R('assets/ma/' + key.replace(/_/g, '-') + '.png'), k)])),
       setup:[{n:'4–10', k:'Players'}, {n:'7', k:'Cards each'}, {n:'1', k:'Rotating judge'}],
@@ -2004,7 +2033,7 @@ Agent:`;
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
       landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Personal'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',

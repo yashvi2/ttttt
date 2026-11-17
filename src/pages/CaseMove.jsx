@@ -620,6 +620,7 @@ function template(v) {
             </span>
           </div>
         </section>{' '}
+        {t(v.mv?.summaryBlock)}
         <section
           data-mv="method"
           aria-label="Analysis"

@@ -16,3 +16,9 @@
 .dc-hover-ce0189d7:hover{transform:scale(1.03) !important}
 
 .dc-hover-8dfa3c2d:hover{background:#141210 !important;color:#ffffff !important}
+
+/* Simplified case: the framework matrix, the long research section and the
+   six-year plan are summarised in "At a glance" instead of shown in full. */
+[data-mv="method"],[data-mv="research"],[data-mv="strategy"]{display:none !important}
+@media (max-width:900px){.mv-sum-nums,.mv-sum-cols{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.mv-sum-facts{grid-template-columns:1fr !important}}
+@media (max-width:560px){.mv-sum-nums,.mv-sum-cols{grid-template-columns:1fr !important}}
