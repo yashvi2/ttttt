@@ -862,21 +862,22 @@ class Component extends DCLogic {
     const list = (p.projects || []).filter(Boolean);
     const [pi, setPi] = React.useState(0);
     const cur = list[pi] || list[0];
-    const projects = tile('pj', {className:'yj-bt-p', style:{padding:0, flexDirection:'row', alignItems:'stretch'}},
-      h('div', {style:{flex:'1 1 55%', minWidth:0, display:'flex', flexDirection:'column', padding:'clamp(18px, 1.8vw, 30px)', gap:10}},
-        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, small('Selected work'),
-          h('button', {onClick:p.onWork, className:'yj-pj-all', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:14, fontWeight:600, color:BLUE}}, 'All work (' + list.length + ') →')),
-        h('div', {style:{flex:1, display:'flex', flexDirection:'column', justifyContent:'flex-end'}},
-          list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:() => setPi(i), onFocus:() => setPi(i), className:'yj-pj-row' + (i === pi ? ' yj-pj-on' : ''),
-              'aria-label':'Open case study: ' + c.short,
-              style:{all:'unset', boxSizing:'border-box', cursor:'pointer', display:'grid', gridTemplateColumns:'2.2em minmax(0,1fr) auto auto', alignItems:'baseline', columnGap:14, rowGap:2, padding:'clamp(9px, 1.5vh, 15px) 0', borderTop:'1px solid #e4e6ec', fontFamily:F}},
-            h('span', {style:{fontSize:13, opacity:.45}}, String(i + 1).padStart(2, '0')),
-            h('span', {style:{minWidth:0, fontWeight:600, fontSize:'clamp(16px, 1.3vw, 20px)', letterSpacing:'-0.02em', lineHeight:1.2}}, c.short),
-            h('span', {className:'yj-pj-meta', style:{fontSize:13, opacity:.6, textAlign:'right'}}, c.sector + (c.stat ? ' · ' + c.stat : '')),
-            h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, opacity:.55}}, '→'))))),
-      h('div', {className:'yj-pj-prev', 'aria-hidden':true, style:{flex:'1 1 45%', minWidth:0, margin:10, borderRadius:10, overflow:'hidden', background:BLUE, position:'relative'}},
-        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === pi ? 1 : 0, transition:'opacity 400ms ease', pointerEvents:'none',
-          background:c.pic ? '#dfe3ee' : '#f4b73a', color:INK, display:'flex', alignItems:'flex-end', padding:18, boxSizing:'border-box', fontFamily:F, fontWeight:800, fontSize:'clamp(28px, 3vw, 48px)', letterSpacing:'-0.04em'}}, c.pic || c.short))));
+    // Hover thumbnail that follows the pointer (hover-capable devices only).
+    const thumb = React.useRef(null), [hv, setHv] = React.useState(-1);
+    const follow = e => { const t = thumb.current; if (t) t.style.transform = `translate(${e.clientX + 28}px, ${e.clientY - 150}px)`; };
+    const projects = tile('pj', {className:'yj-bt-p', style:{gap:6}},
+      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, small('Selected work'),
+        h('button', {onClick:p.onWork, className:'yj-pj-all', style:{all:'unset', cursor:'pointer', fontFamily:F, fontSize:14, fontWeight:600, color:BLUE}}, 'All work (' + list.length + ') →')),
+      h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
+        list.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
+            'aria-label':'Open case study: ' + c.short,
+            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0 6px', borderBottom:'1.5px solid ' + INK, fontFamily:F}},
+          h('span', {style:{minWidth:0, fontWeight:700, fontSize:'clamp(17px, 1.6vw, 26px)', letterSpacing:'-0.01em', lineHeight:1.05, textTransform:'uppercase'}},
+            c.short, h('sup', {style:{fontWeight:400, fontStyle:'italic', fontSize:'.5em', letterSpacing:0, marginLeft:'.35em', textTransform:'none', verticalAlign:'.9em'}}, c.years || '')),
+          h('span', {className:'yj-pj-meta', style:{flex:'none', fontSize:'clamp(12px, .95vw, 14px)', fontStyle:'italic', whiteSpace:'nowrap'}}, '(' + c.kinds + ')')))),
+      h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
+          opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
+        list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : '#f4b73a', display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:800, fontSize:22, letterSpacing:'-0.03em', color:INK}}, c.pic || c.short))));
 
     return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{background:BG}},
       h('style', null, `
@@ -899,9 +900,9 @@ class Component extends DCLogic {
         .yj-bt-arrow{transition:transform 250ms cubic-bezier(.2,.7,.2,1)}
         .yj-bt-go:active{transform:scale(.98)}
         .yj-bt-go:focus-visible{outline:3px solid ${BLUE};outline-offset:2px}
-        .yj-pj-row{transition:color 200ms ease}
-        .yj-pj-row:hover,.yj-pj-on{color:${BLUE}}
-        .yj-pj-row:hover .yj-bt-arrow,.yj-pj-on .yj-bt-arrow{transform:translateX(4px);opacity:1}
+        .yj-pj-row{transition:color 200ms ease, padding-left 300ms cubic-bezier(.2,.7,.2,1)}
+        .yj-pj-row:hover{color:${BLUE};padding-left:8px !important}
+        @media (hover:none){.yj-pj-thumb{display:none}}
         .yj-pj-all:hover{text-decoration:underline;text-underline-offset:4px}
         .yj-pj-all:focus-visible,.yj-pj-row:focus-visible{outline:2px solid ${BLUE};outline-offset:2px}
         .yj-st{position:absolute;z-index:5;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
@@ -922,16 +923,13 @@ class Component extends DCLogic {
           .yj-bento .yj-bt-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:220px !important}
           .yj-bento .yj-bt-p{min-height:0 !important}
-          .yj-pj-prev{display:none}
           .yj-bento{padding:12px;gap:12px}
           .yj-st-tulips{width:96px;right:14px;bottom:auto;top:64px}
           .yj-st-sea{width:70px;left:auto;right:-8px;bottom:-14px}
           .yj-st-coffee{width:56px;right:-10px;bottom:-30px}
-          .yj-pj-row{grid-template-columns:2.2em minmax(0,1fr) auto !important}
-          .yj-pj-meta{grid-column:2;grid-row:2;text-align:left !important}
-          .yj-pj-row .yj-bt-arrow{grid-column:3;grid-row:1}
+          .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
+          .yj-pj-meta{white-space:normal !important}
         }
-        @media (min-width:821px) and (max-width:1360px),(min-width:821px) and (max-height:820px){.yj-pj-meta{display:none}.yj-pj-row{padding-top:8px !important;padding-bottom:8px !important}}
         @media (prefers-reduced-motion:reduce){.yj-bt-q{animation:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one focal point
@@ -1723,7 +1721,7 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       landingHero: h(Component.BentoHome, {onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'Pentagram rebrand', move:'Service design', cray:'Mobile platform', ime:'Museum online', askbeta:'Live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'Pentagram rebrand', move:'Service design', cray:'Mobile platform', ime:'Museum online', askbeta:'Live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
