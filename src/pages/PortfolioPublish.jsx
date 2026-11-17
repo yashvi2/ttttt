@@ -1913,7 +1913,12 @@ function template(v) {
           ) : null}
           {v.isMove ? (
             <>
-              <CaseMove mv={v.mv} mvRef={v.mvRef} nextBanner={v.nextBanner} />
+              {t(v.moveSimple)}
+              <div style={{ background: '#ffffff', padding: '80px 12px 12px' }}>
+                <div style={{ height: '60vh', minHeight: '420px', position: 'relative', overflow: 'hidden', borderRadius: '22px' }}>
+                  {t(v.nextBanner)}
+                </div>
+              </div>
             </>
           ) : null}
           {v.isAva ? (

@@ -892,6 +892,122 @@ class Component extends DCLogic {
           h('a', {className:'yj-ab-btn alt', href:p.cv, target:'_blank', rel:'noopener'}, 'Download CV ↓'))]));
   };
 
+  static CaseMoveSimple = function CaseMoveSimple(p) {
+    // What It Takes to Move, rebuilt in the AVA case-study structure: hero, facts,
+    // summary card, six numbered chapters, results, looking back. Own red accent.
+    const h = React.createElement, c = p.c;
+    const RED = '#c4161c', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664', LINE = '#e3e1df', SOFT = '#f6f5f4', TINT = '#fbeceb';
+    const F = "'Schibsted Grotesk', system-ui, sans-serif";
+    const S = k => (c.secs || []).find(x => x.k === k) || {};
+    const img = (src, alt, x) => h('img', {src:__R(src), alt, loading:'lazy', style:{display:'block', width:'100%', height:'100%', objectFit:'cover', borderRadius:12, ...x}});
+    const eyebrow = (n, k) => h('div', {className:'mvs-eye'}, h('span', null, n), ' · ', k);
+    const chap = (id, n, k, title, lede, ...kids) => h('section', {id:'mvs-' + id, className:'mvs-sec', 'aria-labelledby':'mvs-h-' + id},
+      eyebrow(n, k), h('h2', {id:'mvs-h-' + id}, title), lede ? h('p', {className:'mvs-lede'}, lede) : null, ...kids);
+    const card = (kids, x) => h('div', {className:'mvs-card', style:x}, ...[].concat(kids));
+    const stat = (n, k, dark) => h('div', {className:'mvs-stat' + (dark ? ' dark' : '')}, h('b', null, n), h('span', null, k));
+    const experts = [
+      ['Animesh Sharma', 'Evaluation head, Breakthrough Foundation', 'Teach a fifteen-year-old and he learns. Tell a forty-year-old and he shuts down.'],
+      ['Dr Tasneem Deo', 'Associate Professor, National Law University Delhi', 'Women are in work and education. The city hasn’t caught up.'],
+      ['Investigating officer', 'Delhi Police', 'Victims stay silent to protect their freedom at home.'],
+      ['Susan Leadbetter', 'WSP, gender-inclusive design', 'Peer-led change among men beats top-down messaging.'],
+      ['Dr Sarah Lewis', 'Criminologist', 'Redesign the system, not the individual.'],
+      ['Amy Tempest', 'Transport for London', 'Lighting helps. Community consultation is the real lever.']];
+    const play = [['Read', 'The judge reads a fill-in-the-blank prompt.'], ['Answer', 'Everyone plays the most convincing white card.'], ['Judge', 'Answers are read out anonymously.'], ['Win on realism', 'The most “heard-it-before” line takes the round.'], ['Talk', 'Then the table talks about why it sounded so familiar.']];
+    const T = c.testing || {}, O = c.outcome || {};
+    return h('article', {className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
+      h('style', null, `
+        .mvs{--red:${RED};font-family:${F};color:${INK};background:#fff;padding:12px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px))}
+        .mvs-in{max-width:1240px;margin:0 auto}
+        .mvs-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;background:${RED};color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden}
+        .mvs-hero h1{font-size:clamp(40px,5.2vw,80px) !important;line-height:.98 !important;letter-spacing:-0.045em !important;margin:14px 0 18px;font-weight:600}
+        .mvs-hero p{font-size:clamp(16px,1.3vw,20px);line-height:1.5;margin:0;max-width:40ch;opacity:.95}
+        .mvs-hero .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+        .mvs-hero figure{margin:0;transform:rotate(3deg);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);border-radius:14px;overflow:hidden;aspect-ratio:4/3}
+        .mvs-title{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:56px 0 28px}
+        .mvs-title h2{font-size:clamp(36px,4.4vw,64px) !important;letter-spacing:-0.04em !important;line-height:1 !important;margin:0;font-weight:600}
+        .mvs-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;border-top:1px solid ${LINE};padding-top:18px}
+        .mvs-facts dt{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:${MUTE};margin-bottom:6px}
+        .mvs-facts dd{margin:0;font-size:15px;line-height:1.45;color:${INK}}
+        .mvs-sum{background:${SOFT};border-radius:18px;padding:clamp(20px,3vw,36px);display:grid;gap:22px}
+        .mvs-sum-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+        .mvs-sum-rows h3{font-size:12px !important;letter-spacing:.12em !important;text-transform:uppercase;color:${RED};margin:0 0 8px;font-weight:600}
+        .mvs-sum-rows p{margin:0;font-size:16px;line-height:1.55;color:${BODY}}
+        .mvs-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+        .mvs-stat{background:#fff;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+        .mvs-stat b{font-size:clamp(34px,3.4vw,52px);letter-spacing:-0.04em;line-height:1;color:${RED};font-weight:600}
+        .mvs-stat span{font-size:14px;line-height:1.4;color:${BODY}}
+        .mvs-stat.dark{background:${RED}}.mvs-stat.dark b,.mvs-stat.dark span{color:#fff}
+        .mvs-chips{position:sticky;top:12px;z-index:5;display:flex;gap:6px;flex-wrap:wrap;margin:28px 0 0;padding:8px;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid ${LINE};border-radius:999px;width:max-content;max-width:100%}
+        .mvs-chips a{font-size:13px;color:${INK};text-decoration:none;padding:6px 12px;border-radius:999px}
+        .mvs-chips a:hover,.mvs-chips a:focus-visible{background:${TINT};color:${RED};outline:none}
+        .mvs-sec{padding:88px 0 0;scroll-margin-top:80px}
+        .mvs-eye{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${MUTE};margin-bottom:12px}.mvs-eye span{color:${RED};font-weight:600}
+        .mvs-sec h2{font-size:clamp(28px,3vw,44px) !important;letter-spacing:-0.035em !important;line-height:1.05 !important;margin:0 0 14px;font-weight:600;max-width:24ch}
+        .mvs-lede{font-size:17px;line-height:1.6;color:${BODY};margin:0 0 28px;max-width:62ch}
+        .mvs-card{background:${SOFT};border-radius:16px;padding:20px 22px;min-width:0}
+        .mvs-grid{display:grid;gap:16px}
+        .g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+        .mvs-q{font-size:18px;line-height:1.4;margin:10px 0 0;color:${INK};font-weight:500}
+        .mvs-k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:${RED};font-weight:600}
+        .mvs-who{font-size:14px;color:${MUTE};margin-top:10px}
+        .mvs-ph{border-radius:12px;overflow:hidden;background:${SOFT};position:relative}
+        .mvs-ph figcaption{font-size:13px;color:${MUTE};margin-top:8px}
+        .mvs-callout{border-left:3px solid ${RED};background:${TINT};border-radius:0 14px 14px 0;padding:18px 22px}
+        .mvs-callout h3{margin:0 0 6px;font-size:18px !important;font-weight:600}.mvs-callout p{margin:0;color:${BODY};line-height:1.55}
+        .mvs-steps{counter-reset:s;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;list-style:none;padding:0;margin:20px 0 0}
+        .mvs-steps li{counter-increment:s;background:${SOFT};border-radius:14px;padding:16px;font-size:14px;line-height:1.45;color:${BODY}}
+        .mvs-steps li::before{content:"0" counter(s);display:block;color:${RED};font-weight:600;font-size:12px;letter-spacing:.1em;margin-bottom:8px}
+        .mvs-steps b{display:block;color:${INK};font-size:16px;margin-bottom:4px}
+        @media (max-width:980px){.mvs-hero,.mvs-sum-rows{grid-template-columns:1fr}.mvs-facts,.mvs-stats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.mvs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media (max-width:560px){.mvs-facts,.mvs-stats,.g2,.g3,.g4,.mvs-steps{grid-template-columns:1fr}.mvs-chips{border-radius:16px}}
+      `),
+      h('div', {className:'mvs-in'},
+        h('header', {className:'mvs-hero'},
+          h('div', null, h('div', {className:'tag'}, 'Public safety · Service design · MA, UAL'),
+            h('h1', null, 'Making safety everyone’s job, not just hers.'),
+            h('p', null, 'A card game that brings the norms behind harassment to the family table, so teenagers can unlearn what adults defend.')),
+          h('figure', null, img('assets/web/assets/ma/ma-poster-wall-web.webp', 'The What It Takes to Move campaign poster on a wall', {borderRadius:0}))),
+        h('div', {className:'mvs-title'},
+          h('div', {className:'mvs-eye'}, h('span', null, 'Case study 01'), ' · UAL London College of Communication'),
+          h('h2', null, 'What It Takes to Move'),
+          h('p', {className:'mvs-lede', style:{margin:0}}, c.summary),
+          h('dl', {className:'mvs-facts'},
+            ...[['Context', 'MA Design Management, UAL London College of Communication'], ['My role', 'Researcher and designer, from framing to testing'], ['Methods', 'Focus groups, audio diaries, expert interviews, prototyping, user testing'], ['Timeline', '11 months · 2025–26']]
+              .map(([k, v]) => h('div', {key:k}, h('dt', null, k), h('dd', null, v))))),
+        h('div', {className:'mvs-sum'},
+          h('div', {className:'mvs-sum-rows'},
+            h('div', null, h('h3', null, 'The problem'), h('p', null, 'Safety in Delhi’s public transport is treated as a woman’s job. She changes routes, clothes and timings, while the norms behind the risk go unchallenged.')),
+            h('div', null, h('h3', null, 'What I did'), h('p', null, 'Researched with women and experts in India and the UK, moved the problem to where norms are learned, and designed The Script: a card game for families and friend groups.')),
+            h('div', null, h('h3', null, 'The result'), h('p', null, 'In testing, kids named stereotypes aloud and picked the game up fastest. Women carried the conversation home, and mixed-age groups talked most.'))),
+          h('div', {className:'mvs-stats'}, stat('95%', 'of women in Delhi say fear of harassment limits how they travel', true), stat('7', 'women in focus groups'), stat('7', 'expert interviews, 4 in India and 3 in the UK'), stat('2', 'editions of the game, tested with families and friend groups'))),
+        h('nav', {className:'mvs-chips', 'aria-label':'Chapters'},
+          ...[['context','Context'],['research','Research'],['insight','Insight'],['script','The Script'],['testing','Testing'],['reflect','Looking back']].map(([id, k]) => h('a', {key:id, href:'#mvs-' + id, onClick:e => { e.preventDefault(); const el = document.getElementById('mvs-' + id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); }}, k))),
+        chap('context', '01', 'Context and users', S('The brief').h || 'Safety is treated as a woman’s job.', S('The brief').p,
+          h('div', {className:'mvs-grid g4'}, ...(c.voices || []).map(v => card([h('div', {className:'mvs-k'}, v.theme), h('p', {className:'mvs-q'}, '“' + v.prompt + '”'), h('div', {className:'mvs-who'}, v.who + ', audio diary')])))),
+        chap('research', '02', 'Research', 'Focus groups, audio diaries and experts.', S('Research').p,
+          h('div', {className:'mvs-grid g3', style:{marginBottom:16}},
+            ...[['assets/web/assets/focus-group.webp', 'Focus group with women from Delhi'], ['assets/web/assets/ma/expert-interview.webp', 'Expert interview'], ['assets/web/assets/ma/exhibit-visitor-hq.webp', 'A visitor answering a prompt at the UAL exhibition']]
+              .map(([src, k]) => h('figure', {key:src, style:{margin:0}}, h('div', {className:'mvs-ph', style:{aspectRatio:'4/3'}}, img(src, k)), h('figcaption', {className:'mvs-who'}, k)))),
+          h('div', {className:'mvs-grid g3'}, ...experts.map(([w, r, q]) => card([h('p', {className:'mvs-q', style:{marginTop:0}}, '“' + q + '”'), h('div', {className:'mvs-who'}, w + ' · ' + r)])))),
+        chap('insight', '03', 'Insight', S('Insights').h ? S('Insights').h.replace(' .', '.') : 'Every path led back to how men behave and are raised.', S('Insights').p,
+          h('div', {className:'mvs-grid g2'},
+            h('div', {className:'mvs-callout'}, h('h3', null, 'The reframe: ' + (S('Reframe').h || '')), h('p', null, S('Reframe').p)),
+            h('div', {className:'mvs-callout'}, h('h3', null, 'The direction: ' + (S('Direction').h || '')), h('p', null, S('Direction').p)))),
+        chap('script', '04', 'The product', O.h || 'The Script, a card game in two editions.', O.p,
+          h('div', {className:'mvs-grid g3'}, ...(O.items || []).slice(0, 6).map(it => h('figure', {key:it.k, style:{margin:0}},
+            h('div', {className:'mvs-ph', style:{aspectRatio:'4/3'}}, img(it.src, it.k)), h('figcaption', {className:'mvs-who'}, h('b', {style:{color:INK}}, it.k), ' · ', it.d)))),
+          h('ol', {className:'mvs-steps', 'aria-label':'How a round works'}, ...play.map(([k, d]) => h('li', {key:k}, h('b', null, k), d)))),
+        chap('testing', '05', 'Testing', T.h || 'What testing showed.', T.p,
+          h('div', {className:'mvs-grid g3', style:{marginBottom:16}}, ...(T.findings || []).map(f => card([h('div', {className:'mvs-k'}, f.k), h('p', {style:{margin:'8px 0 0', lineHeight:1.5, color:BODY}}, f.v)]))),
+          h('div', {className:'mvs-grid g2'}, ...(T.imgs || []).map(m => h('div', {key:m.src, className:'mvs-ph', style:{aspectRatio:'16/10'}}, img(m.src, m.k))))),
+        chap('reflect', '06', 'Looking back', 'What worked, and what comes next.', null,
+          h('div', {className:'mvs-grid g3'},
+            card([h('div', {className:'mvs-k'}, 'What worked'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, 'Play lowered the stakes. People named stereotypes in a game that they would not name in a lecture.')]),
+            card([h('div', {className:'mvs-k'}, 'What I learned'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, S('Reflection').p)]),
+            card([h('div', {className:'mvs-k'}, 'Next'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, 'An oral and picture-led deck for low-literacy players, then pilots with schools and NGOs alongside the family edition.')], {background:RED, color:'#fff'}))),
+        p.next || null));
+  };
+
   static ScriptCard = function ScriptCard(p) {
     // Playable card from The Script (What It Takes to Move). Real prompts and
     // answers from the two editions. Tap: back -> prompt -> answer -> next edition.
@@ -2101,6 +2217,7 @@ Agent:`;
         // Two views only, like the reference: About and Contact are reached from dashboard tiles.
         {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
         {key:'proj', label:'Projects', on:(s.screen === 'home' && s.homeView === 'proj') || s.screen === 'case', onClick:() => this.go('work')}]}),
+      moveSimple: s.screen === 'case' && CASES[s.ci] && CASES[s.ci].id === 'move' ? h(Component.CaseMoveSimple, {c:CASES[s.ci]}) : null,
       aboutBento: s.screen === 'approach' ? h(Component.AboutBento, {timeline:TIMELINE, portrait:__R('assets/web/assets/yashvi.webp'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), onContact:() => this.go('contact'),
         skills:[{t:'Strategy', items:['Stakeholder engagement','Cross-functional teamwork','Insight communication','Concept development']}, {t:'Research', items:['Discovery research','Interviews','Usability testing','Workshop facilitation','Co-design','Qualitative synthesis']}, {t:'Service design', items:['Service blueprints','Journey mapping','Process mapping','User flows','Personas']}, {t:'Inclusive practice', items:['Accessibility','Lived-experience insight','Inclusive communication','Vulnerable users']}],
         tools:['Figma','Adobe CS','Microsoft 365','ChatGPT','Claude','UX Pilot'],
