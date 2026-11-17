@@ -1637,10 +1637,23 @@ class Component extends DCLogic {
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
-    const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
+    const currently = tile('cu', {style:{gap:12, justifyContent:'flex-start'}},
       label('Looking for'),
-      h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
-        CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
+      h('span', {className:'yj-cu-l'},
+        ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
+    // On the turntable: a spinning record and a search that opens the song on Spotify.
+    const [song, setSong] = React.useState('');
+    const spRef = React.useRef(null);
+    const spHref = song.trim() ? 'https://open.spotify.com/search/' + encodeURIComponent(song.trim()) : 'https://open.spotify.com/';
+    const vinyl = tile('vn', {style:{gap:12}},
+      label('On the turntable'),
+      h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in'},
+        h('img', {src:__R('assets/vinyl.webp'), alt:'A vinyl record spinning', className:'yj-vn-rec', width:640, height:640}),
+        h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
+      h('form', {className:'yj-vn-form', role:'search', onSubmit:e => { e.preventDefault(); spRef.current && spRef.current.click(); }},
+        h('label', {htmlFor:'yj-song', style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', whiteSpace:'nowrap'}}, 'Search for a song on Spotify'),
+        h('input', {id:'yj-song', type:'search', value:song, onChange:e => setSong(e.target.value), placeholder:'Search a song…', autoComplete:'off', enterKeyHint:'search'}),
+        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Play on Spotify, opens in a new tab'}, 'Spotify ↗')));
 
     // Portrait tile: a slow Ken Burns slideshow of real project imagery,
     // starting on the portrait. Black and white keeps it in the system.
@@ -1717,11 +1730,27 @@ class Component extends DCLogic {
             "in in in in in in ph ph ph ab ab ab"
             "in in in in in in ph ph ph tk tk tk"
             "in in in in in in ph ph ph tk tk tk"
-            "pj pj pj pj pj pj cu cu cu rc rc rc"
-            "pj pj pj pj pj pj cu cu cu rc rc rc"
-            "pj pj pj pj pj pj cu cu cu rc rc rc"
+            "pj pj pj pj pj st st st st vn vn vn"
+            "pj pj pj pj pj st st st st vn vn vn"
+            "pj pj pj pj pj st st st st vn vn vn"
             "lg lg lg lg lg lg lg lg lg lg lg lg"}
-        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-cu{grid-area:cu}.yj-a-lg{grid-area:lg}
+        .yj-a-in{grid-area:in}.yj-a-ph{grid-area:ph}.yj-a-ab{grid-area:ab}.yj-a-tk{grid-area:tk}.yj-a-pj{grid-area:pj}.yj-a-rc{grid-area:rc}.yj-a-cu{grid-area:cu}.yj-a-lg{grid-area:lg}.yj-a-vn{grid-area:vn}
+        .yj-a-st{grid-area:st;display:flex;flex-direction:column;gap:clamp(16px, 2.6vh, 28px);min-height:0;min-width:0}
+        .yj-a-st > .yj-bt{height:auto !important}.yj-a-st > .yj-a-rc{flex:1;min-height:0}
+        .yj-cu-l{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:baseline}
+        .yj-vn-disc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 0}
+        .yj-vn-in{position:relative;height:100%;max-height:100%;aspect-ratio:1;max-width:100%}
+        .yj-vn-rec{position:absolute;inset:0;width:100%;height:100%;animation:yjVinyl 1.8s linear infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+        .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+          background:conic-gradient(from 20deg, transparent 0deg, rgba(255,255,255,.16) 28deg, transparent 58deg, transparent 180deg, rgba(255,255,255,.12) 208deg, transparent 238deg);
+          -webkit-mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%);mask:radial-gradient(circle, transparent 0 17%, #000 18% 100%)}
+        @keyframes yjVinyl{to{transform:rotate(360deg)}}
+        .yj-vn-form{display:flex;gap:8px;min-width:0}
+        .yj-vn-form input{flex:1;min-width:0;box-sizing:border-box;font:inherit;font-size:14px;color:${INK};background:#fff;border:1px solid ${LINE};border-radius:999px;padding:10px 14px;outline:none}
+        .yj-vn-form input:focus-visible{border-color:${INK}}
+        .yj-vn-go{flex:none;display:inline-flex;align-items:center;font-size:13px;font-weight:600;color:#fff;background:${INK};border-radius:999px;padding:10px 14px;text-decoration:none;white-space:nowrap}
+        .yj-vn-go:hover{background:#333}.yj-vn-go:focus-visible{outline:2px solid ${INK};outline-offset:2px}
+        @media (prefers-reduced-motion:reduce){.yj-vn-rec{animation-duration:12s}}
         .yj-bt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));
           box-shadow:var(--sx,0px) var(--sy,0px) 0 -6px rgba(0,0,0,0), 0 1px 0 rgba(0,0,0,.04);
           transition:background-color 250ms ease,transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms cubic-bezier(.2,.7,.2,1);will-change:transform}
@@ -1741,6 +1770,7 @@ class Component extends DCLogic {
         .yj-link:hover{text-decoration-thickness:2px}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
+        @media (max-width:1180px){.yj-pj-stat{display:none}}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
@@ -1755,29 +1785,33 @@ class Component extends DCLogic {
         .yj-bento [hidden]{display:none !important}
         .yj-play{margin-top:clamp(56px, 8vw, 110px);padding-top:28px;border-top:1px solid ${LINE};scroll-margin-top:20px}
         .yj-play-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:clamp(24px, 3vw, 40px)}
-        .yj-play-grid{display:grid;grid-template-columns:repeat(5, minmax(0, 1fr));gap:clamp(20px, 2.4vw, 36px);align-items:start}
-        .yj-play-it{margin:0;min-width:0;transition:transform 450ms cubic-bezier(.2,.7,.2,1)}
-        .yj-play-it.w2{grid-column:span 2}
-        .yj-play-it.r0{transform:rotate(-1deg)}.yj-play-it.r1{transform:rotate(1.2deg) translateY(28px)}.yj-play-it.r2{transform:rotate(-1.4deg) translateY(-6px)}.yj-play-it.r3{transform:rotate(.8deg) translateY(40px)}
-        .yj-play-it:hover{transform:rotate(0) translateY(-4px)}
-        .yj-play-m{position:relative;overflow:hidden;border-radius:12px;background:#111;box-shadow:0 18px 36px -22px rgba(0,0,0,.45)}
+        .yj-play-grid{display:grid;grid-template-columns:repeat(12, minmax(0, 1fr));align-items:start;padding-bottom:4vw}
+        .yj-play-it{margin:0;min-width:0;grid-row:1;position:relative;transition:transform 450ms cubic-bezier(.2,.7,.2,1)}
+        .yj-play-it.r0{grid-column:1 / 8;transform:rotate(-2deg);z-index:1}
+        .yj-play-it.r1{grid-column:7 / 10;margin-top:58%;transform:rotate(3.5deg);z-index:2}
+        .yj-play-it.r2{grid-column:9 / 12;margin-top:-3%;transform:rotate(-4deg);z-index:1}
+        .yj-play-it.r3{grid-column:10 / 13;margin-top:128%;margin-right:-3%;transform:rotate(5deg);z-index:3}
+        .yj-play-it:hover{transform:rotate(0) scale(1.03);z-index:5}
+        .yj-play-m{position:relative;overflow:hidden;border-radius:12px;background:#111;box-shadow:0 24px 44px -24px rgba(0,0,0,.5)}
         .yj-play-m > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-        .yj-play-it figcaption{display:flex;flex-direction:column;gap:3px;padding:12px 2px 0}
+        .yj-play-it figcaption{display:flex;flex-direction:column;gap:3px;padding:12px 2px 0;background:${BG};border-radius:0 0 8px 8px}
         .yj-play-k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:${GREY}}
         .yj-play-t{font-size:16px;font-weight:600;letter-spacing:-0.01em}
         .yj-play-n{font-size:13px;color:${GREY}}
-        @media (max-width:1100px){.yj-play-grid{grid-template-columns:repeat(2, minmax(0, 1fr))}.yj-play-it.w2{grid-column:span 2}}
-        @media (max-width:640px){.yj-play-grid{grid-template-columns:1fr}.yj-play-it.w2{grid-column:auto}.yj-play-it[class*=' r']{transform:none}}
-        @media (prefers-reduced-motion:reduce){.yj-play-it{transition:none}.yj-play-it:hover{transform:inherit}}
+        @media (max-width:900px){.yj-play-grid{display:flex;flex-direction:column;gap:28px}
+          .yj-play-it.r0,.yj-play-it.r1,.yj-play-it.r2,.yj-play-it.r3{margin:0;width:86%}
+          .yj-play-it.r1,.yj-play-it.r3{align-self:flex-end}
+          .yj-play-it.r0{transform:rotate(-1.5deg)}.yj-play-it.r1{transform:rotate(2deg)}.yj-play-it.r2{transform:rotate(-2deg)}.yj-play-it.r3{transform:rotate(2.5deg)}}
+        @media (prefers-reduced-motion:reduce){.yj-play-it{transition:none}}
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
         .yj-chip-n{font-size:12px;opacity:.6}
         .yj-chip-on{background:${INK};color:#fff}
         .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${INK};outline-offset:3px}
-        .yj-pv-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(110px, 15vh, 150px);grid-auto-flow:dense;gap:28px}
+        .yj-pv-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:clamp(78px, 10.5vh, 108px);grid-auto-flow:dense;gap:24px}
         .yj-pv-grid .yj-pv-s0{grid-column:span 4;grid-row:span 3}.yj-pv-grid .yj-pv-s1{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s2{grid-column:span 2;grid-row:span 3}
-        .yj-pv-grid .yj-pv-s3{grid-column:span 2;grid-row:span 4}.yj-pv-grid .yj-pv-s4{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s5{grid-column:span 4;grid-row:span 2}
+        .yj-pv-grid .yj-pv-s3{grid-column:span 2;grid-row:span 3}.yj-pv-grid .yj-pv-s4{grid-column:span 4;grid-row:span 2}.yj-pv-grid .yj-pv-s5{grid-column:span 2;grid-row:span 2}
         .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
         .yj-pv-card:hover .yj-pv-cover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(0,0,0,.45)}
@@ -1847,7 +1881,8 @@ class Component extends DCLogic {
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
           .yj-bento{height:auto;min-height:0;padding:16px 16px 90px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
-            grid-template-areas:"in in" "ph ab" "tk tk" "pj pj" "cu cu" "rc rc" "lg lg"}
+            grid-template-areas:"in in" "ph ab" "tk tk" "pj pj" "st st" "vn vn" "lg lg"}
+          .yj-a-vn{min-height:420px !important}
           .yj-bento .yj-bt{min-height:110px !important}
           .yj-bento .yj-a-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:240px !important}
@@ -1897,22 +1932,23 @@ class Component extends DCLogic {
             .map(([k, act]) => h('span', {key:k, className:'yj-ct-row', style:{display:'flex', justifyContent:'space-between', alignItems:'center', padding:'clamp(6px, 1vh, 10px) 0', borderTop:'1px solid ' + LINE, fontSize:S}}, label(k), act))),
         null),
       projects,
-      currently,
-      h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
-          opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
-        top.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
-      logos,
+      h('div', {className:'yj-a-st'}, currently,
       tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
             style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? INK : LINE, transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
-        h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:14}},
-          title('“' + r.q + '”', {fontWeight:400, lineHeight:1.25}),
+        h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:'clamp(8px, 1.4vh, 14px)'}},
+          title('“' + r.q + '”', {fontWeight:400, lineHeight:1.3, fontSize:'clamp(14px, min(1.15vw, 2vh), 18px)'}),
           h('span', {style:{display:'flex', alignItems:'center', gap:12}},
             h('img', {src:r.img, alt:'', width:40, height:40, style:{width:40, height:40, borderRadius:'50%', objectFit:'cover', flex:'none', filter:'grayscale(1)'}}),
             h('span', {style:{display:'flex', flexDirection:'column', gap:2, minWidth:0, fontSize:S}},
-              h('span', {style:{fontWeight:600}}, r.who), label(r.role)))))));
+              h('span', {style:{fontWeight:600}}, r.who), label(r.role)))))),
+      vinyl,
+      h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
+          opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
+        top.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : YEL, display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:600, fontSize:22, color:INK}}, c.pic || c.short))),
+      logos));
   };
 
   static SceneHero = function SceneHero(p) {

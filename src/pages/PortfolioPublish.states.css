@@ -162,4 +162,4 @@ html[data-yj-screen="contact"] body{padding-bottom:0}
 @media (min-width:821px) and (max-height:880px){html[data-yj-screen="home"]{--yj-pad:20px}}
 
 /* Landing wordmark: calmer size than the global H1 scale */
-#dc-root .yj-bento h1.yj-wm{font-family:'Kalnia', Georgia, serif !important;font-style:normal;font-weight:300 !important;font-variation-settings:'wdth' 100;font-size:clamp(60px, min(7.2vw, 11.4vh), 116px) !important;line-height:.92 !important;letter-spacing:-0.03em !important;padding-bottom:.12em !important}
+#dc-root .yj-bento h1.yj-wm{font-family:'Bodoni Moda', 'Didot', Georgia, serif !important;font-style:italic;font-weight:400 !important;font-variation-settings:'opsz' 96;font-size:clamp(58px, min(7vw, 11.2vh), 112px) !important;line-height:.92 !important;letter-spacing:-0.035em !important;padding-bottom:.1em !important}
