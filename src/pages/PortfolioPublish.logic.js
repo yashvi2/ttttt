@@ -1445,7 +1445,7 @@ class Component extends DCLogic {
           h('div', {className:'mvs-grid g3'},
             card([h('div', {className:'mvs-k'}, 'What worked'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, 'Play lowered the stakes. People named stereotypes in a game that they would not name in a lecture.')]),
             card([h('div', {className:'mvs-k'}, 'What I learned'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, S('Reflection').p)]),
-            card([h('div', {className:'mvs-k'}, 'Next'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:BODY}}, 'An oral and picture-led deck for low-literacy players, then pilots with schools and NGOs alongside the family edition.')], {background:RED, color:'#fff'}))),
+            card([h('div', {className:'mvs-k', style:{color:'#fff'}}, 'Next'), h('p', {style:{margin:'8px 0 0', lineHeight:1.55, color:'#fff'}}, 'An oral and picture-led deck for low-literacy players, then pilots with schools and NGOs alongside the family edition.')], {background:RED, color:'#fff'}))),
         p.next || null));
   };
 
