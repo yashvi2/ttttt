@@ -744,7 +744,7 @@ class Component extends DCLogic {
     // Home hero as a staged still life: blue wall, cream floor, a framed
     // portrait and sea painting, tulips on a stool, a lamp and a coffee.
     const h = React.createElement;
-    const C = {blue:'#1338d6', floor:'#e9e0d0', cream:'#f3ece0', pink:'#f6a9c6', orange:'#ff5a1f', ink:'#141414', wood:'#c99a63'};
+    const C = {blue:'#93b3bc', floor:'#f1ece1', cream:'#f6f1e7', pink:'#f6f1e7', orange:'#7a2a2e', ink:'#3b1b1d', wood:'#c99a63'};
     const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Schibsted Grotesk', sans-serif", mono = "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace";
     const wrap = React.useRef(null);
     React.useEffect(() => {
@@ -755,8 +755,22 @@ class Component extends DCLogic {
       el.addEventListener('pointermove', move); raf = requestAnimationFrame(tick);
       return () => { cancelAnimationFrame(raf); el.removeEventListener('pointermove', move); };
     }, []);
+    // Real 3D still life (three.js), loaded on demand. The drawn SVG scene
+    // stays underneath as the fallback when WebGL or the import fails.
+    const cv = React.useRef(null), [is3d, set3d] = React.useState(false);
+    React.useEffect(() => {
+      let off = null, dead = false;
+      const probe = document.createElement('canvas');
+      if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return;
+      import('../three/stillLife.js').then(m => {
+        if (dead || !cv.current) return;
+        try { off = m.mountStillLife(cv.current, {portraitUrl:__R('assets/web/assets/yashvi.webp'), onReady:() => !dead && set3d(true)}); }
+        catch (e) { console.warn('3D hero unavailable', e); }
+      }).catch(() => {});
+      return () => { dead = true; off && off(); };
+    }, []);
     const layer = (depth, style, ...kids) => { const {className, ...st} = style; return h('div', {className, style:{position:'absolute', transform:`translate3d(calc(var(--px,0) * ${depth}px), calc(var(--py,0) * ${depth * .6}px), 0)`, ...st}}, ...kids); };
-    const pill = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:999, background:C.pink, color:C.ink, fontFamily:sans, fontSize:15, fontWeight:600}}, label);
+    const pill = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:999, background:C.pink, color:C.ink, border:'1.5px solid '+C.ink, fontFamily:sans, fontSize:15, fontWeight:600}}, label);
 
     // framed pictures on the wall
     const frame = (w, inner, tilt) => h('div', {style:{width:w, background:'#f7f2e8', padding:'clamp(6px,.7vw,12px)', boxShadow:'0 2px 0 rgba(0,0,0,.08), 0 24px 40px -22px rgba(0,0,0,.55)', transform:`rotate(${tilt}deg)`}},
@@ -792,7 +806,7 @@ class Component extends DCLogic {
       h('rect', {x:10, y:156, width:170, height:12, rx:3, fill:C.wood}),
       h('rect', {x:84, y:168, width:22, height:92, fill:'#a87c4b'}), h('ellipse', {cx:95, cy:258, rx:40, ry:6, fill:'#a87c4b'}));
 
-    return h('section', {ref:wrap, 'aria-label':'Introduction', className:'yj-scene',
+    return h('section', {ref:wrap, 'aria-label':'Introduction', className:'yj-scene' + (is3d ? ' yj-sc-3d' : ''),
         style:{position:'relative', height:'100svh', minHeight:640, overflow:'hidden', background:C.blue, color:C.cream}},
       h('style', null, `
         .yj-scene .yj-sc-floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:${C.floor}}
@@ -812,8 +826,12 @@ class Component extends DCLogic {
           .yj-scene .yj-sc-portrait{top:23% !important}
           .yj-scene .yj-sc-notes{left:16px;right:16px;bottom:44px}
         }
+        .yj-scene .yj-sc-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .8s ease}
+        .yj-scene.yj-sc-3d .yj-sc-canvas{opacity:1}
+        .yj-scene.yj-sc-3d .yj-sc-floor,.yj-scene.yj-sc-3d .yj-sc-portrait,.yj-scene.yj-sc-3d .yj-sc-sea,.yj-scene.yj-sc-3d .yj-sc-stool,.yj-scene.yj-sc-3d .yj-sc-lamp,.yj-scene.yj-sc-3d .yj-sc-coffee{display:none !important}
         @media (prefers-reduced-motion:reduce){.yj-sc-tulip,.yj-sc-wave,.yj-sc-steam{animation:none !important}.yj-sc-steam{opacity:.6}}
       `),
+      h('canvas', {ref:cv, className:'yj-sc-canvas', 'aria-hidden':true}),
       h('div', {className:'yj-sc-floor'}),
       // wordmark
       layer(6, {left:0, right:0, top:'clamp(80px, 11vh, 110px)', textAlign:'center', whiteSpace:'nowrap'},
