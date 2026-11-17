@@ -510,10 +510,10 @@ class Component extends DCLogic {
       r.drag = {x:L.x, y:L.y, ox:x - L.x, oy:y - L.y, sx:x, sy:y, moved:0}; setGrab(ri); };
     const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
-    const ink = '#f4f4f4', green = 'var(--yj-accent, #b6f23a)';
+    const ink = '#141414', green = 'var(--yj-accent, #b6f23a)';
     const sans = "'Schibsted Grotesk', sans-serif", cond = sans, display = "'Libre Caslon Display', Georgia, serif";
-    const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#cfcfcf', maxWidth:420, margin:0};
-    const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:green, marginRight:16, whiteSpace:'nowrap'}}, label);
+    const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#55514b', maxWidth:420, margin:0};
+    const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:ink, textDecoration:'underline', textUnderlineOffset:4, textDecorationThickness:1, marginRight:18, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
     const idCard = ri => h('div', {key:ri, ref:cards[ri], className:'yj-card', role:'button', tabIndex:0, 'data-cursor':'Drag', 'aria-label':'Yashvi Jain ID card. Drag it, or click to see selected work',
         onPointerDown:down(ri), onPointerMove:move(ri), onPointerUp:up(ri), onPointerCancel:up(ri), onKeyDown:e => { if ((e.key === 'Enter' || e.key === ' ') && p.onWork) { e.preventDefault(); p.onWork(); } },
@@ -526,7 +526,7 @@ class Component extends DCLogic {
         h('path', {d:'M20 40 C11 44 11 60 17 66 L20 70 L23 66 C29 60 29 44 20 40 Z', fill:'none', stroke:`url(#yjMetal${ri})`, strokeWidth:3}),
         h('path', {d:`M20 70 L20 ${CLIP + 22}`, stroke:`url(#yjMetal${ri})`, strokeWidth:2.6, strokeLinecap:'round'})),
       h('div', {style:{position:'relative', aspectRatio:'0.68', borderRadius:14, background:green, color:'#0a0a0a',
-          boxShadow:'0 34px 60px -22px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
+          boxShadow:'0 30px 50px -24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.5)', padding:'clamp(14px, 4.5vw, 24px)', paddingTop:40, display:'flex', flexDirection:'column'}},
         h('span', {style:{position:'absolute', left:'50%', top:14, width:48, height:9, marginLeft:-24, borderRadius:6, background:'#0a0a0a'}}),
         h('span', {'aria-hidden':true, style:{position:'absolute', inset:0, borderRadius:14, pointerEvents:'none', background:'linear-gradient(125deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 62%, rgba(255,255,255,.14) 100%)'}}),
         h('div', {style:{fontFamily:display, fontWeight:400, fontSize:'clamp(36px, 11vw, 60px)', lineHeight:.88, letterSpacing:'-0.03em'}}, 'Yashvi', h('br'), 'Jain'),
@@ -539,19 +539,19 @@ class Component extends DCLogic {
         h('div', {style:{display:'flex', justifyContent:'flex-end', alignItems:'flex-end', gap:8}},
           h('div', {style:{fontFamily:cond, fontWeight:500, fontSize:11, letterSpacing:'.12em', textAlign:'right', lineHeight:1.4}}, 'PORTFOLIO', h('br'), 'ID 2026 · YJ'))));
     return h('section', {ref:wrap, 'aria-label':'Introduction',
-        style:{position:'relative', height:'100svh', minHeight:620, background:'#000000', color:ink, overflow:'hidden'}},
+        style:{position:'relative', height:'100svh', minHeight:620, background:'#f4f1ea', color:ink, overflow:'hidden'}},
       h('style', null, '@media (max-width:640px) and (max-height:640px){.yj-land-top p{display:none}}@media (max-width:640px){.yj-land-r{display:none}.yj-land-top{top:auto!important;bottom:calc(17vw + 24px);right:88px!important}}'),
       h('h1', {style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', margin:0}}, 'Yashvi Jain, product and service designer in London'),
       h('div', {className:'yj-land-top', style:{position:'absolute', top:'clamp(120px, 17vh, 160px)', left:'clamp(20px, 5vw, 72px)', right:'clamp(20px, 5vw, 72px)', display:'flex', justifyContent:'space-between', gap:24, zIndex:1}},
         h('div', {style:corner},
-          h('p', {style:{margin:0, fontSize:'clamp(22px, 2vw, 30px)', lineHeight:1.15, letterSpacing:'-0.015em', color:'#f4f4f4', fontWeight:500}}, 'Product & service designer'),
+          h('p', {style:{margin:0, fontSize:'clamp(22px, 2vw, 30px)', lineHeight:1.15, letterSpacing:'-0.015em', color:ink, fontWeight:500}}, 'Product & service designer'),
           h('p', {style:{margin:'8px 0 0'}}, 'Research, strategy & design for health, pharma and social change.'),
           h('div', {style:{marginTop:10}}, link('[Selected work ↓]', {onClick:p.onWork}), link('[Download CV ↓]', {href:p.cv, target:'_blank', rel:'noopener'}))),
-        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:green}}, 'London, UK')),
+        h('p', {className:'yj-land-r', style:{...corner, textAlign:'right', color:'#55514b'}}, 'London, UK')),
       h('div', {ref:nameRef, 'aria-hidden':true, style:{position:'absolute', left:0, right:0, bottom:'-0.1em', textAlign:'center', whiteSpace:'nowrap', fontFamily:cond,
           fontFamily:display, fontWeight:400, fontSize:'clamp(58px, 17.5vw, 360px)', lineHeight:1, letterSpacing:'-0.035em', pointerEvents:'none', willChange:'transform'}},
-        h('span', {ref:wordA, style:{display:'inline-block'}}, 'Yashvi'), ' ', h('span', {ref:wordB, style:{display:'inline-block', color:green}}, 'Jain')),
-      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(6px 12px 10px rgba(0,0,0,.7))'}},
+        h('span', {ref:wordA, style:{display:'inline-block'}}, 'Yashvi'), ' ', h('span', {ref:wordB, style:{display:'inline-block'}}, 'Jain')),
+      h('svg', {'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', overflow:'visible', pointerEvents:'none', filter:'drop-shadow(4px 10px 10px rgba(0,0,0,.18))'}},
         h('defs', null, h('path', {id:'yjStrapPath0', ref:prints[0]})),
         [0].map(ri => h('g', {key:ri},
           // plain woven strap: dark band with a faint edge highlight
@@ -669,7 +669,7 @@ Agent:`;
       .catch(() => done("I couldn't reach my brain just now — email Yashvi directly at yashvi.jain.yj@gmail.com and she'll reply herself."));
   }
   componentDidMount() {
-    setTimeout(() => this.syncTone(), 300);
+    setTimeout(() => this.syncTone(), 300); this._toneT = setInterval(() => this.syncTone(), 900);
     // About: draw the headline underline once the section scrolls into view
     this._abIO = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('yj-in')), {threshold:.35});
     this._abArm = () => { const a = document.getElementById('yj-about'); if (a && !a._yjObs) { a._yjObs = 1; this._abIO.observe(a); } };
@@ -1226,7 +1226,7 @@ Agent:`;
         {quote:'An exceptional designer. Continues to make us proud.', slot:'rec-siddhartha-gigoo', img:__R('assets/web/assets/recs/siddhartha.webp'), name:'Siddhartha Gigoo', role:'Head of TCS Interactive Design Studios', rel:'Managed Yashvi · Mar 2025'}],
       certs:[
         {title:'Enterprise Design Thinking Practitioner', org:'IBM', logo:__R('assets/certs/ibm.svg'), h:40, date:'Issued Nov 2025'},
-        {title:'Customer Experience (CX) Foundations', org:'LinkedIn', logo:__R('assets/certs/linkedin.png'), date:'Issued Mar 2024'}].map(c => ({...c, logoImg: React.createElement('img', {src:c.logo, alt:c.org + ' logo', style:{height:c.h || 32, width:'auto', maxWidth:120, objectFit:'contain', filter:'brightness(0) invert(1)'}})})),
+        {title:'Customer Experience (CX) Foundations', org:'LinkedIn', logo:__R('assets/certs/linkedin.png'), date:'Issued Mar 2024'}].map(c => ({...c, logoImg: React.createElement('img', {className:'yj-cert-logo', src:c.logo, alt:c.org + ' logo', style:{height:c.h || 32, width:'auto', maxWidth:120, objectFit:'contain', filter:'brightness(0) invert(1)'}})})),
       stackPause:() => { this._stkPause = true; this.setState({stkHov:true}); }, stackPlay:() => { this._stkPause = false; this.setState({stkHov:false}); }, phoneLive: !!this.state.phoneLive, phoneEv: this.state.phoneLive ? 'auto' : 'none', phoneRing: this.state.phoneLive ? '2px solid var(--yj-accent, #ff4d2e)' : 'none', phoneBtnL: this.state.phoneLive ? 'Done interacting' : 'Interact here', phoneBtnBg: this.state.phoneLive ? 'var(--yj-accent, #ff4d2e)' : '#f4f4f4', phoneBtnFg: '#0a0a0a', phoneToggle:() => this.setState(st => ({phoneLive:!st.phoneLive})), sortStkOn:() => this.setState({sortSpread:true}), sortStkOff:() => this.setState({sortSpread:false}), jRef:this.jRef, jProg:(this.state.jP || 0.18) * 100 + '%', jScroll:e => { const t = e.currentTarget, m = t.scrollWidth - t.clientWidth; this.setState({jP: m > 0 ? Math.max(0.18, t.scrollLeft / m) : 1}); }, jPrev:() => this.setState(st => ({jFront:((st.jFront || 0) + 4) % 5})), jNext:() => this.setState(st => ({jFront:((st.jFront || 0) + 1) % 5})), jOn:() => this.setState({jSpread:true}), jOff:() => this.setState({jSpread:false}), subNavRef:this.subNavRef, secsNav, secsFull, chTotal:String(FLOW.length).padStart(2, '0'), chV:chOf('voices'), chP:chOf('plan'), chO:chOf('outcome'), chT:chOf('testing'), chS:chOf('scale'), chR:chOf('research'), chPr:chOf('proto'), hasProtoSec: FLOW.includes('proto'), ordScale:Math.max(0, FLOW.indexOf('scale')), ordResearch:Math.max(0, FLOW.indexOf('research')), ordProto:Math.max(0, FLOW.indexOf('proto')),
       hasTesting: !!cur.testing, resultTop: !cur.testing, ordTesting: Math.max(0, FLOW.indexOf('testing')),
       testing: cur.testing ? {...cur.testing, hasPeople: !!(cur.testing.people && cur.testing.people.length), noPeople: !(cur.testing.people && cur.testing.people.length), people:(cur.testing.people || []).map(p => ({...p, open:() => this.setState({lb:p.src, lbAlt:p.name})})), imgs:cur.testing.imgs.map(t => ({...t, open:() => this.setState({lb:t.src, lbAlt:t.k})}))} : null,

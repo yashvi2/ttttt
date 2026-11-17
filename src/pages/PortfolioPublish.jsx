@@ -18,8 +18,8 @@ function template(v) {
           minHeight: '100vh',
           display: 'block',
           flexDirection: 'column',
-          background: '#000000',
-          color: '#f4f4f4',
+          background: '#f4f1ea',
+          color: '#141414',
           fontFamily: "'Schibsted Grotesk',sans-serif",
         }}
       >
@@ -52,12 +52,12 @@ function template(v) {
               display: 'flex',
               alignItems: 'baseline',
               gap: '8px',
-              background: 'rgba(255,255,255,0.08)',
+              background: 'rgba(20,20,20,0.08)',
               backdropFilter: 'blur(14px) saturate(160%)',
               WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-              border: '1px solid rgba(255,255,255,0.18)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 8px 24px -12px rgba(0,0,0,0.5)',
-              color: '#f4f4f4',
+              border: '1px solid rgba(20,20,20,0.18)',
+              boxShadow: 'inset 0 1px 0 rgba(20,20,20,0.22), 0 8px 24px -12px rgba(244,241,234,0.5)',
+              color: '#141414',
               transition: 'background 250ms',
               borderRadius: '999px',
               padding: '12px 22px 14px 20px',
@@ -88,11 +88,11 @@ function template(v) {
               gap: '2px',
               padding: '5px',
               borderRadius: '999px',
-              background: 'rgba(255,255,255,0.08)',
+              background: 'rgba(20,20,20,0.08)',
               backdropFilter: 'blur(14px) saturate(160%)',
               WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-              border: '1px solid rgba(255,255,255,0.18)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 8px 24px -12px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(20,20,20,0.18)',
+              boxShadow: 'inset 0 1px 0 rgba(20,20,20,0.22), 0 8px 24px -12px rgba(244,241,234,0.5)',
             }}
           >
             {each(v.nav, (n, $index) => (
@@ -101,7 +101,7 @@ function template(v) {
                   className="dc-hover-aae40af0"
                   onClick={n?.onClick}
                   style={css(
-                    `all:unset;cursor:pointer;padding:9px 16px;border-radius:999px;font-size:16px;font-weight:500;white-space:nowrap;color:#f4f4f4;background:${n?.bg ?? ''};transition:background 250ms`,
+                    `all:unset;cursor:pointer;padding:9px 16px;border-radius:999px;font-size:16px;font-weight:500;white-space:nowrap;color:#141414;background:${n?.bg ?? ''};transition:background 250ms`,
                   )}
                 >
                   {t(n?.label)}
@@ -123,12 +123,12 @@ function template(v) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
-                  background: 'rgba(255,255,255,0.08)',
+                  background: 'rgba(20,20,20,0.08)',
                   backdropFilter: 'blur(14px) saturate(160%)',
                   WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.22), 0 8px 24px -12px rgba(0,0,0,0.5)',
-                  color: '#f4f4f4',
+                  border: '1px solid rgba(20,20,20,0.18)',
+                  boxShadow: 'inset 0 1px 0 rgba(20,20,20,0.22), 0 8px 24px -12px rgba(244,241,234,0.5)',
+                  color: '#141414',
                   transition: 'background 250ms',
                   borderRadius: '999px',
                   padding: '17px 20px',
@@ -147,7 +147,7 @@ function template(v) {
                     height: '8px',
                     borderRadius: '50%',
                     background: 'var(--yj-accent, #ff4d2e)',
-                    boxShadow: '0 0 0 1.5px #000000',
+                    boxShadow: '0 0 0 1.5px #f4f1ea',
                   }}
                 />
                 {'What are you building? '}
@@ -180,7 +180,7 @@ function template(v) {
                     fontSize: '13px',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
-                    color: '#999999',
+                    color: '#6b665e',
                   }}
                 >
                   (Index) — Problem → bet → result
@@ -198,7 +198,7 @@ function template(v) {
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '10px',
-                    color: '#f4f4f4',
+                    color: '#141414',
                   }}
                 >
                   Selected work
@@ -209,7 +209,7 @@ function template(v) {
                       fontWeight: '500',
                       fontStretch: '100%',
                       textTransform: 'none',
-                      color: 'var(--yj-accent, #ff4d2e)',
+                      color: '#141414',
                       fontSize: '0.32em',
                       lineHeight: '1',
                     }}
@@ -237,7 +237,7 @@ function template(v) {
                           flexDirection: 'column',
                           gap: '16px',
                           padding: '24px',
-                          background: '#141414',
+                          background: '#ebe7de',
                         }}
                       >
                         <div style={{ aspectRatio: '4/5', position: 'relative', overflow: 'hidden' }}>
@@ -274,19 +274,19 @@ function template(v) {
                           >
                             {t(c?.short)}
                           </button>
-                          <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.45', color: '#cfcfcf', maxWidth: '34ch' }}>{t(c?.cardLine)}</p>
+                          <p style={{ margin: '0', fontSize: '15px', lineHeight: '1.45', color: '#3a3733', maxWidth: '34ch' }}>{t(c?.cardLine)}</p>
                           <span style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             <span
                               style={{
                                 padding: '6px 12px',
-                                border: '1.5px solid #666666',
+                                border: '1.5px solid #8f8a80',
                                 borderRadius: '999px',
                                 fontFamily: "'Schibsted Grotesk',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.14em',
                                 textTransform: 'uppercase',
-                                color: '#f4f4f4',
+                                color: '#141414',
                               }}
                             >
                               {t(c?.sector)}
@@ -294,14 +294,14 @@ function template(v) {
                             <span
                               style={{
                                 padding: '6px 12px',
-                                border: '1.5px solid #333333',
+                                border: '1.5px solid #cfcac0',
                                 borderRadius: '999px',
                                 fontFamily: "'Schibsted Grotesk',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.14em',
                                 textTransform: 'uppercase',
-                                color: '#999999',
+                                color: '#6b665e',
                               }}
                             >
                               {t(c?.years)}
@@ -313,7 +313,7 @@ function template(v) {
                           onClick={c?.open}
                           tabIndex="0"
                           style={css(
-                            `all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:10px;background:#f4f4f4;color:#000000;border-radius:999px;padding:12px 22px;font-size:16px;font-weight:600;opacity:${c?.ctaO ?? ''};transform:translateY(${c?.ctaY ?? ''});transition:opacity 300ms, transform 420ms cubic-bezier(.2,.7,.2,1)`,
+                            `all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:10px;background:#141414;color:#f4f1ea;border-radius:999px;padding:12px 22px;font-size:16px;font-weight:600;opacity:${c?.ctaO ?? ''};transform:translateY(${c?.ctaY ?? ''});transition:opacity 300ms, transform 420ms cubic-bezier(.2,.7,.2,1)`,
                           )}
                         >
                           Get nosy →
@@ -343,7 +343,7 @@ function template(v) {
                     fontSize: '13px',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
-                    color: '#999999',
+                    color: '#6b665e',
                     paddingBottom: '24px',
                   }}
                 >
@@ -356,10 +356,10 @@ function template(v) {
                     overflow: 'hidden',
                     padding: '0 clamp(20px,7vw,128px)',
                     boxSizing: 'border-box',
-                    borderTop: '2px solid #333333',
-                    borderBottom: '2px solid #333333',
-                    WebkitMaskImage: 'linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)',
-                    maskImage: 'linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)',
+                    borderTop: '2px solid #cfcac0',
+                    borderBottom: '2px solid #cfcac0',
+                    WebkitMaskImage: 'linear-gradient(90deg,transparent,#f4f1ea 6%,#f4f1ea 94%,transparent)',
+                    maskImage: 'linear-gradient(90deg,transparent,#f4f1ea 6%,#f4f1ea 94%,transparent)',
                   }}
                 >
                   {' '}
@@ -388,8 +388,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -412,7 +412,7 @@ function template(v) {
                             width: '180px',
                             height: '52px',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -425,7 +425,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -443,8 +443,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -467,7 +467,7 @@ function template(v) {
                             width: '130px',
                             height: '52px',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -480,7 +480,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -499,8 +499,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -525,7 +525,7 @@ function template(v) {
                             objectFit: 'contain',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                             width: '155px',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                           }}
                         />
                       </div>
@@ -537,7 +537,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -556,8 +556,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -592,7 +592,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -611,8 +611,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -635,7 +635,7 @@ function template(v) {
                             maxWidth: '100%',
                             maxHeight: '100%',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -648,7 +648,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -667,8 +667,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -692,7 +692,7 @@ function template(v) {
                             height: '96px',
                             margin: '-22px 0',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -705,7 +705,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -725,8 +725,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -749,7 +749,7 @@ function template(v) {
                             width: '180px',
                             height: '52px',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -762,7 +762,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -782,8 +782,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -806,7 +806,7 @@ function template(v) {
                             width: '130px',
                             height: '52px',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -819,7 +819,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -839,8 +839,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -863,7 +863,7 @@ function template(v) {
                             maxWidth: '100%',
                             maxHeight: '100%',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -876,7 +876,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -896,8 +896,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -932,7 +932,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -952,8 +952,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -976,7 +976,7 @@ function template(v) {
                             maxWidth: '100%',
                             maxHeight: '100%',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -989,7 +989,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -1009,8 +1009,8 @@ function template(v) {
                         justifyContent: 'center',
                         gap: '12px',
                         padding: '24px',
-                        borderLeft: '2px solid #333333',
-                        borderRight: '2px solid #333333',
+                        borderLeft: '2px solid #cfcac0',
+                        borderRight: '2px solid #cfcac0',
                         marginRight: '-2px',
                         boxSizing: 'border-box',
                       }}
@@ -1034,7 +1034,7 @@ function template(v) {
                             height: '96px',
                             margin: '-22px 0',
                             objectFit: 'contain',
-                            filter: 'brightness(0) invert(1)',
+                            filter: 'brightness(0)',
                             transition: 'transform 300ms cubic-bezier(.2,.8,.2,1)',
                           }}
                         />
@@ -1047,7 +1047,7 @@ function template(v) {
                           lineHeight: '1.4',
                           letterSpacing: '0.14em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           textAlign: 'center',
                           whiteSpace: 'nowrap',
                         }}
@@ -1075,41 +1075,41 @@ function template(v) {
                 <div
                   data-yj-rv="up"
                   className="yj-ab-photo"
-                  style={{ flex: '1 1 280px', maxWidth: '420px', aspectRatio: '4/5', position: 'relative', overflow: 'hidden', borderRadius: '4px', background: '#141414' }}
+                  style={{ flex: '1 1 280px', maxWidth: '420px', aspectRatio: '4/5', position: 'relative', overflow: 'hidden', borderRadius: '4px', background: '#ebe7de' }}
                 >
                   {t(v.introImg)}
-                  <span className="yj-ab-tag" style={{ position: 'absolute', left: '16px', bottom: '16px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  <span className="yj-ab-tag" style={{ position: 'absolute', left: '16px', bottom: '16px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#141414', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                     London · open to roles
                   </span>
                 </div>
                 <div data-yj-rv="up" style={{ flex: '2 1 440px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '36px' }}>
-                  <div style={{ fontSize: '13px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#999999' }}>
+                  <div style={{ fontSize: '13px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e' }}>
                     (About) — From interfaces to services
                   </div>
-                  <h2 style={{ margin: '0', fontFamily: "'Libre Caslon Display',Georgia,serif", fontWeight: '400', fontSize: 'clamp(44px,5.4vw,92px)', lineHeight: '0.98', letterSpacing: '-0.035em', color: '#f4f4f4', maxWidth: '14ch' }}>
+                  <h2 style={{ margin: '0', fontFamily: "'Libre Caslon Display',Georgia,serif", fontWeight: '400', fontSize: 'clamp(44px,5.4vw,92px)', lineHeight: '0.98', letterSpacing: '-0.035em', color: '#141414', maxWidth: '14ch' }}>
                     The screen is rarely the <span className="yj-ab-hl">problem.</span>
                   </h2>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0 clamp(14px,3vw,32px)', maxWidth: '680px' }}>
-                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>{t(v.tcsYrs)}</div>
-                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Years at TCS{" "}Interactive</div>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
+                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>{t(v.tcsYrs)}</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Years at TCS{" "}Interactive</div>
                     </div>
-                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>MA</div>
-                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Design Management{" "}UAL</div>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
+                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>MA</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Design Management{" "}UAL</div>
                     </div>
-                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #2a2a2a' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#f4f4f4' }}>4</div>
-                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#8a8a8a', lineHeight: '1.5' }}>Domains, from pharma to social</div>
+                    <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
+                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>4</div>
+                      <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Domains, from pharma to social</div>
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                     <button className="dc-hover-98a7b991" data-yj-mag="1" onClick={v.goApproach}
-                      style={{ all: 'unset', cursor: 'pointer', padding: '12px 22px', borderRadius: '999px', border: '1.5px solid #f4f4f4', fontSize: '17px', fontWeight: '500' }}>
+                      style={{ all: 'unset', cursor: 'pointer', padding: '12px 22px', borderRadius: '999px', border: '1.5px solid #141414', fontSize: '17px', fontWeight: '500' }}>
                       How I work →
                     </button>
                     <a href="uploads/assets-1790874602631-0p68.pdf" target="_blank" rel="noopener"
-                      style={{ padding: '12px 22px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', textDecoration: 'none', fontSize: '17px', fontWeight: '500' }}>
+                      style={{ padding: '12px 22px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#141414', textDecoration: 'none', fontSize: '17px', fontWeight: '500' }}>
                       Download CV ↓
                     </a>
                   </div>
@@ -1135,7 +1135,7 @@ function template(v) {
                         letterSpacing: '0.14em',
                         textTransform: 'uppercase',
                         fontSize: '13px',
-                        color: '#999999',
+                        color: '#6b665e',
                       }}
                     >
                       (Recommendations) — from LinkedIn
@@ -1147,7 +1147,7 @@ function template(v) {
                         fontWeight: '400', letterSpacing: '-0.02em',
                         fontSize: 'clamp(34px,3.6vw,58px)',
                         lineHeight: '1',
-                        color: '#f4f4f4',
+                        color: '#141414',
                       }}
                     >
                       In other people’s words
@@ -1162,8 +1162,8 @@ function template(v) {
                     style={{
                       padding: '12px 22px',
                       borderRadius: '999px',
-                      border: '1.5px solid #f4f4f4',
-                      color: '#f4f4f4',
+                      border: '1.5px solid #141414',
+                      color: '#141414',
                       fontSize: '17px',
                       fontWeight: '500',
                       textDecoration: 'none',
@@ -1193,8 +1193,8 @@ function template(v) {
                           flexDirection: 'column',
                           gap: '28px',
                           padding: '24px',
-                          background: '#141414',
-                          color: '#f4f4f4',
+                          background: '#ebe7de',
+                          color: '#141414',
                           textDecoration: 'none',
                           transition: 'background 300ms,translate 400ms cubic-bezier(.2,.8,.2,1)',
                         }}
@@ -1204,7 +1204,7 @@ function template(v) {
                             fontFamily: "'Libre Caslon Display',Georgia,serif",
                             fontSize: '72px', fontWeight: '400',
                             lineHeight: '0.6',
-                            color: 'var(--yj-accent, #ff4d2e)',
+                            color: '#141414',
                             height: '32px',
                           }}
                         >
@@ -1221,7 +1221,7 @@ function template(v) {
                             alignItems: 'flex-end',
                             gap: '16px',
                             paddingTop: '18px',
-                            borderTop: '1px solid #333333',
+                            borderTop: '1px solid #cfcac0',
                           }}
                         >
                           <span style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: '0' }}>
@@ -1233,7 +1233,7 @@ function template(v) {
                                 position: 'relative',
                                 borderRadius: '50%',
                                 overflow: 'hidden',
-                                background: '#1a1a1a',
+                                background: '#e7e3da',
                               }}
                               onClick={v.stop}
                             >
@@ -1246,7 +1246,7 @@ function template(v) {
                             </span>
                             <span style={{ display: 'flex', flexDirection: 'column', gap: '4px', minWidth: '0' }}>
                               <span style={{ fontSize: '16px', fontWeight: '600' }}>{t(r?.name)}</span>
-                              <span style={{ fontSize: '14px', color: '#999999', whiteSpace: 'nowrap' }}>
+                              <span style={{ fontSize: '14px', color: '#6b665e', whiteSpace: 'nowrap' }}>
                                 {t(r?.role)}
                               </span>
                             </span>
@@ -1258,7 +1258,7 @@ function template(v) {
                               letterSpacing: '0.14em',
                               textTransform: 'uppercase',
                               fontSize: '13px',
-                              color: '#999999',
+                              color: '#6b665e',
                               whiteSpace: 'nowrap',
                             }}
                           >
@@ -1277,9 +1277,9 @@ function template(v) {
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
                       fontSize: '13px',
-                      color: '#999999',
+                      color: '#6b665e',
                       paddingBottom: '20px',
-                      borderBottom: '2px solid #f4f4f4',
+                      borderBottom: '2px solid #141414',
                     }}
                   >
                     (Certifications)
@@ -1298,8 +1298,8 @@ function template(v) {
                           alignItems: 'center',
                           gap: '16px 32px',
                           padding: '28px 0',
-                          borderBottom: '2px solid #333333',
-                          color: '#f4f4f4',
+                          borderBottom: '2px solid #cfcac0',
+                          color: '#141414',
                           textDecoration: 'none',
                           transition: 'padding 400ms cubic-bezier(.2,.8,.2,1),border-color 300ms',
                         }}
@@ -1335,7 +1335,7 @@ function template(v) {
                           >
                             {t(c?.title)}
                           </span>
-                          <span style={{ fontSize: '16px', color: '#999999' }}>{t(c?.org)}</span>
+                          <span style={{ fontSize: '16px', color: '#6b665e' }}>{t(c?.org)}</span>
                         </span>
                         <span
                           style={{
@@ -1344,7 +1344,7 @@ function template(v) {
                             letterSpacing: '0.14em',
                             textTransform: 'uppercase',
                             fontSize: '13px',
-                            color: '#999999',
+                            color: '#6b665e',
                             whiteSpace: 'nowrap',
                           }}
                         >
@@ -1370,7 +1370,7 @@ function template(v) {
                     fontSize: '13px',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
-                    color: '#999999',
+                    color: '#6b665e',
                   }}
                 >
                   (Index) — Selected work 2022–26
@@ -1388,7 +1388,7 @@ function template(v) {
                     display: 'flex',
                     alignItems: 'flex-start',
                     gap: '12px',
-                    color: '#f4f4f4',
+                    color: '#141414',
                   }}
                 >
                   Work
@@ -1399,7 +1399,7 @@ function template(v) {
                       fontWeight: '400',
                       fontStretch: '100%',
                       textTransform: 'none',
-                      color: 'var(--yj-accent, #ff4d2e)',
+                      color: '#141414',
                       fontSize: '0.36em',
                       lineHeight: '1',
                     }}
@@ -1412,7 +1412,7 @@ function template(v) {
                     display: 'flex',
                     gap: 'clamp(24px,4vw,56px)',
                     alignItems: 'flex-end',
-                    borderBottom: '2px solid #333333',
+                    borderBottom: '2px solid #cfcac0',
                     marginBottom: '28px',
                   }}
                 >
@@ -1432,7 +1432,7 @@ function template(v) {
                             fontWeight: '400',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
-                            color: '#999999',
+                            color: '#6b665e',
                           }}
                         >
                           {t(tb?.count)}
@@ -1499,7 +1499,7 @@ function template(v) {
                               flexDirection: 'column',
                               gap: '16px',
                               padding: '24px',
-                              background: '#141414',
+                              background: '#ebe7de',
                             }}
                           >
                             <div style={{ aspectRatio: '4/5', position: 'relative', overflow: 'hidden' }}>
@@ -1546,14 +1546,14 @@ function template(v) {
                                 <span
                                   style={{
                                     padding: '6px 12px',
-                                    border: '1.5px solid #666666',
+                                    border: '1.5px solid #8f8a80',
                                     borderRadius: '999px',
                                     fontFamily: "'Schibsted Grotesk',sans-serif",
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
                                     textTransform: 'uppercase',
-                                    color: '#f4f4f4',
+                                    color: '#141414',
                                   }}
                                 >
                                   {t(c?.sector)}
@@ -1561,14 +1561,14 @@ function template(v) {
                                 <span
                                   style={{
                                     padding: '6px 12px',
-                                    border: '1.5px solid #333333',
+                                    border: '1.5px solid #cfcac0',
                                     borderRadius: '999px',
                                     fontFamily: "'Schibsted Grotesk',sans-serif",
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
                                     textTransform: 'uppercase',
-                                    color: '#999999',
+                                    color: '#6b665e',
                                   }}
                                 >
                                   {t(c?.years)}
@@ -1580,7 +1580,7 @@ function template(v) {
                               onClick={c?.open}
                               tabIndex="0"
                               style={css(
-                                `all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:10px;background:#f4f4f4;color:#000000;border-radius:999px;padding:12px 22px;font-size:16px;font-weight:600;opacity:${c?.ctaO ?? ''};transform:translateY(${c?.ctaY ?? ''});transition:opacity 300ms, transform 420ms cubic-bezier(.2,.7,.2,1)`,
+                                `all:unset;cursor:pointer;align-self:flex-start;display:flex;align-items:center;gap:10px;background:#141414;color:#f4f1ea;border-radius:999px;padding:12px 22px;font-size:16px;font-weight:600;opacity:${c?.ctaO ?? ''};transform:translateY(${c?.ctaY ?? ''});transition:opacity 300ms, transform 420ms cubic-bezier(.2,.7,.2,1)`,
                               )}
                             >
                               Get nosy →
@@ -1623,7 +1623,7 @@ function template(v) {
                           fontSize: 'clamp(28px,3.2vw,48px)',
                           lineHeight: '0.92',
                           textTransform: 'uppercase',
-                          color: '#f4f4f4',
+                          color: '#141414',
                         }}
                       >
                         Rough, fast,
@@ -1633,7 +1633,7 @@ function template(v) {
                             fontFamily: "'Libre Caslon Text',Georgia,serif",
                             fontStyle: 'italic',
                             textTransform: 'none',
-                            color: 'var(--yj-accent, #ff4d2e)',
+                            color: '#141414',
                           }}
                         >
                           for fun.
@@ -1645,7 +1645,7 @@ function template(v) {
                           maxWidth: '340px',
                           fontSize: '17px',
                           lineHeight: '1.5',
-                          color: '#cccccc',
+                          color: '#3a3733',
                           textWrap: 'pretty',
                         }}
                       >
@@ -1673,7 +1673,7 @@ function template(v) {
                         }}
                       >
                         <div
-                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #333333' }}
+                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #cfcac0' }}
                         >
                           <span
                             style={{
@@ -1682,7 +1682,7 @@ function template(v) {
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
                               fontSize: '12px',
-                              color: '#8c8c8c',
+                              color: '#6b665e',
                             }}
                           >
                             Zine
@@ -1706,7 +1706,7 @@ function template(v) {
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
-                            color: '#f4f4f4',
+                            color: '#141414',
                             textWrap: 'balance',
                           }}
                         >
@@ -1725,7 +1725,7 @@ function template(v) {
                         }}
                       >
                         <div
-                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #333333' }}
+                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #cfcac0' }}
                         >
                           <span
                             style={{
@@ -1734,7 +1734,7 @@ function template(v) {
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
                               fontSize: '12px',
-                              color: '#8c8c8c',
+                              color: '#6b665e',
                             }}
                           >
                             Installation
@@ -1758,7 +1758,7 @@ function template(v) {
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
-                            color: '#f4f4f4',
+                            color: '#141414',
                             textWrap: 'balance',
                           }}
                         >
@@ -1790,7 +1790,7 @@ function template(v) {
                         }}
                       >
                         <div
-                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #333333' }}
+                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #cfcac0' }}
                         >
                           <span
                             style={{
@@ -1799,7 +1799,7 @@ function template(v) {
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
                               fontSize: '12px',
-                              color: '#8c8c8c',
+                              color: '#6b665e',
                             }}
                           >
                             Video
@@ -1834,7 +1834,7 @@ function template(v) {
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
-                            color: '#f4f4f4',
+                            color: '#141414',
                             textWrap: 'balance',
                           }}
                         >
@@ -1853,7 +1853,7 @@ function template(v) {
                         }}
                       >
                         <div
-                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #333333' }}
+                          style={{ display: 'flex', gap: '16px', paddingTop: '12px', borderTop: '2px solid #cfcac0' }}
                         >
                           <span
                             style={{
@@ -1862,7 +1862,7 @@ function template(v) {
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
                               fontSize: '12px',
-                              color: '#8c8c8c',
+                              color: '#6b665e',
                             }}
                           >
                             Photo
@@ -1897,7 +1897,7 @@ function template(v) {
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
-                            color: '#f4f4f4',
+                            color: '#141414',
                             textWrap: 'balance',
                           }}
                         >
@@ -1931,7 +1931,7 @@ function template(v) {
             </>
           ) : null}
           {v.isCaseStd ? (
-            <div style={{ fontFamily: 'Geist,sans-serif' }}>
+            <div style={{ fontFamily: 'Geist,sans-serif', background: '#000000', color: '#f4f4f4' }}>
               {' '}
               {v.isPosterCover ? (
                 <>
@@ -6981,7 +6981,7 @@ function template(v) {
                       flexDirection: 'column',
                       gap: '24px',
                       paddingBottom: '32px',
-                      borderBottom: '2px solid #f4f4f4',
+                      borderBottom: '2px solid #141414',
                     }}
                   >
                     <span
@@ -6991,7 +6991,7 @@ function template(v) {
                         fontSize: '13px',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        color: '#999999',
+                        color: '#6b665e',
                       }}
                     >
                       (About)
@@ -7007,7 +7007,7 @@ function template(v) {
                         lineHeight: '0.92',
                         letterSpacing: '-0.01em',
                         textTransform: 'uppercase',
-                        color: '#f4f4f4',
+                        color: '#141414',
                         textWrap: 'balance',
                       }}
                     >
@@ -7019,7 +7019,7 @@ function template(v) {
                           fontWeight: '400',
                           fontStretch: '100%',
                           textTransform: 'none',
-                          color: '#cccccc',
+                          color: '#3a3733',
                         }}
                       >
                         (actual intelligence)
@@ -7032,7 +7032,7 @@ function template(v) {
                           fontWeight: '400',
                           fontStretch: '100%',
                           textTransform: 'none',
-                          color: 'var(--yj-accent, #ff4d2e)',
+                          color: '#141414',
                         }}
                       >
                         (artificial intelligence).
@@ -7057,8 +7057,8 @@ function template(v) {
                         style={{
                           display: 'grid',
                           gridTemplateColumns: 'repeat(3,minmax(0,1fr))',
-                          borderTop: '2px solid #333333',
-                          borderBottom: '2px solid #333333',
+                          borderTop: '2px solid #cfcac0',
+                          borderBottom: '2px solid #cfcac0',
                         }}
                       >
                         <div
@@ -7071,7 +7071,7 @@ function template(v) {
                               fontSize: '13px',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
-                              color: '#999999',
+                              color: '#6b665e',
                             }}
                           >
                             01
@@ -7083,7 +7083,7 @@ function template(v) {
                               fontSize: '22px',
                               lineHeight: '1',
                               textTransform: 'uppercase',
-                              color: '#f4f4f4',
+                              color: '#141414',
                             }}
                           >
                             Designer
@@ -7095,7 +7095,7 @@ function template(v) {
                             flexDirection: 'column',
                             gap: '10px',
                             padding: '18px 16px',
-                            borderLeft: '2px solid #333333',
+                            borderLeft: '2px solid #cfcac0',
                           }}
                         >
                           <span
@@ -7105,7 +7105,7 @@ function template(v) {
                               fontSize: '13px',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
-                              color: '#999999',
+                              color: '#6b665e',
                             }}
                           >
                             02
@@ -7117,7 +7117,7 @@ function template(v) {
                               fontSize: '22px',
                               lineHeight: '1',
                               textTransform: 'uppercase',
-                              color: '#f4f4f4',
+                              color: '#141414',
                             }}
                           >
                             Researcher
@@ -7129,7 +7129,7 @@ function template(v) {
                             flexDirection: 'column',
                             gap: '10px',
                             padding: '18px 16px',
-                            borderLeft: '2px solid #333333',
+                            borderLeft: '2px solid #cfcac0',
                           }}
                         >
                           <span
@@ -7139,7 +7139,7 @@ function template(v) {
                               fontSize: '13px',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
-                              color: '#999999',
+                              color: '#6b665e',
                             }}
                           >
                             03
@@ -7151,7 +7151,7 @@ function template(v) {
                               fontSize: '22px',
                               lineHeight: '1',
                               textTransform: 'uppercase',
-                              color: '#f4f4f4',
+                              color: '#141414',
                             }}
                           >
                             Thinker
@@ -7165,7 +7165,7 @@ function template(v) {
                           maxWidth: '600px',
                           fontSize: '17px',
                           lineHeight: '1.55',
-                          color: '#cccccc',
+                          color: '#3a3733',
                           textWrap: 'pretty',
                         }}
                       >
@@ -7178,7 +7178,7 @@ function template(v) {
                             fontFamily: "'Libre Caslon Text',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '20px',
-                            color: '#f4f4f4',
+                            color: '#141414',
                           }}
                         >
                           why this, and who is it for?
@@ -7186,7 +7186,7 @@ function template(v) {
                       </p>
                       <div
                         data-yj-rv="up"
-                        style={{ display: 'flex', flexDirection: 'column', borderTop: '2px solid #333333' }}
+                        style={{ display: 'flex', flexDirection: 'column', borderTop: '2px solid #cfcac0' }}
                       >
                         {each(v.aboutFacts, (f, $index) => (
                           <>
@@ -7197,7 +7197,7 @@ function template(v) {
                                 gap: '16px',
                                 alignItems: 'center',
                                 padding: '14px 0',
-                                borderBottom: '2px solid #333333',
+                                borderBottom: '2px solid #cfcac0',
                               }}
                             >
                               <span
@@ -7207,7 +7207,7 @@ function template(v) {
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
-                                  color: '#999999',
+                                  color: '#6b665e',
                                 }}
                               >
                                 {t(f?.k)}
@@ -7220,7 +7220,7 @@ function template(v) {
                                         padding: '7px 14px',
                                         borderRadius: '999px',
                                         background: 'var(--yj-accent, #ff4d2e)',
-                                        color: '#000000',
+                                        color: '#141414',
                                         fontSize: '14px',
                                         fontWeight: '600',
                                         lineHeight: '1.2',
@@ -7244,12 +7244,12 @@ function template(v) {
                           style={{
                             padding: '12px 22px',
                             borderRadius: '999px',
-                            background: '#f4f4f4',
-                            border: '1.5px solid #f4f4f4',
+                            background: '#141414',
+                            border: '1.5px solid #141414',
                             fontSize: '15px',
                             fontWeight: '500',
                             textDecoration: 'none',
-                            color: '#000000',
+                            color: '#f4f1ea',
                           }}
                         >
                           Download CV ↓
@@ -7263,10 +7263,10 @@ function template(v) {
                             cursor: 'pointer',
                             padding: '12px 22px',
                             borderRadius: '999px',
-                            border: '1.5px solid #666666',
+                            border: '1.5px solid #8f8a80',
                             fontSize: '15px',
                             fontWeight: '500',
-                            color: '#f4f4f4',
+                            color: '#141414',
                           }}
                         >
                           See the work →
@@ -7274,9 +7274,9 @@ function template(v) {
                       </div>
                     </div>
                     {/* Portrait, matching the home About section (no ID card) */}
-                    <div className="yj-ab-photo" style={{ position: 'relative', flex: '0 1 320px', maxWidth: '340px', width: '100%', aspectRatio: '4/5', overflow: 'hidden', borderRadius: '4px', background: '#141414', margin: '0 auto', alignSelf: 'flex-start' }}>
+                    <div className="yj-ab-photo" style={{ position: 'relative', flex: '0 1 320px', maxWidth: '340px', width: '100%', aspectRatio: '4/5', overflow: 'hidden', borderRadius: '4px', background: '#ebe7de', margin: '0 auto', alignSelf: 'flex-start' }}>
                       {t(v.aboutImg)}
-                      <span className="yj-ab-tag" style={{ position: 'absolute', left: '14px', bottom: '14px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#000000', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      <span className="yj-ab-tag" style={{ position: 'absolute', left: '14px', bottom: '14px', padding: '7px 12px', borderRadius: '999px', background: 'var(--yj-accent, #b6f23a)', color: '#141414', fontSize: '12px', fontWeight: '600', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                         London · open to roles
                       </span>
                     </div>
@@ -7291,7 +7291,7 @@ function template(v) {
                       alignItems: 'flex-end',
                       gap: '32px',
                       paddingBottom: '28px',
-                      borderBottom: '2px solid #f4f4f4',
+                      borderBottom: '2px solid #141414',
                     }}
                   >
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '900px' }}>
@@ -7302,7 +7302,7 @@ function template(v) {
                           fontSize: '13px',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                         }}
                       >
                         (Off the clock)
@@ -7316,7 +7316,7 @@ function template(v) {
                           fontSize: 'clamp(28px,3.2vw,48px)',
                           lineHeight: '0.95',
                           textTransform: 'uppercase',
-                          color: '#f4f4f4',
+                          color: '#141414',
                           textWrap: 'balance',
                         }}
                       >
@@ -7328,7 +7328,7 @@ function template(v) {
                             fontWeight: '400',
                             fontStretch: '100%',
                             textTransform: 'none',
-                            color: 'var(--yj-accent, #ff4d2e)',
+                            color: '#141414',
                           }}
                         >
                           Whatever I do, I go all out.
@@ -7342,7 +7342,7 @@ function template(v) {
                         maxWidth: '380px',
                         fontSize: '17px',
                         lineHeight: '1.5',
-                        color: '#cccccc',
+                        color: '#3a3733',
                         textWrap: 'pretty',
                       }}
                     >
@@ -7366,8 +7366,8 @@ function template(v) {
                               position: 'relative',
                               width: '100%',
                               overflow: 'hidden',
-                              background: '#141414',
-                              border: '2px solid #333333',
+                              background: '#ebe7de',
+                              border: '2px solid #cfcac0',
                             }}
                             onMouseDown={v.stop}
                           >
@@ -7401,7 +7401,7 @@ function template(v) {
                               alignItems: 'baseline',
                               gap: '12px',
                               paddingBottom: '14px',
-                              borderBottom: '2px solid #333333',
+                              borderBottom: '2px solid #cfcac0',
                             }}
                           >
                             <span
@@ -7411,7 +7411,7 @@ function template(v) {
                                 fontSize: '22px',
                                 lineHeight: '0.9',
                                 textTransform: 'uppercase',
-                                color: '#f4f4f4',
+                                color: '#141414',
                               }}
                             >
                               {t(o?.k)}
@@ -7423,7 +7423,7 @@ function template(v) {
                                 fontSize: '13px',
                                 letterSpacing: '0.08em',
                                 textTransform: 'uppercase',
-                                color: '#999999',
+                                color: '#6b665e',
                               }}
                             >
                               {t(o?.n)}
@@ -7434,7 +7434,7 @@ function template(v) {
                               margin: '0',
                               fontSize: '17px',
                               lineHeight: '1.5',
-                              color: '#cccccc',
+                              color: '#3a3733',
                               textWrap: 'pretty',
                             }}
                           >
@@ -7447,7 +7447,7 @@ function template(v) {
                               fontStyle: 'italic',
                               fontSize: '22px',
                               lineHeight: '1.3',
-                              color: '#f4f4f4',
+                              color: '#141414',
                               textWrap: 'pretty',
                             }}
                           >
@@ -7465,7 +7465,7 @@ function template(v) {
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
-                                  color: '#f4f4f4',
+                                  color: '#141414',
                                   textDecoration: 'none',
                                   borderBottom: '1.5px solid var(--yj-accent, #ff4d2e)',
                                   alignSelf: 'flex-start',
@@ -7496,7 +7496,7 @@ function template(v) {
                   position: 'fixed',
                   inset: '0',
                   zIndex: '90',
-                  background: 'rgba(0,0,0,0.92)',
+                  background: 'rgba(244,241,234,0.92)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -7519,8 +7519,8 @@ function template(v) {
                     right: '24px',
                     padding: '10px 18px',
                     borderRadius: '999px',
-                    border: '1.5px solid #666666',
-                    color: '#f4f4f4',
+                    border: '1.5px solid #8f8a80',
+                    color: '#141414',
                     fontFamily: "'Schibsted Grotesk',sans-serif",
                     fontWeight: '500',
                     fontSize: '13px',
@@ -7550,10 +7550,10 @@ function template(v) {
                   background: 'rgba(10,10,10,0.92)',
                   backdropFilter: 'blur(18px)',
                   WebkitBackdropFilter: 'blur(18px)',
-                  border: '1px solid rgba(255,255,255,0.14)',
+                  border: '1px solid rgba(20,20,20,0.14)',
                   borderRadius: '24px',
                   overflow: 'hidden',
-                  color: '#f4f4f4',
+                  color: '#141414',
                 }}
               >
                 <div
@@ -7563,7 +7563,7 @@ function template(v) {
                     justifyContent: 'space-between',
                     gap: '12px',
                     padding: '16px 16px 16px 20px',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                    borderBottom: '1px solid rgba(20,20,20,0.1)',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -7600,7 +7600,7 @@ function template(v) {
                           fontSize: '13px',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          color: '#999999',
+                          color: '#6b665e',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '6px',
@@ -7628,7 +7628,7 @@ function template(v) {
                       width: '36px',
                       height: '36px',
                       borderRadius: '50%',
-                      border: '1px solid #666666',
+                      border: '1px solid #8f8a80',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -7682,7 +7682,7 @@ function template(v) {
                                       border: '1.5px solid var(--yj-accent, #ff4d2e)',
                                       fontSize: '14px',
                                       fontWeight: '500',
-                                      color: '#f4f4f4',
+                                      color: '#141414',
                                     }}
                                   >
                                     {t(l?.label, true)}
@@ -7703,8 +7703,8 @@ function template(v) {
                           alignSelf: 'flex-start',
                           padding: '12px 16px',
                           borderRadius: '18px',
-                          background: '#1a1a1a',
-                          color: '#999999',
+                          background: '#e7e3da',
+                          color: '#6b665e',
                           fontSize: '16px',
                         }}
                       >
@@ -7726,9 +7726,9 @@ function template(v) {
                               cursor: 'pointer',
                               padding: '9px 16px',
                               borderRadius: '999px',
-                              border: '1.5px solid #666666',
+                              border: '1.5px solid #8f8a80',
                               fontSize: '16px',
-                              color: '#f4f4f4',
+                              color: '#141414',
                               fontWeight: '500',
                             }}
                           >
@@ -7741,7 +7741,7 @@ function template(v) {
                 ) : null}
                 <form
                   onSubmit={v.chatSubmit}
-                  style={{ display: 'flex', gap: '8px', padding: '12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ display: 'flex', gap: '8px', padding: '12px', borderTop: '1px solid rgba(20,20,20,0.1)' }}
                 >
                   <input
                     value={v.chatInput}
@@ -7750,11 +7750,11 @@ function template(v) {
                     style={{
                       flex: '1',
                       minWidth: '0',
-                      background: '#141414',
-                      border: '1px solid #333333',
+                      background: '#ebe7de',
+                      border: '1px solid #cfcac0',
                       borderRadius: '999px',
                       padding: '12px 18px',
-                      color: '#f4f4f4',
+                      color: '#141414',
                       font: 'inherit',
                       fontSize: '16px',
                       outline: 'none',
@@ -7770,7 +7770,7 @@ function template(v) {
                       height: '46px',
                       borderRadius: '50%',
                       background: 'var(--yj-accent, #ff4d2e)',
-                      color: '#000000',
+                      color: '#141414',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -7809,11 +7809,11 @@ function template(v) {
                   flexDirection: 'row-reverse',
                   padding: '6px',
                   borderRadius: '999px',
-                  background: 'rgba(0,0,0,0.72)',
+                  background: 'rgba(244,241,234,0.72)',
                   backdropFilter: 'blur(14px)',
                   WebkitBackdropFilter: 'blur(14px)',
-                  border: '1px solid rgba(255,255,255,0.14)',
-                  color: '#f4f4f4',
+                  border: '1px solid rgba(20,20,20,0.14)',
+                  color: '#141414',
                   fontSize: '16px',
                   fontWeight: '500',
                   transition: 'border-color 300ms',
@@ -7886,7 +7886,7 @@ function template(v) {
                       flexDirection: 'column',
                       alignItems: 'center',
                       gap: '0.06em',
-                      color: '#f4f4f4',
+                      color: '#141414',
                       fontSize: 'clamp(40px,5vw,80px)',
                     }}
                   >
@@ -7902,7 +7902,7 @@ function template(v) {
                         gap: '0.12em',
                       }}
                     >
-                      <span style={{ width: '0.32em', height: '0.07em', background: '#f4f4f4', flex: 'none' }} />
+                      <span style={{ width: '0.32em', height: '0.07em', background: '#141414', flex: 'none' }} />
                       {'Got a '}
                       <button
                         className="dc-hover-693e7bb0"
@@ -7944,7 +7944,7 @@ function template(v) {
                         {t(v.shapeMorph)}
                       </span>
                       {' problem'}
-                      <span style={{ color: 'var(--yj-accent, #ff4d2e)' }}>?</span>
+                      <span style={{ color: '#141414' }}>?</span>
                     </span>
                   </h1>
                   <p
@@ -7953,7 +7953,7 @@ function template(v) {
                       maxWidth: '520px',
                       fontSize: 'clamp(15px,2.4vh,18px)',
                       lineHeight: '1.5',
-                      color: '#999999',
+                      color: '#6b665e',
                       textWrap: 'pretty',
                     }}
                   >
@@ -7971,8 +7971,8 @@ function template(v) {
                         alignItems: 'center',
                         padding: '14px 26px',
                         borderRadius: '999px',
-                        border: '1.5px solid #666666',
-                        color: '#f4f4f4',
+                        border: '1.5px solid #8f8a80',
+                        color: '#141414',
                         fontSize: '17px',
                         fontWeight: '500',
                         textDecoration: 'none',
@@ -7991,11 +7991,11 @@ function template(v) {
                         gap: '14px',
                         padding: '14px 26px',
                         borderRadius: '999px',
-                        background: '#f4f4f4',
-                        color: '#000000',
+                        background: '#141414',
+                        color: '#f4f1ea',
                         fontSize: '17px',
                         fontWeight: '500',
-                        border: '1.5px solid #f4f4f4',
+                        border: '1.5px solid #141414',
                       }}
                     >
                       Brief my agent first<span style={{ width: '19px', height: '31px' }}>⟶</span>
@@ -8008,7 +8008,7 @@ function template(v) {
                     flexWrap: 'wrap',
                     alignItems: 'center',
                     paddingTop: 'clamp(12px,2vh,20px)',
-                    borderTop: '2px solid #f4f4f4',
+                    borderTop: '2px solid #141414',
                     gap: '12px 40px',
                     justifyContent: 'space-evenly',
                   }}
@@ -8021,7 +8021,7 @@ function template(v) {
                         fontSize: '13px',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        color: '#999999',
+                        color: '#6b665e',
                       }}
                     >
                       Email
@@ -8032,7 +8032,7 @@ function template(v) {
                       style={{
                         fontSize: '16px',
                         fontWeight: '500',
-                        color: '#f4f4f4',
+                        color: '#141414',
                         textDecoration: 'none',
                         overflowWrap: 'anywhere',
                       }}
@@ -8048,12 +8048,12 @@ function template(v) {
                         fontSize: '13px',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        color: '#999999',
+                        color: '#6b665e',
                       }}
                     >
                       Based in
                     </span>
-                    <span style={{ fontSize: '16px', fontWeight: '500', color: '#f4f4f4' }}>
+                    <span style={{ fontSize: '16px', fontWeight: '500', color: '#141414' }}>
                       London · Hybrid · Remote
                     </span>
                   </div>
@@ -8065,7 +8065,7 @@ function template(v) {
                         fontSize: '13px',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        color: '#999999',
+                        color: '#6b665e',
                       }}
                     >
                       Elsewhere
@@ -8079,8 +8079,8 @@ function template(v) {
                             style={{
                               padding: '5px 12px',
                               borderRadius: '999px',
-                              border: '1.5px solid #666666',
-                              color: '#f4f4f4',
+                              border: '1.5px solid #8f8a80',
+                              color: '#141414',
                               fontSize: '13px',
                               fontWeight: '500',
                               textDecoration: 'none',
@@ -8111,14 +8111,14 @@ function template(v) {
                 fontSize: '13px',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: '#999999',
+                color: '#6b665e',
               }}
             >
               <span>© 2026 Yashvi Jain — London</span>
               <a
                 className="dc-hover-d2cded96"
                 href="mailto:yashvi.jain.yj@gmail.com"
-                style={{ color: '#999999', textDecoration: 'none' }}
+                style={{ color: '#6b665e', textDecoration: 'none' }}
               >
                 yashvi.jain.yj@gmail.com
               </a>
