@@ -916,9 +916,11 @@ class Component extends DCLogic {
     const T = c.testing || {}, O = c.outcome || {};
     return h('article', {className:'mvs', 'aria-label':'Case study: What It Takes to Move'},
       h('style', null, `
-        .mvs{--red:${RED};font-family:${F};color:${INK};background:#fff;padding:12px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px))}
+        .mvs{--red:${RED};font-family:${F};color:${INK};background:#fff;padding:clamp(20px, 3vw, 40px) max(clamp(20px, 5vw, 80px), env(safe-area-inset-right, 0px)) 40px max(clamp(20px, 5vw, 80px), env(safe-area-inset-left, 0px))}
         .mvs-in{max-width:1240px;margin:0 auto}
-        .mvs-hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;background:${RED};color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden}
+        .mvs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(460px, 64vh, 680px);background:${RED} right 20% center/auto 130% no-repeat;color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden;isolation:isolate}
+        .mvs-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(140,10,14,.97) 0%, rgba(150,10,16,.9) 42%, rgba(150,10,16,.15) 70%, rgba(0,0,0,0) 85%), linear-gradient(0deg, rgba(0,0,0,.35), rgba(0,0,0,0) 45%)}
+        .mvs-hero > div{max-width:620px}
         .mvs-hero h1{font-size:clamp(40px,5.2vw,80px) !important;line-height:.98 !important;letter-spacing:-0.045em !important;margin:14px 0 18px;font-weight:600}
         .mvs-hero p{font-size:clamp(16px,1.3vw,20px);line-height:1.5;margin:0;max-width:40ch;opacity:.95}
         .mvs-hero .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
@@ -958,15 +960,14 @@ class Component extends DCLogic {
         .mvs-steps li{counter-increment:s;background:${SOFT};border-radius:14px;padding:16px;font-size:14px;line-height:1.45;color:${BODY}}
         .mvs-steps li::before{content:"0" counter(s);display:block;color:${RED};font-weight:600;font-size:12px;letter-spacing:.1em;margin-bottom:8px}
         .mvs-steps b{display:block;color:${INK};font-size:16px;margin-bottom:4px}
-        @media (max-width:980px){.mvs-hero,.mvs-sum-rows{grid-template-columns:1fr}.mvs-facts,.mvs-stats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.mvs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media (max-width:980px){.mvs-sum-rows{grid-template-columns:1fr}.mvs-hero::before{background:linear-gradient(0deg, rgba(120,8,12,.95) 0%, rgba(150,10,16,.8) 55%, rgba(0,0,0,.1) 100%)}.mvs-facts,.mvs-stats,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.mvs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media (max-width:560px){.mvs-facts,.mvs-stats,.g2,.g3,.g4,.mvs-steps{grid-template-columns:1fr}.mvs-chips{border-radius:16px}}
       `),
       h('div', {className:'mvs-in'},
-        h('header', {className:'mvs-hero'},
+        h('header', {className:'mvs-hero', role:'img', 'aria-label':'The What It Takes to Move campaign poster on a wall', style:{backgroundImage:`url(${__R('assets/web/assets/ma/ma-poster-wall-web.webp')})`}},
           h('div', null, h('div', {className:'tag'}, 'Public safety · Service design · MA, UAL'),
             h('h1', null, 'Making safety everyone’s job, not just hers.'),
-            h('p', null, 'A card game that brings the norms behind harassment to the family table, so teenagers can unlearn what adults defend.')),
-          h('figure', null, img('assets/web/assets/ma/ma-poster-wall-web.webp', 'The What It Takes to Move campaign poster on a wall', {borderRadius:0}))),
+            h('p', null, 'A card game that brings the norms behind harassment to the family table, so teenagers can unlearn what adults defend.'))),
         h('div', {className:'mvs-title'},
           h('div', {className:'mvs-eye'}, h('span', null, 'Case study 01'), ' · UAL London College of Communication'),
           h('h2', null, 'What It Takes to Move'),
