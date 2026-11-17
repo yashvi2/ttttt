@@ -959,6 +959,9 @@ class Component extends DCLogic {
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        .yj-wl{display:inline-block;animation:yjWl 800ms cubic-bezier(.3,1.5,.4,1) both;transition:transform 400ms cubic-bezier(.3,1.8,.4,1)}
+        @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
+        .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
         @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
         .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
         .yj-sl-on{opacity:1;transform:scale(1)}
@@ -1003,7 +1006,7 @@ class Component extends DCLogic {
           .yj-st-tulips{width:92px;right:14px;bottom:auto;top:64px}
           .yj-st-coffee{width:58px;right:-8px;bottom:-24px}
         }
-        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *{animation:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
@@ -1012,7 +1015,9 @@ class Component extends DCLogic {
           h('span', null, 'Product & service designer'),
           h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London')),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
-          h('h1', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(56px, min(8.2vw, 14.5vh), 148px)', letterSpacing:'-0.065em', lineHeight:.82}}, 'yashvi', h('br'), 'jain'),
+          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(56px, min(8.2vw, 14.5vh), 148px)', letterSpacing:'-0.065em', lineHeight:.82}},
+            ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
+              w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
           h('span', {style:{fontSize:'clamp(14px, min(1.15vw, 2.2vh), 18px)', lineHeight:1.45, maxWidth:'38ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
           h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-link', style:{color:INK, fontSize:S, fontWeight:600, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
