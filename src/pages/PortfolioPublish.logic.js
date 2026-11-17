@@ -785,7 +785,7 @@ class Component extends DCLogic {
     // One style throughout: flat tiles, one blue, one typeface, no cards
     // inside tiles.
     const h = React.createElement;
-    const RED = '#d23a24', GREEN = '#1d6b3f', INK = '#111111', PAPER = '#ffffff', BG = '#efeee9', MUTE = '#6b6f7a';
+    const RED = '#d23a24', GREEN = '#1d6b3f', INK = '#111111', PAPER = '#ffffff', BG = '#f5f4f0', MUTE = '#6b6f7a';
     const F = "'Schibsted Grotesk', sans-serif";
     const tile = (area, props, ...kids) => {
       const {blue, onClick, href, label, style, className:cn, ...rest} = props || {};
@@ -879,7 +879,7 @@ class Component extends DCLogic {
           opacity:hv >= 0 ? 1 : 0, transition:'opacity 200ms ease', boxShadow:'0 18px 40px -18px rgba(0,0,0,.45)'}},
         list.map((c, i) => h('span', {key:c.id, style:{position:'absolute', inset:0, opacity:i === hv ? 1 : 0, background:c.pic ? '#dfe3ee' : '#f4b73a', display:'flex', alignItems:'flex-end', padding:12, boxSizing:'border-box', fontFamily:F, fontWeight:800, fontSize:22, letterSpacing:'-0.03em', color:INK}}, c.pic || c.short))));
 
-    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{background:BG}},
+    return h('section', {'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #c9c7bf 1.2px, transparent 1.4px)', backgroundSize:'22px 22px', backgroundPosition:'-11px -11px'}},
       h('style', null, `
         .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));
