@@ -124,7 +124,7 @@ html,body{overflow-x:clip}
 /* Home is a single bento screen: no separate nav bar, nothing below it. */
 html[data-yj-screen="home"] .yj-hdr{display:none !important}
 html[data-yj-screen="home"] main > section:not(.yj-bento),
-html[data-yj-screen="home"] main > div,
+html[data-yj-screen="home"] main > div:not(.yj-pv),
 html[data-yj-screen="home"] footer{display:none !important}
 @media (min-width:821px) and (min-height:561px){
   html[data-yj-screen="home"], html[data-yj-screen="home"] body{overflow:hidden}

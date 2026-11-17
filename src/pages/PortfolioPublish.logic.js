@@ -850,6 +850,30 @@ class Component extends DCLogic {
       return () => document.removeEventListener('pointerdown', tap);
     }, []);
     const r = RECS[ri];
+    // Typewriter role line (static under reduced motion).
+    const ROLES = ['product designer', 'service designer', 'UX researcher', 'design strategist'];
+    const [typed, setTyped] = React.useState(ROLES[0]);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let ri2 = 0, i = ROLES[0].length, del = true, t;
+      const step = () => {
+        const w = ROLES[ri2];
+        if (del) { i--; if (i <= 0) { del = false; ri2 = (ri2 + 1) % ROLES.length; } }
+        else { i++; if (i >= ROLES[ri2].length) { del = true; setTyped(ROLES[ri2]); t = setTimeout(step, 2200); return; } }
+        setTyped(ROLES[ri2].slice(0, Math.max(0, i)) || (del ? w.slice(0, 0) : ''));
+        t = setTimeout(step, del ? 45 : 85);
+      };
+      t = setTimeout(step, 2600);
+      return () => clearTimeout(t);
+    }, []);
+    // Live London time, so recruiters can see the time zone at a glance.
+    const london = () => { const d = new Date(); const tm = d.toLocaleTimeString('en-GB', {timeZone:'Europe/London', hour:'2-digit', minute:'2-digit'}); const tz = (d.toLocaleTimeString('en-GB', {timeZone:'Europe/London', timeZoneName:'short'}).split(' ').pop()) || 'UK'; return tm + ' ' + tz; };
+    const [now, setNow] = React.useState(london());
+    React.useEffect(() => { const t = setInterval(() => setNow(london()), 20000); return () => clearInterval(t); }, []);
+    // Contact: copy email with feedback.
+    const EMAIL = 'yashvi.jain.yj@gmail.com';
+    const [copied, setCopied] = React.useState(false);
+    const copyEmail = async () => { try { await navigator.clipboard.writeText(EMAIL); } catch (_) { const ta = document.createElement('textarea'); ta.value = EMAIL; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); } setCopied(true); setTimeout(() => setCopied(false), 1800); };
     // Depth: tiles tilt toward the pointer in 3D (CSS perspective), with a
     // shadow that shifts opposite the tilt. Mouse only; off for reduced motion.
     const grid = React.useRef(null);
@@ -888,12 +912,13 @@ class Component extends DCLogic {
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
           title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds))))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Drinking', 'Flat white, oat'], ['Tulip season in', tulipDays ? tulipDays + ' days' : 'Now'], ['Reading', 'Thinking in Systems']];
-    const currently = tile('cu', {},
+    const currently = tile('cu', {style:{overflow:'visible', zIndex:3}},
+      h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8}),
       label('Currently'),
       h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 18px)'}},
         CURRENTLY.map(([k, v]) => h('span', {key:k, style:{display:'flex', flexDirection:'column', gap:2}}, label(k), title(v)))));
@@ -929,11 +954,33 @@ class Component extends DCLogic {
       h('span', {style:{flex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'clamp(16px, 3vw, 48px)', minWidth:0}},
         LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}}))));
 
+    // Dashboard ↔ Projects, switched in place from the floating dock.
+    const [view, setView] = React.useState('dash');
+    const [cat, setCat] = React.useState('All');
+    const cats = ['All', ...Array.from(new Set(list.map(c => c.cat).filter(Boolean)))];
+    const shown = list.filter(c => cat === 'All' || c.cat === cat);
+    const pill = React.useRef(null), [pv, setPv] = React.useState(false);
+    const pillMove = e => { const t = pill.current; if (t) t.style.transform = `translate(${e.clientX + 14}px, ${e.clientY + 14}px)`; };
+    const dock = h('nav', {className:'yj-dock', 'aria-label':'Home views'},
+      [['dash', 'Dashboard'], ['proj', 'Projects']].map(([k, l]) => h('button', {key:k, onClick:() => setView(k), 'aria-pressed':view === k, className:view === k ? 'yj-dock-on' : ''}, l)));
+    const projectsView = h('div', {className:'yj-pv', role:'region', 'aria-label':'Selected work'},
+      h('div', {className:'yj-pv-head'},
+        h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
+        h('div', {style:{display:'flex', gap:8, flexWrap:'wrap'}}, cats.map(k => h('button', {key:k, onClick:() => setCat(k), 'aria-pressed':cat === k, className:'yj-chip' + (cat === k ? ' yj-chip-on' : '')},
+          k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))))),
+      h('div', {className:'yj-pv-grid', onMouseMove:pillMove, onMouseLeave:() => setPv(false)},
+        shown.map(c => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); }, className:'yj-pv-card', 'aria-label':'Open case study: ' + c.short},
+          h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}}, c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
+          h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
+            h('span', {style:{fontWeight:600, fontSize:17, letterSpacing:'-0.01em'}}, c.short),
+            h('span', {style:{fontSize:13, color:GREY, textAlign:'right'}}, (c.years ? c.years + ' · ' : '') + (c.stat || c.cat || '')))))),
+      h('span', {ref:pill, className:'yj-pv-pill', 'aria-hidden':true, style:{opacity:pv ? 1 : 0}}, 'View case study ↗'));
+
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
 
-    return h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento', style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
+    return h(React.Fragment, null, view === 'proj' ? projectsView : null, dock, h('section', {ref:grid, 'aria-label':'Yashvi Jain, product and service designer', className:'yj-bento' + (view === 'proj' ? ' yj-hide' : ''), style:{backgroundColor:BG, backgroundImage:'radial-gradient(circle, #e4e3de 1px, transparent 1.2px)', backgroundSize:'24px 24px', backgroundPosition:'-12px -12px'}},
       h('style', null, `
-        .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px;display:grid;gap:28px;
+        .yj-bento{box-sizing:border-box;height:100svh;min-height:660px;padding:28px 28px 84px;display:grid;gap:28px;
           grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr)) clamp(48px, 7vh, 76px);
           grid-template-areas:
             "in in in in in in ph ph ph ab ab ab"
@@ -959,10 +1006,36 @@ class Component extends DCLogic {
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        .yj-hide{display:none !important}
+        .yj-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:5px;border-radius:999px;background:${INK};box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
+        .yj-dock button{all:unset;cursor:pointer;font-family:${F};font-size:14px;font-weight:600;color:#bdbdbd;padding:9px 18px;border-radius:999px;transition:background 250ms ease,color 250ms ease}
+        .yj-dock button:hover{color:#fff}
+        .yj-dock .yj-dock-on{background:${YEL};color:${INK}}
+        .yj-dock button:focus-visible{outline:2px solid ${YEL};outline-offset:2px}
+        .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+        .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
+        .yj-chip-n{font-size:12px;opacity:.6}
+        .yj-chip-on{background:${INK};color:#fff}
+        .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-pv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+        .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-pv-cover{position:relative;display:block;aspect-ratio:16/10;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
+        .yj-pv-card:hover .yj-pv-cover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(0,0,0,.45)}
+        .yj-pv-pill{position:fixed;left:0;top:0;z-index:70;pointer-events:none;background:${YEL};color:${INK};font-family:${F};font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;transition:opacity 200ms ease;box-shadow:0 8px 20px -10px rgba(0,0,0,.4)}
+        @media (hover:none){.yj-pv-pill{display:none}}
+        @media (max-width:820px){.yj-pv{height:auto;padding:16px 16px 96px}.yj-pv-grid{grid-template-columns:1fr;gap:20px}}
+        .yj-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+        .yj-caret{display:inline-block;margin-left:1px;animation:yjCaret 1s steps(1) infinite}
+        @keyframes yjCaret{50%{opacity:0}}
+        .yj-live{animation:yjLive 2s ease-in-out infinite}
+        @keyframes yjLive{50%{opacity:.25}}
+        .yj-ct-row a:hover,.yj-ct-row button:hover{text-decoration:underline;text-underline-offset:4px}
+        @media (min-width:821px) and (max-height:820px){.yj-chips{display:none !important}.yj-pj-row{padding:2px 0 !important}.yj-pj-row > span:first-child{font-size:clamp(16px, 2.6vh, 22px) !important}.yj-ct-row{padding:3px 0 !important}.yj-a-tk .yj-link{display:none}}
         .yj-wl{display:inline-block;animation:yjWl 800ms cubic-bezier(.3,1.5,.4,1) both;transition:transform 400ms cubic-bezier(.3,1.8,.4,1)}
         @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
         .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
-        @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
+        @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px 20px 74px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
         .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
         .yj-sl-on{opacity:1;transform:scale(1)}
         .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
@@ -988,43 +1061,53 @@ class Component extends DCLogic {
         .yj-st svg{display:block;width:100%;height:auto;pointer-events:none}
         .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.08) translateY(-6px)}
         .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
-        .yj-st-tulips{width:clamp(110px, 10vw, 170px);right:7%;bottom:9%}
-        .yj-st-coffee{width:clamp(90px, 7.5vw, 130px);right:clamp(18px, 2vw, 32px);bottom:clamp(18px, 2vw, 32px)}
+        .yj-st-tulips{width:clamp(100px, 9vw, 160px);right:6%;top:22%}
+        .yj-st-coffee{width:clamp(80px, 6.5vw, 116px);right:clamp(16px, 1.8vw, 28px);top:clamp(16px, 1.8vw, 28px)}
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
-          .yj-bento{height:auto;min-height:0;padding:16px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
-            grid-template-areas:"in in" "ph ab" "ph tk" "pj pj" "cu cu" "rc rc" "lg lg"}
+          .yj-bento{height:auto;min-height:0;padding:16px 16px 90px;gap:18px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;
+            grid-template-areas:"in in" "ph ab" "tk tk" "pj pj" "cu cu" "rc rc" "lg lg"}
           .yj-bento .yj-bt{min-height:110px !important}
           .yj-bento .yj-a-in{min-height:300px !important}
           .yj-bento .yj-a-ph{min-height:240px !important}
           .yj-pj-row{flex-direction:column !important;align-items:flex-start !important;gap:4px !important;padding:12px 0 10px !important}
           .yj-pj-meta{white-space:normal !important}
           .yj-pj-kinds{display:inline}
+          .yj-pj-stat{display:none}
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
           .yj-a-lg > span:last-child{flex-wrap:wrap;justify-content:flex-start !important;gap:20px 28px !important}
           .yj-a-lg .yj-logo{max-width:40% !important;height:24px !important}
-          .yj-st-tulips{width:92px;right:14px;bottom:auto;top:64px}
-          .yj-st-coffee{width:58px;right:-8px;bottom:-24px}
+          .yj-st-tulips{width:84px;right:14px;top:70px}
+          .yj-st-coffee{width:70px;right:16px;top:14px}
         }
-        @media (prefers-reduced-motion:reduce){.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, style:{overflow:'visible', zIndex:3}},
         h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
-        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S}},
-          h('span', null, 'Product & service designer'),
-          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London')),
+        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
+          h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
+            h('span', {'aria-hidden':true}, 'I’m a ', h('b', {style:{fontWeight:600}}, typed), h('span', {className:'yj-caret'}, '|'))),
+          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London ' + now)),
         h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
           h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(56px, min(8.2vw, 14.5vh), 148px)', letterSpacing:'-0.065em', lineHeight:.82}},
             ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
               w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
           h('span', {style:{fontSize:'clamp(14px, min(1.15vw, 2.2vh), 18px)', lineHeight:1.45, maxWidth:'38ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
-          h('a', {href:p.cv, target:'_blank', rel:'noopener', className:'yj-link', style:{color:INK, fontSize:S, fontWeight:600, alignSelf:'flex-start'}}, 'Download CV (PDF)'))),
+          h('span', {className:'yj-chips', style:{display:'flex', flexWrap:'wrap', gap:8}},
+            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:13, padding:'5px 11px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
       slideshow,
       navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
-        navTile('tk', 'Contact', 'Let’s talk over coffee', p.onContact), h(Sticker, {kind:'coffee', className:'yj-st-coffee', rot:-8})),
+        tile('tk', {style:{justifyContent:'flex-start', gap:6}},
+          h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:6}},
+            title('Contact'), h('button', {onClick:p.onContact, className:'yj-link', style:{all:'unset', cursor:'pointer', fontSize:S, fontWeight:600}}, 'Let’s talk over coffee →')),
+          [['Email', h('button', {onClick:copyEmail, 'aria-live':'polite', style:{all:'unset', cursor:'pointer', fontWeight:600}}, copied ? 'Copied ✓' : 'Copy email')],
+           ['LinkedIn', h('a', {href:p.linkedin, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Open profile ↗')],
+           ['CV', h('a', {href:p.cv, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Download PDF ↓')]]
+            .map(([k, act]) => h('span', {key:k, className:'yj-ct-row', style:{display:'flex', justifyContent:'space-between', alignItems:'center', padding:'clamp(6px, 1vh, 10px) 0', borderTop:'1px solid ' + LINE, fontSize:S}}, label(k), act))),
+        null),
       projects,
       currently,
       h('span', {ref:thumb, className:'yj-pj-thumb', 'aria-hidden':true, style:{position:'fixed', left:0, top:0, width:220, height:140, borderRadius:10, overflow:'hidden', pointerEvents:'none', zIndex:50,
@@ -1041,7 +1124,7 @@ class Component extends DCLogic {
           h('span', {style:{display:'flex', alignItems:'center', gap:12}},
             h('img', {src:r.img, alt:'', width:40, height:40, style:{width:40, height:40, borderRadius:'50%', objectFit:'cover', flex:'none', filter:'grayscale(1)'}}),
             h('span', {style:{display:'flex', flexDirection:'column', gap:2, minWidth:0, fontSize:S}},
-              h('span', {style:{fontWeight:600}}, r.who), label(r.role))))));
+              h('span', {style:{fontWeight:600}}, r.who), label(r.role)))))));
   };
 
   static SceneHero = function SceneHero(p) {
@@ -1802,7 +1885,7 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       landingHero: h(Component.BentoHome, {onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'Pentagram rebrand', move:'Service design', cray:'Mobile platform', ime:'Museum online', askbeta:'Live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? null : this.pic(c, false), stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
