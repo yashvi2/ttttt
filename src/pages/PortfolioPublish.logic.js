@@ -892,6 +892,36 @@ class Component extends DCLogic {
           h('a', {className:'yj-ab-btn alt', href:p.cv, target:'_blank', rel:'noopener'}, 'Download CV ↓'))]));
   };
 
+  static ScriptCard = function ScriptCard(p) {
+    // Playable card from The Script (What It Takes to Move). Real prompts and
+    // answers from the two editions. Tap: back -> prompt -> answer -> next edition.
+    const h = React.createElement;
+    const ROUNDS = [
+      {ed:'Family Edition', bg:'#0c2410', fg:'#f2f7ef', stripe:'#9be34a', ans:'#e9f5e4', ansFg:'#0c2410',
+        q:'My son gets a curfew of midnight, my daughter gets 8pm, and if I’m honest the real reason is ____.', a:'“It’s different for girls.” No further explanation given.'},
+      {ed:'Friend Group Edition', bg:'#16161a', fg:'#f4f4f4', stripe:'#e4405f', ans:'#ececec', ansFg:'#16161a',
+        q:'I laughed along when my friend made that comment about his girlfriend instead of saying anything, because ____.', a:'Something I laughed at that I actually didn’t find funny.'}];
+    const [step, setStep] = React.useState(0);
+    const r = ROUNDS[Math.floor(step / 3) % ROUNDS.length], st = step % 3;
+    const next = () => setStep(n => (n + 1) % (ROUNDS.length * 3));
+    const label = st === 0 ? 'Tap to draw a card' : st === 1 ? 'Tap to play an answer' : 'Tap for the next edition';
+    const stripes = col => h('svg', {viewBox:'0 0 100 140', preserveAspectRatio:'none', 'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%'}},
+      h('path', {d:'M-10 18 C 20 6 45 30 70 14 S 110 4 120 10', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}),
+      h('path', {d:'M-10 128 C 25 110 50 140 80 118 S 112 112 120 120', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}));
+    const logo = (col, size) => h('span', {style:{fontFamily:"'Libre Caslon Text', Georgia, serif", fontStyle:'italic', fontSize:size, color:col, lineHeight:1}}, 'The Script');
+    return h('div', {className:'yj-sc ' + (p.className || '')},
+      h('button', {className:'yj-sc-deck', onClick:next, 'aria-label':'Play The Script. ' + label + '.', 'aria-live':'polite'},
+        // answer card (slides in on step 2)
+        h('span', {className:'yj-sc-card yj-sc-ans' + (st === 2 ? ' on' : ''), style:{background:r.ans, color:r.ansFg}, 'aria-hidden':st !== 2},
+          stripes(r.stripe + '55'), h('span', {className:'yj-sc-txt'}, r.a), h('span', {className:'yj-sc-mark'}, logo(r.ansFg, 11))),
+        // main card: back <-> prompt
+        h('span', {className:'yj-sc-card yj-sc-main' + (st > 0 ? ' flip' : '')},
+          h('span', {className:'yj-sc-face yj-sc-back', style:{background:r.bg}}, stripes(r.stripe), logo(r.fg, 'clamp(22px, 1.9vw, 30px)')),
+          h('span', {className:'yj-sc-face yj-sc-front', style:{background:r.bg, color:r.fg}}, stripes(r.stripe + '66'), h('span', {className:'yj-sc-txt'}, r.q), h('span', {className:'yj-sc-mark'}, logo(r.fg, 11))))),
+      h('span', {className:'yj-sc-cap'}, h('b', null, st === 0 ? 'Play The Script' : r.ed), ' · ', label),
+      h('span', {className:'yj-sc-sr', 'aria-live':'polite'}, st === 1 ? 'Prompt: ' + r.q : st === 2 ? 'Answer: ' + r.a : ''));
+  };
+
   static BentoHome = function BentoHome(p) {
     // The landing page as one screen-filling bento grid (no scroll, no nav
     // bar on desktop). One visual system throughout:
@@ -1162,7 +1192,23 @@ class Component extends DCLogic {
         .yj-st svg{display:block;width:100%;height:auto;pointer-events:none}
         .yj-st:hover{transform:rotate(calc(var(--r) * -1)) scale(1.08) translateY(-6px)}
         .yj-st-drag{cursor:grabbing;transform:rotate(0deg) scale(1.12);transition:transform 150ms ease}
-        .yj-st-tulips{width:clamp(100px, 9vw, 160px);right:6%;top:22%}
+        .yj-st-tulips{width:clamp(80px, 6.5vw, 116px);left:-36px;top:-26px}
+        .yj-sc{display:flex;flex-direction:column;align-items:center;gap:10px}
+        .yj-sc-in{position:absolute;right:6%;top:50%;transform:translateY(-46%);z-index:2}
+        .yj-sc-deck{all:unset;cursor:pointer;position:relative;display:block;width:clamp(124px, 10.5vw, 168px);aspect-ratio:5/7;perspective:900px}
+        .yj-sc-deck:focus-visible{outline:2px solid ${INK};outline-offset:6px;border-radius:14px}
+        .yj-sc-card{position:absolute;inset:0;border-radius:12px;box-shadow:0 18px 30px -16px rgba(0,0,0,.45)}
+        .yj-sc-main{transform-style:preserve-3d;transition:transform 650ms cubic-bezier(.3,1.3,.4,1);transform:rotate(-6deg)}
+        .yj-sc-main.flip{transform:rotate(-3deg) rotateY(180deg)}
+        .yj-sc-deck:hover .yj-sc-main:not(.flip){transform:rotate(-2deg) translateY(-4px)}
+        .yj-sc-face{position:absolute;inset:0;border-radius:12px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center}
+        .yj-sc-front{transform:rotateY(180deg)}
+        .yj-sc-txt{position:relative;padding:0 12%;font-family:${F};font-size:clamp(10.5px, .85vw, 13.5px);line-height:1.35;text-align:center;text-wrap:balance}
+        .yj-sc-mark{position:absolute;right:9%;bottom:7%}
+        .yj-sc-ans{display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0;transform:translate(10%, 4%) rotate(4deg);transition:opacity 300ms ease,transform 600ms cubic-bezier(.3,1.4,.4,1);z-index:2}
+        .yj-sc-ans.on{opacity:1;transform:translate(34%, 18%) rotate(9deg)}
+        .yj-sc-cap{font-family:${F};font-size:12px;white-space:nowrap}
+        .yj-sc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
         .yj-st-coffee{width:clamp(72px, 5.8vw, 104px);right:clamp(16px, 1.8vw, 28px);bottom:clamp(16px, 1.8vw, 28px)}
         @media (hover:none){.yj-pj-thumb{display:none}}
         @media (max-width:820px),(max-height:560px){
@@ -1177,14 +1223,19 @@ class Component extends DCLogic {
           .yj-pj-stat{display:none}
           .yj-a-lg{flex-direction:column !important;align-items:flex-start !important;padding:18px !important;gap:14px !important}
           .yj-a-lg .yj-lg-view{width:100%}
-          .yj-st-tulips{width:84px;right:14px;top:70px}
+          .yj-st-tulips{width:64px;left:-10px;top:-18px}
+          .yj-sc-in{right:14px;top:104px;transform:none}
+          .yj-sc-deck{width:78px}
+          .yj-sc-txt{font-size:7px}
+          .yj-a-in .yj-in-p{padding-right:92px}
+          .yj-sc-cap{display:none}
           .yj-st-coffee{width:64px;right:16px;bottom:14px;top:auto}
         }
-        @media (prefers-reduced-motion:reduce){.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
+        @media (prefers-reduced-motion:reduce){.yj-sc-main,.yj-sc-ans{transition:none}.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
-        h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:8}),
+        h(Component.ScriptCard, {className:'yj-sc-in'}),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
@@ -1193,11 +1244,11 @@ class Component extends DCLogic {
           h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(52px, min(7.6vw, 12.8vh), 140px)', letterSpacing:'-0.065em', lineHeight:.82}},
             ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
               w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
-          h('span', {style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'40ch'}},
+          h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'40ch'}},
             'Research, strategy and design for health, pharma and social change. Four years at TCS; MA Design Management, UAL.'),
           h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
             ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
-      slideshow,
+      h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow, h(Sticker, {kind:'tulips', className:'yj-st-tulips', rot:-8})),
       navTile('ab', 'About', 'Experience, skills and CV', p.onAbout),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         tile('tk', {'data-fit':'', style:{justifyContent:'flex-start', gap:6}},
