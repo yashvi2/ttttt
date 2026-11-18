@@ -6,3 +6,14 @@
 .dc-hover-33b8069b:hover{border-color:#eb1700 !important}
 
 .dc-hover-b9a1e7a8:hover{background:#eb1700 !important;color:#ffffff !important}
+
+/* Lighter reading: long paragraphs clamp to two lines with a toggle (tidyText in CaseAva.logic.js) */
+.ava .ava-clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.ava .ava-clamp.ava-open{display:block;-webkit-line-clamp:unset}
+.ava .ava-more{all:unset;cursor:pointer;align-self:flex-start;width:max-content;margin-top:6px;font-size:14px;font-weight:600;color:#eb1700;border-bottom:1.5px solid currentColor;line-height:1.4}
+.ava .ava-more:hover,.ava .ava-more:focus-visible{color:#2B3BFF}
+.ava .ava-more:focus-visible{outline:2px solid #2B3BFF;outline-offset:3px}
+.ava-marks{display:flex;align-items:center;gap:10px}
+.ava-mark{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:12px;color:#fff;font:700 15px/1 'Archivo',sans-serif;letter-spacing:.02em}
+.ava-jnj{height:22px;width:auto;margin-left:8px;opacity:.9}
+@media print{.ava .ava-clamp{display:block}.ava .ava-more{display:none}}

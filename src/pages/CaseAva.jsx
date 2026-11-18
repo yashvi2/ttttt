@@ -161,6 +161,11 @@ function template(v) {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '1000px' }}>
+            <div className="ava-marks" aria-label="Audit Virtual Assistant and Dosing Error, for Johnson & Johnson">
+              <span className="ava-mark" style={{ background: '#eb1700' }} aria-hidden="true">AVA</span>
+              <span className="ava-mark" style={{ background: '#201e1d' }} aria-hidden="true">DE</span>
+              <img src={asset('assets/logos/jnj.svg')} alt="" className="ava-jnj" />
+            </div>
             <span
               style={{
                 fontSize: '12px',

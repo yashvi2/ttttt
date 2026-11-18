@@ -22,6 +22,21 @@ class Component extends DCLogic {
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) this.scrManual = true; this.scrTick();
     window.addEventListener('scroll', this.onNavScroll, { passive: true }); window.addEventListener('resize', this.onNavScroll); this.onNavScroll();
     [300, 1000, 2500, 5000].forEach(ms => setTimeout(() => this.avRecolor(), ms)); this.auto = setInterval(() => this.autoStep(), 700); this.mountLens(); this.lvTick();
+    [400, 1500].forEach(ms => setTimeout(() => this.tidyText(), ms));
+  }
+  // Long paragraphs show two lines plus "Read more", so screens and visuals lead
+  // and nothing is cut. Works on the rendered DOM; React never re-keys these nodes.
+  tidyText() {
+    const root = this.mvRef && this.mvRef.current || document.querySelector('.ava'); if (!root) return;
+    root.querySelectorAll('[data-mv] p').forEach(p => {
+      if (p.dataset.avaT || p.closest('.gl, button, a, [role="tab"]')) return;
+      const w = p.textContent.trim().split(/\s+/).length; if (w < 28) return;
+      p.dataset.avaT = '1'; p.classList.add('ava-clamp');
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'ava-more'; b.textContent = 'Read more ↓'; b.setAttribute('aria-expanded', 'false');
+      b.addEventListener('click', () => { const o = p.classList.toggle('ava-open'); b.textContent = o ? 'Show less ↑' : 'Read more ↓'; b.setAttribute('aria-expanded', String(o)); });
+      p.after(b);
+      requestAnimationFrame(() => { if (p.scrollHeight <= p.clientHeight + 2) { p.classList.remove('ava-clamp'); b.remove(); } });
+    });
   }
   revRef = React.createRef();
   prodRef = React.createRef();
