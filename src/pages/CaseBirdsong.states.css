@@ -10,3 +10,6 @@
 .dc-hover-d1194afe:hover{color:#ce863f !important}
 
 .dc-hover-78de52de:hover{background:#2c4a73 !important}
+
+/* Simplified to the Pfizer length: the long design-ideation chapter is hidden; the screens chapter carries the outcome. */
+[data-mv="ideation"]{display:none !important}
