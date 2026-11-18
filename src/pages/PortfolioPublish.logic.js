@@ -1684,9 +1684,12 @@ class Component extends DCLogic {
       h('div', {style:{flex:1, display:'flex', flexDirection:'column', marginTop:8}, onMouseMove:follow, onMouseLeave:() => setHv(-1)},
         top.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
-            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
-          title(h('span', null, h('span', {className:'yj-pj-t'}, c.short), c.star ? h('span', {className:'yj-pj-star', title:'Start here'}, h('svg', {viewBox:'0 0 410 442', 'aria-hidden':true, style:{width:9, height:'auto', fill:'currentColor', marginRight:5, verticalAlign:'-1px'}}, h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})), 'Start here') : null), {minWidth:0}),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds)))),
+            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'grid', gridTemplateColumns:'auto minmax(0,1fr) auto', columnGap:14, alignItems:'center', padding:'8px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
+          h('span', {className:'yj-pj-num', 'aria-hidden':true}, String(i + 1).padStart(2, '0')),
+          h('span', {style:{display:'flex', flexDirection:'column', gap:3, minWidth:0}},
+            title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
+            h('span', {className:'yj-pj-sub'}, [c.origin, c.years].filter(Boolean).join(' · '))),
+          c.stat ? h('span', {className:'yj-pj-out'}, c.stat, h('span', {className:'yj-pj-arr', 'aria-hidden':true}, ' →')) : null)),
         h('button', {onClick:p.onWork, onMouseEnter:() => setHv(-1), className:'yj-pj-row yj-pj-all', 'aria-label':'View all ' + list.length + ' projects',
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:'none', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, padding:'12px 0 2px', fontFamily:F}},
           h('span', {style:{fontSize:S, fontWeight:600, minWidth:0}}, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)),
@@ -1809,13 +1812,13 @@ class Component extends DCLogic {
         .yj-vn-moods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}
         .yj-vn-moods::-webkit-scrollbar{display:none}
         .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
-        .yj-vn-mood.on{background:${INK};border-color:${INK};color:#fff}
+        .yj-vn-mood.on{background:#2B3BFF;border-color:#2B3BFF;color:#fff}
         .yj-vn-mood:focus-visible,.yj-vn-step:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
         .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${YEL};color:${INK};font-size:11px;line-height:1}
-        .yj-vn-play.on{background:${INK};color:#fff}
+        .yj-vn-play.on{background:#2B3BFF;color:#fff}
         .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
           background:conic-gradient(from 20deg, transparent 0deg, rgba(255,255,255,.16) 28deg, transparent 58deg, transparent 180deg, rgba(255,255,255,.12) 208deg, transparent 238deg);
@@ -1843,7 +1846,7 @@ class Component extends DCLogic {
         .yj-bt-go:active{--sc:.985}
         .yj-bento :focus-visible{outline:2px solid ${INK};outline-offset:3px}
         .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
-        .yj-link:hover{text-decoration-thickness:2px}
+        .yj-link:hover{text-decoration-thickness:2px;color:#2B3BFF !important}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
         @media (max-width:1180px){.yj-pj-stat{display:none}}
@@ -1860,6 +1863,15 @@ class Component extends DCLogic {
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        .yj-pj-num{align-self:start;padding-top:.55em;font-size:11px;letter-spacing:.06em;color:${GREY};font-variant-numeric:tabular-nums}
+        .yj-pj-sub{font-size:13px;color:${GREY};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .yj-pj-out{font-size:14px;font-weight:600;color:${INK};text-align:right;white-space:nowrap}
+        .yj-pj-arr{display:inline-block;transition:transform 300ms cubic-bezier(.2,.7,.2,1)}
+        .yj-pj-row:hover .yj-pj-arr,.yj-pj-row:focus-visible .yj-pj-arr{transform:translateX(4px)}
+        .yj-pj-row:hover .yj-pj-out,.yj-pj-row:hover .yj-pj-arr,.yj-pj-all:hover .yj-pj-meta{color:#2B3BFF !important}
+        .yj-ct-row a:hover,.yj-ct-row button:hover{color:#2B3BFF !important}
+        @media (max-width:1180px){.yj-pj-out{font-size:13px}}
+        @media (max-width:560px){.yj-pj-out{display:none}}
         .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
         @media (max-width:820px){.yj-shp-in{display:none}}
         @keyframes yjDraw{to{stroke-dashoffset:0}}
@@ -1891,11 +1903,12 @@ class Component extends DCLogic {
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
         .yj-chip-n{font-size:12px;opacity:.6}
-        .yj-chip-on{background:${INK};color:#fff}
+        .yj-chip-on{background:#2B3BFF;border-color:#2B3BFF;color:#fff}
         .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${INK};outline-offset:3px}
-        .yj-pv-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:clamp(78px, 10.5vh, 108px);grid-auto-flow:dense;gap:24px}
-        .yj-pv-grid .yj-pv-s0{grid-column:span 4;grid-row:span 3}.yj-pv-grid .yj-pv-s1{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s2{grid-column:span 2;grid-row:span 3}
-        .yj-pv-grid .yj-pv-s3{grid-column:span 2;grid-row:span 3}.yj-pv-grid .yj-pv-s4{grid-column:span 4;grid-row:span 2}.yj-pv-grid .yj-pv-s5{grid-column:span 2;grid-row:span 2}
+        .yj-pv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;grid-auto-flow:dense;gap:24px;align-items:stretch}
+        .yj-pv-grid .yj-pv-s0{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s1,.yj-pv-grid .yj-pv-s2{grid-column:span 1;grid-row:auto}
+        .yj-pv-grid .yj-pv-s3,.yj-pv-grid .yj-pv-s4,.yj-pv-grid .yj-pv-s5{grid-column:span 1;grid-row:auto}
+        .yj-pv-grid .yj-pv-card:not(.yj-pv-s0) .yj-pv-cover{flex:none;aspect-ratio:16/10}
         .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
         .yj-pv-card:hover .yj-pv-cover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(0,0,0,.45)}
@@ -1908,7 +1921,7 @@ class Component extends DCLogic {
         .yj-live{animation:yjLive 2s ease-in-out infinite}
         @keyframes yjLive{50%{opacity:.25}}
         .yj-ct-row a:hover,.yj-ct-row button:hover{text-decoration:underline;text-underline-offset:4px}
-        @media (min-width:821px) and (max-height:880px){.yj-pj-row{padding:2px 0 !important}.yj-pj-row > span:first-child{font-size:clamp(16px, 2.6vh, 22px) !important}.yj-ct-row{padding:3px 0 !important}}
+        @media (min-width:821px) and (max-height:880px){.yj-pj-row{padding:2px 0 !important}.yj-pj-row:not(.yj-pj-all) .yj-pj-t{font-size:clamp(16px, 2.6vh, 22px) !important}.yj-ct-row{padding:3px 0 !important}}
         .yj-wl{display:inline-block;animation:yjWl 800ms cubic-bezier(.3,1.5,.4,1) both;transition:transform 400ms cubic-bezier(.3,1.8,.4,1)}
         @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
         .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
