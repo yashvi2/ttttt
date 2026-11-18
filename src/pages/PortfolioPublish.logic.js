@@ -1844,6 +1844,10 @@ class Component extends DCLogic {
       return () => { clearTimeout(t); io.disconnect(); };
     }, [view, cat]);
     const projectsView = h('div', {className:'yj-pv', role:'region', 'aria-label':'Selected work'},
+      // Tritone for covers: shadows black, mid-tones brand yellow, highlights white. Natural colour on hover.
+      h('svg', {width:0, height:0, 'aria-hidden':true, style:{position:'absolute'}}, h('filter', {id:'yj-tri', colorInterpolationFilters:'sRGB'},
+        h('feColorMatrix', {type:'matrix', values:'.299 .587 .114 0 0  .299 .587 .114 0 0  .299 .587 .114 0 0  0 0 0 1 0'}),
+        h('feComponentTransfer', null, h('feFuncR', {type:'table', tableValues:'0.07 1 1'}), h('feFuncG', {type:'table', tableValues:'0.07 0.84 1'}), h('feFuncB', {type:'table', tableValues:'0.07 0.04 1'})))),
       h('div', {className:'yj-pv-head'},
         h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
         h('div', {style:{display:'flex', gap:8, flexWrap:'wrap'}}, cats.map(k => h('button', {key:k, onClick:() => setCat(k), 'aria-pressed':cat === k, className:'yj-chip' + (cat === k ? ' yj-chip-on' : '')},
@@ -1853,7 +1857,7 @@ class Component extends DCLogic {
         shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play().catch(() => {}); } }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}},
             VID[c.id] ? h('video', {className:'yj-pv-vid', src:__R('assets/video/' + VID[c.id] + '.mp4'), muted:true, loop:true, playsInline:true, autoPlay:true, preload:'auto', 'aria-hidden':true, tabIndex:-1}) : null,
-            VID[c.id] ? h('span', {className:'yj-pv-draft', 'aria-hidden':true}, '▶ Preview · draft') : null,
+            VID[c.id] ? h('span', {className:'yj-pv-draft', 'aria-hidden':true}, c.id === 'move' ? '▶ Trailer' : '▶ Preview · draft') : null,
             c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
           h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
             h('span', {style:{fontWeight:600, fontSize:17, letterSpacing:'-0.01em'}}, c.short),
@@ -2040,6 +2044,8 @@ class Component extends DCLogic {
         .yj-pv-grid .yj-pv-card:not(.yj-pv-s0) .yj-pv-cover{flex:none;aspect-ratio:16/10}
         .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
+        .yj-pv-cover > :not(.yj-pv-draft){filter:url(#yj-tri);transition:filter 400ms ease}
+        .yj-pv-card:hover .yj-pv-cover > *,.yj-pv-card:focus-visible .yj-pv-cover > *{filter:none}
         .yj-pv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;pointer-events:none}
         .yj-pv-draft{position:absolute;left:12px;top:12px;z-index:3;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.92);color:${INK}}
         @media (prefers-reduced-motion:reduce){.yj-pv-vid,.yj-pv-draft{display:none}}
