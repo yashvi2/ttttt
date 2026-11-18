@@ -1868,7 +1868,7 @@ class Component extends DCLogic {
         .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
-        .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${YEL};color:${INK};font-size:11px;line-height:1}
+        .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${INK};color:#fff;font-size:11px;line-height:1}
         .yj-vn-play.on{background:#2B3BFF;color:#fff}
         .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
@@ -1887,8 +1887,8 @@ class Component extends DCLogic {
         .yj-bt.yj-tilt{--sc:1.012;transition:background-color 250ms ease,transform 120ms linear,box-shadow 120ms linear;
           box-shadow:var(--sx,0px) var(--sy,14px) 34px -14px rgba(0,0,0,.28), 0 1px 0 rgba(0,0,0,.04)}
 .yj-ab-star{box-shadow:none !important}.yj-bt-go.yj-ab-star:hover{background:transparent !important}
-        .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${YEL};stroke:none;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
-        .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06)}
+        .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${INK};stroke:none;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1), fill 300ms ease}
+        .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06);fill:#2B3BFF}
         @media (max-width:820px){.yj-ab-star{flex-direction:column !important;align-items:flex-start !important;justify-content:center !important;gap:10px !important}.yj-spark{height:72px}}
         @media (prefers-reduced-motion:reduce){.yj-spark{transition:none}.yj-ab-star:hover .yj-spark{transform:none}}
         .yj-bt-go:hover{background:#f3f3f0 !important}

@@ -90,7 +90,7 @@ component, plus a few CSS custom properties.
 
 | Token | Value | Use |
 |---|---|---|
-| `YEL` | `#FFD60A` | brand yellow: the name tile, the idle Play button, the About sparkle |
+| `YEL` | `#FFD60A` | brand yellow: the name tile and the turntable halo only |
 | `INK` | `#111111` | text and primary buttons |
 | `GREY` | `#6B6B6B` | secondary text and labels |
 | `LINE` | `#E3E3E0` | hairlines and chip borders |
@@ -100,8 +100,10 @@ component, plus a few CSS custom properties.
 | `--yj-accent` | prop `accent` (default `#b6f23a`) | legacy accent; don't use in new UI |
 
 Rules:
-- Yellow is the brand. Ultramarine means "active". Everything else is black,
-  white and grey. Don't add a third hue to the shell.
+- Colour rule: yellow + ultramarine appear only in the two shader tiles
+  (name tile top left, turntable bottom right). Ultramarine elsewhere means
+  "active or hover". Everything else is black, white and grey, including the
+  About sparkle and the idle Play button. Don't add a third hue to the shell.
 - Tiles: radius 18, padding `clamp(18px, 1.8vw, 30px)`, gap 28px (20px when
   height ≤ 880px). No borders or shadows at rest; a 3D tilt on hover only.
 - Case studies own their palettes. Examples: AVA red `#c8102e`, Pfizer
