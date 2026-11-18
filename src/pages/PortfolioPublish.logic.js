@@ -1844,10 +1844,10 @@ class Component extends DCLogic {
       return () => { clearTimeout(t); io.disconnect(); };
     }, [view, cat]);
     const projectsView = h('div', {className:'yj-pv', role:'region', 'aria-label':'Selected work'},
-      // Tritone for covers: shadows black, mid-tones brand yellow, highlights white. Natural colour on hover.
+      // Black-and-white covers; natural colour on hover.
       h('svg', {width:0, height:0, 'aria-hidden':true, style:{position:'absolute'}}, h('filter', {id:'yj-tri', colorInterpolationFilters:'sRGB'},
         h('feColorMatrix', {type:'matrix', values:'.299 .587 .114 0 0  .299 .587 .114 0 0  .299 .587 .114 0 0  0 0 0 1 0'}),
-        h('feComponentTransfer', null, h('feFuncR', {type:'table', tableValues:'0.07 1 1'}), h('feFuncG', {type:'table', tableValues:'0.07 0.84 1'}), h('feFuncB', {type:'table', tableValues:'0.07 0.04 1'})))),
+        h('feComponentTransfer', null, h('feFuncR', {type:'table', tableValues:'0.07 1'}), h('feFuncG', {type:'table', tableValues:'0.07 1'}), h('feFuncB', {type:'table', tableValues:'0.07 1'})))),
       h('div', {className:'yj-pv-head'},
         h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
         h('div', {style:{display:'flex', gap:8, flexWrap:'wrap'}}, cats.map(k => h('button', {key:k, onClick:() => setCat(k), 'aria-pressed':cat === k, className:'yj-chip' + (cat === k ? ' yj-chip-on' : '')},
