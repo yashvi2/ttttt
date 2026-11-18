@@ -1948,7 +1948,7 @@ function template(v) {
             </>
           ) : null}
           {v.isCaseStd ? (
-            <div data-yj-std="" style={{ fontFamily: 'Geist,sans-serif', background: '#000000', color: '#f4f4f4' }}>
+            <div style={{ fontFamily: 'Geist,sans-serif', background: '#000000', color: '#f4f4f4' }}>
               {' '}
               {v.isPosterCover ? (
                 <>

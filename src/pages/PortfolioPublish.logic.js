@@ -2491,37 +2491,8 @@ Agent:`;
       if (Date.now() - this._lastT >= (this.props.autoAdvance ?? 15) * 1000) { this._lastT = Date.now(); this.goFace(s.face + 1); }
     }, 500);
   }
-  // Light mode for the original-layout case page (CRAY). Remaps the dark inline palette
-  // to the shell's light tokens at runtime, so the markup and elements stay unchanged.
-  lightStd() {
-    const cur = CASES[this.state.ci], on = this.state.screen === 'case' && cur && cur.id === 'cray';
-    document.documentElement.toggleAttribute('data-yj-light', !!on);
-    if (!on) { if (this._lsObs) { this._lsObs.disconnect(); this._lsObs = null; } return; }
-    requestAnimationFrame(() => {
-      const root = document.querySelector('[data-yj-std]'); if (!root) return;
-      const rgb = h => { const n = parseInt(h.slice(1), 16); return `rgb(${n >> 16}, ${(n >> 8) & 255}, ${n & 255})`; };
-      const mk = o => Object.entries(o).map(([k, v]) => [new RegExp(rgb(k).replace(/[()]/g, '\\$&'), 'g'), rgb(v)]);
-      const BG = mk({'#000000':'#f6f6f3', '#0a0a0a':'#ffffff', '#0d0d0d':'#ffffff', '#111113':'#ffffff', '#141414':'#ffffff', '#1a1a1a':'#ffffff', '#1a1a1d':'#ffffff', '#1c1c1c':'#ffffff', '#141018':'#ffffff',
-        '#222222':'#ececea', '#262626':'#ececea', '#2a2a2a':'#e3e3e0', '#2a2a2c':'#e3e3e0', '#333333':'#e3e3e0', '#3a2260':'#ece3fb', '#1a1124':'#f3edfc', '#0f0c13':'#f3edfc', '#2a1840':'#e7dbfa', '#f4f4f4':'#111111'});
-      const TX = mk({'#f4f4f4':'#111111', '#e6e6e6':'#222222', '#dddddd':'#2a2a2a', '#cccccc':'#3a3a3a', '#bbbbbb':'#444444', '#999999':'#6b6b6b', '#8c8c8c':'#6b6b6b', '#d4b0ff':'#6b3fa8', '#0a0a0a':'#ffffff'});
-      const LN = mk({'#222222':'#e3e3e0', '#262626':'#e3e3e0', '#2a2a2a':'#e3e3e0', '#2a2a2c':'#e3e3e0', '#333333':'#dcdcd8', '#3a3a3a':'#d6d6d2', '#444444':'#cfcfcb', '#f4f4f4':'#111111'});
-      const fix = el => { const st = el.style; if (!st || !st.length) return;
-        if (st.color === 'var(--color-bg)') st.color = '#111111';
-        for (let i = 0; i < st.length; i++) { const k = st[i], v = st.getPropertyValue(k); if (!/rgb/.test(v)) continue;
-          const M = /^background/.test(k) ? BG : /^(border|outline|column-rule)/.test(k) ? LN : (k === 'color' || k === 'fill' || k === 'stroke') ? TX : null; if (!M) continue;
-          let nv = v; for (const [re, to] of M) nv = nv.replace(re, to);
-          if (k === 'background-image') nv = nv.replace(/rgba\(0, 0, 0, 0\)/g, 'rgba(246, 246, 243, 0)');
-          if (nv !== v) st.setProperty(k, nv, st.getPropertyPriority(k)); } };
-      const run = () => { fix(root); root.querySelectorAll('[style]').forEach(fix); };
-      run();
-      if (!this._lsObs || this._lsRoot !== root) { if (this._lsObs) this._lsObs.disconnect(); this._lsRoot = root;
-        this._lsObs = new MutationObserver(ms => { for (const m of ms) { if (m.type === 'attributes') fix(m.target); else m.addedNodes.forEach(n => { if (n.nodeType === 1) { fix(n); n.querySelectorAll('[style]').forEach(fix); } }); } });
-        this._lsObs.observe(root, {subtree:true, childList:true, attributes:true, attributeFilter:['style']}); }
-    });
-  }
   componentDidUpdate() {
     document.documentElement.dataset.yjScreen = this.state.screen;
-    this.lightStd();
     setTimeout(() => this.syncTone(), 60);
     if (this._abArm) setTimeout(this._abArm, 80);
     if (this._mvS) this._mvS(); setTimeout(() => { this.armDrops(); this.armMotion(); }, 0); this.syncHz(); this.syncMz(); const c = this.chatRef.current; if (c) c.scrollTop = c.scrollHeight; this.applyAccent(); (this.props.customCursor ?? true) ? this.mountCursor() : this.unmountCursor(); }
