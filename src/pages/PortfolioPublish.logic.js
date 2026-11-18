@@ -889,12 +889,12 @@ class Component extends DCLogic {
         float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
         float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.;a*=.5;}return v;}
         void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*1.5;
-          vec2 q=vec2(fbm(p+t*.045),fbm(p+vec2(5.2,1.3)-t*.035));
-          float f=fbm(p+2.2*q+vec2(t*.025,0.));
+          vec2 q=vec2(fbm(p+t*.11),fbm(p+vec2(5.2,1.3)-t*.085));
+          float f=fbm(p+2.4*q+vec2(t*.06,-t*.03));
           float asp=r.x/r.y;float wide=smoothstep(1.15,1.9,asp);float rad=mix(${rN},${rW},wide);
-          vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.12)*.03);
+          vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.35)*.05);
           float d=length((uv-c)*vec2(asp*.62,1.));
-          float base=1.-smoothstep(0.,rad,d+(f-.5)*.22);
+          float base=1.-smoothstep(0.,rad,d+(f-.5)*.34);
           float b=smoothstep(.0,1.,base);
           vec3 Y=${base},C=${mid},B=${core};
           vec3 col=mix(Y,C,smoothstep(.05,.42,b));col=mix(col,B,smoothstep(.38,.92,b));
@@ -1761,8 +1761,8 @@ class Component extends DCLogic {
     React.useEffect(() => () => Component.Music.stop(), []);
     const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
     const vinyl = tile('vn', {style:{gap:12}},
-      h(Component.Glow, {base:[1, 1, 1], mid:[1, .88, .3], core:[.17, .23, 1], cx:.5, cy:.5, cyNarrow:.5, rad:.44, radNarrow:.4}),
-      label('On the turntable'),
+      h(Component.Glow, {base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95}),
+      h('span', {className:'yj-vn-tag'}, 'On the turntable'),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
         h('span', {className:'yj-vn-spin'},
@@ -1866,9 +1866,10 @@ class Component extends DCLogic {
         .yj-vn-moods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}
         .yj-vn-moods::-webkit-scrollbar{display:none}
         .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY};background:#fff}
-        .yj-vn-mood.on{background:#2B3BFF;border-color:#2B3BFF;color:#fff}
+        .yj-vn-mood.on{background:#2B3BFF;border-color:#fff;color:#fff;box-shadow:0 0 0 1px #fff}
         .yj-vn-mood:focus-visible,.yj-vn-step:focus-visible{outline:2px solid ${INK};outline-offset:2px}
-        .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
+        .yj-vn-now{display:flex;align-items:center;gap:8px;min-width:0;background:rgba(255,255,255,.9);border-radius:999px;padding:4px 12px 4px 4px;align-self:flex-start;max-width:100%;box-sizing:border-box}
+        .yj-vn-tag{align-self:flex-start;font-size:13px;color:${INK};background:rgba(255,255,255,.9);border-radius:999px;padding:4px 10px}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
         .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${INK};color:#fff;font-size:11px;line-height:1}
@@ -2288,25 +2289,46 @@ class Component extends DCLogic {
     if (this._cur || !window.matchMedia('(pointer:fine)').matches) return;
     const el = document.createElement('div'), lab = document.createElement('span');
     el.setAttribute('aria-hidden', 'true');
-    Object.assign(el.style, {position:'fixed', left:'0', top:'0', width:'24px', height:'24px', marginLeft:'-12px', marginTop:'-12px', borderRadius:'50%', background:'#f4f4f4',
-      mixBlendMode:'difference', pointerEvents:'none', zIndex:'10001', display:'flex', alignItems:'center', justifyContent:'center',
+    Object.assign(el.style, {position:'fixed', left:'0', top:'0', width:'16px', height:'16px', marginLeft:'-8px', marginTop:'-8px', borderRadius:'50%', background:'#FFD60A', boxShadow:'0 0 0 1.5px #111111',
+      pointerEvents:'none', zIndex:'10001', display:'flex', alignItems:'center', justifyContent:'center',
       transition:'width 450ms cubic-bezier(.22,1,.36,1), height 450ms cubic-bezier(.22,1,.36,1), margin 450ms cubic-bezier(.22,1,.36,1), opacity 250ms', opacity:'0', willChange:'transform'});
-    Object.assign(lab.style, {fontFamily:"'Schibsted Grotesk',sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#000000', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
+    Object.assign(lab.style, {fontFamily:"'Schibsted Grotesk',sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#111111', fontWeight:'600', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
     el.appendChild(lab); document.body.appendChild(el); document.documentElement.classList.add('yj-cur');
-    let tx = -100, ty = -100, x = -100, y = -100, size = 24;
+    let tx = -100, ty = -100, x = -100, y = -100, size = 16;
     const setSize = (n, text) => { if (n === size && lab.textContent === (text || '')) return; size = n; el.style.width = el.style.height = n + 'px'; el.style.marginLeft = el.style.marginTop = (-n / 2) + 'px'; lab.textContent = text || ''; lab.style.opacity = text ? '1' : '0'; };
     this._curMove = e => {
       tx = e.clientX; ty = e.clientY; el.style.opacity = '1';
       const t = e.target.closest ? e.target.closest('button, a, [role="button"]') : null;
-      if (!t) setSize(24);
+      if (!t) setSize(16);
       else if (t.getAttribute('data-cursor')) setSize(84, t.getAttribute('data-cursor'));
       else if (t.closest('[aria-label="Featured work"]') || t.getAttribute('aria-label') === 'Contact') setSize(110, 'View');
-      else setSize(64);
+      else setSize(40);
     };
     this._curLeave = () => { el.style.opacity = '0'; };
     window.addEventListener('mousemove', this._curMove, {passive:true}); window.addEventListener('resize', this._mvS); setTimeout(this._mvS, 400);
     document.addEventListener('mouseleave', this._curLeave);
-    const loop = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; el.style.transform = `translate3d(${x}px,${y}px,0)`; this._curRaf = requestAnimationFrame(loop); };
+    // A short gradient trail behind the dot: yellow at the head, fading through ultramarine.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cv = reduce ? null : document.createElement('canvas'), cx = cv && cv.getContext('2d'), pts = [];
+    if (cv) { cv.setAttribute('aria-hidden', 'true'); Object.assign(cv.style, {position:'fixed', inset:'0', width:'100vw', height:'100vh', pointerEvents:'none', zIndex:'10000'}); document.body.appendChild(cv); this._curCv = cv; }
+    const fit = () => { if (!cv) return; const k = Math.min(window.devicePixelRatio || 1, 2); cv.width = innerWidth * k; cv.height = innerHeight * k; cx.setTransform(k, 0, 0, k, 0, 0); };
+    fit(); this._curFit = fit; window.addEventListener('resize', fit);
+    const Y = [255, 214, 10], B = [43, 59, 255];
+    const drawTrail = () => {
+      if (!cx) return;
+      pts.unshift([x, y]); if (pts.length > 16) pts.pop();
+      cx.clearRect(0, 0, innerWidth, innerHeight);
+      if (el.style.opacity !== '1') return;
+      for (let i = 1; i < pts.length; i++) {
+        const k = i / pts.length, a = pts[i - 1], b = pts[i];
+        if (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) < 0.4) continue;
+        const c = Y.map((v, j) => Math.round(v + (B[j] - v) * Math.min(1, k * 1.4)));
+        cx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${(1 - k) * 0.55})`;
+        cx.lineWidth = Math.max(1, (size * 0.75) * (1 - k)); cx.lineCap = 'round';
+        cx.beginPath(); cx.moveTo(a[0], a[1]); cx.lineTo(b[0], b[1]); cx.stroke();
+      }
+    };
+    const loop = () => { x += (tx - x) * 0.22; y += (ty - y) * 0.22; el.style.transform = `translate3d(${x}px,${y}px,0)`; drawTrail(); this._curRaf = requestAnimationFrame(loop); };
     loop();
     this._cur = el;
   }
@@ -2314,6 +2336,7 @@ class Component extends DCLogic {
     if (!this._cur) return;
     cancelAnimationFrame(this._curRaf); window.removeEventListener('mousemove', this._curMove); document.removeEventListener('mouseleave', this._curLeave);
     this._cur.remove(); this._cur = null; document.documentElement.classList.remove('yj-cur');
+    if (this._curCv) { this._curCv.remove(); this._curCv = null; } if (this._curFit) window.removeEventListener('resize', this._curFit);
   }
   applyAccent() { const c = this.state.screen === 'case' && CASES[this.state.ci || 0]; document.documentElement.style.setProperty('--yj-accent', (c && c.accent) || (this.props.accent ?? '#ff4d2e')); document.documentElement.style.setProperty('--yj-base', this.props.accent ?? '#ff4d2e'); if (c && c.id === 'cray') document.documentElement.setAttribute('data-case', c.id); else document.documentElement.removeAttribute('data-case'); }
   sendChat(q) {
