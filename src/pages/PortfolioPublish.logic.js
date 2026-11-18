@@ -890,10 +890,10 @@ class Component extends DCLogic {
         float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
         float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.;a*=.5;}return v;}
         void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*1.5;
-          vec2 q=vec2(fbm(p+t*.11),fbm(p+vec2(5.2,1.3)-t*.085));
-          float f=fbm(p+2.4*q+vec2(t*.06,-t*.03));
+          vec2 q=vec2(fbm(p+t*.06),fbm(p+vec2(5.2,1.3)-t*.045));
+          float f=fbm(p+2.4*q+vec2(t*.03,-t*.015));
           float asp=r.x/r.y;float wide=smoothstep(1.15,1.9,asp);float rad=mix(${rN},${rW},wide)*(1.-.62*e);
-          vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.35)*.05);
+          vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.18)*.04);
           float d=length((uv-c)*vec2(asp*.62,1.));
           float base=1.-smoothstep(0.,rad,d+(f-.5)*.34);
           float b=smoothstep(.0,1.,base);
@@ -1652,8 +1652,7 @@ class Component extends DCLogic {
     const [ri, setRi] = React.useState(0), hold = React.useRef(false);
     React.useEffect(() => {
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const t = setInterval(() => { if (!hold.current && !document.hidden) setRi(i => (i + 1) % RECS.length); }, 5000);
-      return () => clearInterval(t);
+      return undefined; // quotes change only when a dot is clicked
     }, []);
     // Haptics: a short buzz on taps where the browser supports it.
     React.useEffect(() => {
@@ -1739,15 +1738,15 @@ class Component extends DCLogic {
         top.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { follow(e); setHv(i); }, className:'yj-pj-row',
             'aria-label':'Open case study: ' + c.short,
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'grid', gridTemplateColumns:'auto minmax(0,1fr) auto', columnGap:14, alignItems:'center', padding:'8px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
-          h('span', {className:'yj-pj-num', 'aria-hidden':true}, String(i + 1).padStart(2, '0')),
+          h('span', {className:'yj-pj-pic', 'aria-hidden':true, style:c.id === 'askbeta' ? {background:'#f6b93b', display:'grid', placeItems:'center'} : null}, c.id === 'askbeta' ? h('img', {src:__R('assets/askbeta-sun.svg'), alt:'', style:{width:'62%', height:'auto'}}) : (c.pic || null)),
           h('span', {style:{display:'flex', flexDirection:'column', gap:3, minWidth:0}},
             title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-            h('span', {className:'yj-pj-sub'}, [c.origin, c.years, c.stat].filter(Boolean).join(' · '))),
+            h('span', {className:'yj-pj-sub'}, [c.origin, c.years, c.stat].filter(Boolean).join(' / '))),
           h('span', {className:'yj-pj-out'}, 'Read more', h('span', {className:'yj-pj-arr', 'aria-hidden':true}, ' →')))),
         h('button', {onClick:p.onWork, onMouseEnter:() => setHv(-1), className:'yj-pj-row yj-pj-all', 'aria-label':'View all ' + list.length + ' projects',
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:'none', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, padding:'12px 0 2px', fontFamily:F}},
           h('span', {style:{fontSize:S, fontWeight:600, minWidth:0}}, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)),
-          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, rest.map(c => c.short.replace(/ — .*/, '')).join(' · '), ' →'))));
+          h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, rest.map(c => c.short.replace(/ — .*/, '')).join(' / '), ' →'))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
@@ -1758,22 +1757,20 @@ class Component extends DCLogic {
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
     // On the turntable: one original, generated track per mood. Click the record or Play.
     const [flipAuto, setFlipAuto] = React.useState(false), [flipHov, setFlipHov] = React.useState(false);
-    // Starts on the name, then alternates name / details every 5 s. Hovering holds the details.
-    React.useEffect(() => {
-      if (flipHov) return;
-      const t = setInterval(() => { if (!document.hidden) setFlipAuto(b => !b); }, 5000);
-      return () => clearInterval(t);
-    }, [flipHov]);
-    const showBack = flipHov || flipAuto;
+    // Opens on the name, flips once to the details after 4 s and stays. Hovering shows the name again.
+    React.useEffect(() => { const t = setTimeout(() => setFlipAuto(true), 4000); return () => clearTimeout(t); }, []);
+    const showBack = flipAuto && !flipHov;
     const [turns, setTurns] = React.useState(0), lastBack = React.useRef(showBack);
     React.useEffect(() => { if (lastBack.current !== showBack) { lastBack.current = showBack; setTurns(n => n + 1); } }, [showBack]);
     const SLATS = 14;
     const MOODS = Component.Music.moods;
     const [mood, setMood] = React.useState('Happy'), [playing, setPlaying] = React.useState(false);
     React.useEffect(() => () => Component.Music.stop(), []);
-    const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
+    const [vnFx, setVnFx] = React.useState(false);
+    const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) { setVnFx(true); setPlaying(true); } };
     const vinyl = tile('vn', {style:{gap:12}},
-      h(Component.Glow, {react:true, base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95}),
+      vnFx ? h('span', {className:'yj-vn-fx yj-g' + (playing ? ' on' : ''), 'aria-hidden':true},
+        h(Component.Glow, {react:true, base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95})) : null,
       h('span', {className:'yj-vn-tag'}, 'On the turntable'),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
@@ -1795,17 +1792,12 @@ class Component extends DCLogic {
       {src:'assets/web/assets/ma/expert-interview.webp', cap:'Expert interview · What It Takes to Move'},
       {src:'assets/web/assets/ma/testing-1.webp', cap:'Prototype testing · What It Takes to Move'}];
     const [si, setSi] = React.useState(0);
-    React.useEffect(() => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const t = setInterval(() => { if (!document.hidden) setSi(i => (i + 1) % SLIDES.length); }, 4200);
-      return () => clearInterval(t);
-    }, []);
-    const slideshow = tile('ph', {label:'Portrait of Yashvi Jain and photos from her projects', style:{padding:0, background:'#e6e6e3'}},
+    const slideshow = tile('ph', {label:'Photo ' + (si + 1) + ' of ' + SLIDES.length + ': ' + SLIDES[si].cap + '. Show next photo', onClick:() => setSi(i => (i + 1) % SLIDES.length), style:{padding:0, background:'#e6e6e3'}},
       SLIDES.map((sl, i) => h('span', {key:sl.src, className:'yj-sl' + (i === si ? ' yj-sl-on' : ''), 'aria-hidden':true,
         style:{position:'absolute', inset:0, background:`url(${__R(sl.src)}) ${sl.pos || '50% 50%'}/cover no-repeat`, filter:'grayscale(1)'}})),
       h('span', {key:'cap' + si, className:'yj-bt-q', style:{position:'absolute', left:14, bottom:14, right:14, display:'flex', justifyContent:'space-between', alignItems:'center', gap:8, fontSize:13, fontWeight:600}},
         h('span', {style:{background:PAPER, color:INK, padding:'5px 10px', borderRadius:999, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}, SLIDES[si].cap),
-        h('span', {style:{background:PAPER, color:INK, padding:'5px 10px', borderRadius:999, flex:'none'}}, (si + 1) + '/' + SLIDES.length)));
+        h('span', {style:{background:PAPER, color:INK, padding:'5px 10px', borderRadius:999, flex:'none'}}, (si + 1) + '/' + SLIDES.length + '  →')));
 
     // Companies worked with: one black logo strip.
     // [src, name, height in px] — heights balance each logo's visual weight
@@ -1814,7 +1806,7 @@ class Component extends DCLogic {
     const logos = tile('lg', {style:{flexDirection:'row', alignItems:'center', gap:'clamp(16px, 3vw, 56px)', padding:'0 clamp(18px, 1.8vw, 30px)'}},
       label('Worked with', {flex:'none', whiteSpace:'nowrap'}),
       h('span', {className:'yj-lg-view', style:{flex:1, minWidth:0, overflow:'hidden'}},
-        h('span', {className:'yj-lg-track'}, [0, 1].map(k => h('span', {key:k, className:'yj-lg-set', 'aria-hidden':k === 1 ? true : undefined},
+        h('span', {className:'yj-lg-track'}, [0].map(k => h('span', {key:k, className:'yj-lg-set'},
           LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt:k ? '' : alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}})))))));
 
     // Dashboard ↔ Projects, switched in place from the floating dock.
@@ -1946,11 +1938,16 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-slats{display:none}.yj-flip.armed .yj-face{animation:none !important}}
         .yj-cta{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:${INK};background:${YEL};padding:7px 14px;border-radius:999px;white-space:nowrap;transition:background 250ms ease,color 250ms ease}
         .yj-cta:hover{background:#2B3BFF;color:#fff}.yj-cta:focus-visible{outline:2px solid ${INK};outline-offset:2px}
+        .yj-vn-fx{position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:0;transition:opacity 900ms ease;pointer-events:none;z-index:0}
+        .yj-vn-fx.on{opacity:1}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-row:hover .yj-pj-t,.yj-pj-row:focus-visible .yj-pj-t{background-size:100% 40%}
         .yj-pj-kinds{display:none}
+        .yj-pj-pic{position:relative;display:block;width:clamp(56px, 5vw, 84px);aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#e6e6e3;align-self:center}
+        .yj-pj-pic > *{pointer-events:none}
+        .yj-pj-thumb{display:none !important}
         .yj-pj-num{align-self:start;padding-top:.55em;font-size:11px;letter-spacing:.06em;color:${GREY};font-variant-numeric:tabular-nums}
         .yj-pj-sub{font-size:13px;color:${GREY};white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .yj-pj-out{font-size:14px;font-weight:600;color:${INK};text-align:right;white-space:nowrap}
@@ -2014,13 +2011,13 @@ class Component extends DCLogic {
         @keyframes yjWl{from{opacity:0;transform:translateY(.45em) rotate(6deg)}}
         .yj-wl:hover{transform:translateY(-.12em) rotate(-4deg);transition-duration:180ms}
         @media (max-height:780px) and (min-width:821px){.yj-bento{padding:20px;gap:20px;--lgs:.8}.yj-bt:not(.yj-a-ph){padding:18px !important}}
-        .yj-sl{opacity:0;transform:scale(1.08);transition:opacity 1200ms ease,transform 6000ms linear}
-        .yj-sl-on{opacity:1;transform:scale(1)}
+        .yj-sl{opacity:0;transition:opacity 600ms ease}
+        .yj-sl-on{opacity:1}
         .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
-        .yj-lg-view{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-        .yj-lg-track{display:flex;width:max-content;animation:yjLgScroll 28s linear infinite}
+        .yj-lg-view{}
+        .yj-lg-track{display:flex;width:100%}
         .yj-lg-view:hover .yj-lg-track{animation-play-state:paused}
-        .yj-lg-set{display:flex;align-items:center;gap:clamp(48px, 6vw, 96px);padding-right:clamp(48px, 6vw, 96px)}
+        .yj-lg-set{display:flex;align-items:center;justify-content:space-around;width:100%;gap:clamp(20px, 3vw, 56px)}
         @keyframes yjLgScroll{to{transform:translateX(-50%)}}
         .yj-bento > *{animation:yjRise 700ms cubic-bezier(.2,.7,.2,1) both}
         .yj-bento > :nth-child(2){animation-delay:0ms}.yj-bento > :nth-child(3){animation-delay:80ms}.yj-bento > :nth-child(4){animation-delay:160ms}
@@ -2088,7 +2085,7 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-sc-main,.yj-sc-ans{transition:none}.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
-      tile('in', {className:'yj-flip' + (showBack ? ' is-back' : '') + (turns ? ' armed' : ''), tabIndex:0, role:'group', label:'Introduction. Hover or focus to flip for details.',
+      tile('in', {className:'yj-flip' + (showBack ? ' is-back' : '') + (turns ? ' armed' : ''), tabIndex:0, role:'group', label:'Introduction: name and summary. Hover or focus to see the name.',
           onMouseEnter:() => setFlipHov(true), onMouseLeave:() => setFlipHov(false), onFocus:() => setFlipHov(true), onBlur:() => setFlipHov(false),
           style:{background:'transparent', padding:0, overflow:'visible', zIndex:3, perspective:'1400px'}},
         h('span', {className:'yj-flip-in'},
@@ -2986,7 +2983,7 @@ Agent:`;
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
       landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onAgent:() => this.setState({chatOpen:true}), onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
-        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Built for Lovable’s #SheBuilds'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), star:id === 'ava' || id === 'move', stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
+        projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client / TCS', pfizer:'Client / TCS', move:'MA / UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Built for Lovable’s #SheBuilds'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), star:id === 'ava' || id === 'move', stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
       fabLabelW: s.fabHover ? '160px' : '0px', fabLabelO: s.fabHover ? 1 : 0, fabLabelP: s.fabHover ? '14px 0 18px' : '0',
