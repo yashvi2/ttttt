@@ -100,10 +100,16 @@ component, plus a few CSS custom properties.
 | `--yj-accent` | prop `accent` (default `#b6f23a`) | legacy accent; don't use in new UI |
 
 Rules:
-- Colour rule: yellow + ultramarine appear only in the two shader tiles
-  (name tile top left, turntable bottom right). Ultramarine elsewhere means
-  "active or hover". Everything else is black, white and grey, including the
-  About sparkle and the idle Play button. Don't add a third hue to the shell.
+- Colour roles (UX):
+  - **Yellow:** the brand, plus the single primary action per screen
+    ("Let's talk over coffee", `.yj-cta`).
+  - **Ultramarine:** state, meaning selected, playing, hovered or focused.
+  - **Ink:** secondary actions (Read more, Copy email, Play when idle).
+  - **Grey:** metadata.
+  - The two shader tiles (name top left, turntable bottom right) carry the
+    big colour fields and mirror each other. The turntable is
+    music-reactive (`Glow react`): it turns yellow while a track plays.
+  - Don't add a third hue to the shell.
 - Tiles: radius 18, padding `clamp(18px, 1.8vw, 30px)`, gap 28px (20px when
   height ≤ 880px). No borders or shadows at rest; a 3D tilt on hover only.
 - Case studies own their palettes. Examples: AVA red `#c8102e`, Pfizer
