@@ -859,7 +859,7 @@ class Component extends DCLogic {
       playing:() => on,
       play(m) {
         const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
-        if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.7; master.connect(ctx.destination); filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.connect(master); }
+        if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.7; const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 4; const boost = ctx.createGain(); boost.gain.value = 3.2; master.connect(boost); boost.connect(comp); comp.connect(ctx.destination); filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.connect(master); }
         ctx.resume(); this.stop(true);
         song = SONGS[m] || SONGS.Happy; filt.frequency.value = song.lp; step = 0; next = ctx.currentTime + 0.05;
         noise = crackle(song.crackle); timer = setInterval(tick, 60); tick(); on = true; return true;
@@ -1688,8 +1688,8 @@ class Component extends DCLogic {
           title(h('span', null, h('span', {className:'yj-pj-t'}, c.short), c.star ? h('span', {className:'yj-pj-star', title:'Start here'}, h('svg', {viewBox:'0 0 410 442', 'aria-hidden':true, style:{width:9, height:'auto', fill:'currentColor', marginRight:5, verticalAlign:'-1px'}}, h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})), 'Start here') : null), {minWidth:0}),
           h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, c.years || '', c.origin ? ' · ' + c.origin : '', c.stat ? h('span', {className:'yj-pj-stat'}, ' · ' + c.stat) : null, h('span', {className:'yj-pj-kinds'}, ' · ' + c.kinds)))),
         h('button', {onClick:p.onWork, onMouseEnter:() => setHv(-1), className:'yj-pj-row yj-pj-all', 'aria-label':'View all ' + list.length + ' projects',
-            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:1, display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:16, padding:'6px 0', borderBottom:'1px solid ' + LINE, fontFamily:F}},
-          title(h('span', null, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)), {minWidth:0}),
+            style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:'none', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, padding:'12px 0 2px', fontFamily:F}},
+          h('span', {style:{fontSize:S, fontWeight:600, minWidth:0}}, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)),
           h('span', {className:'yj-pj-meta', style:{fontSize:S, color:GREY, flex:'none', whiteSpace:'nowrap'}}, rest.map(c => c.short.replace(/ — .*/, '')).join(' · '), ' →'))));
 
     // Currently: small, human, easy to update. Tulip season counts down live.
@@ -1725,13 +1725,13 @@ class Component extends DCLogic {
     const vinyl = tile('vn', {style:{gap:10}, onMouseEnter:() => { vnHold.current = true; }, onMouseLeave:() => { vnHold.current = false; }, onFocus:() => { vnHold.current = true; }, onBlur:() => { vnHold.current = false; }},
       h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:8}}, label('On the turntable'), label(String(ti + 1) + ' / 4')),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); setTi(0); if (playing) Component.Music.play(m); }}, m))),
-      h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in'},
+      h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
         h('span', {className:'yj-vn-spin'},
           h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
           h('span', {className:'yj-vn-label', 'aria-hidden':true}, playing ? h('b', null, mood) : h('b', null, trk), playing ? h('i', null, 'Side A · original') : h('i', null, art))),
         h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
       h('span', {className:'yj-vn-now', 'aria-live':'polite'},
-        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play a free ' + mood.toLowerCase() + ' track'}, playing ? '❚❚' : '▶'),
+        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play a free ' + mood.toLowerCase() + ' track'}, playing ? '❚❚ Pause' : '▶ Play'),
         h('button', {type:'button', className:'yj-vn-step', onClick:() => step(-1), 'aria-label':'Previous suggested song'}, '‹'),
         h('span', {style:{minWidth:0, flex:1, textAlign:'center', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', fontSize:13}}, h('b', {style:{fontWeight:600}}, trk), ' · ', art),
         h('button', {type:'button', className:'yj-vn-step', onClick:() => step(1), 'aria-label':'Next song'}, '›')),
@@ -1838,7 +1838,7 @@ class Component extends DCLogic {
         .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
-        .yj-vn-play{all:unset;cursor:pointer;flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:${YEL};color:${INK};font-size:11px;line-height:1}
+        .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${YEL};color:${INK};font-size:11px;line-height:1}
         .yj-vn-play.on{background:${INK};color:#fff}
         .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
