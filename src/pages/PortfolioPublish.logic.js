@@ -1871,6 +1871,14 @@ class Component extends DCLogic {
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
         @media (max-width:1180px){.yj-pj-stat{display:none}}
+        .yj-agent{all:unset;cursor:pointer;position:absolute;right:clamp(18px, 1.8vw, 30px);top:50%;transform:translateY(-62%);z-index:2;display:flex;align-items:center;flex-direction:row-reverse;gap:0;padding:4px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(17,17,17,.12);transition:background 300ms ease;font-size:14px;font-weight:600;color:${INK};pointer-events:auto}
+        .yj-agent-face{width:56px;height:56px;border-radius:50%;background:var(--yj-accent, #d4f25c);display:flex;align-items:center;justify-content:center;flex:none}
+        .yj-agent-t{overflow:hidden;white-space:nowrap;max-width:0;opacity:0;transition:max-width 500ms cubic-bezier(.22,1,.36,1), opacity 300ms, padding 500ms cubic-bezier(.22,1,.36,1)}
+        .yj-agent:hover,.yj-agent:focus-visible{background:#fff}
+        .yj-agent:hover .yj-agent-t,.yj-agent:focus-visible .yj-agent-t{max-width:140px;opacity:1;padding:0 10px 0 14px}
+        .yj-agent:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        @media (max-width:820px){.yj-agent{top:96px;transform:none}.yj-agent-face{width:46px;height:46px}}
+        @media (prefers-reduced-motion:reduce){.yj-agent-t{transition:none}}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
@@ -2004,6 +2012,9 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
+        p.onAgent ? h('button', {type:'button', className:'yj-agent yj-g', onClick:p.onAgent, 'aria-label':'Ask my portfolio agent'},
+          h('span', {className:'yj-agent-face'}, h(Component.Sketch, {size:40, weight:1.05})),
+          h('span', {className:'yj-agent-t'}, 'Ask my agent')) : null,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
@@ -2831,7 +2842,7 @@ Agent:`;
       muteRef: this._muteRef || (this._muteRef = v => { if (!v) return; v.muted = true; v.defaultMuted = true; v.setAttribute('muted', ''); const p = v.play(); if (p) p.catch(() => {}); }),
       ...this.mvVals(s, cur),
       hdr: {pill:CREAM, pillFg:INK}, navRef:this.navRef,
-      chatOpen: !!s.chatOpen, chatFab: !s.chatOpen, chatRef:this.chatRef, chatBusy: !!s.chatBusy, chatInput: s.chatInput || '',
+      chatOpen: !!s.chatOpen, chatFab: false, chatRef:this.chatRef, chatBusy: !!s.chatBusy, chatInput: s.chatInput || '',
       chatMsgs: [{role:'agent', text:"Hi — I'm Yashvi's portfolio agent. Ask me about her strategy work, how she runs research, or whether she'd fit your team."}, ...(s.chatMsgs || [])].map(m => ({...m,
         ...(() => { const links = m.role === 'agent' ? CASES.map((cs, i) => ({cs, i})).filter(({cs}) => cs.id !== 'halls' && [cs.short, cs.short.split(/[:—]/)[0].trim(), cs.title].some(n => n && n.length > 2 && m.text.toLowerCase().includes(n.toLowerCase()))).map(({cs, i}) => ({label:'Open ' + cs.short, open:() => { this.setState({chatOpen:false}); this.openCase(i); }})) : []; return {links, hasLinks: links.length > 0}; })(),
         align: m.role === 'user' ? 'flex-end' : 'flex-start', bg: m.role === 'user' ? '#f4f4f4' : '#1a1a1a', fg: m.role === 'user' ? '#000000' : '#f4f4f4'})),
@@ -2869,7 +2880,7 @@ Agent:`;
         offClock:[{k:'Bakeaway', src:__R('assets/web/assets/about/bakery.webp'), href:'https://www.instagram.com/bakeaway_yashvijain/', v:'My home bakery. A recipe is a service blueprint: the steps are simple, the care isn’t.'},
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
-      landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
+      landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onAgent:() => this.setState({chatOpen:true}), onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
         projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client · TCS', pfizer:'Client · TCS', move:'MA · UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Built for Lovable’s #SheBuilds'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), star:id === 'ava' || id === 'move', stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
