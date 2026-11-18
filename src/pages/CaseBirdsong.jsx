@@ -28,7 +28,7 @@ function template(v) {
           {v.ytInline ? (
             <iframe
               ref={v.ytRef}
-              src={'https://www.youtube.com/embed/VV3GaKLkHXA?rel=0&enablejsapi=1&mute=1&playsinline=1'}
+              src={v.ytSrc}
               title="Birdsong: the virtual exhibition (video)"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

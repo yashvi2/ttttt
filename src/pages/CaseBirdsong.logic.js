@@ -33,7 +33,9 @@ class Component extends DCLogic {
     const cur = this.S[a];
     // Inline YouTube works on the live site; inside a sandboxed frame (the artifact preview) embeds are blocked, so show a poster that opens YouTube.
     const ytInline = typeof window !== 'undefined' && window.top === window.self;
-    return { ytRef: this.ytRef, lapRef: this.lapRef, macs, strip, ytInline, ytPoster: !ytInline,
+    const still = typeof window !== 'undefined' && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ytSrc = 'https://www.youtube.com/embed/VV3GaKLkHXA?rel=0&enablejsapi=1&mute=1&playsinline=1&loop=1&playlist=VV3GaKLkHXA' + (still ? '' : '&autoplay=1');
+    return { ytSrc, ytRef: this.ytRef, lapRef: this.lapRef, macs, strip, ytInline, ytPoster: !ytInline,
       macNum: String(a + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0'), macLabel: cur[1] + ' · ' + cur[2],
       macPrev: () => { this.go(-1); this.tick(); }, macNext: () => { this.go(1); this.tick(); },
       macPause: () => this.setState({ paused: true }), macResume: () => this.setState({ paused: false }) };

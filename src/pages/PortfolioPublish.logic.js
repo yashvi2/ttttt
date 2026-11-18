@@ -1553,10 +1553,14 @@ class Component extends DCLogic {
             h('div', {className:'mvs-callout'}, h('h3', null, 'The direction: ' + (S('Direction').h || '')), h('p', null, S('Direction').p)))),
         chap('script', '04', 'The product', O.h || 'The Script, a card game in two editions.', O.p,
           h('figure', {className:'mvs-trailer', style:{margin:'0 0 24px'}},
-            h('video', {src:__R('assets/video/script-trailer.mp4'), poster:__R('assets/video/script-trailer-poster.webp'), controls:true, playsInline:true, preload:'metadata',
+            h('video', {src:__R('assets/video/script-trailer.mp4'), poster:__R('assets/video/script-trailer-poster.webp'), controls:true, playsInline:true, loop:true, preload:'auto',
+              // Autoplays muted while in view (browsers only allow muted autoplay); the controls unmute it. Off under reduced motion.
+              ref:el => { if (!el || el._yjAuto) return; el._yjAuto = true; el.muted = true; el.defaultMuted = true; el.setAttribute('muted', '');
+                if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                const io = new IntersectionObserver(([e]) => { if (e.intersectionRatio >= 0.4) { const r = el.play(); r && r.catch(() => {}); } else el.pause(); }, {threshold:[0, 0.4]}); io.observe(el); },
               'aria-label':'The Script trailer: the cards on a school desk, a hand drawing a card, and a family playing at the table',
               style:{display:'block', width:'100%', aspectRatio:'16/9', objectFit:'cover', borderRadius:16, background:'#111'}}),
-            h('figcaption', {className:'mvs-who', style:{marginTop:10}}, h('b', {style:{color:INK}}, 'Trailer'), ' · The Script, from the classroom to the family table. 8 seconds, with sound.')),
+            h('figcaption', {className:'mvs-who', style:{marginTop:10}}, h('b', {style:{color:INK}}, 'Trailer'), ' / The Script, from the classroom to the family table. 8 seconds; unmute for sound.')),
           h('div', {className:'mvs-grid g3'}, ...(O.items || []).slice(0, 6).map(it => h('figure', {key:it.k, style:{margin:0}},
             h('div', {className:'mvs-ph', style:{aspectRatio:'4/3'}}, img(it.src, it.k)), h('figcaption', {className:'mvs-who'}, h('b', {style:{color:INK}}, it.k), ' · ', it.d)))),
           h('ol', {className:'mvs-steps', 'aria-label':'How a round works'}, ...play.map(([k, d]) => h('li', {key:k}, h('b', null, k), d)))),
@@ -3018,9 +3022,9 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       caseBack: s.screen === 'case' ? h('button', {type:'button', className:'yj-back', onClick:() => this.go('work'), 'aria-label':'Back to all projects'},
-        h('style', null, `.yj-back{all:unset;cursor:pointer;position:fixed;z-index:61;left:max(18px, env(safe-area-inset-left, 0px));bottom:calc(18px + env(safe-area-inset-bottom, 0px));display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#2B3BFF;color:#fff;font-family:'Schibsted Grotesk',sans-serif;font-size:14px;font-weight:600;box-shadow:0 14px 30px -12px rgba(43,59,255,.45);transition:background 250ms ease,color 250ms ease}
+        h('style', null, `.yj-back{all:unset;cursor:pointer;position:fixed;z-index:61;left:max(18px, env(safe-area-inset-left, 0px));bottom:calc(18px + env(safe-area-inset-bottom, 0px));display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#fff;color:#111;box-shadow:inset 0 0 0 1.5px #111,0 6px 20px -10px rgba(0,0,0,.35);font-family:'Schibsted Grotesk',sans-serif;font-size:14px;font-weight:600;transition:background 250ms ease,color 250ms ease,box-shadow 250ms ease}
           @media (max-width:640px){.yj-back{bottom:calc(84px + env(safe-area-inset-bottom, 0px));padding:9px 14px;font-size:13px}}
-          .yj-back:hover{background:#FFD60A;color:#111}.yj-back:focus-visible{outline:2px solid #111;outline-offset:3px}`), '← All projects') : null,
+          .yj-back:hover{color:#2B3BFF;box-shadow:inset 0 0 0 1.5px #2B3BFF,0 6px 20px -10px rgba(0,0,0,.35)}.yj-back:focus-visible{outline:2px solid #111;outline-offset:3px}`), '← All projects') : null,
       dock: h(Component.Dock, {items:[
         // Two views only, like the reference: About and Contact are reached from dashboard tiles.
         {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
