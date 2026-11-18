@@ -1753,6 +1753,9 @@ class Component extends DCLogic {
       h('span', {className:'yj-cu-l'},
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
     // On the turntable: one original, generated track per mood. Click the record or Play.
+    const [flipAuto, setFlipAuto] = React.useState(false), [flipHov, setFlipHov] = React.useState(false);
+    React.useEffect(() => { const t = setTimeout(() => setFlipAuto(true), 5000); return () => clearTimeout(t); }, []);
+    const showBack = flipHov ? !flipAuto : flipAuto;
     const MOODS = Component.Music.moods;
     const [mood, setMood] = React.useState('Happy'), [playing, setPlaying] = React.useState(false);
     React.useEffect(() => () => Component.Music.stop(), []);
@@ -1909,6 +1912,16 @@ class Component extends DCLogic {
         .yj-agent:focus-visible{outline:2px solid ${INK};outline-offset:3px}
         @media (max-width:820px){.yj-agent{top:96px;transform:none}.yj-agent-face{width:46px;height:46px}}
         @media (prefers-reduced-motion:reduce){.yj-agent-t{transition:none}}
+        .yj-flip{outline:none}
+        .yj-flip:focus-visible .yj-flip-in{outline:2px solid ${INK};outline-offset:4px;border-radius:18px}
+        .yj-flip-in{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform 900ms cubic-bezier(.65,0,.2,1)}
+        .yj-flip.is-back .yj-flip-in{transform:rotateY(180deg)}
+        .yj-face{position:absolute;inset:0;box-sizing:border-box;border-radius:18px;padding:clamp(18px, 1.8vw, 30px);display:flex;flex-direction:column;justify-content:space-between;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+        .yj-face > :not(.yj-g){position:relative;z-index:1}
+        .yj-flip-front{background:${YEL};color:${INK}}
+        .yj-flip-back{background:#2B3BFF;color:#fff;transform:rotateY(180deg)}
+        .yj-flip-lead{font-size:clamp(20px, min(2vw, 3.4vh), 32px);line-height:1.25;letter-spacing:-0.02em;font-weight:500;max-width:30ch}
+        @media (prefers-reduced-motion:reduce){.yj-flip-in{transition:none}}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
@@ -2051,21 +2064,26 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-sc-main,.yj-sc-ans{transition:none}.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
-      tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
-        h(Component.Glow),
-        h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
-          h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
-            h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
-          h('span', {style:{display:'inline-flex', alignItems:'center', gap:8}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:INK}}), 'Open to roles · London ' + now)),
-        h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(10px, 1.6vh, 22px)'}},
-          h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(44px, min(6vw, 10vh), 104px)', letterSpacing:'-0.06em', lineHeight:.82}},
-            ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
-              w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch))))),
-          h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'100%'}},
-            h('span', {style:{display:'block'}}, 'Research, strategy and design for health, pharma and social change.'),
-            h('span', {style:{display:'block'}}, 'Four years at TCS; MA Design Management, UAL.')),
-          h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:'2px 0', fontSize:13, lineHeight:1.5, color:'rgba(17,17,17,.7)'}},
-            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map((k, i) => h('span', {key:k, style:{whiteSpace:'nowrap'}}, i ? h('span', {'aria-hidden':true, style:{margin:'0 8px', opacity:.45}}, '/') : null, k))))),
+      tile('in', {className:'yj-flip' + (showBack ? ' is-back' : ''), tabIndex:0, role:'group', label:'Introduction. Hover or focus to flip for details.',
+          onMouseEnter:() => setFlipHov(true), onMouseLeave:() => setFlipHov(false), onFocus:() => setFlipHov(true), onBlur:() => setFlipHov(false),
+          style:{background:'transparent', padding:0, overflow:'visible', zIndex:3, perspective:'1400px'}},
+        h('span', {className:'yj-flip-in'},
+          // Front: just the title and the name.
+          h('span', {className:'yj-face yj-flip-front', 'aria-hidden':showBack},
+            h(Component.Glow),
+            h('span', {style:{fontSize:S}}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years'),
+            h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(44px, min(6vw, 10vh), 104px)', letterSpacing:'-0.06em', lineHeight:.82}},
+              ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
+                w.split('').map((ch, ci) => h('span', {key:ci, className:'yj-wl', style:{animationDelay:(150 + (wi * 6 + ci) * 55) + 'ms'}}, ch)))))),
+          // Back: the details.
+          h('span', {className:'yj-face yj-flip-back', 'aria-hidden':!showBack},
+            h('span', {style:{display:'inline-flex', alignItems:'center', gap:8, fontSize:S}}, h('span', {className:'yj-live', style:{width:7, height:7, borderRadius:'50%', background:'#fff'}}), 'Open to roles · London ' + now),
+            h('span', {style:{display:'flex', flexDirection:'column', gap:'clamp(12px, 2vh, 22px)'}},
+              h('span', {className:'yj-flip-lead'},
+                h('span', {style:{display:'block'}}, 'Research, strategy and design for health, pharma and social change.'),
+                h('span', {style:{display:'block'}}, 'Four years at TCS; MA Design Management, UAL.')),
+              h('span', {style:{display:'flex', flexWrap:'wrap', gap:'2px 0', fontSize:13, lineHeight:1.5, color:'rgba(255,255,255,.78)'}},
+                ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map((k, i) => h('span', {key:k, style:{whiteSpace:'nowrap'}}, i ? h('span', {'aria-hidden':true, style:{margin:'0 8px', opacity:.5}}, '/') : null, k))))))),
       h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow),
       tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
         h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
