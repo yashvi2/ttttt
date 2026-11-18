@@ -1957,7 +1957,7 @@ class Component extends DCLogic {
         .yj-vn-fx{position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:0;transition:opacity 900ms ease;pointer-events:none;z-index:0}
         .yj-vn-fx.on{opacity:1}
         .yj-imp{display:flex;flex-direction:column}
-        .yj-imp-row{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);column-gap:12px;align-items:baseline;padding:clamp(5px, 1vh, 9px) 0;border-top:1px solid ${LINE}}
+        .yj-imp-row{display:grid;grid-template-columns:clamp(84px, min(7.4vw, 13vh), 120px) minmax(0,1fr);column-gap:12px;align-items:baseline;padding:clamp(5px, 1vh, 9px) 0;border-top:1px solid ${LINE}}
         .yj-imp-row:first-child{border-top:0;padding-top:0}
         .yj-imp-row b{font-size:clamp(20px, min(2vw, 3.6vh), 30px);font-weight:600;letter-spacing:-0.03em;line-height:1;color:${INK};white-space:nowrap}
         .yj-imp-row > span{display:flex;flex-direction:column;min-width:0}
