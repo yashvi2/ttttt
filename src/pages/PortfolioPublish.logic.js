@@ -1688,8 +1688,8 @@ class Component extends DCLogic {
           h('span', {className:'yj-pj-num', 'aria-hidden':true}, String(i + 1).padStart(2, '0')),
           h('span', {style:{display:'flex', flexDirection:'column', gap:3, minWidth:0}},
             title(h('span', {className:'yj-pj-t'}, c.short), {minWidth:0}),
-            h('span', {className:'yj-pj-sub'}, [c.origin, c.years].filter(Boolean).join(' · '))),
-          c.stat ? h('span', {className:'yj-pj-out'}, c.stat, h('span', {className:'yj-pj-arr', 'aria-hidden':true}, ' →')) : null)),
+            h('span', {className:'yj-pj-sub'}, [c.origin, c.years, c.stat].filter(Boolean).join(' · '))),
+          h('span', {className:'yj-pj-out'}, 'Read more', h('span', {className:'yj-pj-arr', 'aria-hidden':true}, ' →')))),
         h('button', {onClick:p.onWork, onMouseEnter:() => setHv(-1), className:'yj-pj-row yj-pj-all', 'aria-label':'View all ' + list.length + ' projects',
             style:{all:'unset', boxSizing:'border-box', cursor:'pointer', flex:'none', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, padding:'12px 0 2px', fontFamily:F}},
           h('span', {style:{fontSize:S, fontWeight:600, minWidth:0}}, h('span', {className:'yj-pj-t'}, 'View all work'), h('span', {className:'yj-pj-n'}, list.length)),
@@ -1871,7 +1871,7 @@ class Component extends DCLogic {
         .yj-pj-row:hover .yj-pj-out,.yj-pj-row:hover .yj-pj-arr,.yj-pj-all:hover .yj-pj-meta{color:#2B3BFF !important}
         .yj-ct-row a:hover,.yj-ct-row button:hover{color:#2B3BFF !important}
         @media (max-width:1180px){.yj-pj-out{font-size:13px}}
-        @media (max-width:560px){.yj-pj-out{display:none}}
+        @media (max-width:560px){.yj-pj-out{font-size:12px}}
         .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
         @media (max-width:820px){.yj-shp-in{display:none}}
         @keyframes yjDraw{to{stroke-dashoffset:0}}
