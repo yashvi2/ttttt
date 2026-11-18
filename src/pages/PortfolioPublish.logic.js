@@ -1920,7 +1920,7 @@ class Component extends DCLogic {
         .yj-face > :not(.yj-g){position:relative;z-index:1}
         .yj-flip-front{background:${YEL};color:${INK}}
         .yj-flip-back{background:#2B3BFF;color:#fff;transform:rotateY(180deg)}
-        .yj-flip-lead{font-size:clamp(20px, min(2vw, 3.4vh), 32px);line-height:1.25;letter-spacing:-0.02em;font-weight:500;max-width:30ch}
+        .yj-flip-lead{font-size:clamp(20px, min(2vw, 3.4vh), 32px);line-height:1.25;letter-spacing:-0.02em;font-weight:500;max-width:30ch;color:${YEL}}
         @media (prefers-reduced-motion:reduce){.yj-flip-in{transition:none}}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
