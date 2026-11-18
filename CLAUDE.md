@@ -196,7 +196,7 @@ There is no Storybook. Check visually with the Playwright scripts (§9).
   one screen. Breakpoints are 820px (phone), 980px, and height ≤ 880px.
 - Motion budget on the landing: one ambient motion, the name-tile fluid. The record
   spins only while music plays. Everything else moves only on interaction:
-  - photos and quotes change on click;
+  - photos auto-advance every 4 s (pause on hover); quotes change on click;
   - the logo marquee scrolls slowly (pauses on hover, still with reduced motion);
   - the turntable fluid appears only while music plays;
   - the intro flips once, at 4 s, and doesn't cycle.

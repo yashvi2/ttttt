@@ -1792,7 +1792,14 @@ class Component extends DCLogic {
       {src:'assets/web/assets/ma/expert-interview.webp', cap:'Expert interview · What It Takes to Move'},
       {src:'assets/web/assets/ma/testing-1.webp', cap:'Prototype testing · What It Takes to Move'}];
     const [si, setSi] = React.useState(0);
-    const slideshow = tile('ph', {label:'Photo ' + (si + 1) + ' of ' + SLIDES.length + ': ' + SLIDES[si].cap + '. Show next photo', onClick:() => setSi(i => (i + 1) % SLIDES.length), style:{padding:0, background:'#e6e6e3'}},
+    const phHold = React.useRef(false);
+    React.useEffect(() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const t = setInterval(() => { if (!document.hidden && !phHold.current) setSi(i => (i + 1) % SLIDES.length); }, 4000);
+      return () => clearInterval(t);
+    }, []);
+    const slideshow = tile('ph', {label:'Photo ' + (si + 1) + ' of ' + SLIDES.length + ': ' + SLIDES[si].cap + '. Show next photo', onClick:() => setSi(i => (i + 1) % SLIDES.length),
+      onMouseEnter:() => { phHold.current = true; }, onMouseLeave:() => { phHold.current = false; }, onFocus:() => { phHold.current = true; }, onBlur:() => { phHold.current = false; }, style:{padding:0, background:'#e6e6e3'}},
       SLIDES.map((sl, i) => h('span', {key:sl.src, className:'yj-sl' + (i === si ? ' yj-sl-on' : ''), 'aria-hidden':true,
         style:{position:'absolute', inset:0, background:`url(${__R(sl.src)}) ${sl.pos || '50% 50%'}/cover no-repeat`, filter:'grayscale(1)'}})),
       h('span', {key:'cap' + si, className:'yj-bt-q', style:{position:'absolute', left:14, bottom:14, right:14, display:'flex', justifyContent:'space-between', alignItems:'center', gap:8, fontSize:13, fontWeight:600}},
