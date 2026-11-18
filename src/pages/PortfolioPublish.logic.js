@@ -1768,19 +1768,26 @@ class Component extends DCLogic {
     React.useEffect(() => () => Component.Music.stop(), []);
     const [vnFx, setVnFx] = React.useState(false);
     const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) { setVnFx(true); setPlaying(true); } };
-    const vinyl = tile('vn', {style:{gap:12}},
-      vnFx ? h('span', {className:'yj-vn-fx yj-g' + (playing ? ' on' : ''), 'aria-hidden':true},
-        h(Component.Glow, {react:true, base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95})) : null,
-      h('span', {className:'yj-vn-tag'}, 'On the turntable'),
-      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
-      h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
-        h('span', {className:'yj-vn-spin' + (playing ? ' on' : '')},
-          h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
-          h('span', {className:'yj-vn-label', 'aria-hidden':true}, h('b', null, mood), h('i', null, 'Side A'))),
-        h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
-      h('span', {className:'yj-vn-now'},
-        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play the ' + mood.toLowerCase() + ' track'}, playing ? '❚❚ Pause' : '▶ Play'),
-        h('span', {'aria-live':'polite', style:{minWidth:0, flex:1, fontSize:13, color:GREY, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}, playing ? 'Now playing · ' + mood : mood + ' · original track')));
+    // Impact first (proof in prime space), with the turntable as a compact player strip.
+    const IMPACT = [['70%', 'fewer errors', 'AVA, for J&J'], ['1 system', 'behind pfizer.com', 'Pfizer, via TCS'], ['4+ yrs', 'health & pharma', 'at TCS, then MA at UAL']];
+    const vinyl = tile('vn', {style:{gap:12, justifyContent:'space-between'}},
+      h('span', {style:{display:'flex', flexDirection:'column', gap:10, minWidth:0}},
+        label('Impact'),
+        h('span', {className:'yj-imp'}, IMPACT.map(([n, k, w]) => h('span', {key:n, className:'yj-imp-row'},
+          h('b', null, n), h('span', null, h('span', {className:'yj-imp-k'}, k), h('span', {className:'yj-imp-w'}, w)))))),
+      h('span', {className:'yj-vn-strip' + (playing ? ' on' : '')},
+        vnFx ? h('span', {className:'yj-vn-fx yj-g' + (playing ? ' on' : ''), 'aria-hidden':true},
+          h(Component.Glow, {react:true, base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.2, cy:.5, cyNarrow:.5, rad:1.2, radNarrow:1.2})) : null,
+        h('span', {className:'yj-vn-mini', onClick:togglePlay, title:playing ? 'Pause' : 'Play'},
+          h('span', {className:'yj-vn-spin' + (playing ? ' on' : '')},
+            h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640})),
+          h('span', {className:'yj-vn-sheen', 'aria-hidden':true})),
+        h('span', {style:{display:'flex', flexDirection:'column', gap:6, minWidth:0, flex:1, position:'relative'}},
+          h('span', {style:{display:'flex', alignItems:'center', gap:8, minWidth:0}},
+            h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play the ' + mood.toLowerCase() + ' track'}, playing ? '❚❚' : '▶'),
+            h('span', {'aria-live':'polite', style:{minWidth:0, fontSize:13, fontWeight:600, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}, playing ? 'Now playing · ' + mood : 'On the turntable')),
+          h('label', {className:'yj-vn-sel'}, h('span', {className:'yj-sr'}, 'Mood'),
+            h('select', {value:mood, onChange:e => { const m = e.target.value; setMood(m); if (playing) Component.Music.play(m); }}, MOODS.map(m => h('option', {key:m, value:m}, m)))))));
 
     // Portrait tile: a slow Ken Burns slideshow of real project imagery,
     // starting on the portrait. Black and white keeps it in the system.
@@ -1884,7 +1891,7 @@ class Component extends DCLogic {
         .yj-vn-tag{align-self:flex-start;font-size:13px;color:${INK};background:rgba(255,255,255,.9);border-radius:999px;padding:4px 10px}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
-        .yj-vn-play{all:unset;cursor:pointer;flex:none;height:30px;padding:0 12px;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${INK};color:#fff;font-size:11px;line-height:1}
+        .yj-vn-play{all:unset;cursor:pointer;flex:none;height:28px;min-width:28px;justify-content:center;padding:0 8px;box-sizing:border-box;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${INK};color:#fff;font-size:11px;line-height:1}
         .yj-vn-play.on{background:#2B3BFF;color:#fff}
         .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
@@ -1948,6 +1955,19 @@ class Component extends DCLogic {
         .yj-cta:hover{background:#2B3BFF;color:#fff}.yj-cta:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-fx{position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:0;transition:opacity 900ms ease;pointer-events:none;z-index:0}
         .yj-vn-fx.on{opacity:1}
+        .yj-imp{display:flex;flex-direction:column}
+        .yj-imp-row{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);column-gap:12px;align-items:baseline;padding:clamp(5px, 1vh, 9px) 0;border-top:1px solid ${LINE}}
+        .yj-imp-row:first-child{border-top:0;padding-top:0}
+        .yj-imp-row b{font-size:clamp(20px, min(2vw, 3.6vh), 30px);font-weight:600;letter-spacing:-0.03em;line-height:1;color:${INK};white-space:nowrap}
+        .yj-imp-row > span{display:flex;flex-direction:column;min-width:0}
+        .yj-imp-k{font-size:14px;font-weight:600;line-height:1.25}
+        .yj-imp-w{font-size:12px;color:${GREY};line-height:1.3}
+        .yj-vn-strip{position:relative;display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:#f3f3f0;overflow:hidden;isolation:isolate}
+        .yj-vn-strip > :not(.yj-g){position:relative;z-index:1}
+        .yj-vn-mini{position:relative;flex:none;width:clamp(56px, min(5vw, 9vh), 76px);aspect-ratio:1;cursor:pointer}
+        .yj-vn-mini .yj-vn-sheen{position:absolute;inset:0}
+        .yj-vn-sel select{font:inherit;font-size:12px;color:${INK};background:rgba(255,255,255,.9);border:1px solid ${LINE};border-radius:999px;padding:3px 8px;max-width:100%;cursor:pointer}
+        .yj-vn-sel select:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}

@@ -106,9 +106,9 @@ Rules:
   - **Ultramarine:** state, meaning selected, playing, hovered or focused.
   - **Ink:** secondary actions (Read more, Copy email, Play when idle).
   - **Grey:** metadata.
-  - The two shader tiles (name top left, turntable bottom right) carry the
-    big colour fields and mirror each other. The turntable is
-    music-reactive (`Glow react`): it turns yellow while a track plays.
+  - The bottom-right tile leads with proof (an Impact list of three facts).
+    The turntable is a compact player strip under it, and its shader
+    (`Glow react`) only shows, in yellow, while a track plays.
   - Don't add a third hue to the shell.
 - Tiles: radius 18, padding `clamp(18px, 1.8vw, 30px)`, gap 28px (20px when
   height ≤ 880px). No borders or shadows at rest; a 3D tilt on hover only.
@@ -254,7 +254,7 @@ Rules:
   phone sizes too: dark text on deep blue fails contrast.
 - Never blend yellow straight into blue; always pass through `mid`.
 - At most **two** shader tiles per screen, placed diagonally for balance
-  (name tile top left, turntable bottom right).
+  (name tile top left; the player strip in the Impact tile, bottom right).
 - Performance and accessibility are built in, so keep them when you
   change it:
   - it renders at 0.6× resolution;
