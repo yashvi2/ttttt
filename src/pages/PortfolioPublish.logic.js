@@ -857,9 +857,10 @@ class Component extends DCLogic {
     return {
       moods:Object.keys(SONGS),
       playing:() => on,
+      level() { const M = Component.Music; if (!on || !M._an) return 0; M._an.getFloatTimeDomainData(M._buf); let q = 0; for (let i = 0; i < M._buf.length; i++) q += M._buf[i] * M._buf[i]; return Math.sqrt(q / M._buf.length); },
       play(m) {
         const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false;
-        if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.7; const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 4; const boost = ctx.createGain(); boost.gain.value = 3.2; master.connect(boost); boost.connect(comp); comp.connect(ctx.destination); filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.connect(master); }
+        if (!ctx) { ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.7; const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 4; const boost = ctx.createGain(); boost.gain.value = 3.2; master.connect(boost); boost.connect(comp); const an = ctx.createAnalyser(); an.fftSize = 512; comp.connect(an); an.connect(ctx.destination); this._an = an; this._buf = new Float32Array(an.fftSize); filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.connect(master); }
         ctx.resume(); this.stop(true);
         song = SONGS[m] || SONGS.Happy; filt.frequency.value = song.lp; step = 0; next = ctx.currentTime + 0.05;
         noise = crackle(song.crackle); timer = setInterval(tick, 60); tick(); on = true; return true;
@@ -884,14 +885,14 @@ class Component extends DCLogic {
       const v3 = a => 'vec3(' + a.map(x => x.toFixed(3)).join(',') + ')';
       const base = v3(P.base || [1, .84, .04]), mid = v3(P.mid || [.97, .95, .86]), core = v3(P.core || [.17, .23, 1]);
       const cx = (P.cx ?? 1.06).toFixed(3), cyW = (P.cy ?? .30).toFixed(3), cyN = (P.cyNarrow ?? -.02).toFixed(3), rW = (P.rad ?? .58).toFixed(3), rN = (P.radNarrow ?? .2).toFixed(3);
-      const fs = `precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;
+      const fs = `precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;uniform float e;
         float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
         float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
         float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.;a*=.5;}return v;}
         void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*1.5;
           vec2 q=vec2(fbm(p+t*.11),fbm(p+vec2(5.2,1.3)-t*.085));
           float f=fbm(p+2.4*q+vec2(t*.06,-t*.03));
-          float asp=r.x/r.y;float wide=smoothstep(1.15,1.9,asp);float rad=mix(${rN},${rW},wide);
+          float asp=r.x/r.y;float wide=smoothstep(1.15,1.9,asp);float rad=mix(${rN},${rW},wide)*(1.-.62*e);
           vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.35)*.05);
           float d=length((uv-c)*vec2(asp*.62,1.));
           float base=1.-smoothstep(0.,rad,d+(f-.5)*.34);
@@ -905,11 +906,14 @@ class Component extends DCLogic {
       gl.useProgram(pr);
       const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
       const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-      const uR = gl.getUniformLocation(pr, 'r'), uT = gl.getUniformLocation(pr, 't'), uM = gl.getUniformLocation(pr, 'm');
+      const uR = gl.getUniformLocation(pr, 'r'), uT = gl.getUniformLocation(pr, 't'), uM = gl.getUniformLocation(pr, 'm'), uE = gl.getUniformLocation(pr, 'e');
+      let ev = 0;
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       let mx = .5, my = .5, tx = .5, ty = .5, raf = 0, vis = true, t0 = performance.now();
       const size = () => { const k = Math.min(devicePixelRatio || 1, 1.5) * 0.6, w = cv.clientWidth, hh = cv.clientHeight; cv.width = Math.max(1, w * k | 0); cv.height = Math.max(1, hh * k | 0); gl.viewport(0, 0, cv.width, cv.height); };
-      const draw = now => { mx += (tx - mx) * .04; my += (ty - my) * .04; gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, reduce ? 12 : (now - t0) / 1000); gl.uniform2f(uM, mx, my); gl.drawArrays(gl.TRIANGLES, 0, 3); };
+      const draw = now => { mx += (tx - mx) * .04; my += (ty - my) * .04; gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, reduce ? 12 : (now - t0) / 1000); gl.uniform2f(uM, mx, my);
+        if (P.react) { const M = Component.Music, tgt = M.playing() ? Math.min(1, .5 + M.level() * 7) : 0; ev += (tgt - ev) * (tgt > ev ? .18 : .05); }
+        gl.uniform1f(uE, ev); gl.drawArrays(gl.TRIANGLES, 0, 3); };
       const loop = now => { draw(now); if (!reduce && vis && !document.hidden) raf = requestAnimationFrame(loop); };
       const ro = new ResizeObserver(() => { size(); draw(performance.now()); }); ro.observe(cv);
       const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; cancelAnimationFrame(raf); if (vis && !reduce) raf = requestAnimationFrame(loop); }); io.observe(cv);
@@ -1756,12 +1760,15 @@ class Component extends DCLogic {
     const [flipAuto, setFlipAuto] = React.useState(false), [flipHov, setFlipHov] = React.useState(false);
     React.useEffect(() => { const t = setTimeout(() => setFlipAuto(true), 5000); return () => clearTimeout(t); }, []);
     const showBack = flipHov ? !flipAuto : flipAuto;
+    const [turns, setTurns] = React.useState(0), lastBack = React.useRef(showBack);
+    React.useEffect(() => { if (lastBack.current !== showBack) { lastBack.current = showBack; setTurns(n => n + 1); } }, [showBack]);
+    const SLATS = 14;
     const MOODS = Component.Music.moods;
     const [mood, setMood] = React.useState('Happy'), [playing, setPlaying] = React.useState(false);
     React.useEffect(() => () => Component.Music.stop(), []);
     const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
     const vinyl = tile('vn', {style:{gap:12}},
-      h(Component.Glow, {base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95}),
+      h(Component.Glow, {react:true, base:[1, .84, .04], mid:[.97, .95, .86], core:[.17, .23, 1], cx:.5, cy:.48, cyNarrow:.48, rad:1.05, radNarrow:.95}),
       h('span', {className:'yj-vn-tag'}, 'On the turntable'),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
@@ -1915,14 +1922,25 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-agent-t{transition:none}}
         .yj-flip{outline:none}
         .yj-flip:focus-visible .yj-flip-in{outline:2px solid ${INK};outline-offset:4px;border-radius:18px}
-        .yj-flip-in{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform 900ms cubic-bezier(.65,0,.2,1)}
-        .yj-flip.is-back .yj-flip-in{transform:rotateY(180deg)}
-        .yj-face{position:absolute;inset:0;box-sizing:border-box;border-radius:18px;padding:clamp(18px, 1.8vw, 30px);display:flex;flex-direction:column;justify-content:space-between;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+        .yj-flip-in{position:relative;display:block;width:100%;height:100%}
+        .yj-face{position:absolute;inset:0;box-sizing:border-box;border-radius:18px;padding:clamp(18px, 1.8vw, 30px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
         .yj-face > :not(.yj-g){position:relative;z-index:1}
-        .yj-flip-front{background:${YEL};color:${INK}}
-        .yj-flip-back{background:#2B3BFF;color:#fff;transform:rotateY(180deg)}
+        .yj-flip-front{background:${YEL};color:${INK};z-index:1}
+        .yj-flip-back{background:#2B3BFF;color:#fff;z-index:0;visibility:hidden}
+        .yj-flip.is-back .yj-flip-back{visibility:visible;z-index:2}
+        .yj-flip.armed.is-back .yj-flip-back,.yj-flip.armed:not(.is-back) .yj-flip-front{z-index:2;animation:yjWipe 420ms linear 380ms both}
+        .yj-flip.armed:not(.is-back) .yj-flip-back{visibility:visible;z-index:1}
         .yj-flip-lead{font-size:clamp(20px, min(2vw, 3.4vh), 32px);line-height:1.25;letter-spacing:-0.02em;font-weight:500;max-width:30ch;color:${YEL}}
-        @media (prefers-reduced-motion:reduce){.yj-flip-in{transition:none}}
+        @keyframes yjWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+        .yj-slats{position:absolute;inset:0;z-index:5;display:flex;pointer-events:none;border-radius:18px;overflow:hidden;perspective:900px}
+        .yj-slat{flex:1;height:100%;transform:rotateY(90deg);animation:yjSlat 760ms cubic-bezier(.65,0,.35,1) both;
+          background-image:linear-gradient(90deg, rgba(0,0,0,.16), rgba(255,255,255,.12) 50%, rgba(0,0,0,.16))}
+        .yj-slats.to-back .yj-slat{background-color:#2B3BFF}
+        .yj-slats.to-front .yj-slat{background-color:${YEL}}
+        @keyframes yjSlat{0%{transform:rotateY(90deg);opacity:0}12%{opacity:1}45%,55%{transform:rotateY(0deg);opacity:1}88%{opacity:1}100%{transform:rotateY(-90deg);opacity:0}}
+        @media (prefers-reduced-motion:reduce){.yj-slats{display:none}.yj-flip.armed .yj-face{animation:none !important}}
+        .yj-cta{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:${INK};background:${YEL};padding:7px 14px;border-radius:999px;white-space:nowrap;transition:background 250ms ease,color 250ms ease}
+        .yj-cta:hover{background:#2B3BFF;color:#fff}.yj-cta:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-pj-n{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
         .yj-pj-plan{all:unset;cursor:pointer;font-family:${F};font-size:12px;font-weight:600;color:${INK};text-decoration:underline;text-underline-offset:3px;margin-left:8px}
         .yj-pj-plan:focus-visible{outline:2px solid ${INK};outline-offset:2px}
@@ -2065,7 +2083,7 @@ class Component extends DCLogic {
         @media (prefers-reduced-motion:reduce){.yj-sc-main,.yj-sc-ans{transition:none}.yj-lg-track{animation:none}.yj-caret,.yj-live,.yj-bt-q,.yj-tl,.yj-steam-on,.yj-bento > *,.yj-wl{animation:none}.yj-wl:hover{transform:none}.yj-sl{transition:none;transform:none}.yj-cup-fill{transition:none}.yj-st,.yj-st:hover{transition:none;transform:rotate(var(--r))}}
       `),
       // intro: the one colour block
-      tile('in', {className:'yj-flip' + (showBack ? ' is-back' : ''), tabIndex:0, role:'group', label:'Introduction. Hover or focus to flip for details.',
+      tile('in', {className:'yj-flip' + (showBack ? ' is-back' : '') + (turns ? ' armed' : ''), tabIndex:0, role:'group', label:'Introduction. Hover or focus to flip for details.',
           onMouseEnter:() => setFlipHov(true), onMouseLeave:() => setFlipHov(false), onFocus:() => setFlipHov(true), onBlur:() => setFlipHov(false),
           style:{background:'transparent', padding:0, overflow:'visible', zIndex:3, perspective:'1400px'}},
         h('span', {className:'yj-flip-in'},
@@ -2084,7 +2102,10 @@ class Component extends DCLogic {
                 h('span', {style:{display:'block'}}, 'Research, strategy and design for health, pharma and social change.'),
                 h('span', {style:{display:'block'}}, 'Four years at TCS; MA Design Management, UAL.')),
               h('span', {style:{display:'flex', flexWrap:'wrap', gap:'2px 0', fontSize:13, lineHeight:1.5, color:'rgba(255,255,255,.78)'}},
-                ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map((k, i) => h('span', {key:k, style:{whiteSpace:'nowrap'}}, i ? h('span', {'aria-hidden':true, style:{margin:'0 8px', opacity:.5}}, '/') : null, k))))))),
+                ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map((k, i) => h('span', {key:k, style:{whiteSpace:'nowrap'}}, i ? h('span', {'aria-hidden':true, style:{margin:'0 8px', opacity:.5}}, '/') : null, k))))),
+          // Kinetic flipper: a wave of vertical slats sweeps across while the new side wipes in behind it.
+          turns ? h('span', {key:'s' + turns, className:'yj-slats ' + (showBack ? 'to-back' : 'to-front'), 'aria-hidden':true},
+            Array.from({length:SLATS}, (_, i) => h('span', {key:i, className:'yj-slat', style:{animationDelay:(i * 30) + 'ms'}}))) : null)),
       h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow),
       tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
         h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
@@ -2093,7 +2114,7 @@ class Component extends DCLogic {
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         tile('tk', {'data-fit':'', style:{justifyContent:'flex-start', gap:6}},
           h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', flexWrap:'wrap', gap:'4px 12px', marginBottom:6}},
-            title('Contact'), h('button', {onClick:p.onContact, className:'yj-link', 'data-drop':'', style:{all:'unset', cursor:'pointer', fontSize:S, fontWeight:600}}, 'Let’s talk over coffee →')),
+            title('Contact'), h('button', {onClick:p.onContact, className:'yj-cta', 'data-drop':''}, 'Let’s talk over coffee →')),
           [['Email', h('button', {onClick:copyEmail, 'aria-live':'polite', style:{all:'unset', cursor:'pointer', fontWeight:600}}, copied ? 'Copied ✓' : 'Copy email')],
            ['LinkedIn', h('a', {href:p.linkedin, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Open profile ↗')],
            ['CV', h('a', {href:p.cv, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Download PDF ↓')]]
