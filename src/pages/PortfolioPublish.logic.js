@@ -1774,7 +1774,7 @@ class Component extends DCLogic {
       h('span', {className:'yj-vn-tag'}, 'On the turntable'),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
-        h('span', {className:'yj-vn-spin'},
+        h('span', {className:'yj-vn-spin' + (playing ? ' on' : '')},
           h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
           h('span', {className:'yj-vn-label', 'aria-hidden':true}, h('b', null, mood), h('i', null, 'Side A'))),
         h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
@@ -1862,7 +1862,8 @@ class Component extends DCLogic {
         .yj-cu-l{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:baseline}
         .yj-vn-disc{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 0}
         .yj-vn-in{position:relative;height:100%;max-height:100%;aspect-ratio:1;max-width:100%}
-        .yj-vn-spin{position:absolute;inset:0;animation:yjVinyl 1.8s linear infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+        .yj-vn-spin{position:absolute;inset:0;animation:yjVinyl 1.8s linear infinite;animation-play-state:paused;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}
+        .yj-vn-spin.on{animation-play-state:running}
         .yj-vn-rec{position:absolute;inset:0;width:100%;height:100%}
         .yj-vn-label{position:absolute;left:50%;top:50%;width:30%;height:30%;transform:translate(-50%,-50%);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:1px;padding:4%;box-sizing:border-box;color:#3a2f22;line-height:1.1;overflow:hidden}
         .yj-vn-label b{font-size:clamp(6px, 0.62vw, 10px);font-weight:600;max-width:100%}

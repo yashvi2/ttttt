@@ -134,10 +134,10 @@ html[data-yj-screen="home"] .dc-hover-e246ab14{display:none !important}
 
 /* Floating dock: the one navigation on every page */
 .yj-hdr{display:none !important}
-.yj-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:5px;border-radius:999px;background:#111;box-shadow:0 14px 30px -12px rgba(0,0,0,.45)}
-.yj-dock button{all:unset;cursor:pointer;font-family:'Schibsted Grotesk',sans-serif;font-size:14px;font-weight:600;color:#bdbdbd;padding:9px 16px;border-radius:999px;white-space:nowrap;transition:background 250ms ease,color 250ms ease}
+.yj-dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:5px;border-radius:999px;background:#2B3BFF;box-shadow:0 14px 30px -12px rgba(43,59,255,.45)}
+.yj-dock button{all:unset;cursor:pointer;font-family:'Schibsted Grotesk',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,.78);padding:9px 16px;border-radius:999px;white-space:nowrap;transition:background 250ms ease,color 250ms ease}
 .yj-dock button:hover{color:#fff}
-.yj-dock .yj-dock-on{background:#2B3BFF;color:#fff}
+.yj-dock .yj-dock-on{background:#FFD60A;color:#111}
 .yj-dock button:focus-visible{outline:2px solid #ffd60a;outline-offset:2px}
 html:not([data-yj-screen="home"]) body{padding-bottom:84px}
 @media (max-width:420px){.yj-dock button{padding:9px 12px;font-size:13px}}
