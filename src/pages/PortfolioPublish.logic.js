@@ -2094,7 +2094,7 @@ class Component extends DCLogic {
         h('span', {className:'yj-flip-in'},
           // Front: just the title and the name.
           h('span', {className:'yj-face yj-flip-front', 'aria-hidden':showBack},
-            h(Component.Glow),
+            h(Component.Glow, {cx:1.0, cy:.42, cyNarrow:.12, rad:1.0, radNarrow:.55}),
             h('span', {style:{fontSize:S}}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years'),
             h('h1', {'aria-label':'Yashvi Jain', className:'yj-wm', style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(44px, min(6vw, 10vh), 104px)', letterSpacing:'-0.06em', lineHeight:.82}},
               ['yashvi', 'jain'].map((w, wi) => h('span', {key:w, 'aria-hidden':true, style:{display:'block'}},
