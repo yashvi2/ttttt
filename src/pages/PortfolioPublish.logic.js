@@ -872,6 +872,56 @@ class Component extends DCLogic {
       }};
   })();
 
+  static Glow = function Glow(P) {
+    P = P || {};
+    // WebGL shader for the intro tile: slow domain-warped noise flowing from yellow through
+    // cream to ultramarine, kept to the right so text sits on yellow. Static under reduced motion.
+    const h = React.createElement, ref = React.useRef(null);
+    React.useEffect(() => {
+      const cv = ref.current; if (!cv) return;
+      const gl = cv.getContext('webgl', {premultipliedAlpha:false, antialias:false}); if (!gl) { cv.style.display = 'none'; return; }
+      const vs = 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+      const v3 = a => 'vec3(' + a.map(x => x.toFixed(3)).join(',') + ')';
+      const base = v3(P.base || [1, .84, .04]), mid = v3(P.mid || [.97, .95, .86]), core = v3(P.core || [.17, .23, 1]);
+      const cx = (P.cx ?? 1.06).toFixed(3), cyW = (P.cy ?? .30).toFixed(3), cyN = (P.cyNarrow ?? -.02).toFixed(3), rW = (P.rad ?? .58).toFixed(3), rN = (P.radNarrow ?? .2).toFixed(3);
+      const fs = `precision mediump float;uniform vec2 r;uniform float t;uniform vec2 m;
+        float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+        float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
+        float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*n(p);p*=2.;a*=.5;}return v;}
+        void main(){vec2 uv=gl_FragCoord.xy/r;vec2 p=uv*vec2(r.x/r.y,1.)*1.5;
+          vec2 q=vec2(fbm(p+t*.045),fbm(p+vec2(5.2,1.3)-t*.035));
+          float f=fbm(p+2.2*q+vec2(t*.025,0.));
+          float asp=r.x/r.y;float wide=smoothstep(1.15,1.9,asp);float rad=mix(${rN},${rW},wide);
+          vec2 c=vec2(${cx}+(m.x-.5)*.04,mix(${cyN},${cyW},wide)+(m.y-.5)*.04+sin(t*.12)*.03);
+          float d=length((uv-c)*vec2(asp*.62,1.));
+          float base=1.-smoothstep(0.,rad,d+(f-.5)*.22);
+          float b=smoothstep(.0,1.,base);
+          vec3 Y=${base},C=${mid},B=${core};
+          vec3 col=mix(Y,C,smoothstep(.05,.42,b));col=mix(col,B,smoothstep(.38,.92,b));
+          gl_FragColor=vec4(col,1.);}`;
+      const sh = (type, src) => { const o = gl.createShader(type); gl.shaderSource(o, src); gl.compileShader(o); return o; };
+      const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { cv.style.display = 'none'; return; }
+      gl.useProgram(pr);
+      const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      const uR = gl.getUniformLocation(pr, 'r'), uT = gl.getUniformLocation(pr, 't'), uM = gl.getUniformLocation(pr, 'm');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let mx = .5, my = .5, tx = .5, ty = .5, raf = 0, vis = true, t0 = performance.now();
+      const size = () => { const k = Math.min(devicePixelRatio || 1, 1.5) * 0.6, w = cv.clientWidth, hh = cv.clientHeight; cv.width = Math.max(1, w * k | 0); cv.height = Math.max(1, hh * k | 0); gl.viewport(0, 0, cv.width, cv.height); };
+      const draw = now => { mx += (tx - mx) * .04; my += (ty - my) * .04; gl.uniform2f(uR, cv.width, cv.height); gl.uniform1f(uT, reduce ? 12 : (now - t0) / 1000); gl.uniform2f(uM, mx, my); gl.drawArrays(gl.TRIANGLES, 0, 3); };
+      const loop = now => { draw(now); if (!reduce && vis && !document.hidden) raf = requestAnimationFrame(loop); };
+      const ro = new ResizeObserver(() => { size(); draw(performance.now()); }); ro.observe(cv);
+      const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; cancelAnimationFrame(raf); if (vis && !reduce) raf = requestAnimationFrame(loop); }); io.observe(cv);
+      const mv = e => { const b = cv.getBoundingClientRect(); tx = (e.clientX - b.left) / b.width; ty = 1 - (e.clientY - b.top) / b.height; };
+      const vz = () => { cancelAnimationFrame(raf); if (!document.hidden && vis && !reduce) raf = requestAnimationFrame(loop); };
+      addEventListener('pointermove', mv, {passive:true}); document.addEventListener('visibilitychange', vz);
+      size(); raf = requestAnimationFrame(loop);
+      return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); removeEventListener('pointermove', mv); document.removeEventListener('visibilitychange', vz); };
+    }, []);
+    return h('canvas', {ref, className:'yj-g', 'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%', borderRadius:'inherit', zIndex:0, pointerEvents:'none', display:'block'}});
+  };
+
   static ContactBento = function ContactBento(p) {
     // Contact in the dashboard system: one yellow focal tile, flat white tiles,
     // the actions recruiters use (copy email, LinkedIn, CV), and the agent as an option.
@@ -1708,6 +1758,7 @@ class Component extends DCLogic {
     React.useEffect(() => () => Component.Music.stop(), []);
     const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
     const vinyl = tile('vn', {style:{gap:12}},
+      h(Component.Glow, {base:[1, 1, 1], mid:[1, .88, .3], core:[.17, .23, 1], cx:.5, cy:.5, cyNarrow:.5, rad:.44, radNarrow:.4}),
       label('On the turntable'),
       h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
@@ -1811,7 +1862,7 @@ class Component extends DCLogic {
         .yj-vn-label i{font-style:normal;font-size:clamp(5px, 0.5vw, 8px);opacity:.75;max-width:100%}
         .yj-vn-moods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}
         .yj-vn-moods::-webkit-scrollbar{display:none}
-        .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY}}
+        .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY};background:#fff}
         .yj-vn-mood.on{background:#2B3BFF;border-color:#2B3BFF;color:#fff}
         .yj-vn-mood:focus-visible,.yj-vn-step:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-now{display:flex;align-items:center;gap:6px;min-width:0}
@@ -2001,6 +2052,7 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
+        h(Component.Glow),
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
