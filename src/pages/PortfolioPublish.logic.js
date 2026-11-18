@@ -1117,6 +1117,15 @@ class Component extends DCLogic {
         .cvs-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;border-top:1px solid ${LINE};padding-top:18px;margin:0}
         .cvs-facts dt{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:${MUTE};margin-bottom:6px}
         .cvs-facts dd{margin:0;font-size:15px;line-height:1.45}
+        .cvs-mq{margin:0 0 28px;display:flex;flex-direction:column;align-items:flex-start}
+        .cvs-mq-view{width:100%;overflow:hidden;border-radius:18px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+        .cvs-mq-track{display:flex;width:max-content;animation:cvsMq 40s linear infinite}
+        .cvs-mq-view:hover .cvs-mq-track{animation-play-state:paused}
+        .cvs-mq-set{display:flex;gap:16px;padding-right:16px}
+        .cvs-mq-it{margin:0;flex:none;height:clamp(220px, 30vw, 380px);aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:${SOFT}}
+        .cvs-mq-it img{width:100%;height:100%;object-fit:cover;display:block}
+        @keyframes cvsMq{to{transform:translateX(-50%)}}
+        @media (prefers-reduced-motion:reduce){.cvs-mq-track{animation:none}.cvs-mq-view{overflow-x:auto}}
         .cvs-sum{background:${SOFT};border-radius:18px;padding:clamp(20px,3vw,36px);display:grid;gap:22px}
         .cvs-sum-rows{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
         .cvs-sum-rows h3{font-size:12px !important;letter-spacing:.12em !important;text-transform:uppercase;color:${A};margin:0 0 8px;font-weight:600}
@@ -1167,6 +1176,11 @@ class Component extends DCLogic {
           h('div', {className:'cvs-eye'}, h('span', null, 'Case study 02'), ' · Self-initiated'),
           h('h2', null, 'CRAY — Care for stray'),
           h('dl', {className:'cvs-facts'}, ...[['My role', c.role], ['Methods', 'Survey, persona journey, card sort, prototyping, usability testing'], ['Output', 'Live prototype and an icon-led v2'], ['Timeline', c.years]].map(([k, v]) => h('div', {key:k}, h('dt', null, k), h('dd', null, v))))),
+        h('section', {className:'cvs-mq', 'aria-label':'CRAY prototype screens'},
+          h('div', {className:'cvs-mq-view'}, h('div', {className:'cvs-mq-track'}, [0, 1].map(k => h('div', {key:k, className:'cvs-mq-set', 'aria-hidden':k === 1 ? true : undefined},
+            [['cover', 'CRAY home: safer streets, happier strays'], ['flow-wireframes', 'User flow and wireframes'], ['phone-hands', 'The prototype on a phone'], ['persona-journey', 'Tarun’s journey through the app'], ['cardsort-ia', 'Card sort and the four-tab structure']].map(([f, a]) =>
+              h('figure', {key:f, className:'cvs-mq-it'}, h('img', {src:__R('assets/web/assets/cray/' + f + '.webp'), alt:k ? '' : a, loading:'lazy'}))))))),
+          c.proto ? h('a', {className:'cvs-btn', href:c.proto, target:'_blank', rel:'noopener', style:{marginTop:16}}, 'Try the live prototype ↗') : null),
         h('div', {className:'cvs-sum'},
           h('div', {className:'cvs-sum-rows'}, ...(c.tldr || []).map(x => h('div', {key:x.k}, h('h3', null, x.k), h('p', null, x.v)))),
           c.proto ? h('div', null, h('a', {className:'cvs-btn', href:c.proto, target:'_blank', rel:'noopener'}, 'Try the live prototype ↗')) : null),
@@ -2619,7 +2633,7 @@ Agent:`;
   mvVals(s, cur) {
     if (s.screen === 'case' && cur.id === 'pfizer') return {isMove:false, isIme:false, isAva:false, isPfizer:true, isCaseStd:false, mvRef:this.mvRef};
     if (s.screen === 'case' && cur.id === 'ava') return {isMove:false, isIme:false, isAva:true, isCaseStd:false, mvRef:this.mvRef};
-    if (s.screen === 'case' && cur.id === 'cray') return {isMove:false, isIme:false, isAva:false, isPfizer:false, isCaseStd:false, isCray:true, mvRef:this.mvRef};
+    // CRAY renders in the original visual case layout (isCaseStd): screens, visuals and the live prototype.
     if (s.screen === 'case' && cur.id === 'ime') { const o = f => () => this.setState({lb:__R('assets/web/assets/ime/' + f.replace(/\.\w+$/, '.webp')), lbAlt:f}); const Y = {c:'#ec3013', w:600}, N = {c:'#201e1d', w:400};
       return {isMove:false, isIme:true, isCaseStd:false, mvRef:this.mvRef, ime:{paper:(this.props.imeTexture ?? 'paper') === 'paper' ? 'url(' + __R('assets/web/assets/ime/paper.webp') + ')' : 'none',
         open:Object.fromEntries(['dull-world.jpg', 'utopia.jpg', 'mac-1.png', 'mac-2.png', 'mac-3.png', 'research-visits.png', 'physical.png', 'visit-1.png', 'visit-2.png', 'visit-3.png', 'visit-4.png', 'phys-1.png', 'phys-2.png', 'phys-3.png', 'phys-4.png', 'phys-5.png', 'phys-6.png', 'phys-7.png', 'phys-8.png', 'phys-9.png', 'textures.png', 'logo-sketches.png', 'logo-final.png', 'madhubani.png', 'illustrations.png', 'ia.png', 'content-ideation.png', 'wireframes.png', 'concept-board.png', 'references.png'].map(f => [f.replace(/\W/g, '_'), o(f)])),
