@@ -1357,9 +1357,10 @@ class Component extends DCLogic {
         .mvs-ph img{transition:transform 700ms cubic-bezier(.2,.7,.2,1)}
         .mvs-ph:hover img{transform:scale(1.03)}
         @media (prefers-reduced-motion:reduce){.mvs-card,.mvs-ph,.mvs-ph img{transition:none}.mvs-card:hover,.mvs-ph:hover,.mvs-ph:hover img{transform:none}}
-        .mvs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(460px, 64vh, 680px);background:${RED} right 20% center/auto 130% no-repeat;color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden;isolation:isolate}
-        .mvs-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(140,10,14,.97) 0%, rgba(150,10,16,.9) 42%, rgba(150,10,16,.15) 70%, rgba(0,0,0,0) 85%), linear-gradient(0deg, rgba(0,0,0,.35), rgba(0,0,0,0) 45%)}
-        .mvs-hero > div{max-width:620px}
+        .mvs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(460px, 64vh, 680px);background:${RED} right 3% center/auto 118% no-repeat;color:#fff;border-radius:22px;padding:clamp(28px,5vw,72px);overflow:hidden;isolation:isolate}
+        .mvs-hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(140,10,14,.98) 0%, rgba(150,10,16,.96) 44%, rgba(150,10,16,.55) 52%, rgba(150,10,16,0) 60%)}
+        .mvs-hero > div{max-width:min(620px, 44%)}
+        @media (max-width:980px){.mvs-hero > div{max-width:620px}}
         .mvs-hero h1{font-size:clamp(40px,5.2vw,80px) !important;line-height:.98 !important;letter-spacing:-0.045em !important;margin:14px 0 18px;font-weight:600}
         .mvs-hero p{font-size:clamp(16px,1.3vw,20px);line-height:1.5;margin:0;max-width:40ch;opacity:.95}
         .mvs-hero .tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
@@ -1450,7 +1451,7 @@ class Component extends DCLogic {
         .fb-in-page{position:relative}
         .fb-in-page > *{position:relative;z-index:1}
         .fb-corner{position:absolute !important;top:calc(-1 * clamp(20px,3vw,40px));right:calc(-1 * clamp(20px,3vw,40px));width:clamp(70px,8vw,110px);height:auto;opacity:.16;z-index:0 !important}
-        .fb-bignum{position:absolute !important;right:0;top:20px;font-size:clamp(70px,9vw,130px);line-height:1;font-weight:600;letter-spacing:-0.05em;color:transparent;-webkit-text-stroke:1.5px ${RED};opacity:.35;z-index:0 !important}
+        .fb-bignum{position:static !important;order:-1;align-self:flex-end;margin:-6px 0 -10px;font-size:clamp(44px,5vw,72px);line-height:1;font-weight:600;letter-spacing:-0.05em;color:transparent;-webkit-text-stroke:1.5px ${RED};opacity:.45}
         .fb-cv-t{font-size:clamp(30px,3.4vw,48px);line-height:1;letter-spacing:-0.04em;font-weight:600}
         .fb-cv-s{font-size:15px;opacity:.9}.fb-cv-hint{margin-top:24px;font-size:13px;opacity:.75}
         .fb-bar{display:flex;align-items:center;gap:16px;font-size:14px;color:${MUTE}}

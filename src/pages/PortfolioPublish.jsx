@@ -7860,7 +7860,7 @@ function template(v) {
               </button>
             </>
           ) : null}
-          {v.showCta ? (
+          {v.showOldFooter ? (
             <>
               {' '}
               <div style={{ '--yj-accent': 'var(--yj-base, #ff4d2e)', padding: '40px 12px 12px', paddingTop: '120px' }}>
@@ -8115,7 +8115,7 @@ function template(v) {
             </>
           ) : null}
         </main>
-        {v.showCta ? (
+        {v.showOldFooter ? (
           <>
             <footer
               style={{
