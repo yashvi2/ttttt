@@ -1832,6 +1832,12 @@ class Component extends DCLogic {
     const pill = React.useRef(null), [pv, setPv] = React.useState(false);
     const pillMove = e => { const t = pill.current; if (t) t.style.transform = `translate(${e.clientX + 14}px, ${e.clientY + 14}px)`; };
     const VID = {ava:'ava', move:'move', pfizer:'pfizer', cray:'cray', ime:'ime'};
+    React.useEffect(() => {
+      if (view !== 'proj' || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }), {threshold:.35});
+      const t = setTimeout(() => document.querySelectorAll('.yj-pv-vid').forEach(v => io.observe(v)), 50);
+      return () => { clearTimeout(t); io.disconnect(); };
+    }, [view, cat]);
     const projectsView = h('div', {className:'yj-pv', role:'region', 'aria-label':'Selected work'},
       h('div', {className:'yj-pv-head'},
         h('h2', {style:{margin:0, fontFamily:F, fontWeight:600, fontSize:'clamp(32px, 3.4vw, 56px)', letterSpacing:'-0.04em', lineHeight:1}}, 'Selected work'),
@@ -1839,9 +1845,9 @@ class Component extends DCLogic {
           k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))),
           h('button', {className:'yj-chip', onClick:() => { const el = document.getElementById('yj-play'); el && el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }}, 'Play ↓'))),
       h('div', {className:'yj-pv-grid', onMouseMove:pillMove, onMouseLeave:() => setPv(false)},
-        shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play().catch(() => {}); } }, onMouseLeave:e => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }, onFocus:e => { const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) v.play().catch(() => {}); }, onBlur:e => { const v = e.currentTarget.querySelector('video'); if (v) v.pause(); }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
+        shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play().catch(() => {}); } }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#e6e6e3' : YEL}},
-            VID[c.id] ? h('video', {className:'yj-pv-vid', src:__R('assets/video/' + VID[c.id] + '.mp4'), muted:true, loop:true, playsInline:true, preload:'metadata', 'aria-hidden':true, tabIndex:-1}) : null,
+            VID[c.id] ? h('video', {className:'yj-pv-vid', src:__R('assets/video/' + VID[c.id] + '.mp4'), muted:true, loop:true, playsInline:true, autoPlay:true, preload:'auto', 'aria-hidden':true, tabIndex:-1}) : null,
             VID[c.id] ? h('span', {className:'yj-pv-draft', 'aria-hidden':true}, '▶ Preview · draft') : null,
             c.pic || h('span', {style:{position:'absolute', left:18, bottom:14, fontWeight:600, fontSize:34, letterSpacing:'-0.04em'}}, c.short)),
           h('span', {style:{display:'flex', justifyContent:'space-between', gap:12, alignItems:'baseline', padding:'10px 2px 0'}},
@@ -2029,10 +2035,8 @@ class Component extends DCLogic {
         .yj-pv-grid .yj-pv-card:not(.yj-pv-s0) .yj-pv-cover{flex:none;aspect-ratio:16/10}
         .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
-        .yj-pv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;opacity:0;transition:opacity 400ms ease;pointer-events:none}
-        .yj-pv-card:hover .yj-pv-vid,.yj-pv-card:focus-visible .yj-pv-vid{opacity:1}
-        .yj-pv-draft{position:absolute;left:12px;top:12px;z-index:3;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.92);color:${INK};opacity:0;transition:opacity 300ms ease}
-        .yj-pv-card:hover .yj-pv-draft,.yj-pv-card:focus-visible .yj-pv-draft{opacity:1}
+        .yj-pv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;pointer-events:none}
+        .yj-pv-draft{position:absolute;left:12px;top:12px;z-index:3;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.92);color:${INK}}
         @media (prefers-reduced-motion:reduce){.yj-pv-vid,.yj-pv-draft{display:none}}
         .yj-pv-card:hover .yj-pv-cover{transform:translateY(-4px);box-shadow:0 22px 40px -22px rgba(0,0,0,.45)}
         .yj-pv-pill{position:fixed;left:0;top:0;z-index:70;pointer-events:none;background:${YEL};color:${INK};font-family:${F};font-size:13px;font-weight:600;padding:8px 14px;border-radius:999px;transition:opacity 200ms ease;box-shadow:0 8px 20px -10px rgba(0,0,0,.4)}

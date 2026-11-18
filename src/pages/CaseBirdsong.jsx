@@ -2890,6 +2890,7 @@ function template(v) {
                   }}
                 >
                   {' '}
+                  {v.ytInline ? (
                   <iframe
                     ref={v.ytRef}
                     src={'https://www.youtube.com/embed/VV3GaKLkHXA?rel=0&enablejsapi=1&mute=1&playsinline=1'}
@@ -2899,7 +2900,22 @@ function template(v) {
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                     style={{ position: 'absolute', inset: '0', width: '100%', height: '100%', border: '0' }}
-                  />{' '}
+                  />
+                  ) : null}
+                  {v.ytPoster ? (
+                    <a
+                      href="https://www.youtube.com/watch?v=VV3GaKLkHXA"
+                      target="_blank"
+                      rel="noopener"
+                      aria-label="Play the Birdsong exhibition video on YouTube (opens in a new tab)"
+                      style={{ position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: 'url(assets/web/assets/ime/web-ns.webp)', backgroundSize: 'cover', backgroundPosition: 'center', textDecoration: 'none' }}
+                    >
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '14px 22px', borderRadius: '999px', background: 'rgba(32,30,29,.82)', color: '#f4eace', fontFamily: "'Poppins',sans-serif", fontSize: '15px', fontWeight: '600' }}>
+                        <span aria-hidden="true" style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#ce863f', display: 'grid', placeItems: 'center', color: '#201e1d', fontSize: '13px' }}>▶</span>
+                        Watch the exhibition
+                      </span>
+                    </a>
+                  ) : null}{' '}
                 </div>
               </figure>
             </div>

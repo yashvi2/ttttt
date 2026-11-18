@@ -31,7 +31,9 @@ class Component extends DCLogic {
     const macs = this.S.map(([f, g, t], i) => { let d = ((i - a) % n + n) % n; if (d > n / 2) d -= n; const far = Math.abs(d) >= 3;
       return { src: 'assets/ime/' + f, alt: g + ' — ' + t, op: i === a ? 1 : 0, tf: i === a ? 'scale(1)' : 'scale(1.06)', left: (33 + d * 38) + '%', cardOp: d === 0 || far ? 0 : 0.85, dur: far ? '0ms' : '1100ms' }; });
     const cur = this.S[a];
-    return { ytRef: this.ytRef, lapRef: this.lapRef, macs, strip,
+    // Inline YouTube works on the live site; inside a sandboxed frame (the artifact preview) embeds are blocked, so show a poster that opens YouTube.
+    const ytInline = typeof window !== 'undefined' && window.top === window.self;
+    return { ytRef: this.ytRef, lapRef: this.lapRef, macs, strip, ytInline, ytPoster: !ytInline,
       macNum: String(a + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0'), macLabel: cur[1] + ' · ' + cur[2],
       macPrev: () => { this.go(-1); this.tick(); }, macNext: () => { this.go(1); this.tick(); },
       macPause: () => this.setState({ paused: true }), macResume: () => this.setState({ paused: false }) };
