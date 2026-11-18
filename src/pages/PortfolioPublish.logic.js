@@ -2012,9 +2012,6 @@ class Component extends DCLogic {
       `),
       // intro: the one colour block
       tile('in', {yellow:true, 'data-fit':'', style:{overflow:'visible', zIndex:3}},
-        p.onAgent ? h('button', {type:'button', className:'yj-agent yj-g', onClick:p.onAgent, 'aria-label':'Ask my portfolio agent'},
-          h('span', {className:'yj-agent-face'}, h(Component.Sketch, {size:40, weight:1.05})),
-          h('span', {className:'yj-agent-t'}, 'Ask my agent')) : null,
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center', gap:12, fontSize:S, flexWrap:'wrap'}},
           h('span', null, h('span', {className:'yj-sr'}, 'Product and service designer'),
             h('span', {'aria-hidden':true}, h('b', {style:{fontWeight:600}}, 'Product & service designer'), ' · 4+ years')),
