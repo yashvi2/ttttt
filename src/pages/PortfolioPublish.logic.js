@@ -1758,8 +1758,13 @@ class Component extends DCLogic {
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
     // On the turntable: one original, generated track per mood. Click the record or Play.
     const [flipAuto, setFlipAuto] = React.useState(false), [flipHov, setFlipHov] = React.useState(false);
-    React.useEffect(() => { const t = setTimeout(() => setFlipAuto(true), 5000); return () => clearTimeout(t); }, []);
-    const showBack = flipHov ? !flipAuto : flipAuto;
+    // Starts on the name, then alternates name / details every 5 s. Hovering holds the details.
+    React.useEffect(() => {
+      if (flipHov) return;
+      const t = setInterval(() => { if (!document.hidden) setFlipAuto(b => !b); }, 5000);
+      return () => clearInterval(t);
+    }, [flipHov]);
+    const showBack = flipHov || flipAuto;
     const [turns, setTurns] = React.useState(0), lastBack = React.useRef(showBack);
     React.useEffect(() => { if (lastBack.current !== showBack) { lastBack.current = showBack; setTurns(n => n + 1); } }, [showBack]);
     const SLATS = 14;
