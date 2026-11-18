@@ -1806,7 +1806,7 @@ class Component extends DCLogic {
     const logos = tile('lg', {style:{flexDirection:'row', alignItems:'center', gap:'clamp(16px, 3vw, 56px)', padding:'0 clamp(18px, 1.8vw, 30px)'}},
       label('Worked with', {flex:'none', whiteSpace:'nowrap'}),
       h('span', {className:'yj-lg-view', style:{flex:1, minWidth:0, overflow:'hidden'}},
-        h('span', {className:'yj-lg-track'}, [0].map(k => h('span', {key:k, className:'yj-lg-set'},
+        h('span', {className:'yj-lg-track'}, [0, 1].map(k => h('span', {key:k, className:'yj-lg-set', 'aria-hidden':k === 1 ? true : undefined},
           LOGOS.map(([src, alt, ht]) => h('img', {key:src, src:__R(src), alt:k ? '' : alt, className:'yj-logo', style:{height:`calc(${ht}px * var(--lgs, 1))`, width:'auto', filter:'brightness(0)', opacity:.8}})))))));
 
     // Dashboard ↔ Projects, switched in place from the floating dock.
@@ -2015,10 +2015,10 @@ class Component extends DCLogic {
         .yj-sl{opacity:0;transition:opacity 600ms ease}
         .yj-sl-on{opacity:1}
         .yj-logo{transition:opacity 250ms ease}.yj-logo:hover{opacity:1 !important}
-        .yj-lg-view{}
-        .yj-lg-track{display:flex;width:100%}
+        .yj-lg-view{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+        .yj-lg-track{display:flex;width:max-content;animation:yjLgScroll 28s linear infinite}
         .yj-lg-view:hover .yj-lg-track{animation-play-state:paused}
-        .yj-lg-set{display:flex;align-items:center;justify-content:space-around;width:100%;gap:clamp(20px, 3vw, 56px)}
+        .yj-lg-set{display:flex;align-items:center;gap:clamp(48px, 6vw, 96px);padding-right:clamp(48px, 6vw, 96px)}
         @keyframes yjLgScroll{to{transform:translateX(-50%)}}
         .yj-bento > *{animation:yjRise 700ms cubic-bezier(.2,.7,.2,1) both}
         .yj-bento > :nth-child(2){animation-delay:0ms}.yj-bento > :nth-child(3){animation-delay:80ms}.yj-bento > :nth-child(4){animation-delay:160ms}
