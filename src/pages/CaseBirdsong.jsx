@@ -19,19 +19,38 @@ function template(v) {
           style={{
             position: 'relative',
             width: '100%',
-            height: 'min(100vh,56.25vw)',
-            minHeight: '360px',
+            aspectRatio: '16/9',
+            maxHeight: '100vh',
             background: '#2e2523',
             overflow: 'hidden',
           }}
         >
-          <img
-            src="assets/web/assets/ime/cover.webp"
-            alt="Birdsong — Are we listening?"
-            data-yj-px="0.08"
-            data-yj-pxmax="40"
-            style={{ position: 'absolute', inset: '-6% 0', width: '100%', height: '112%', objectFit: 'cover' }}
-          />
+          {v.ytInline ? (
+            <iframe
+              ref={v.ytRef}
+              src={'https://www.youtube.com/embed/VV3GaKLkHXA?rel=0&enablejsapi=1&mute=1&playsinline=1'}
+              title="Birdsong: the virtual exhibition (video)"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              style={{ position: 'absolute', inset: '0', width: '100%', height: '100%', border: '0' }}
+            />
+          ) : null}
+          {v.ytPoster ? (
+            <a
+              href="https://www.youtube.com/watch?v=VV3GaKLkHXA"
+              target="_blank"
+              rel="noopener"
+              aria-label="Play the Birdsong exhibition video on YouTube (opens in a new tab)"
+              style={{ position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: 'url(assets/web/assets/ime/cover.webp)', backgroundSize: 'cover', backgroundPosition: 'center', textDecoration: 'none' }}
+            >
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '14px 22px', borderRadius: '999px', background: 'rgba(32,30,29,.82)', color: '#f4eace', fontFamily: "'Poppins',sans-serif", fontSize: '15px', fontWeight: '600' }}>
+                <span aria-hidden="true" style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#ce863f', display: 'grid', placeItems: 'center', color: '#201e1d', fontSize: '13px' }}>▶</span>
+                Watch the exhibition
+              </span>
+            </a>
+          ) : null}
         </div>{' '}
         <section
           data-mv="top"
@@ -63,7 +82,7 @@ function template(v) {
                   color: '#3c593e',
                 }}
               >
-                Case study 03 · Virtual exhibition
+                Case study 03 / Virtual exhibition
               </span>
               <h1
                 style={{
@@ -94,83 +113,10 @@ function template(v) {
               </p>
             </div>
           </div>
-          <dl
-            style={{
-              margin: '0',
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,180px),1fr))',
-              borderTop: '2px solid #201e1d',
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 16px 16px 0' }}>
-              <dt
-                style={{
-                  fontFamily: "'Poppins',sans-serif",
-                  fontSize: '12px',
-                  fontWeight: '600',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: '#6b6664',
-                }}
-              >
-                My role
-              </dt>
-              <dd style={{ margin: '0', fontSize: '17px', lineHeight: '1.4', color: '#2c4a73', fontWeight: '500' }}>
-                UI designer · web and mobile
-              </dd>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 16px 16px 0' }}>
-              <dt
-                style={{
-                  fontFamily: "'Poppins',sans-serif",
-                  fontSize: '12px',
-                  fontWeight: '600',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: '#6b6664',
-                }}
-              >
-                Client
-              </dt>
-              <dd style={{ margin: '0', fontSize: '17px', lineHeight: '1.4', color: '#2c4a73', fontWeight: '500' }}>
-                Indian Music Experience Museum
-              </dd>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 16px 16px 0' }}>
-              <dt
-                style={{
-                  fontFamily: "'Poppins',sans-serif",
-                  fontSize: '12px',
-                  fontWeight: '600',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: '#6b6664',
-                }}
-              >
-                Programme
-              </dt>
-              <dd style={{ margin: '0', fontSize: '17px', lineHeight: '1.4', color: '#2c4a73', fontWeight: '500' }}>
-                British Council · Our Shared Cultural Heritage
-              </dd>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 16px 16px 0' }}>
-              <dt
-                style={{
-                  fontFamily: "'Poppins',sans-serif",
-                  fontSize: '12px',
-                  fontWeight: '600',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: '#6b6664',
-                }}
-              >
-                Timeline
-              </dt>
-              <dd style={{ margin: '0', fontSize: '17px', lineHeight: '1.4', color: '#2c4a73', fontWeight: '500' }}>
-                6 months · 2022
-              </dd>
-            </div>
-          </dl>
+          <p className="bs-meta">
+            <span>UI designer, web and mobile</span> / <span>Indian Music Experience Museum</span> /{' '}
+            <span>British Council, Our Shared Cultural Heritage</span> / <span>6 months, 2022</span>
+          </p>
         </section>{' '}
 {t(v.glance)}
         <section
@@ -2821,103 +2767,7 @@ function template(v) {
                   </div>
                 </div>
               </figure>
-              <figure
-                data-yj-rv="up"
-                aria-label="Exhibition video"
-                style={{
-                  margin: '56px calc(40px - clamp(20px,8.4vw,120px)) 0',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '16px',
-                  padding: 'clamp(20px,3vw,40px)',
-                  backgroundColor: '#2c4a73',
-                  backgroundImage: 'url(assets/web/assets/ime/tex-light.webp)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    gap: '8px 24px',
-                    paddingTop: '16px',
-                    borderTop: '2px solid #f4eace',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Poppins',sans-serif",
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: '#f4eace',
-                    }}
-                  >
-                    Watch the exhibition
-                  </span>
-                  <a
-                    className="dc-hover-d1194afe"
-                    href="https://www.youtube.com/watch?v=VV3GaKLkHXA"
-                    target="_blank"
-                    rel="noopener"
-                    style={{
-                      fontFamily: "'Poppins',sans-serif",
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: '#f4eace',
-                      textDecoration: 'none',
-                      borderBottom: '2px solid #ce863f',
-                      paddingBottom: '2px',
-                    }}
-                  >
-                    Open on YouTube →
-                  </a>
-                </div>
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '16/9',
-                    background: '#000000',
-                    overflow: 'hidden',
-                    borderRadius: '12px',
-                  }}
-                >
-                  {' '}
-                  {v.ytInline ? (
-                  <iframe
-                    ref={v.ytRef}
-                    src={'https://www.youtube.com/embed/VV3GaKLkHXA?rel=0&enablejsapi=1&mute=1&playsinline=1'}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                    style={{ position: 'absolute', inset: '0', width: '100%', height: '100%', border: '0' }}
-                  />
-                  ) : null}
-                  {v.ytPoster ? (
-                    <a
-                      href="https://www.youtube.com/watch?v=VV3GaKLkHXA"
-                      target="_blank"
-                      rel="noopener"
-                      aria-label="Play the Birdsong exhibition video on YouTube (opens in a new tab)"
-                      style={{ position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: 'url(assets/web/assets/ime/web-ns.webp)', backgroundSize: 'cover', backgroundPosition: 'center', textDecoration: 'none' }}
-                    >
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '14px 22px', borderRadius: '999px', background: 'rgba(32,30,29,.82)', color: '#f4eace', fontFamily: "'Poppins',sans-serif", fontSize: '15px', fontWeight: '600' }}>
-                        <span aria-hidden="true" style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#ce863f', display: 'grid', placeItems: 'center', color: '#201e1d', fontSize: '13px' }}>▶</span>
-                        Watch the exhibition
-                      </span>
-                    </a>
-                  ) : null}{' '}
-                </div>
-              </figure>
+
             </div>
           </div>{' '}
         </section>{' '}

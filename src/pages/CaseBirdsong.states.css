@@ -13,3 +13,7 @@
 
 /* Simplified to the Pfizer length: the long design-ideation chapter is hidden; the screens chapter carries the outcome. */
 [data-mv="ideation"]{display:none !important}
+
+/* Simplified top: one metadata line instead of a four-column fact grid */
+.bs-meta{margin:0;padding-top:16px;border-top:2px solid #201e1d;font:500 16px/1.6 'Poppins',sans-serif;color:#4a4644}
+.bs-meta span{color:#2c4a73}

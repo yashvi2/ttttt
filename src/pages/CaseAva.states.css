@@ -16,4 +16,7 @@
 .ava-marks{display:flex;align-items:center;gap:10px}
 .ava-mark{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:12px;color:#fff;font:700 15px/1 'Archivo',sans-serif;letter-spacing:.02em}
 .ava-jnj{height:22px;width:auto;margin-left:8px;opacity:.9}
+/* Screens stand off the white page: a warm stage and a framed, lifted screen */
+.ava .ava-stage{background:#f1eee9;border-radius:24px;padding:clamp(16px,2.6vw,36px)}
+.ava .ava-screen{outline:1px solid #d9d4cd;box-shadow:0 2px 4px rgba(32,30,29,.08),0 28px 60px -16px rgba(32,30,29,.32) !important}
 @media print{.ava .ava-clamp{display:block}.ava .ava-more{display:none}}

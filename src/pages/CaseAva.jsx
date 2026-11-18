@@ -4810,6 +4810,7 @@ function template(v) {
                 ))}
               </div>
               <div
+                className="ava-stage"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,300px),1fr))',
@@ -4874,6 +4875,7 @@ function template(v) {
                 </div>
                 <div
                   ref={v.lensRef}
+                  className="ava-screen"
                   style={{
                     gridColumn: 'span 2',
                     minWidth: '0',
@@ -4969,8 +4971,9 @@ function template(v) {
                     </>
                   ))}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'stretch' }}>
+                <div className="ava-stage" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'stretch' }}>
                   <div
+                    className="ava-screen"
                     style={{
                       flex: '2.2 1 520px',
                       minWidth: '0',
