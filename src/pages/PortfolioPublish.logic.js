@@ -1699,46 +1699,22 @@ class Component extends DCLogic {
       label('Looking for'),
       h('span', {className:'yj-cu-l'},
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
-    // On the turntable: a mood crate of 20 well-known songs. The record moves through the
-    // chosen mood on its own; one click opens the current song (or a search) on Spotify.
-    const CRATE = {
-      Happy:['Here Comes the Sun|The Beatles', 'Walking on Sunshine|Katrina and the Waves', 'Happy|Pharrell Williams', 'Dancing Queen|ABBA'],
-      Calm:['Clair de Lune|Claude Debussy', 'River Flows in You|Yiruma', 'Weightless|Marconi Union', 'Holocene|Bon Iver'],
-      Focus:['Gymnopédie No. 1|Erik Satie', 'Experience|Ludovico Einaudi', 'Intro|The xx', 'Time|Hans Zimmer'],
-      Nostalgic:['Yesterday|The Beatles', 'Dreams|Fleetwood Mac', 'Bohemian Rhapsody|Queen', 'Tum Hi Ho|Arijit Singh'],
-      Night:['Fly Me to the Moon|Frank Sinatra', 'Feeling Good|Nina Simone', 'Redbone|Childish Gambino', 'Blinding Lights|The Weeknd']};
-    const MOODS = Object.keys(CRATE);
-    const [mood, setMood] = React.useState('Happy'), [ti, setTi] = React.useState(0), [song, setSong] = React.useState('');
-    const vnHold = React.useRef(false), spRef = React.useRef(null);
-    const [playing, setPlaying] = React.useState(false);
+    // On the turntable: one original, generated track per mood. Click the record or Play.
+    const MOODS = Component.Music.moods;
+    const [mood, setMood] = React.useState('Happy'), [playing, setPlaying] = React.useState(false);
     React.useEffect(() => () => Component.Music.stop(), []);
     const togglePlay = () => { if (playing) { Component.Music.stop(); setPlaying(false); } else if (Component.Music.play(mood)) setPlaying(true); };
-    React.useEffect(() => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      const t = setInterval(() => { if (!document.hidden && !vnHold.current) setTi(i => (i + 1) % 4); }, 7000);
-      return () => clearInterval(t);
-    }, [mood]);
-    const [trk, art] = CRATE[mood][ti].split('|');
-    const q = song.trim() || (trk + ' ' + art);
-    const spHref = 'https://open.spotify.com/search/' + encodeURIComponent(q);
-    const step = d => setTi(i => (i + d + 4) % 4);
-    const vinyl = tile('vn', {style:{gap:10}, onMouseEnter:() => { vnHold.current = true; }, onMouseLeave:() => { vnHold.current = false; }, onFocus:() => { vnHold.current = true; }, onBlur:() => { vnHold.current = false; }},
-      h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:8}}, label('On the turntable'), label(String(ti + 1) + ' / 4')),
-      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); setTi(0); if (playing) Component.Music.play(m); }}, m))),
+    const vinyl = tile('vn', {style:{gap:12}},
+      label('On the turntable'),
+      h('span', {className:'yj-vn-moods', role:'group', 'aria-label':'Mood'}, MOODS.map(m => h('button', {key:m, type:'button', 'aria-pressed':m === mood, className:'yj-vn-mood' + (m === mood ? ' on' : ''), onClick:() => { setMood(m); if (playing) Component.Music.play(m); }}, m))),
       h('span', {className:'yj-vn-disc'}, h('span', {className:'yj-vn-in', onClick:togglePlay, title:playing ? 'Pause' : 'Play', style:{cursor:'pointer'}},
         h('span', {className:'yj-vn-spin'},
           h('img', {src:__R('assets/vinyl.webp'), alt:'', className:'yj-vn-rec', width:640, height:640}),
-          h('span', {className:'yj-vn-label', 'aria-hidden':true}, playing ? h('b', null, mood) : h('b', null, trk), playing ? h('i', null, 'Side A · original') : h('i', null, art))),
+          h('span', {className:'yj-vn-label', 'aria-hidden':true}, h('b', null, mood), h('i', null, 'Side A'))),
         h('span', {className:'yj-vn-sheen', 'aria-hidden':true}))),
-      h('span', {className:'yj-vn-now', 'aria-live':'polite'},
-        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play a free ' + mood.toLowerCase() + ' track'}, playing ? '❚❚ Pause' : '▶ Play'),
-        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(-1), 'aria-label':'Previous suggested song'}, '‹'),
-        h('span', {style:{minWidth:0, flex:1, textAlign:'center', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', fontSize:13}}, h('b', {style:{fontWeight:600}}, trk), ' · ', art),
-        h('button', {type:'button', className:'yj-vn-step', onClick:() => step(1), 'aria-label':'Next song'}, '›')),
-      h('form', {className:'yj-vn-form', role:'search', onSubmit:e => { e.preventDefault(); spRef.current && spRef.current.click(); }},
-        h('label', {htmlFor:'yj-song', style:{position:'absolute', width:1, height:1, overflow:'hidden', clip:'rect(0 0 0 0)', whiteSpace:'nowrap'}}, 'Search for a different song on Spotify'),
-        h('input', {id:'yj-song', type:'search', value:song, onChange:e => setSong(e.target.value), placeholder:'Or search a song…', autoComplete:'off', enterKeyHint:'search'}),
-        h('a', {ref:spRef, href:spHref, target:'_blank', rel:'noopener', className:'yj-vn-go', 'aria-label':'Find ' + (song.trim() || trk + ' by ' + art) + ' on Spotify, opens in a new tab'}, 'Spotify ↗')));
+      h('span', {className:'yj-vn-now'},
+        h('button', {type:'button', className:'yj-vn-play' + (playing ? ' on' : ''), onClick:togglePlay, 'aria-pressed':playing, 'aria-label':playing ? 'Pause the ' + mood + ' track' : 'Play the ' + mood.toLowerCase() + ' track'}, playing ? '❚❚ Pause' : '▶ Play'),
+        h('span', {'aria-live':'polite', style:{minWidth:0, flex:1, fontSize:13, color:GREY, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}, playing ? 'Now playing · ' + mood : mood + ' · original track')));
 
     // Portrait tile: a slow Ken Burns slideshow of real project imagery,
     // starting on the portrait. Black and white keeps it in the system.
@@ -2023,8 +1999,8 @@ class Component extends DCLogic {
           h('span', {className:'yj-in-p', style:{fontSize:'clamp(14px, min(1.1vw, 2vh), 17px)', lineHeight:1.4, maxWidth:'100%'}},
             h('span', {style:{display:'block'}}, 'Research, strategy and design for health, pharma and social change.'),
             h('span', {style:{display:'block'}}, 'Four years at TCS; MA Design Management, UAL.')),
-          h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:6}},
-            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map(k => h('span', {key:k, style:{fontSize:12, padding:'4px 10px', border:'1px solid ' + INK, borderRadius:999, whiteSpace:'nowrap'}}, k))))),
+          h('span', {className:'yj-chips', 'data-drop':'', style:{display:'flex', flexWrap:'wrap', gap:'2px 0', fontSize:13, lineHeight:1.5, color:'rgba(17,17,17,.7)'}},
+            ['UX research', 'Service design', 'Design systems', 'Co-design', 'Healthcare & pharma'].map((k, i) => h('span', {key:k, style:{whiteSpace:'nowrap'}}, i ? h('span', {'aria-hidden':true, style:{margin:'0 8px', opacity:.45}}, '/') : null, k))))),
       h('div', {className:'yj-a-ph', style:{position:'relative', zIndex:4}}, slideshow),
       tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
         h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
