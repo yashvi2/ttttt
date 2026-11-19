@@ -2190,8 +2190,6 @@ class Component extends DCLogic {
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
         .yj-chip-n{font-size:12px;opacity:.75}
-        .yj-pv-card:nth-child(even){background:${BUTTER}}
-        .yj-pv-card:hover,.yj-pv-card:focus-visible{background:${PERI}}
         .yj-chip:hover{background:${PERI};border-color:${COB};color:${COB}}
         .yj-chip-on:hover{background:${COB};color:#fff}
         .yj-pv-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${BUR}}
@@ -2220,7 +2218,7 @@ class Component extends DCLogic {
         @media (hover:none){.yj-pv-d,.yj-pv-go{max-height:none;opacity:.92}}
         @media (prefers-reduced-motion:reduce){.yj-pv-base,.yj-pv-alt,.yj-pv-d,.yj-pv-go{transition:opacity 200ms ease}.yj-pv-card:hover .yj-pv-base{transform:none}}
         .yj-pv-grid .yj-pv-card:not(.yj-pv-s0) .yj-pv-cover{flex:none;aspect-ratio:16/10}
-        .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;box-sizing:border-box;padding:8px;border-radius:24px;background:${POWDER};transition:background 300ms ease;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;box-sizing:border-box;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
         .yj-pv-base{filter:url(#yj-tri)}
         .yj-pv-card:hover .yj-pv-base,.yj-pv-card:focus-visible .yj-pv-base{filter:none}
