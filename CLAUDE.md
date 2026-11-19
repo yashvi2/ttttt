@@ -150,6 +150,9 @@ Rules:
 |---|---|---|
 | `BentoHome` | logic.js | 12×6 grid plus a logos row; `view` is `'dash'` or `'proj'`. Intro = editorial hero (`.yj-ed`); photo tile = visual diary (`.yj-dy`, photos + muted video loops, prev/next, counter) |
 | Projects view | inside BentoHome | cinematic banners: B/W cover crossfades to a second real asset (`ALT`) or trailer (`VID`) on hover; filters All / UX / Service design / Co-design / Play |
+| Editorial cards (`.yj-ec`) | Projects view | projects after the first three banners: image left; number / sector eyebrow (burgundy), serif title, **bold name** — description, rule, cobalt "View case study →", yellow sparkle |
+| Icon buttons (`.yj-ib`, `.yj-ib-solid`) + pill (`.yj-pill`) | Projects view, "Where next" | 64px circles (solid cobalt or outlined) and the yellow pill with an arrow; every one navigates somewhere real |
+| Stay in touch (`.yj-ct2-keep`) | ContactBento | yellow card, email field + cobalt round submit; validates, then drafts a mailto (no backend) |
 | `tile(area, props, ...kids)` | inside BentoHome | the one tile primitive; `onClick` makes a button, `href` an anchor |
 | `Dock` | logic.js | fixed pill nav, Dashboard / Projects |
 | `AboutBento` | logic.js | editorial spread (story so far, photo collage, Austen quote), experience/skills tiles, then **Beyond the Brief** (`#beyond`, scrapbook wall) |

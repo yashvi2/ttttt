@@ -935,6 +935,13 @@ class Component extends DCLogic {
     const POWDER = '#E9ECFF', PERI = '#D9DFFF', BUTTER = '#FFF4B8', VAN = '#FFF7D6';
     const F = "'DM Sans', sans-serif", EMAIL = 'yashvi.jain.yj@gmail.com';
     const [copied, setCopied] = React.useState(false);
+    // Stay in touch: there is no backend, so the form drafts an email to me
+    // with the visitor's address in it. Validates first; says what happened.
+    const [mail, setMail] = React.useState(''), [sent, setSent] = React.useState('');
+    const keep = e => { e.preventDefault(); const v = mail.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { setSent('Please enter a valid email address.'); return; }
+      window.location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Let’s stay in touch') + '&body=' + encodeURIComponent('Hi Yashvi,\n\nI’d like to stay in touch. You can reach me at ' + v + '.\n\n');
+      setSent('Your email app should open with a short note to me. Thank you!'); };
     const copy = async () => { try { await navigator.clipboard.writeText(EMAIL); } catch (_) { const ta = document.createElement('textarea'); ta.value = EMAIL; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); } setCopied(true); setTimeout(() => setCopied(false), 1800); };
     const london = () => new Date().toLocaleTimeString('en-GB', {timeZone:'Europe/London', hour:'2-digit', minute:'2-digit'});
     const [now, setNow] = React.useState(london());
@@ -971,6 +978,21 @@ class Component extends DCLogic {
         .yj-ct2-info dl{margin:0;display:grid;gap:14px}.yj-ct2-info dd{margin:2px 0 0;font-size:17px;font-weight:600}
         .yj-ct2-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:${COB};margin-right:8px;animation:yjCtLive 2s ease-in-out infinite}
         @keyframes yjCtLive{50%{opacity:.25}}
+        .yj-ct2-keep{grid-column:span 12;position:relative;background:${YEL} !important;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:end;gap:24px 48px;padding:clamp(24px,3vw,40px) !important}
+        .yj-ct2-kspark{position:absolute;right:clamp(20px,2.4vw,36px);top:clamp(18px,2vw,28px);width:40px;height:auto;fill:${COB}}
+        .yj-ct2-kk{display:block;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:${INK};margin-bottom:10px}
+        .yj-ct2 h2.yj-ct2-kh{margin:0;font-family:${SERIF} !important;font-weight:400 !important;font-size:clamp(34px,3.6vw,56px) !important;line-height:1.02 !important;letter-spacing:-0.01em !important;color:${INK}}
+        .yj-ct2-form{position:relative;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 24px;border-radius:999px;background:${VAN};flex-wrap:wrap}
+        .yj-ct2-form input{flex:1;min-width:0;height:52px;border:0;background:transparent;font:500 16px/1 ${F};color:${INK};outline:none}
+        .yj-ct2-form input::placeholder{color:${GREY};opacity:1}
+        .yj-ct2-form:focus-within{box-shadow:0 0 0 2px ${COB}}
+        .yj-ct2-form button{all:unset;cursor:pointer;flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:${COB};color:#fff;font-size:22px;transition:background 250ms ease,color 250ms ease}
+        .yj-ct2-form button:hover{background:${INK};color:${YEL}}
+        .yj-ct2-form button:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-ct2-msg{position:absolute;left:24px;top:calc(100% + 10px);font-size:14px;font-weight:500;color:${INK}}
+        .yj-ct2-msg:empty{display:none}
+        .yj-ct2-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+        @media (max-width:980px){.yj-ct2-keep{grid-template-columns:1fr;padding-bottom:56px !important}}
         @media (max-width:980px){.yj-ct2-hero,.yj-ct2-ways,.yj-ct2-info,.yj-ct2-agent{grid-column:span 12}}
         @media (max-width:640px){.yj-ct2{padding:16px 16px 110px;gap:18px}.yj-ct2-hero{min-height:300px}.yj-ct2-post{display:none}.yj-ct2-stamp{width:52px;height:64px;top:22px}.yj-ct2-stamp svg{width:30px}}
         @media (prefers-reduced-motion:reduce){.yj-ct2 > div,.yj-ct2-dot{animation:none}}
@@ -996,7 +1018,17 @@ class Component extends DCLogic {
       h('div', {className:'yj-ct2-agent'},
         h('div', {style:{maxWidth:'52ch'}}, h('h2', {style:{margin:'0 0 6px', fontFamily:SERIF, fontWeight:500, fontSize:30, letterSpacing:'-0.01em'}}, 'Prefer to ask questions first?'),
           h('p', {style:{margin:0, fontSize:16, lineHeight:1.5, color:'#444'}}, 'My portfolio agent can answer questions about my work and experience, any time. It passes the conversation on to me if you’d like a reply.')),
-        h('button', {className:'yj-ct2-btn', onClick:p.onAgent}, 'Ask my agent →')));
+        h('button', {className:'yj-ct2-btn', onClick:p.onAgent}, 'Ask my agent →')),
+      h('div', {className:'yj-ct2-keep'},
+        h('svg', {className:'yj-ct2-kspark', viewBox:'0 0 410 442', 'aria-hidden':true}, h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})),
+        h('div', null,
+          h('span', {className:'yj-ct2-kk'}, 'Stay in touch'),
+          h('h2', {className:'yj-ct2-kh'}, 'Let’s create', h('br'), 'something together.')),
+        h('form', {className:'yj-ct2-form', onSubmit:keep, noValidate:true},
+          h('label', {htmlFor:'yj-keep-mail', className:'yj-ct2-sr'}, 'Your email address'),
+          h('input', {id:'yj-keep-mail', type:'email', autoComplete:'email', placeholder:'Your email address', value:mail, onChange:e => { setMail(e.target.value); setSent(''); }, 'aria-describedby':'yj-keep-msg'}),
+          h('button', {type:'submit', 'aria-label':'Send my email address to Yashvi'}, h('span', {'aria-hidden':true}, '→')),
+          h('span', {id:'yj-keep-msg', className:'yj-ct2-msg', role:'status', 'aria-live':'polite'}, sent))));
   };
 
   static AboutBento = function AboutBento(p) {
@@ -1990,6 +2022,7 @@ class Component extends DCLogic {
     const shown = list.filter(c => cat === 'All' || c.cat === cat);
     const pill = React.useRef(null), [pv, setPv] = React.useState(false);
     const pillMove = e => { const t = pill.current; if (t) t.style.transform = `translate(${e.clientX + 14}px, ${e.clientY + 14}px)`; };
+    const SPK = 'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z';
     const VID = {move:'move'}; // only Move has a real video (its trailer)
     // A second real asset per project; the cover crossfades to it on hover.
     const ALT = {ava:'assets/web/assets/ava/hero-mock.webp', pfizer:'assets/web/assets/pfizer/home.webp', cray:'assets/web/assets/cray/phone-hands.webp',
@@ -2005,7 +2038,7 @@ class Component extends DCLogic {
           k, h('span', {className:'yj-chip-n'}, k === 'All' ? list.length : list.filter(c => c.cat === k).length))),
           h('button', {className:'yj-chip', onClick:() => { const el = document.getElementById('yj-play'); el && el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }}, 'Play ↓'))),
       h('div', {className:'yj-pv-grid', onMouseMove:pillMove, onMouseLeave:() => setPv(false)},
-        shown.map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play().catch(() => {}); } }, onMouseLeave:e => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }, onFocus:e => { const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) v.play().catch(() => {}); }, onBlur:e => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
+        shown.slice(0, 3).map((c, i) => h('button', {key:c.id, onClick:c.open, onMouseEnter:e => { pillMove(e); setPv(true); const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) { v.play().catch(() => {}); } }, onMouseLeave:e => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }, onFocus:e => { const v = e.currentTarget.querySelector('video'); if (v && !matchMedia('(prefers-reduced-motion: reduce)').matches) v.play().catch(() => {}); }, onBlur:e => { const v = e.currentTarget.querySelector('video'); if (v) { v.pause(); v.currentTime = 0; } }, className:'yj-pv-card yj-pv-s' + (i % 6), 'aria-label':'Open case study: ' + c.short},
           h('span', {className:'yj-pv-cover', style:{background:c.pic ? '#2a2a28' : YEL}},
             h('span', {className:'yj-pv-base'}, c.pic || h('span', {className:'yj-pv-word'}, c.short)),
             ALT[c.id] ? h('span', {className:'yj-pv-alt', 'aria-hidden':true, style:{backgroundImage:`url(${__R(ALT[c.id])})`}}) : null,
@@ -2016,6 +2049,18 @@ class Component extends DCLogic {
               h('span', {className:'yj-pv-t'}, c.short),
               (c.cardLine || c.summary) ? h('span', {className:'yj-pv-d'}, c.cardLine || c.summary) : null,
               h('span', {className:'yj-pv-go', 'aria-hidden':true}, c.id === 'askbeta' ? 'Open the prototype ↗' : 'Read the case study →')))))),
+      // Editorial cards: projects after the three feature banners.
+      shown.length > 3 ? h('div', {className:'yj-ec-list'}, shown.slice(3).map(c => h('button', {key:c.id, type:'button', className:'yj-ec', onClick:c.open,
+          'aria-label':(c.id === 'askbeta' ? 'Open the prototype: ' : 'Open case study: ') + c.short},
+        h('span', {className:'yj-ec-img'}, h('span', {className:'yj-pv-base'}, c.pic || h('span', {className:'yj-pv-word'}, c.short)),
+          ALT[c.id] ? h('span', {className:'yj-pv-alt', 'aria-hidden':true, style:{backgroundImage:`url(${__R(ALT[c.id])})`}}) : null),
+        h('span', {className:'yj-ec-body'},
+          h('svg', {className:'yj-ec-spark', viewBox:'0 0 410 442', 'aria-hidden':true}, h('path', {d:SPK})),
+          h('span', {className:'yj-ec-k'}, String(list.indexOf(c) + 1).padStart(2, '0') + ' / ' + (c.sector || c.cat)),
+          h('span', {className:'yj-ec-h'}, c.title),
+          h('span', {className:'yj-ec-d'}, h('b', null, c.short), (c.cardLine || c.summary) ? ' — ' + (c.cardLine || c.summary) : ''),
+          h('span', {className:'yj-ec-rule', 'aria-hidden':true}),
+          h('span', {className:'yj-ec-go'}, c.id === 'askbeta' ? 'Open the prototype' : 'View case study', h('span', {'aria-hidden':true}, c.id === 'askbeta' ? ' ↗' : ' →')))))) : null,
       h('section', {id:'yj-play', className:'yj-play', 'aria-labelledby':'yj-play-h'},
         h('div', {className:'yj-play-head'},
           h('h2', {id:'yj-play-h', style:{margin:0, fontFamily:SERIF, fontWeight:500, fontSize:'clamp(36px, 3.6vw, 60px)', letterSpacing:'-0.02em', lineHeight:1}}, 'Play'),
@@ -2028,6 +2073,14 @@ class Component extends DCLogic {
         ].map((it, i) => h('figure', {key:i, className:'yj-play-it ' + (it.cls || '') + ' r' + i},
           h('div', {className:'yj-play-m', style:{aspectRatio:it.ar}}, it.el),
           h('figcaption', null, h('span', {className:'yj-play-k'}, it.k), h('span', {className:'yj-play-t'}, it.t), it.n ? h('span', {className:'yj-play-n'}, it.n) : null))))),
+      h('nav', {className:'yj-wn', 'aria-label':'Where next'},
+        h('span', {className:'yj-wn-k'}, 'Where next'),
+        h('span', {className:'yj-wn-row'},
+          h('button', {type:'button', className:'yj-ib yj-ib-solid', onClick:p.onAbout, 'aria-label':'About me', title:'About'}, h('svg', {viewBox:'0 0 410 442', 'aria-hidden':true}, h('path', {d:SPK}))),
+          h('a', {className:'yj-ib', href:p.linkedin, target:'_blank', rel:'noopener', 'aria-label':'LinkedIn profile (opens in a new tab)', title:'LinkedIn'}, h('span', {'aria-hidden':true}, '↗')),
+          h('button', {type:'button', className:'yj-ib', onClick:p.onHome, 'aria-label':'Back to the dashboard', title:'Dashboard'},
+            h('svg', {viewBox:'0 0 24 24', 'aria-hidden':true}, [4, 12, 20].flatMap(y => [4, 12, 20].map(x => h('circle', {key:x + '-' + y, cx:x, cy:y, r:2.2}))))),
+          h('button', {type:'button', className:'yj-pill', onClick:p.onBeyond}, 'Explore more', h('span', {'aria-hidden':true}, '→')))),
       h('span', {ref:pill, className:'yj-pv-pill', 'aria-hidden':true, style:{opacity:pv ? 1 : 0}}, 'View case study ↗'));
 
     const navTile = (area, name, hint, onClick, kids) => tile(area, {onClick, label:name}, h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline'}}, title(name), arrow), label(hint), kids);
@@ -2193,6 +2246,37 @@ class Component extends DCLogic {
         .yj-chip:hover{background:${PERI};border-color:${COB};color:${COB}}
         .yj-chip-on:hover{background:${COB};color:#fff}
         .yj-pv-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${BUR}}
+        .yj-ec-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:24px}
+        .yj-ec{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);min-height:300px;border-radius:18px;overflow:hidden;background:${PAPER};box-shadow:0 1px 0 rgba(36,36,36,.04);transition:box-shadow 400ms ease,transform 400ms cubic-bezier(.2,.7,.2,1);font-family:${F};color:${INK}}
+        .yj-ec:hover{box-shadow:0 26px 44px -28px rgba(36,36,36,.45);transform:translateY(-2px)}
+        .yj-ec:focus-visible{outline:2px solid ${COB};outline-offset:3px}
+        .yj-ec-img{position:relative;display:block;overflow:hidden;background:#2a2a28}
+        .yj-ec:hover .yj-pv-alt,.yj-ec:focus-visible .yj-pv-alt{opacity:1;transform:scale(1.02)}
+        .yj-ec:hover .yj-pv-base,.yj-ec:focus-visible .yj-pv-base{transform:scale(1.06);filter:none}
+        .yj-ec-body{position:relative;display:flex;flex-direction:column;gap:12px;padding:clamp(22px,2.4vw,36px)}
+        .yj-ec-spark{position:absolute;right:22px;top:20px;width:26px;height:auto;fill:${YEL};filter:drop-shadow(0 0 1px rgba(36,36,36,.25));transition:transform 600ms cubic-bezier(.2,.7,.2,1)}
+        .yj-ec:hover .yj-ec-spark{transform:rotate(90deg)}
+        .yj-ec-k{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:${BUR};padding-right:40px}
+        .yj-ec-h{font-family:${SERIF};font-weight:400;font-size:clamp(28px,2.4vw,40px);line-height:1.02;letter-spacing:-0.01em;color:${INK}}
+        .yj-ec-d{font-size:15px;line-height:1.55;color:${INK};max-width:42ch;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.yj-ec-d b{font-weight:600}
+        .yj-ec-rule{display:block;width:112px;height:2px;margin-top:auto;background:linear-gradient(90deg, ${INK} 0 70%, ${LINE} 70%)}
+        .yj-ec-go{font-size:15px;font-weight:600;color:${COB};display:inline-flex;gap:8px}
+        .yj-ec:hover .yj-ec-go span{transform:translateX(4px)}.yj-ec-go span{transition:transform 250ms ease}
+        .yj-wn{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px;margin:48px 0 8px;padding-top:24px;border-top:1px solid ${LINE}}
+        .yj-wn-k{font-family:${SERIF};font-size:clamp(28px,2.6vw,40px);color:${INK}}
+        .yj-wn-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        .yj-ib{all:unset;box-sizing:border-box;cursor:pointer;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(36,36,36,.22);background:${PAPER};color:${INK};font-size:22px;line-height:1;text-decoration:none;transition:background 250ms ease,color 250ms ease,border-color 250ms ease,transform 250ms ease}
+        .yj-ib svg{width:22px;height:22px;fill:currentColor}
+        .yj-ib-solid{background:${COB};border-color:${COB};color:#fff}
+        .yj-ib:hover{background:${PERI};border-color:${COB};color:${COB}}
+        .yj-ib-solid:hover{background:${INK};border-color:${INK};color:${YEL}}
+        .yj-ib:focus-visible,.yj-pill:focus-visible{outline:2px solid ${COB};outline-offset:3px}
+        .yj-pill{all:unset;box-sizing:border-box;cursor:pointer;height:64px;display:inline-flex;align-items:center;gap:22px;padding:0 30px;border-radius:999px;background:${YEL};color:${INK};font-family:${F};font-size:17px;font-weight:600;transition:background 250ms ease,color 250ms ease}
+        .yj-pill span{font-size:20px;transition:transform 250ms ease}
+        .yj-pill:hover{background:${COB};color:#fff}.yj-pill:hover span{transform:translateX(4px)}
+        @media (max-width:980px){.yj-ec-list{grid-template-columns:1fr}}
+        @media (max-width:640px){.yj-ec{grid-template-columns:1fr}.yj-ec-img{aspect-ratio:16/10}.yj-ib,.yj-pill{height:52px}.yj-ib{width:52px}}
+        @media (prefers-reduced-motion:reduce){.yj-ec,.yj-ec-spark,.yj-ib,.yj-pill span{transition:none}.yj-ec:hover{transform:none}.yj-ec:hover .yj-ec-spark{transform:none}}
         .yj-chip-on{background:${COB};border-color:${COB};color:#fff}
         .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${COB};outline-offset:3px}
         .yj-pv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;grid-auto-flow:dense;gap:24px;align-items:stretch}
@@ -3255,7 +3339,8 @@ Agent:`;
         offClock:[{k:'Bakeaway', src:__R('assets/web/assets/about/bakery.webp'), href:'https://www.instagram.com/bakeaway_yashvijain/', v:'My home bakery. A recipe is a service blueprint: the steps are simple, the care isn’t.'},
           {k:'Travel', src:__R('assets/web/assets/about/travel.webp'), v:'New places, no fixed itinerary. Fieldwork I don’t have to write up.'},
           {k:'Reading', src:__R('assets/web/assets/about/reading.webp'), v:'Always halfway through something. Fiction for the people, non-fiction for the systems.'}]}) : null,
-      landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onAgent:() => this.setState({chatOpen:true}), onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
+      landingHero: h(Component.BentoHome, {view:s.homeView || 'dash', onAgent:() => this.setState({chatOpen:true}), onContact:() => this.go('contact'), onWork:() => this.go('work'), onAbout:() => this.go('approach'), onHome:() => this.go('home'),
+        onBeyond:() => { this.go('approach'); setTimeout(() => { const el = document.getElementById('beyond'); el && el.scrollIntoView({behavior:'auto', block:'start'}); }, 450); }, cv:__R('uploads/assets-1790874602631-0p68.pdf'), linkedin:'https://www.linkedin.com/in/yashvi-jain-b049851ba/', count:cases.length,
         projects:['ava', 'move', 'pfizer', 'cray', 'ime', 'askbeta'].map(id => { const c = cases.find(x => x.id === id); return c && {...c, origin:{ava:'Client / TCS', pfizer:'Client / TCS', move:'MA / UAL', cray:'Self-initiated', ime:'Internship', askbeta:'Built for Lovable’s #SheBuilds'}[id], kinds:(c.tags || []).map(t => t.split(' ').map(w => /^(UX|UI)$/.test(w) ? w : w.toLowerCase()).join(' ')).join(', '), pic:id === 'askbeta' ? c.cover : this.pic(c, false), star:id === 'ava' || id === 'move', stat:{ava:'70% fewer errors', pfizer:'became Pfizer’s design system', move:'tested with families', cray:'end-to-end platform', ime:'museum taken online', askbeta:'live prototype'}[id]}; }).filter(Boolean)}),
       shapeMorph: h(Component.Morph), sketchBig: h(Component.Sketch, {size:'0.62em', weight:1.1}), sketchSmall: h(Component.Sketch, {size:46, weight:1.05}),
       fabEnter:() => this.setState({fabHover:true}), fabLeave:() => this.setState({fabHover:false}),
