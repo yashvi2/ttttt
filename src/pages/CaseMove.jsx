@@ -18,7 +18,7 @@ function template(v) {
           overflowX: 'clip',
           background: '#fcfbf8',
           color: '#141210',
-          fontFamily: "'Source Serif 4',serif",
+          fontFamily: "'Cormorant Garamond',serif",
           paddingBottom: '64px',
         }}
       >
@@ -52,7 +52,7 @@ function template(v) {
                 className="dc-hover-d5d3cd45"
                 onClick={c?.go}
                 style={css(
-                  `cursor:pointer;font-family:'Source Serif 4',serif;font-size:13px;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;color:${c?.c ?? ''};text-decoration:none;border-bottom:2px solid ${c?.u ?? ''};padding-bottom:2px`,
+                  `cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;color:${c?.c ?? ''};text-decoration:none;border-bottom:2px solid ${c?.u ?? ''};padding-bottom:2px`,
                 )}
               >
                 {t(c?.l)}
@@ -77,7 +77,7 @@ function template(v) {
             <span
               style={{
                 display: 'block',
-                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontWeight: '600',
                 fontSize: 'clamp(56px,11.5vw,184px)',
                 lineHeight: '0.92',
@@ -99,7 +99,7 @@ function template(v) {
               alignItems: 'center',
               gap: '8px 20px',
               flexWrap: 'wrap',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -116,7 +116,7 @@ function template(v) {
           <div style={{ textAlign: 'center', padding: '14px 0 10px', borderBottom: '1px solid #141210' }}>
             <span
               style={{
-                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontWeight: '500',
                 fontSize: 'clamp(40px,7vw,104px)',
                 lineHeight: '1',
@@ -147,7 +147,7 @@ function template(v) {
                   className="dc-hover-d5d3cd45"
                   onClick={c?.go}
                   style={css(
-                    `cursor:pointer;font-family:'Source Serif 4',serif;font-size:13px;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;color:${c?.c ?? ''};text-decoration:none;border-bottom:2px solid ${c?.u ?? ''};padding-bottom:2px`,
+                    `cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;color:${c?.c ?? ''};text-decoration:none;border-bottom:2px solid ${c?.u ?? ''};padding-bottom:2px`,
                   )}
                 >
                   {t(c?.l)}
@@ -184,7 +184,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -197,7 +197,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '26px',
                       lineHeight: '1.05',
@@ -208,7 +208,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '15px',
                       lineHeight: '1.4',
                       color: '#4a4440',
@@ -218,7 +218,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -240,7 +240,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   fontWeight: '700',
@@ -253,7 +253,7 @@ function template(v) {
               <h1
                 style={{
                   margin: '0',
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(40px,5.6vw,88px)',
                   lineHeight: '0.98',
@@ -267,7 +267,7 @@ function template(v) {
               <p
                 style={{
                   margin: '0',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: 'clamp(19px,1.5vw,22px)',
                   lineHeight: '1.45',
@@ -284,7 +284,7 @@ function template(v) {
                   flexWrap: 'wrap',
                   gap: '6px 20px',
                   padding: '10px 0',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
@@ -318,7 +318,7 @@ function template(v) {
                 </div>
                 <figcaption
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontStyle: 'italic',
                     fontSize: '14px',
                     lineHeight: '1.45',
@@ -331,7 +331,7 @@ function template(v) {
               <div
                 style={{
                   margin: '0',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '17px',
                   lineHeight: '1.62',
                   color: '#2a2522',
@@ -345,7 +345,7 @@ function template(v) {
                   <span
                     style={{
                       float: 'left',
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '76px',
                       lineHeight: '0.8',
@@ -362,7 +362,7 @@ function template(v) {
                 <p style={{ margin: '0 0 14px' }}>
                   <strong
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
                       fontSize: '15px',
@@ -399,7 +399,7 @@ function template(v) {
                   </div>
                   <figcaption
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontStyle: 'italic',
                       fontSize: '14px',
                       lineHeight: '1.45',
@@ -414,7 +414,7 @@ function template(v) {
                     onClick={v.mv?.goResearch}
                     style={{
                       cursor: 'pointer',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '14px',
                       letterSpacing: '0.08em',
@@ -461,7 +461,7 @@ function template(v) {
                 </button>
                 <figcaption
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontStyle: 'italic',
                     fontSize: '14px',
                     lineHeight: '1.45',
@@ -483,7 +483,7 @@ function template(v) {
               >
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -496,7 +496,7 @@ function template(v) {
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px' }}>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '72px',
                       lineHeight: '0.85',
@@ -507,7 +507,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '15px',
                       lineHeight: '1.4',
                       color: '#141210',
@@ -536,7 +536,7 @@ function template(v) {
               <div data-yj-rv="up" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -554,7 +554,7 @@ function template(v) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '12px 0' }}>
                       <span
                         style={{
-                          fontFamily: "'Source Serif 4',serif",
+                          fontFamily: "'Cormorant Garamond',serif",
                           fontSize: '12px',
                           letterSpacing: '0.1em',
                           fontWeight: '700',
@@ -566,7 +566,7 @@ function template(v) {
                       </span>
                       <span
                         style={{
-                          fontFamily: "'Source Serif 4',serif",
+                          fontFamily: "'Cormorant Garamond',serif",
                           fontSize: '15px',
                           lineHeight: '1.5',
                           color: '#2a2522',
@@ -594,7 +594,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -607,7 +607,7 @@ function template(v) {
             <span
               style={{
                 flex: '1 1 480px',
-                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontStyle: 'italic',
                 fontWeight: '500',
                 fontSize: 'clamp(20px,1.8vw,26px)',
@@ -643,7 +643,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -656,7 +656,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -670,7 +670,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -693,7 +693,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 20px 16px 0' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -705,7 +705,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
@@ -715,7 +715,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '14px',
                   lineHeight: '1.45',
@@ -728,7 +728,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 20px 16px 20px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -740,7 +740,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
@@ -750,7 +750,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '14px',
                   lineHeight: '1.45',
@@ -763,7 +763,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 20px 16px 20px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -775,7 +775,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
@@ -785,7 +785,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '14px',
                   lineHeight: '1.45',
@@ -798,7 +798,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', padding: '16px 0 16px 20px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -810,7 +810,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: '24px',
                   color: '#141210',
@@ -820,7 +820,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '14px',
                   lineHeight: '1.45',
@@ -855,7 +855,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -867,7 +867,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
@@ -887,7 +887,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -899,7 +899,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
@@ -919,7 +919,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -931,7 +931,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '20px',
                       color: '#141210',
@@ -945,7 +945,7 @@ function template(v) {
                     gridRow: 'span 3',
                     border: '1px solid #d6d2ca',
                     padding: '12px',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '700',
@@ -1096,7 +1096,7 @@ function template(v) {
                     gridRow: 'span 2',
                     border: '1px solid #d6d2ca',
                     padding: '12px',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '700',
@@ -1189,7 +1189,7 @@ function template(v) {
                     gridRow: 'span 1',
                     border: '1px solid #d6d2ca',
                     padding: '12px',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '700',
@@ -1243,7 +1243,7 @@ function template(v) {
                 <div
                   style={{
                     padding: '10px 12px',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '700',
@@ -1291,7 +1291,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -1304,7 +1304,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -1318,7 +1318,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -1346,7 +1346,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: 'clamp(44px,4vw,60px)',
                       lineHeight: '1',
@@ -1357,7 +1357,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '15px',
                       lineHeight: '1.4',
                       color: '#141210',
@@ -1377,7 +1377,7 @@ function template(v) {
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '8px 24px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   fontWeight: '700',
@@ -1389,7 +1389,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -1412,7 +1412,7 @@ function template(v) {
                         {' '}
                         <div
                           style={css(
-                            `position:absolute;top:0;bottom:0;left:${ph?.left ?? ''};padding:0 8px;border-left:1px solid #c4161c;display:flex;align-items:center;font-family:'Source Serif 4',serif;font-size:12px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;color:#c4161c;white-space:nowrap`,
+                            `position:absolute;top:0;bottom:0;left:${ph?.left ?? ''};padding:0 8px;border-left:1px solid #c4161c;display:flex;align-items:center;font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;color:#c4161c;white-space:nowrap`,
                           )}
                         >
                           P{t(ph?.n, true)}
@@ -1429,7 +1429,7 @@ function template(v) {
                           flex: '0 0 104px',
                           padding: '10px 12px 10px 0',
                           boxSizing: 'border-box',
-                          fontFamily: "'Source Serif 4',serif",
+                          fontFamily: "'Cormorant Garamond',serif",
                           fontSize: '12px',
                           letterSpacing: '0.1em',
                           fontWeight: '700',
@@ -1485,7 +1485,7 @@ function template(v) {
                         <span
                           style={{
                             padding: '10px 0 0 4px',
-                            fontFamily: "'Source Serif 4',serif",
+                            fontFamily: "'Cormorant Garamond',serif",
                             fontSize: '12px',
                             letterSpacing: '0.1em',
                             fontWeight: '700',
@@ -1528,7 +1528,7 @@ function template(v) {
                     <span
                       style={{
                         flex: 'none',
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '700',
@@ -1598,7 +1598,7 @@ function template(v) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: '13px',
                   letterSpacing: '0.1em',
@@ -1610,7 +1610,7 @@ function template(v) {
               <span
                 style={{
                   flex: '1 1 240px',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '15px',
                   lineHeight: '1.45',
@@ -1681,7 +1681,7 @@ function template(v) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -1694,7 +1694,7 @@ function template(v) {
             <p
               style={{
                 margin: '0',
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '16px',
                 lineHeight: '1.5',
                 color: '#4a4440',
@@ -1721,7 +1721,7 @@ function template(v) {
                     <blockquote
                       style={{
                         margin: '0',
-                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '600',
                         fontSize: '22px',
                         lineHeight: '1.25',
@@ -1744,7 +1744,7 @@ function template(v) {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontFamily: "'Source Serif 4',serif",
+                          fontFamily: "'Cormorant Garamond',serif",
                           fontWeight: '700',
                           fontSize: '14px',
                           letterSpacing: '0.04em',
@@ -1755,7 +1755,7 @@ function template(v) {
                       <span style={{ minWidth: '0', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <span
                           style={{
-                            fontFamily: "'Source Serif 4',serif",
+                            fontFamily: "'Cormorant Garamond',serif",
                             fontWeight: '700',
                             fontSize: '15px',
                             color: '#141210',
@@ -1765,7 +1765,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Source Serif 4',serif",
+                            fontFamily: "'Cormorant Garamond',serif",
                             fontSize: '12px',
                             letterSpacing: '0.1em',
                             fontWeight: '600',
@@ -1778,7 +1778,7 @@ function template(v) {
                       </span>
                       <span
                         style={css(
-                          `margin-left:auto;flex:none;font-family:'Source Serif 4',serif;font-size:12px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;color:${x?.bar ?? ''}`,
+                          `margin-left:auto;flex:none;font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.1em;font-weight:700;text-transform:uppercase;color:${x?.bar ?? ''}`,
                         )}
                       >
                         {t(x?.cc)}
@@ -1814,7 +1814,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       letterSpacing: '0.12em',
                       fontWeight: '700',
@@ -1826,7 +1826,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '600',
@@ -1843,7 +1843,7 @@ function template(v) {
                 <p
                   style={{
                     margin: '0',
-                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '600',
                     fontSize: 'clamp(26px,2.6vw,38px)',
                     lineHeight: '1.1',
@@ -1860,7 +1860,7 @@ function template(v) {
                         className="dc-hover-d5d3cd45"
                         onClick={r?.pick}
                         style={css(
-                          `all:unset;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;padding:6px 12px;border:1px solid ${r?.b ?? ''};font-family:'Source Serif 4',serif;font-weight:600;font-size:13px;letter-spacing:0.04em;color:${r?.c ?? ''}`,
+                          `all:unset;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;padding:6px 12px;border:1px solid ${r?.b ?? ''};font-family:'Cormorant Garamond',serif;font-weight:600;font-size:13px;letter-spacing:0.04em;color:${r?.c ?? ''}`,
                         )}
                       >
                         {t(r?.n, true)}
@@ -1917,7 +1917,7 @@ function template(v) {
                       style={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -1933,7 +1933,7 @@ function template(v) {
                 <p
                   style={{
                     margin: '0',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '17px',
                     lineHeight: '1.6',
                     color: '#9a8f86',
@@ -1945,7 +1945,7 @@ function template(v) {
                 </p>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontStyle: 'normal',
                     fontSize: '13px',
                     lineHeight: '1.45',
@@ -1971,7 +1971,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(56px,6vw,88px)',
                   lineHeight: '0.9',
@@ -1982,7 +1982,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontStyle: 'italic',
                   fontSize: '22px',
                   lineHeight: '1.3',
@@ -1995,7 +1995,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2019,7 +2019,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -2041,7 +2041,7 @@ function template(v) {
                       padding: '10px 14px',
                       border: '1px solid #141210',
                       background: '#fcfbf8',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '14px',
                       letterSpacing: '0.04em',
@@ -2080,7 +2080,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -2093,7 +2093,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -2107,7 +2107,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -2126,7 +2126,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '12px',
                 letterSpacing: '0.1em',
                 fontWeight: '600',
@@ -2149,7 +2149,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2164,7 +2164,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2175,7 +2175,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2186,7 +2186,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2197,7 +2197,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2208,7 +2208,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2219,7 +2219,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2230,7 +2230,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2241,7 +2241,7 @@ function template(v) {
                   style={{
                     padding: '6px 10px',
                     border: '1px solid #141210',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '14px',
                     color: '#141210',
                   }}
@@ -2251,7 +2251,7 @@ function template(v) {
               </div>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2265,7 +2265,7 @@ function template(v) {
                 style={{
                   padding: '14px 16px',
                   background: '#141210',
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(20px,2vw,26px)',
                   color: '#ffffff',
@@ -2275,7 +2275,7 @@ function template(v) {
               </div>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2296,7 +2296,7 @@ function template(v) {
                   style={{
                     padding: '12px 14px',
                     background: '#c4161c',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2310,7 +2310,7 @@ function template(v) {
                   style={{
                     padding: '12px 14px',
                     background: '#c4161c',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2324,7 +2324,7 @@ function template(v) {
                   style={{
                     padding: '12px 14px',
                     background: '#c4161c',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2338,7 +2338,7 @@ function template(v) {
             </div>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '14px',
                 lineHeight: '1.45',
@@ -2362,7 +2362,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2374,7 +2374,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -2400,7 +2400,7 @@ function template(v) {
                   <span
                     style={{
                       flex: '0 0 40px',
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '28px',
                       color: '#c4161c',
@@ -2411,7 +2411,7 @@ function template(v) {
                   <span
                     style={{
                       flex: '0 1 360px',
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '22px',
                       lineHeight: '1.2',
@@ -2432,7 +2432,7 @@ function template(v) {
                     ))}
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -2476,7 +2476,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -2488,7 +2488,7 @@ function template(v) {
             </span>
             <span
               style={{
-                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontWeight: '600',
                 fontSize: 'clamp(26px,2.4vw,36px)',
                 lineHeight: '1.1',
@@ -2508,7 +2508,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '16px 16px 4px 0' }}>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '600',
                     fontSize: 'clamp(56px,6vw,88px)',
                     lineHeight: '0.9',
@@ -2519,7 +2519,7 @@ function template(v) {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '15px',
                     letterSpacing: '0.06em',
@@ -2534,7 +2534,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '16px 0 4px 20px' }}>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '600',
                     fontSize: 'clamp(56px,6vw,88px)',
                     lineHeight: '0.9',
@@ -2545,7 +2545,7 @@ function template(v) {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '15px',
                     letterSpacing: '0.06em',
@@ -2559,7 +2559,7 @@ function template(v) {
             </div>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '14px',
                 lineHeight: '1.45',
@@ -2594,7 +2594,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -2607,7 +2607,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -2621,7 +2621,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -2636,7 +2636,7 @@ function template(v) {
           <div style={{ flex: '1.3 1 420px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -2662,7 +2662,7 @@ function template(v) {
                   style={{
                     padding: '10px 4px',
                     textAlign: 'center',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -2677,7 +2677,7 @@ function template(v) {
                   style={{
                     padding: '10px 4px',
                     textAlign: 'center',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -2692,7 +2692,7 @@ function template(v) {
                   style={{
                     padding: '10px 4px',
                     textAlign: 'center',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -2707,7 +2707,7 @@ function template(v) {
                   style={{
                     padding: '10px 4px',
                     textAlign: 'center',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -2722,7 +2722,7 @@ function template(v) {
                   style={{
                     padding: '10px 4px',
                     textAlign: 'center',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -2736,7 +2736,7 @@ function template(v) {
                 <span
                   style={{
                     padding: '12px 0',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2764,7 +2764,7 @@ function template(v) {
                 <span
                   style={{
                     padding: '12px 0',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2792,7 +2792,7 @@ function template(v) {
                 <span
                   style={{
                     padding: '12px 0',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: '14px',
                     letterSpacing: '0.04em',
@@ -2820,7 +2820,7 @@ function template(v) {
                 <span
                   style={{
                     padding: '12px 0',
-                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '600',
                     fontSize: '20px',
                     color: '#c4161c',
@@ -2847,7 +2847,7 @@ function template(v) {
             </div>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '14px',
                 lineHeight: '1.45',
@@ -2860,7 +2860,7 @@ function template(v) {
           <p
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontStyle: 'italic',
               fontSize: 'clamp(19px,1.5vw,22px)',
               lineHeight: '1.45',
@@ -5002,7 +5002,7 @@ function template(v) {
               </div>
               <figcaption
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontStyle: 'italic',
                   fontSize: '14px',
                   lineHeight: '1.45',
@@ -5013,7 +5013,7 @@ function template(v) {
               </figcaption>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -5036,7 +5036,7 @@ function template(v) {
                   padding: '12px 18px',
                   background: '#141210',
                   color: '#ffffff',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   fontWeight: '700',
@@ -5067,7 +5067,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -5079,7 +5079,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '24px',
                       lineHeight: '1.1',
@@ -5090,7 +5090,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '15px',
                       lineHeight: '1.5',
                       color: '#2a2522',
@@ -5123,7 +5123,7 @@ function template(v) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '0 clamp(20px,8.4vw,120px)' }}>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '13px',
                     letterSpacing: '0.12em',
                     fontWeight: '700',
@@ -5139,7 +5139,7 @@ function template(v) {
                 </div>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -5207,7 +5207,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Source Serif 4',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontWeight: '600',
                             fontSize: '22px',
                             color: '#c4161c',
@@ -5217,7 +5217,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Source Serif 4',serif",
+                            fontFamily: "'Cormorant Garamond',serif",
                             fontStyle: 'italic',
                             fontSize: '14px',
                             lineHeight: '1.45',
@@ -5227,7 +5227,7 @@ function template(v) {
                           <strong
                             style={{
                               fontStyle: 'normal',
-                              fontFamily: "'Source Serif 4',serif",
+                              fontFamily: "'Cormorant Garamond',serif",
                               textTransform: 'uppercase',
                               letterSpacing: '0.06em',
                               color: '#141210',
@@ -5267,7 +5267,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -5280,7 +5280,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -5294,7 +5294,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -5318,7 +5318,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 18px 14px 0' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
@@ -5327,14 +5327,14 @@ function template(v) {
               >
                 10–12
               </span>
-              <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: '15px', color: '#141210' }}>
+              <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '15px', color: '#141210' }}>
                 people played the prototype
               </span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 18px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
@@ -5343,14 +5343,14 @@ function template(v) {
               >
                 Families
               </span>
-              <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: '15px', color: '#141210' }}>
+              <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '15px', color: '#141210' }}>
                 tested at home, around the table
               </span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '14px 0 14px 18px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(44px,4vw,60px)',
                   lineHeight: '1',
@@ -5359,7 +5359,7 @@ function template(v) {
               >
                 Mixed ages
               </span>
-              <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: '15px', color: '#141210' }}>
+              <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '15px', color: '#141210' }}>
                 kids, teens and adults playing together
               </span>
             </div>
@@ -5421,7 +5421,7 @@ function template(v) {
               >
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -5433,7 +5433,7 @@ function template(v) {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '600',
@@ -5458,7 +5458,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontWeight: '700',
                         fontSize: '14px',
                         letterSpacing: '0.04em',
@@ -5475,7 +5475,7 @@ function template(v) {
                       <span
                         style={{
                           flex: '0 0 64px',
-                          fontFamily: "'Source Serif 4',serif",
+                          fontFamily: "'Cormorant Garamond',serif",
                           fontSize: '12px',
                           letterSpacing: '0.1em',
                           fontWeight: '600',
@@ -5505,7 +5505,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -5518,7 +5518,7 @@ function template(v) {
             <span
               style={{
                 flex: '1 1 420px',
-                fontFamily: "'Source Serif 4',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontWeight: '500',
                 fontSize: 'clamp(20px,1.8vw,26px)',
                 lineHeight: '1.35',
@@ -5552,7 +5552,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -5565,7 +5565,7 @@ function template(v) {
           </div>
           <span
             style={{
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '13px',
               letterSpacing: '0.12em',
               fontWeight: '700',
@@ -5579,7 +5579,7 @@ function template(v) {
             data-yj-rv="up"
             style={{
               margin: '0',
-              fontFamily: "'Source Serif 4',Georgia,serif",
+              fontFamily: "'Cormorant Garamond',Georgia,serif",
               fontWeight: '600',
               fontSize: 'clamp(34px,4.4vw,68px)',
               lineHeight: '1.02',
@@ -5615,7 +5615,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Source Serif 4',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontWeight: '600',
                             fontSize: '28px',
                             lineHeight: '1',
@@ -5628,7 +5628,7 @@ function template(v) {
                     </div>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '600',
                         fontSize: '21px',
                         color: '#141210',
@@ -5638,7 +5638,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontStyle: 'italic',
                         fontSize: '16px',
                         color: '#141210',
@@ -5677,7 +5677,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -5691,7 +5691,7 @@ function template(v) {
                 style={{
                   display: 'flex',
                   gap: '16px',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -5726,7 +5726,7 @@ function template(v) {
                         padding: '5px 0',
                       }}
                     >
-                      <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: '14px', color: '#141210' }}>
+                      <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '14px', color: '#141210' }}>
                         {t(rd?.k)}
                       </span>
                       <div style={{ position: 'relative', height: '16px' }}>
@@ -5770,7 +5770,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '600',
@@ -5785,7 +5785,7 @@ function template(v) {
                       <>
                         <span
                           style={css(
-                            `position:absolute;left:${tk?.left ?? ''};transform:translateX(-50%);font-family:'Source Serif 4',serif;font-size:12px;letter-spacing:0.1em;font-weight:600;text-transform:uppercase;color:#4a4440`,
+                            `position:absolute;left:${tk?.left ?? ''};transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:0.1em;font-weight:600;text-transform:uppercase;color:#4a4440`,
                           )}
                         >
                           {t(tk?.y)}
@@ -5818,7 +5818,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -5830,7 +5830,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontWeight: '600',
                       fontSize: '24px',
                       color: '#141210',
@@ -5838,7 +5838,7 @@ function template(v) {
                   >
                     {t(hz?.k)}
                   </span>
-                  <span style={{ fontFamily: "'Source Serif 4',serif", fontSize: '15px', color: '#2a2522' }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '15px', color: '#2a2522' }}>
                     {t(hz?.d)}
                   </span>
                 </div>
@@ -5848,7 +5848,7 @@ function template(v) {
           <div data-yj-rv="up" style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '20px' }}>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -5924,7 +5924,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -5942,7 +5942,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -5960,7 +5960,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -5978,7 +5978,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -5996,7 +5996,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6014,7 +6014,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6032,7 +6032,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '100px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6050,7 +6050,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '170px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6068,7 +6068,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '80px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6086,7 +6086,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '170px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6104,7 +6104,7 @@ function template(v) {
                       width: 'max-content',
                       maxWidth: '80px',
                       textAlign: 'center',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.25',
                       color: '#141210',
@@ -6126,7 +6126,7 @@ function template(v) {
                       gap: '8px',
                       textAlign: 'center',
                       color: '#ffffff',
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '13px',
                       lineHeight: '1.2',
                     }}
@@ -6153,7 +6153,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -6165,7 +6165,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4440',
@@ -6189,7 +6189,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -6201,7 +6201,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4440',
@@ -6226,7 +6226,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -6238,7 +6238,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4440',
@@ -6253,7 +6253,7 @@ function template(v) {
             <p
               style={{
                 margin: '0',
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '16px',
                 lineHeight: '1.5',
@@ -6268,7 +6268,7 @@ function template(v) {
           <div data-yj-rv="up" style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '20px' }}>
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -6291,7 +6291,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '16px 20px 16px 0' }}>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '12px',
                         letterSpacing: '0.1em',
                         fontWeight: '600',
@@ -6303,7 +6303,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '600',
                         fontSize: '24px',
                         lineHeight: '1.1',
@@ -6323,7 +6323,7 @@ function template(v) {
                               gap: '10px',
                               padding: '8px 0',
                               borderTop: '1px solid #d6d2ca',
-                              fontFamily: "'Source Serif 4',serif",
+                              fontFamily: "'Cormorant Garamond',serif",
                               fontSize: '15px',
                               lineHeight: '1.45',
                               color: '#2a2522',
@@ -6342,7 +6342,7 @@ function template(v) {
             <p
               style={{
                 margin: '0',
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '16px',
                 lineHeight: '1.5',
@@ -6377,7 +6377,7 @@ function template(v) {
               flexWrap: 'wrap',
               padding: '8px 0',
               borderTop: '3px solid #141210',
-              fontFamily: "'Source Serif 4',serif",
+              fontFamily: "'Cormorant Garamond',serif",
               fontSize: '12px',
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
@@ -6392,7 +6392,7 @@ function template(v) {
             <div style={{ flex: '1.6 1 460px', minWidth: '0', display: 'flex', flexDirection: 'column', gap: '18px' }}>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   fontWeight: '700',
@@ -6406,7 +6406,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Source Serif 4',Georgia,serif",
+                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                   fontWeight: '600',
                   fontSize: 'clamp(34px,4.4vw,68px)',
                   lineHeight: '1.02',
@@ -6422,7 +6422,7 @@ function template(v) {
               <p
                 style={{
                   margin: '0',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '18px',
                   lineHeight: '1.62',
                   color: '#2a2522',
@@ -6434,7 +6434,7 @@ function template(v) {
               </p>
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '13px',
                   letterSpacing: '0.12em',
                   fontWeight: '700',
@@ -6458,7 +6458,7 @@ function template(v) {
             >
               <span
                 style={{
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '600',
@@ -6479,7 +6479,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontWeight: '700',
                         fontSize: '15px',
                         letterSpacing: '0.04em',
@@ -6491,7 +6491,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Source Serif 4',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#2a2522',
@@ -6518,7 +6518,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontStyle: 'italic',
                 fontSize: '17px',
                 lineHeight: '1.45',
@@ -6540,7 +6540,7 @@ function template(v) {
                 background: '#141210',
                 color: '#ffffff',
                 textDecoration: 'none',
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
                 fontSize: '13px',
                 letterSpacing: '0.12em',
                 fontWeight: '700',
@@ -6595,7 +6595,7 @@ function template(v) {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '22px',
-                fontFamily: "'Source Serif 4',serif",
+                fontFamily: "'Cormorant Garamond',serif",
               }}
             >
               <button
@@ -6628,7 +6628,7 @@ function template(v) {
                   padding: '0 48px 8px 0',
                   borderTop: '3px solid #141210',
                   paddingTop: '8px',
-                  fontFamily: "'Source Serif 4',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontSize: '12px',
                   letterSpacing: '0.1em',
                   fontWeight: '700',
@@ -6641,7 +6641,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <span
                   style={{
-                    fontFamily: "'Source Serif 4',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '600',
                     fontSize: 'clamp(40px,5vw,56px)',
                     lineHeight: '0.95',
@@ -6665,7 +6665,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '12px 14px 12px 0' }}>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -6675,14 +6675,14 @@ function template(v) {
                   >
                     Players
                   </span>
-                  <span style={{ fontFamily: "'Source Serif 4',Georgia,serif", fontWeight: '600', fontSize: '26px' }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond',Georgia,serif", fontWeight: '600', fontSize: '26px' }}>
                     4–10
                   </span>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '12px 14px' }}>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -6699,7 +6699,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '12px 0 12px 14px' }}>
                   <span
                     style={{
-                      fontFamily: "'Source Serif 4',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontSize: '12px',
                       letterSpacing: '0.1em',
                       fontWeight: '700',
@@ -6733,7 +6733,7 @@ function template(v) {
                     >
                       <span
                         style={css(
-                          `flex:none;width:48px;height:48px;border-radius:50%;border:1.5px solid ${p?.fg ?? ''};display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',Georgia,serif;font-weight:700;font-size:24px;line-height:1;color:${p?.fg ?? ''}`,
+                          `flex:none;width:48px;height:48px;border-radius:50%;border:1.5px solid ${p?.fg ?? ''};display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:24px;line-height:1;color:${p?.fg ?? ''}`,
                         )}
                       >
                         {t(p?.n, true)}
@@ -6773,7 +6773,7 @@ function template(v) {
                     border: '1px solid #141210',
                     color: '#141210',
                     textDecoration: 'none',
-                    fontFamily: "'Source Serif 4',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontSize: '12px',
                     letterSpacing: '0.1em',
                     fontWeight: '700',

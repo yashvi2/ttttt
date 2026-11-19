@@ -185,7 +185,7 @@ const TIMELINE = [
 ];
 const pct = v => ((v - T0) / (T1 - T0) * 100).toFixed(3) + '%';
 const INK = '#000000', CREAM = '#f4f4f4', RED = 'var(--yj-accent, #ff4d2e)';
-const MONO = "'Inter',sans-serif", SERIF = "'Libre Caslon Text',Georgia,serif";
+const MONO = "'DM Sans',sans-serif", SERIF = "'Cormorant Garamond',Georgia,serif";
 const SCRIM = 'linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0) 42%)';
 const REVEAL = {
   wipe:['inset(0 100% 0 0)','inset(0 0% 0 0)'], rise:['inset(100% 0 0 0)','inset(0% 0 0 0)'],
@@ -511,7 +511,7 @@ class Component extends DCLogic {
     const move = ri => e => { const g = S.current.ropes[ri].drag; if (!g) return; const [x, y] = local(e); g.x = x - g.ox; g.y = y - g.oy; g.moved = Math.max(g.moved, Math.hypot(x - g.sx, y - g.sy)); };
     const up = ri => () => { const r = S.current.ropes[ri], g = r.drag; if (!g) return; r.drag = null; setGrab(-1); if (g.moved < 6 && p.onWork) p.onWork(); };
     const ink = '#141414', green = 'var(--yj-accent, #b6f23a)';
-    const sans = "'Inter', sans-serif", cond = sans, display = "'Libre Caslon Display', Georgia, serif";
+    const sans = "'DM Sans', sans-serif", cond = sans, display = "'Cormorant Garamond', Georgia, serif";
     const corner = {fontFamily:sans, fontSize:15, lineHeight:1.5, letterSpacing:'.005em', color:'#55514b', maxWidth:420, margin:0};
     const link = (label, props) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', color:ink, textDecoration:'underline', textUnderlineOffset:4, textDecorationThickness:1, marginRight:18, whiteSpace:'nowrap'}}, label);
     const print = Array(14).fill('YASHVI JAIN ✳ ').join('');
@@ -565,7 +565,7 @@ class Component extends DCLogic {
     // coffee and the sea. The name appears once, in the main tile.
     const h = React.createElement;
     const ink = '#141414', grey = '#55514b';
-    const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Inter', sans-serif";
+    const disp = "'Cormorant Garamond', Georgia, serif", sans = "'DM Sans', sans-serif";
     const tile = (extra) => ({position:'relative', borderRadius:22, overflow:'hidden', ...extra});
     const cap = (k, v, color) => h('div', {style:{position:'absolute', left:20, right:20, bottom:18, color, fontFamily:sans}},
       h('div', {style:{fontSize:12, fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', opacity:.75}}, k),
@@ -655,7 +655,7 @@ class Component extends DCLogic {
     const h = React.createElement;
     // bright board: light grey frame, white and lime-gradient tiles, one black tile
     const C = {frame:'#efefec', blue:'linear-gradient(135deg,#f8fde3 0%,#d8f468 100%)', cream:'#ffffff', ink:'#111111', terra:'#0b0b0b', soft:'#5a5a5a', lime:'#d4f25c'};
-    const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Inter', sans-serif";
+    const disp = "'Cormorant Garamond', Georgia, serif", sans = "'DM Sans', sans-serif";
     const T = (cls, style, ...kids) => h('div', {className:'yj-br ' + cls, style:{position:'relative', overflow:'hidden', borderRadius:6, ...style}}, ...kids);
     const chip = (label, props, dark) => h(props.href ? 'a' : 'button', {...props, style:{all:'unset', cursor:'pointer', display:'inline-flex', alignItems:'center', gap:6, padding:'7px 12px', borderRadius:4,
       fontFamily:sans, fontSize:13, fontWeight:500, background:dark ? C.ink : '#ffffff', color:dark ? C.cream : C.ink, boxShadow:'0 1px 0 rgba(0,0,0,.08)'}}, label);
@@ -931,8 +931,9 @@ class Component extends DCLogic {
     // the actions recruiters use (copy email, LinkedIn, CV), and the agent as an option.
     const h = React.createElement;
     const YEL = '#F5D900', INK = '#242424', GREY = '#5E6157', LINE = '#E2DCCD', PAPER = '#FBF9F4', BG = '#F3F0E9';
-    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#303FFF', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Caveat', cursive";
-    const F = "'Inter', sans-serif", EMAIL = 'yashvi.jain.yj@gmail.com';
+    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#2637D9', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Cormorant Garamond', Georgia, serif";
+    const POWDER = '#E9ECFF', PERI = '#D9DFFF', BUTTER = '#FFF4B8', VAN = '#FFF7D6';
+    const F = "'DM Sans', sans-serif", EMAIL = 'yashvi.jain.yj@gmail.com';
     const [copied, setCopied] = React.useState(false);
     const copy = async () => { try { await navigator.clipboard.writeText(EMAIL); } catch (_) { const ta = document.createElement('textarea'); ta.value = EMAIL; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); } setCopied(true); setTimeout(() => setCopied(false), 1800); };
     const london = () => new Date().toLocaleTimeString('en-GB', {timeZone:'Europe/London', hour:'2-digit', minute:'2-digit'});
@@ -947,16 +948,16 @@ class Component extends DCLogic {
         .yj-ct2 > div{box-sizing:border-box;background:${PAPER};border-radius:18px;padding:clamp(20px,2vw,32px);min-width:0;animation:yjCtRise 600ms cubic-bezier(.2,.7,.2,1) both}
         .yj-ct2 > div:nth-child(3){animation-delay:80ms}.yj-ct2 > div:nth-child(4){animation-delay:160ms}.yj-ct2 > div:nth-child(5){animation-delay:240ms}
         @keyframes yjCtRise{from{opacity:0;translate:0 18px}}
-        .yj-ct2-hero{grid-column:span 7;position:relative;background:#FFFDF7 !important;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:440px;
+        .yj-ct2-hero{grid-column:span 7;position:relative;background-color:${VAN} !important;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:440px;
           border-radius:6px !important;box-shadow:0 22px 44px -30px rgba(36,36,36,.5);
           background-image:repeating-linear-gradient(135deg, ${COB} 0 14px, transparent 14px 22px, ${BUR} 22px 36px, transparent 36px 44px) !important;
           background-size:100% 8px !important;background-repeat:no-repeat !important;background-position:0 0 !important;padding-top:44px !important}
         .yj-ct2-hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:8px;border-radius:0 0 6px 6px;background:repeating-linear-gradient(135deg, ${COB} 0 14px, transparent 14px 22px, ${BUR} 22px 36px, transparent 36px 44px)}
-        .yj-ct2-stamp{position:absolute;right:clamp(18px,2.4vw,36px);top:30px;width:78px;height:96px;box-sizing:border-box;background:${YEL};display:grid;place-items:center;transform:rotate(4deg);border:5px dotted #FFFDF7;box-shadow:0 0 0 1px ${LINE}, 0 6px 14px -8px rgba(36,36,36,.4)}
+        .yj-ct2-stamp{position:absolute;right:clamp(18px,2.4vw,36px);top:30px;width:78px;height:96px;box-sizing:border-box;background:${YEL};display:grid;place-items:center;transform:rotate(4deg);border:5px dotted ${VAN};box-shadow:0 0 0 1px ${LINE}, 0 6px 14px -8px rgba(36,36,36,.4)}
           -webkit-mask:radial-gradient(circle 5px at 5px 5px, transparent 98%, #000) -5px -5px/10px 10px;mask:radial-gradient(circle 5px at 5px 5px, transparent 98%, #000) -5px -5px/10px 10px}
         .yj-ct2-stamp svg{width:46px;height:auto;fill:${COB}}
         .yj-ct2-post{position:absolute;right:clamp(70px,7vw,120px);top:58px;width:96px;height:96px;border:1.5px solid rgba(140,68,72,.55);border-radius:50%;display:grid;place-items:center;text-align:center;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(140,68,72,.8);transform:rotate(-12deg);line-height:1.5}
-        .yj-ct2-sig{font-family:${HAND};font-size:clamp(26px,2.4vw,34px);color:${BUR}}
+        .yj-ct2-sig{font-family:${HAND};font-style:italic;font-weight:400;font-size:clamp(26px,2.4vw,34px);color:${BUR}}
         .yj-ct2-hero h1{margin:0;font-family:${SERIF} !important;font-weight:500 !important;font-size:clamp(44px,5.2vw,86px) !important;line-height:.98 !important;letter-spacing:-0.02em !important;color:${INK};max-width:14ch}
         .yj-ct2-hero h1 em{color:${COB}}
         .yj-ct2-ways{grid-column:span 5;display:flex;flex-direction:column}
@@ -965,8 +966,8 @@ class Component extends DCLogic {
         .yj-ct2-btn{all:unset;cursor:pointer;box-sizing:border-box;font-family:${F};font-size:15px;font-weight:600;padding:11px 18px;border-radius:999px;border:1.5px solid ${INK};color:${INK};white-space:nowrap;text-decoration:none;transition:background 200ms ease,color 200ms ease}
         .yj-ct2-btn:hover{background:${COB};border-color:${COB};color:#fff}
         .yj-ct2-btn.solid{background:${YEL};border-color:${YEL};color:${INK}}.yj-ct2-btn.solid:hover{background:${COB};border-color:${COB};color:#fff}
-        .yj-ct2-btn:focus-visible{outline:2px solid ${INK};outline-offset:3px}
-        .yj-ct2-info{grid-column:span 4}.yj-ct2-agent{grid-column:span 8;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+        .yj-ct2-btn:focus-visible{outline:2px solid ${COB};outline-offset:3px}
+        .yj-ct2-info{grid-column:span 4;background:${POWDER} !important}.yj-ct2-agent{grid-column:span 8;background:${BUTTER} !important;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
         .yj-ct2-info dl{margin:0;display:grid;gap:14px}.yj-ct2-info dd{margin:2px 0 0;font-size:17px;font-weight:600}
         .yj-ct2-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:${COB};margin-right:8px;animation:yjCtLive 2s ease-in-out infinite}
         @keyframes yjCtLive{50%{opacity:.25}}
@@ -1003,8 +1004,9 @@ class Component extends DCLogic {
     // Schibsted Grotesk 600/400, flat tiles, no cards inside tiles.
     const h = React.createElement;
     const YEL = '#F5D900', INK = '#242424', PAPER = '#FBF9F4', GREY = '#5E6157', LINE = '#E2DCCD', BG = '#F3F0E9';
-    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#303FFF', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Caveat', cursive";
-    const F = "'Inter', sans-serif";
+    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#2637D9', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Cormorant Garamond', Georgia, serif";
+    const POWDER = '#E9ECFF', PERI = '#D9DFFF', BUTTER = '#FFF4B8', VAN = '#FFF7D6';
+    const F = "'DM Sans', sans-serif";
     const [open, setOpen] = React.useState('tcs');
     const label = (t, x) => h('span', {style:{fontSize:14, color:GREY, ...x}}, t);
     const R = typeof __R === 'function' ? __R : x => x;
@@ -1025,13 +1027,13 @@ class Component extends DCLogic {
         @keyframes yjAbRise{from{opacity:0;translate:0 20px}}
         .yj-ab-in{grid-column:span 8;background:${YEL};justify-content:space-between;min-height:460px}
         .yj-ab-ph{grid-column:span 4;padding:0;background:#e6e6e3 center 28%/cover no-repeat;filter:grayscale(1);min-height:460px}
-        .yj-ab-ex{grid-column:span 8}.yj-ab-sk{grid-column:span 4}
-        .yj-ab-rc{grid-column:span 6}.yj-ab-ce{grid-column:span 3}.yj-ab-to{grid-column:span 3}
+        .yj-ab-ex{grid-column:span 8}.yj-ab-sk{grid-column:span 4;background:${POWDER}}
+        .yj-ab-rc{grid-column:span 6;background:${BUTTER}}.yj-ab-ce{grid-column:span 3}.yj-ab-to{grid-column:span 3}
         .yj-ab-oc{grid-column:span 4;padding:0;position:relative;overflow:hidden;min-height:360px;justify-content:flex-end;color:#fff;text-decoration:none}
         .yj-ab-oc .yj-ab-img{position:absolute;inset:0;background:center/cover no-repeat;filter:grayscale(1);transition:filter 500ms ease,transform 900ms cubic-bezier(.2,.7,.2,1)}
         .yj-ab-oc:hover .yj-ab-img{filter:none;transform:scale(1.04)}
         .yj-ab-oc .yj-ab-cap{position:relative;padding:22px;background:linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0));display:flex;flex-direction:column;gap:6px}
-        .yj-ab-cta{grid-column:span 12;background:${OLIVE};color:#fff;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}
+        .yj-ab-cta{grid-column:span 12;background:${COB};color:#fff;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}
         .yj-ab-row{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:4px 16px;padding:14px 0;border-top:1px solid ${LINE};font-family:${F};width:100%}
         .yj-ab-row:hover .yj-ab-rt{text-decoration:underline;text-underline-offset:4px}
         .yj-ab-row:focus-visible,.yj-ab-btn:focus-visible{outline:2px solid ${INK};outline-offset:3px}
@@ -1039,14 +1041,16 @@ class Component extends DCLogic {
         .yj-ab-chip{font-size:13px;padding:5px 11px;border:1px solid ${OLIVE};color:${OLIVE};border-radius:999px;white-space:nowrap}
         .yj-ab-btn{all:unset;cursor:pointer;font-family:${F};font-weight:600;font-size:15px;padding:12px 20px;border-radius:999px;background:${YEL};color:${INK}}
         .yj-ab-btn.alt{background:transparent;color:#fff;border:1px solid #fff}
+        .yj-ab-btn{transition:background 200ms ease,color 200ms ease}.yj-ab-btn:hover{background:#fff;color:${COB}}.yj-ab-btn.alt:hover{background:#fff;color:${COB}}
+        .yj-ab-cta .yj-ab-btn:focus-visible{outline-color:${YEL}}
         @media (max-width:1000px){.yj-ab-in,.yj-ab-ex,.yj-ab-rc,.yj-ab-cta{grid-column:span 12}.yj-ab-ph,.yj-ab-sk,.yj-ab-oc{grid-column:span 6}.yj-ab-ce,.yj-ab-to{grid-column:span 6}}
         @media (max-width:640px){.yj-abg{padding:16px 16px 110px;gap:18px}.yj-abg > *{grid-column:span 12 !important}.yj-ab-in,.yj-ab-ph{min-height:320px}}
         @media (prefers-reduced-motion:reduce){.yj-ab-t{animation:none}}
-        .yj-hand{font-family:${HAND};font-weight:500;color:${BUR};line-height:1.15}
+        .yj-hand{font-family:${HAND};font-style:italic;font-weight:400;color:${BUR};line-height:1.15}
         .yj-ab-spread{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,72px);align-items:center;padding:clamp(8px,2vw,32px) clamp(4px,1vw,16px) clamp(16px,3vw,40px)}
         .yj-ab-copy{display:flex;flex-direction:column;gap:clamp(18px,2.4vh,28px);min-width:0}
         .yj-ab-eye{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${OLIVE};padding-bottom:12px;border-bottom:1px solid ${OLIVE}}
-        .yj-ab-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:${COB};margin-right:8px;box-shadow:0 0 0 4px rgba(48,63,255,.16)}
+        .yj-ab-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:${COB};margin-right:8px;box-shadow:0 0 0 4px rgba(38,55,217,.16)}
         .yj-ab-h1 em{color:${COB};font-weight:500}
         .yj-ab-lede{margin:0;font-family:${SERIF};font-style:italic;font-size:clamp(19px,1.6vw,24px);line-height:1.35;color:${INK};max-width:52ch}
         .yj-ab-ch{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px}
@@ -1077,12 +1081,13 @@ class Component extends DCLogic {
         .yj-bb-sub{font-size:clamp(22px,2vw,30px)}
         .yj-bb-tabs{flex-basis:100%;display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
         .yj-bb-tabs a{font-size:13px;color:${OLIVE};text-decoration:none;padding:6px 12px;border:1px solid ${LINE};border-radius:999px;background:${PAPER};transition:background 200ms ease,color 200ms ease,border-color 200ms ease}
-        .yj-bb-tabs a:hover,.yj-bb-tabs a:focus-visible{background:${COB};border-color:${COB};color:#fff;outline:none}
+        .yj-bb-tabs a:hover{background:${PERI};border-color:${COB};color:${COB}}
+        .yj-bb-tabs a:focus-visible{outline:2px solid ${COB};outline-offset:2px}
         .yj-bb-wall{columns:4 240px;column-gap:clamp(18px,2vw,32px)}
         .yj-pc{break-inside:avoid;display:inline-block;width:100%;box-sizing:border-box;vertical-align:top;margin:12px 0 clamp(18px,2.2vw,32px);position:relative;background:#fff;padding:10px 10px 14px;box-shadow:0 16px 34px -24px rgba(36,36,36,.5);transform:rotate(var(--r,0deg));transition:transform 500ms cubic-bezier(.2,.7,.2,1),box-shadow 500ms ease;text-decoration:none;color:${INK}}
         .yj-pc:hover{transform:rotate(0deg) translateY(-4px);box-shadow:0 26px 46px -26px rgba(36,36,36,.55)}
-        .yj-pc::before{content:'';position:absolute;left:50%;top:-10px;width:72px;height:22px;transform:translateX(-50%) rotate(-3deg);background:rgba(245,217,0,.55);mix-blend-mode:multiply}
-        .yj-pc:nth-child(3n)::before{background:rgba(48,63,255,.22)}.yj-pc:nth-child(4n)::before{background:rgba(140,68,72,.25)}
+        .yj-pc::before{content:'';position:absolute;left:50%;top:-10px;width:72px;height:22px;transform:translateX(-50%) rotate(-3deg);background:${BUTTER};opacity:.9}
+        .yj-pc:nth-child(3n)::before{background:${PERI}}.yj-pc:nth-child(4n)::before{background:${POWDER}}
         .yj-pc img,.yj-pc video{display:block;width:100%;height:auto;background:#e8e2d4}
         .yj-pc-film video{aspect-ratio:16/9;object-fit:cover;filter:sepia(.18) saturate(.95)}
         .yj-pc figcaption,.yj-pc-cap{display:block;margin-top:10px;font-size:20px}
@@ -1097,10 +1102,10 @@ class Component extends DCLogic {
         .yj-pc-ticket{padding:0;background:${PAPER}}
         .yj-pc-ticket img{aspect-ratio:4/3;object-fit:cover}
         .yj-tk{display:flex;flex-direction:column;gap:4px;padding:14px 16px 16px;border-top:2px dashed ${LINE};font-size:13px;color:${GREY}}
-        .yj-tk b{font-family:${SERIF};font-size:26px;font-weight:500;color:${INK};line-height:1}
+        .yj-tk b{font-family:${F};font-size:18px;font-weight:600;letter-spacing:-0.01em;color:${INK};line-height:1.15}
         .yj-tk-k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:${BUR}}
-        .yj-pc-note{background:#FFFDF6;background-image:repeating-linear-gradient(to bottom, transparent 0 30px, rgba(48,63,255,.16) 30px 31px);padding:16px 18px 18px}
-        .yj-pc-note ul{margin:0;padding:0 0 0 2px;list-style:none;font-family:${HAND};font-size:23px;line-height:31px;color:${OLIVE}}
+        .yj-pc-note{background:${VAN};background-image:repeating-linear-gradient(to bottom, transparent 0 30px, ${PERI} 30px 31px);padding:16px 18px 18px}
+        .yj-pc-note ul{margin:0;padding:0 0 0 2px;list-style:none;font-family:${HAND};font-style:italic;font-weight:400;font-size:23px;line-height:31px;color:${OLIVE}}
         .yj-pc-note li::before{content:'— ';color:${BUR}}
         @media (max-width:1000px){.yj-ab-spread{grid-template-columns:1fr}.yj-ab-collage{min-height:min(110vw,560px)}}
         @media (max-width:640px){.yj-ab-ch{grid-template-columns:1fr}.yj-bb-wall{columns:2 150px;column-gap:14px}.yj-pc figcaption,.yj-pc-cap{font-size:17px}.yj-cl figcaption{font-size:18px}}
@@ -1182,7 +1187,7 @@ class Component extends DCLogic {
   static Glance = function Glance(p) {
     // The shared "at a glance" card every case study opens with.
     const h = React.createElement, A = p.accent || '#c4161c', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664';
-    const F = "'Inter', system-ui, sans-serif";
+    const F = "'DM Sans', system-ui, sans-serif";
     return h('section', {className:'gl', 'aria-label':'At a glance', style:{fontFamily:F, color:INK, maxWidth:1240, margin:'0 auto', padding:(p.rows ? '56px' : '20px') + ' max(clamp(20px,5vw,80px), env(safe-area-inset-left, 0px)) 8px', boxSizing:'border-box'}},
       h('style', null, `.gl-card{background:#f6f5f4;border-radius:18px;padding:clamp(20px,3vw,36px);display:grid;gap:22px}
         .gl-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
@@ -1204,7 +1209,7 @@ class Component extends DCLogic {
     // CRAY in the AVA/Move case-study structure, with its own purple accent.
     const h = React.createElement, c = p.c;
     const A = '#7a3fc4', A2 = '#b46cf5', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664', LINE = '#e3e1df', SOFT = '#f6f5f4', TINT = '#f3ecfc';
-    const F = "'Inter', system-ui, sans-serif";
+    const F = "'DM Sans', system-ui, sans-serif";
     const S = k => (c.secs || []).find(x => x.k === k) || {};
     const img = (src, alt, x) => h('img', {src:__R(src), alt, loading:'lazy', style:{display:'block', width:'100%', height:'100%', objectFit:'cover', borderRadius:12, ...x}});
     const chap = (id, n, k, title, lede, ...kids) => h('section', {id:'cvs-' + id, className:'cvs-sec', 'data-rv':'', 'aria-labelledby':'cvs-h-' + id},
@@ -1370,7 +1375,7 @@ class Component extends DCLogic {
     // summary card, six numbered chapters, results, looking back. Own red accent.
     const h = React.createElement, c = p.c;
     const RED = '#c4161c', INK = '#201e1d', BODY = '#4a4644', MUTE = '#6b6664', LINE = '#e3e1df', SOFT = '#f6f5f4', TINT = '#fbeceb';
-    const F = "'Inter', system-ui, sans-serif";
+    const F = "'DM Sans', system-ui, sans-serif";
     const S = k => (c.secs || []).find(x => x.k === k) || {};
     const img = (src, alt, x) => h('img', {src:__R(src), alt, loading:'lazy', style:{display:'block', width:'100%', height:'100%', objectFit:'cover', borderRadius:12, ...x}});
     const eyebrow = (n, k) => h('div', {className:'mvs-eye'}, h('span', null, n), ' · ', k);
@@ -1746,7 +1751,7 @@ class Component extends DCLogic {
     const stripes = col => h('svg', {viewBox:'0 0 100 140', preserveAspectRatio:'none', 'aria-hidden':true, style:{position:'absolute', inset:0, width:'100%', height:'100%'}},
       h('path', {d:'M-10 18 C 20 6 45 30 70 14 S 110 4 120 10', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}),
       h('path', {d:'M-10 128 C 25 110 50 140 80 118 S 112 112 120 120', stroke:col, strokeWidth:9, fill:'none', strokeLinecap:'round', opacity:.9}));
-    const logo = (col, size) => h('span', {style:{fontFamily:"'Libre Caslon Text', Georgia, serif", fontStyle:'italic', fontSize:size, color:col, lineHeight:1}}, 'The Script');
+    const logo = (col, size) => h('span', {style:{fontFamily:"'Cormorant Garamond', Georgia, serif", fontStyle:'italic', fontSize:size, color:col, lineHeight:1}}, 'The Script');
     return h('div', {className:'yj-sc ' + (p.className || '')},
       h('button', {className:'yj-sc-deck', onClick:next, 'aria-label':'Play The Script. ' + label + '.', 'aria-live':'polite'},
         // answer card (slides in on step 2)
@@ -1769,11 +1774,13 @@ class Component extends DCLogic {
     //   stickers — two, both black line drawings on white die-cut stickers
     const h = React.createElement;
     const YEL = '#F5D900', INK = '#242424', PAPER = '#FBF9F4', GREY = '#5E6157', LINE = '#E2DCCD', BG = '#F3F0E9';
-    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#303FFF', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Caveat', cursive";
-    const F = "'Inter', sans-serif";
+    const OLIVE = '#343F34', BUR = '#8C4448', COB = '#2637D9', SERIF = "'Cormorant Garamond', Georgia, serif", HAND = "'Cormorant Garamond', Georgia, serif";
+    const POWDER = '#E9ECFF', PERI = '#D9DFFF', BUTTER = '#FFF4B8', VAN = '#FFF7D6';
+    const F = "'DM Sans', sans-serif";
     const M = 'clamp(16px, min(1.4vw, 2.5vh), 21px)', S = 14;
     const label = (txt, extra) => h('span', {style:{fontSize:12, fontWeight:500, letterSpacing:'.12em', textTransform:'uppercase', color:GREY, ...extra}}, txt);
-    const title = (txt, extra) => h('span', {style:{fontFamily:SERIF, fontSize:`calc(${M} * 1.3)`, fontWeight:500, letterSpacing:'-0.01em', lineHeight:1.05, color:INK, ...extra}}, txt);
+    const title = (txt, extra) => h('span', {style:{fontFamily:F, fontSize:M, fontWeight:600, letterSpacing:'-0.02em', lineHeight:1.15, color:INK, ...extra}}, txt);
+    const heading = {fontFamily:SERIF, fontSize:`calc(${M} * 1.22)`, fontWeight:500, letterSpacing:'-0.01em', lineHeight:1.05};
     const arrow = h('span', {className:'yj-bt-arrow', 'aria-hidden':true, style:{fontSize:18, lineHeight:1}}, '→');
 
     const tile = (area, props, ...kids) => {
@@ -1893,7 +1900,7 @@ class Component extends DCLogic {
     // Currently: small, human, easy to update. Tulip season counts down live.
     const tulipDays = (() => { const n = new Date(), y = n.getMonth() > 3 ? n.getFullYear() + 1 : n.getFullYear(); const t = new Date(y, 3, 1); return Math.max(0, Math.ceil((t - n) / 864e5)); })();
     const CURRENTLY = [['Roles', 'Product & service design'], ['Sectors', 'Health, pharma, public services'], ['Based in', 'London, UK']];
-    const currently = tile('cu', {style:{gap:12, justifyContent:'flex-start'}},
+    const currently = tile('cu', {style:{gap:12, justifyContent:'flex-start', background:POWDER}},
       label('Looking for'),
       h('span', {className:'yj-cu-l'},
         ...CURRENTLY.flatMap(([k, v]) => [h('span', {key:k + 'k', style:{fontSize:13, color:GREY}}, k), h('span', {key:k + 'v', style:{fontSize:15, fontWeight:600, lineHeight:1.3}}, v)])));
@@ -2052,14 +2059,14 @@ class Component extends DCLogic {
         .yj-vn-moods{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -2px;padding:0 2px}
         .yj-vn-moods::-webkit-scrollbar{display:none}
         .yj-vn-mood{all:unset;cursor:pointer;flex:none;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid ${LINE};color:${GREY};background:#fff}
-        .yj-vn-mood.on{background:#303FFF;border-color:#fff;color:#fff;box-shadow:0 0 0 1px #fff}
+        .yj-vn-mood.on{background:#2637D9;border-color:#fff;color:#fff;box-shadow:0 0 0 1px #fff}
         .yj-vn-mood:focus-visible,.yj-vn-step:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-now{display:flex;align-items:center;gap:8px;min-width:0;background:rgba(255,255,255,.9);border-radius:999px;padding:4px 12px 4px 4px;align-self:flex-start;max-width:100%;box-sizing:border-box}
         .yj-vn-tag{align-self:flex-start;font-size:13px;color:${INK};background:rgba(255,255,255,.9);border-radius:999px;padding:4px 10px}
         .yj-vn-step{all:unset;cursor:pointer;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;border:1px solid ${LINE};font-size:15px;line-height:1;flex:none}
         .yj-vn-step:hover{border-color:${INK}}
         .yj-vn-play{all:unset;cursor:pointer;flex:none;height:28px;min-width:28px;justify-content:center;padding:0 8px;box-sizing:border-box;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;border-radius:999px;background:${INK};color:#fff;font-size:11px;line-height:1}
-        .yj-vn-play.on{background:#303FFF;color:#fff}
+        .yj-vn-play.on{background:#2637D9;color:#fff}
         .yj-vn-play:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-sheen{position:absolute;inset:0;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
           background:conic-gradient(from 20deg, transparent 0deg, rgba(255,255,255,.16) 28deg, transparent 58deg, transparent 180deg, rgba(255,255,255,.12) 208deg, transparent 238deg);
@@ -2078,7 +2085,7 @@ class Component extends DCLogic {
           box-shadow:var(--sx,0px) var(--sy,14px) 34px -14px rgba(0,0,0,.28), 0 1px 0 rgba(0,0,0,.04)}
 .yj-ab-star{box-shadow:none !important}.yj-bt-go.yj-ab-star:hover{background:transparent !important}
         .yj-spark{flex:none;height:min(100%, 128px);width:auto;aspect-ratio:410/442;fill:${INK};stroke:none;overflow:visible;transition:transform 700ms cubic-bezier(.2,.7,.2,1), fill 300ms ease}
-        .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06);fill:#303FFF}
+        .yj-ab-star:hover .yj-spark,.yj-ab-star:focus-visible .yj-spark{transform:rotate(90deg) scale(1.06);fill:#2637D9}
         @media (max-width:820px){.yj-ab-star{flex-direction:row !important;align-items:center !important;justify-content:flex-start !important;gap:16px !important}.yj-spark{height:64px}}
         @media (prefers-reduced-motion:reduce){.yj-spark{transition:none}.yj-ab-star:hover .yj-spark{transform:none}}
         .yj-bt-go:hover{background:#f3f3f0 !important}
@@ -2087,7 +2094,7 @@ class Component extends DCLogic {
         .yj-bt-go:active{--sc:.985}
         .yj-bento :focus-visible{outline:2px solid ${INK};outline-offset:3px}
         .yj-link{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
-        .yj-link:hover{text-decoration-thickness:2px;color:#303FFF !important}
+        .yj-link:hover{text-decoration-thickness:2px;color:#2637D9 !important}
         .yj-pj-t{background:linear-gradient(${YEL},${YEL}) 0 100%/0 40% no-repeat;transition:background-size 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-star{display:inline-block;vertical-align:middle;margin-left:10px;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 8px;border-radius:999px;background:transparent;border:1px solid ${LINE};color:${GREY};font-weight:500 !important}
         @media (max-width:1180px){.yj-pj-stat{display:none}}
@@ -2105,7 +2112,7 @@ class Component extends DCLogic {
         .yj-face{position:absolute;inset:0;box-sizing:border-box;border-radius:18px;padding:clamp(18px, 1.8vw, 30px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
         .yj-face > :not(.yj-g){position:relative;z-index:1}
         .yj-flip-front{background:${YEL};color:${INK};z-index:1}
-        .yj-flip-back{background:#303FFF;color:#fff;z-index:0;visibility:hidden}
+        .yj-flip-back{background:#2637D9;color:#fff;z-index:0;visibility:hidden}
         .yj-flip.is-back .yj-flip-back{visibility:visible;z-index:2}
         .yj-flip.armed.is-back .yj-flip-back,.yj-flip.armed:not(.is-back) .yj-flip-front{z-index:2;animation:yjWipe 420ms linear 380ms both}
         .yj-flip.armed:not(.is-back) .yj-flip-back{visibility:visible;z-index:1}
@@ -2114,12 +2121,12 @@ class Component extends DCLogic {
         .yj-slats{position:absolute;inset:0;z-index:5;display:flex;pointer-events:none;border-radius:18px;overflow:hidden;perspective:900px}
         .yj-slat{flex:1;height:100%;transform:rotateY(90deg);animation:yjSlat 760ms cubic-bezier(.65,0,.35,1) both;
           background-image:linear-gradient(90deg, rgba(0,0,0,.16), rgba(255,255,255,.12) 50%, rgba(0,0,0,.16))}
-        .yj-slats.to-back .yj-slat{background-color:#303FFF}
+        .yj-slats.to-back .yj-slat{background-color:#2637D9}
         .yj-slats.to-front .yj-slat{background-color:${YEL}}
         @keyframes yjSlat{0%{transform:rotateY(90deg);opacity:0}12%{opacity:1}45%,55%{transform:rotateY(0deg);opacity:1}88%{opacity:1}100%{transform:rotateY(-90deg);opacity:0}}
         @media (prefers-reduced-motion:reduce){.yj-slats{display:none}.yj-flip.armed .yj-face{animation:none !important}}
         .yj-cta{all:unset;cursor:pointer;font-size:13px;font-weight:600;color:${INK};background:${YEL};padding:7px 14px;border-radius:999px;white-space:nowrap;transition:background 250ms ease,color 250ms ease}
-        .yj-cta:hover{background:#303FFF;color:#fff}.yj-cta:focus-visible{outline:2px solid ${INK};outline-offset:2px}
+        .yj-cta:hover{background:#2637D9;color:#fff}.yj-cta:focus-visible{outline:2px solid ${INK};outline-offset:2px}
         .yj-vn-fx{position:absolute;inset:0;border-radius:inherit;overflow:hidden;opacity:0;transition:opacity 900ms ease;pointer-events:none;z-index:0}
         .yj-vn-fx.on{opacity:1}
         .yj-imp{display:flex;flex-direction:column}
@@ -2129,7 +2136,7 @@ class Component extends DCLogic {
         .yj-imp-row > span{display:flex;flex-direction:column;min-width:0}
         .yj-imp-k{font-size:14px;font-weight:600;line-height:1.25}
         .yj-imp-w{font-size:12px;color:${GREY};line-height:1.3}
-        .yj-vn-strip{position:relative;display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:#EEE9DE;overflow:hidden;isolation:isolate}
+        .yj-vn-strip{position:relative;display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:${VAN};overflow:hidden;isolation:isolate}
         .yj-vn-strip > :not(.yj-g){position:relative;z-index:1}
         .yj-vn-mini{position:relative;flex:none;width:clamp(56px, min(5vw, 9vh), 76px);aspect-ratio:1;cursor:pointer}
         .yj-vn-mini .yj-vn-sheen{position:absolute;inset:0}
@@ -2148,8 +2155,8 @@ class Component extends DCLogic {
         .yj-pj-out{font-size:14px;font-weight:600;color:${INK};text-align:right;white-space:nowrap}
         .yj-pj-arr{display:inline-block;transition:transform 300ms cubic-bezier(.2,.7,.2,1)}
         .yj-pj-row:hover .yj-pj-arr,.yj-pj-row:focus-visible .yj-pj-arr{transform:translateX(4px)}
-        .yj-pj-row:hover .yj-pj-out,.yj-pj-row:hover .yj-pj-arr,.yj-pj-all:hover .yj-pj-meta{color:#303FFF !important}
-        .yj-ct-row a:hover,.yj-ct-row button:hover{color:#303FFF !important}
+        .yj-pj-row:hover .yj-pj-out,.yj-pj-row:hover .yj-pj-arr,.yj-pj-all:hover .yj-pj-meta{color:#2637D9 !important}
+        .yj-ct-row a:hover,.yj-ct-row button:hover{color:#2637D9 !important}
         @media (max-width:1180px){.yj-pj-out{font-size:13px}}
         @media (max-width:560px){.yj-pj-out{font-size:12px}}
         .yj-bt > :not(.yj-g):not(.yj-st){position:relative;z-index:1}
@@ -2182,10 +2189,14 @@ class Component extends DCLogic {
         .yj-pv{box-sizing:border-box;height:100svh;overflow-y:auto;padding:28px 28px 96px;background:${BG};font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
         .yj-chip{all:unset;cursor:pointer;font-family:${F};font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid ${INK};display:inline-flex;gap:8px;align-items:center}
-        .yj-chip-n{font-size:12px;opacity:.6}
+        .yj-chip-n{font-size:12px;opacity:.75}
+        .yj-pv-card:nth-child(even){background:${BUTTER}}
+        .yj-pv-card:hover,.yj-pv-card:focus-visible{background:${PERI}}
+        .yj-chip:hover{background:${PERI};border-color:${COB};color:${COB}}
+        .yj-chip-on:hover{background:${COB};color:#fff}
         .yj-pv-eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:${BUR}}
-        .yj-chip-on{background:#303FFF;border-color:#303FFF;color:#fff}
-        .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${INK};outline-offset:3px}
+        .yj-chip-on{background:${COB};border-color:${COB};color:#fff}
+        .yj-chip:focus-visible,.yj-pv-card:focus-visible{outline:2px solid ${COB};outline-offset:3px}
         .yj-pv-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:auto;grid-auto-flow:dense;gap:24px;align-items:stretch}
         .yj-pv-grid .yj-pv-s0{grid-column:span 2;grid-row:span 2}.yj-pv-grid .yj-pv-s1,.yj-pv-grid .yj-pv-s2{grid-column:span 1;grid-row:auto}
         .yj-pv-grid .yj-pv-s3{grid-column:span 1}.yj-pv-grid .yj-pv-s4{grid-column:span 2}.yj-pv-grid .yj-pv-s5{grid-column:span 3}
@@ -2196,12 +2207,12 @@ class Component extends DCLogic {
         .yj-pv-alt{background:center/cover no-repeat;opacity:0;transform:scale(1.08)}
         .yj-pv-card:hover .yj-pv-alt,.yj-pv-card:focus-visible .yj-pv-alt{opacity:1;transform:scale(1.02)}
         .yj-pv-card:hover .yj-pv-base,.yj-pv-card:focus-visible .yj-pv-base{transform:scale(1.06)}
-        .yj-pv-word{position:absolute;left:24px;top:22px;font-family:${SERIF};font-size:48px;color:${INK}}
+        .yj-pv-word{position:absolute;left:24px;top:22px;font-family:${F};font-weight:700;font-size:40px;letter-spacing:-0.03em;color:${INK}}
         .yj-pv-ov{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;flex-direction:column;gap:6px;padding:clamp(18px,2vw,28px);color:#FBF9F4;
           background:linear-gradient(to top, rgba(28,28,26,.82) 0%, rgba(28,28,26,.45) 55%, rgba(28,28,26,0) 100%)}
         .yj-pv-k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
-        .yj-pv-t{font-family:${SERIF};font-weight:500;font-size:clamp(28px, 2.6vw, 44px);line-height:1;letter-spacing:-0.01em}
-        .yj-pv-s0 .yj-pv-t{font-size:clamp(36px, 4vw, 68px)}
+        .yj-pv-t{font-family:${F};font-weight:600;font-size:clamp(20px, 1.8vw, 30px);line-height:1.1;letter-spacing:-0.02em}
+        .yj-pv-s0 .yj-pv-t{font-size:clamp(26px, 2.6vw, 44px)}
         .yj-pv-d{font-size:14px;line-height:1.45;max-width:52ch;max-height:0;opacity:0;overflow:hidden;transition:max-height 600ms cubic-bezier(.2,.7,.2,1),opacity 400ms ease}
         .yj-pv-go{font-size:13px;font-weight:600;color:${YEL};max-height:0;opacity:0;overflow:hidden;transition:max-height 600ms cubic-bezier(.2,.7,.2,1),opacity 400ms ease 80ms}
         .yj-pv-card:hover .yj-pv-d,.yj-pv-card:focus-visible .yj-pv-d{max-height:6em;opacity:.92}
@@ -2209,7 +2220,7 @@ class Component extends DCLogic {
         @media (hover:none){.yj-pv-d,.yj-pv-go{max-height:none;opacity:.92}}
         @media (prefers-reduced-motion:reduce){.yj-pv-base,.yj-pv-alt,.yj-pv-d,.yj-pv-go{transition:opacity 200ms ease}.yj-pv-card:hover .yj-pv-base{transform:none}}
         .yj-pv-grid .yj-pv-card:not(.yj-pv-s0) .yj-pv-cover{flex:none;aspect-ratio:16/10}
-        .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
+        .yj-pv-card{all:unset;cursor:pointer;display:flex;flex-direction:column;box-sizing:border-box;padding:8px;border-radius:24px;background:${POWDER};transition:background 300ms ease;font-family:${F};color:${INK};animation:yjRise 500ms cubic-bezier(.2,.7,.2,1) both}
         .yj-pv-cover{position:relative;display:block;flex:1;min-height:0;border-radius:18px;overflow:hidden;transition:transform 400ms cubic-bezier(.2,.7,.2,1),box-shadow 400ms ease}
         .yj-pv-base{filter:url(#yj-tri)}
         .yj-pv-card:hover .yj-pv-base,.yj-pv-card:focus-visible .yj-pv-base{filter:none}
@@ -2239,38 +2250,38 @@ class Component extends DCLogic {
         @keyframes yjZoom{from{transform:scale(1.02)}to{transform:scale(1.1)}}
         .yj-dy-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, rgba(36,36,36,.62) 0%, rgba(36,36,36,0) 42%),linear-gradient(to bottom, rgba(36,36,36,.35) 0%, rgba(36,36,36,0) 22%)}
         .yj-dy-top{position:absolute;left:16px;right:16px;top:14px;display:flex;justify-content:space-between;align-items:baseline;color:#FBF9F4;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-        .yj-dy-n{font-family:${SERIF};font-size:18px;letter-spacing:.02em;font-variant-numeric:lining-nums}
+        .yj-dy-n{font-family:${F};font-weight:500;font-size:13px;letter-spacing:.08em}
         .yj-dy-foot{position:absolute;left:16px;right:12px;bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#FBF9F4}
         .yj-dy-cap{display:flex;flex-direction:column;gap:2px;min-width:0}
-        .yj-dy-ck{font-family:${HAND};font-size:19px;line-height:1;color:${YEL}}
-        .yj-dy-ct{font-family:${SERIF};font-style:italic;font-size:clamp(17px, min(1.4vw, 2.5vh), 22px);line-height:1.15}
+        .yj-dy-ck{font-family:${HAND};font-style:italic;font-weight:400;font-size:19px;line-height:1;color:${YEL}}
+        .yj-dy-ct{font-family:${F};font-weight:500;font-size:clamp(13px, min(1vw, 1.8vh), 15px);line-height:1.35}
         .yj-dy-nav{display:flex;gap:6px;flex:none}
         .yj-dy-btn{all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(251,249,244,.7);color:#FBF9F4;font-size:15px;transition:background 200ms ease,color 200ms ease,border-color 200ms ease}
         .yj-dy-btn:hover{background:${YEL};border-color:${YEL};color:${INK}}
         .yj-dy-btn:focus-visible{outline:2px solid ${YEL};outline-offset:2px}
         .yj-ab-sw{display:grid}.yj-ab-sw > *{grid-area:1/1;transition:opacity 300ms ease,transform 300ms ease}
-        .yj-ab-hand{font-family:${HAND};font-size:20px;line-height:1;color:${BUR};opacity:0;transform:translateY(4px) rotate(-2deg);white-space:nowrap}
+        .yj-ab-hand{font-family:${HAND};font-style:italic;font-weight:400;font-size:20px;line-height:1;color:${BUR};opacity:0;transform:translateY(4px) rotate(-2deg);white-space:nowrap}
         .yj-ab-star:hover .yj-ab-hand,.yj-ab-star:focus-visible .yj-ab-hand{opacity:1;transform:rotate(-2deg)}
         .yj-ab-star:hover .yj-ab-sw > :first-child,.yj-ab-star:focus-visible .yj-ab-sw > :first-child{opacity:0}
         @media (hover:none){.yj-ab-hand{display:none}}
-        .yj-ed{justify-content:space-between !important;gap:clamp(10px, 2vh, 22px);color:${OLIVE} !important;box-shadow:none !important}
-        .yj-ed-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid ${OLIVE}}
-        .yj-ed-name{font-weight:600;color:${INK}}
-        .yj-ed-sep{color:${BUR}}
-        .yj-ed-open{display:inline-flex;align-items:center;gap:8px;color:${OLIVE};letter-spacing:.08em}
-        .yj-ed-dot{width:8px;height:8px;border-radius:50%;background:${COB};box-shadow:0 0 0 4px rgba(48,63,255,.16)}
+        .yj-ed{justify-content:space-between !important;gap:clamp(10px, 2vh, 22px);color:#fff !important}
+        .yj-ed-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.45)}
+        .yj-ed-name{font-weight:600;color:#fff}
+        .yj-ed-sep{color:${YEL}}
+        .yj-ed-open{display:inline-flex;align-items:center;gap:8px;color:#fff;letter-spacing:.08em}
+        .yj-ed-dot{width:8px;height:8px;border-radius:50%;background:${YEL};box-shadow:0 0 0 4px rgba(245,217,0,.28)}
         .yj-ed-mid{position:relative;display:block}
         .yj-ed-l{display:block;animation:yjEdRise 900ms cubic-bezier(.2,.7,.2,1) both}
         @keyframes yjEdRise{from{opacity:0;transform:translateY(.35em)}}
-        .yj-ed-mark{background:linear-gradient(${YEL}, ${YEL}) 0 88%/100% .22em no-repeat;padding:0 .04em}
-        .yj-ed-cob{color:${COB};font-style:italic;font-weight:500}
-        .yj-ed-note{position:absolute;right:0;top:-.4em;display:flex;align-items:flex-end;gap:2px;font-family:${HAND};font-size:clamp(18px, min(1.6vw, 2.8vh), 26px);color:${BUR};transform:rotate(-4deg);animation:yjEdNote 900ms ease 1.1s both;pointer-events:none}
+        .yj-ed-mark{background:linear-gradient(${YEL}, ${YEL}) 0 100%/100% .07em no-repeat;padding:0 .04em .04em}
+        .yj-ed-cob{color:${YEL};font-style:italic;font-weight:400}
+        .yj-ed-note{position:absolute;right:0;top:-.2em;display:flex;align-items:flex-end;gap:2px;font-family:${HAND};font-style:italic;font-weight:400;font-size:clamp(18px, min(1.6vw, 2.8vh), 26px);color:${BUTTER};transform:rotate(-4deg);animation:yjEdNote 900ms ease 1.1s both;pointer-events:none}
         .yj-ed-note svg{transform:scaleX(-1) translateY(8px)}
         @keyframes yjEdNote{from{opacity:0;transform:rotate(-4deg) translateY(6px)}}
         .yj-ed-foot{display:flex;flex-direction:column;gap:8px}
-        .yj-ed-sub{font-family:${SERIF};font-style:italic;font-size:clamp(17px, min(1.45vw, 2.6vh), 24px);line-height:1.25;color:${INK};max-width:56ch}
-        .yj-ed-tags{font-size:13px;letter-spacing:.04em;color:${OLIVE};line-height:1.6}
-        .yj-ed-slash{color:${BUR}}
+        .yj-ed-sub{font-family:${SERIF};font-style:italic;font-size:clamp(17px, min(1.45vw, 2.6vh), 24px);line-height:1.25;color:#fff;max-width:56ch}
+        .yj-ed-tags{font-size:13px;letter-spacing:.04em;color:#fff;line-height:1.6}
+        .yj-ed-slash{color:${YEL}}
         @media (max-width:1180px){.yj-ed-note{display:none}}
         @media (min-width:821px) and (max-height:840px){.yj-ed-top{padding-bottom:6px;font-size:12px}.yj-ed{gap:8px}.yj-ed-sub{font-size:clamp(15px, 2.3vh, 19px)}.yj-ed-tags{font-size:12px}}
         @media (min-width:821px) and (max-height:760px){.yj-ed-tags{display:none}}
@@ -2348,7 +2359,7 @@ class Component extends DCLogic {
       `),
       // Intro: an editorial opening. Oversized serif, warm paper, one cobalt word,
       // a marigold underline and a handwritten note. Text rises in once.
-      tile('in', {className:'yj-ed', style:{background:'transparent', padding:'clamp(6px, 1vw, 14px) clamp(4px, .6vw, 10px)', overflow:'visible', zIndex:3}},
+      tile('in', {className:'yj-ed', style:{background:COB, color:'#fff', zIndex:3}},
         h('span', {className:'yj-ed-top'},
           h('span', {className:'yj-ed-name'}, 'Yashvi Jain', h('span', {className:'yj-ed-sep', 'aria-hidden':true}, ' — '), 'Product & Service Designer'),
           h('span', {className:'yj-ed-open'}, h('span', {className:'yj-live yj-ed-dot', 'aria-hidden':true}), 'Open to roles / London ' + now)),
@@ -2368,11 +2379,11 @@ class Component extends DCLogic {
       tile('ab', {onClick:p.onAbout, label:'About: experience, skills and CV', className:'yj-ab-star', style:{background:'transparent', flexDirection:'row', alignItems:'center', justifyContent:'flex-start', gap:'clamp(12px, 1.4vw, 22px)', padding:'4px 6px', overflow:'visible'}},
         h('svg', {className:'yj-spark', viewBox:'0 0 410 442', 'aria-hidden':true},
           h('path', {d:'M203.784 0C203.784 0 211.566 110.227 271 158C322.034 199.022 410.002 214.397 410.002 214.397C410.002 214.397 317.339 243.333 271 292.5C223.165 343.255 215.5 442 215.5 442C215.5 442 201.563 341 149 292.5C95.7434 243.361 0 224.5 0 224.5C0 224.5 87.6877 205.42 138 158C192.402 106.726 203.784 0 203.784 0Z'})),
-        h('span', {style:{display:'flex', flexDirection:'column', gap:4, minWidth:0, position:'relative'}}, h('span', {style:{display:'flex', gap:10, alignItems:'baseline'}}, title('About'), arrow), h('span', {className:'yj-ab-sw'}, label('Experience, skills and CV', {gridArea:'1/1'}), h('span', {className:'yj-ab-hand', 'aria-hidden':true}, 'the long version, and beyond the brief')))),
+        h('span', {style:{display:'flex', flexDirection:'column', gap:4, minWidth:0, position:'relative'}}, h('span', {style:{display:'flex', gap:10, alignItems:'baseline'}}, title('About', heading), arrow), h('span', {className:'yj-ab-sw'}, label('Experience, skills and CV', {gridArea:'1/1'}), h('span', {className:'yj-ab-hand', 'aria-hidden':true}, 'the long version, and beyond the brief')))),
       h('div', {className:'yj-a-tk', style:{position:'relative', zIndex:3}},
         tile('tk', {'data-fit':'', style:{justifyContent:'flex-start', gap:6}},
           h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'baseline', flexWrap:'wrap', gap:'4px 12px', marginBottom:6}},
-            title('Contact', {fontSize:M}), h('button', {onClick:p.onContact, className:'yj-cta'}, 'Let’s talk over coffee →')),
+            title('Contact', heading), h('button', {onClick:p.onContact, className:'yj-cta'}, 'Let’s talk over coffee →')),
           [['Email', h('button', {onClick:copyEmail, 'aria-live':'polite', style:{all:'unset', cursor:'pointer', fontWeight:600}}, copied ? 'Copied ✓' : 'Copy email')],
            ['LinkedIn', h('a', {href:p.linkedin, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Open profile ↗')],
            ['CV', h('a', {href:p.cv, target:'_blank', rel:'noopener', style:{color:INK, textDecoration:'none', fontWeight:600}}, 'Download PDF ↓')]]
@@ -2380,13 +2391,13 @@ class Component extends DCLogic {
         null),
       projects,
       h('div', {className:'yj-a-st'}, currently,
-      tile('rc', {style:{gap:12}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
+      tile('rc', {style:{gap:12, background:BUTTER}, onMouseEnter:() => { hold.current = true; }, onMouseLeave:() => { hold.current = false; }},
         h('span', {style:{display:'flex', justifyContent:'space-between', alignItems:'center'}},
           label('What colleagues say'),
           h('span', {style:{display:'flex', gap:6}}, RECS.map((_, i) => h('button', {key:i, onClick:() => setRi(i), 'aria-label':'Show recommendation ' + (i + 1), 'aria-current':i === ri,
-            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? INK : LINE, transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
+            style:{all:'unset', cursor:'pointer', width:i === ri ? 16 : 6, height:6, borderRadius:999, background:i === ri ? INK : 'rgba(36,36,36,.28)', transition:'width 300ms cubic-bezier(.2,.7,.2,1)'}})))),
         h('span', {key:ri, className:'yj-bt-q', 'aria-live':'polite', style:{display:'flex', flexDirection:'column', gap:'clamp(8px, 1.4vh, 14px)'}},
-          title('“' + r.q + '”', {fontWeight:400, fontStyle:'italic', lineHeight:1.15, fontSize:'clamp(16px, min(1.35vw, 2.3vh), 23px)'}),
+          title('“' + r.q + '”', {fontFamily:SERIF, fontWeight:400, fontStyle:'italic', letterSpacing:'-0.005em', lineHeight:1.15, fontSize:'clamp(16px, min(1.35vw, 2.3vh), 23px)'}),
           h('span', {style:{display:'flex', alignItems:'center', gap:12}},
             h('img', {src:r.img, alt:'', width:40, height:40, style:{width:40, height:40, borderRadius:'50%', objectFit:'cover', flex:'none', filter:'grayscale(1)'}}),
             h('span', {style:{display:'flex', flexDirection:'column', gap:2, minWidth:0, fontSize:S}},
@@ -2403,7 +2414,7 @@ class Component extends DCLogic {
     // portrait and sea painting, tulips on a stool, a lamp and a coffee.
     const h = React.createElement;
     const C = {blue:'#93b3bc', floor:'#f1ece1', cream:'#f6f1e7', pink:'#f6f1e7', orange:'#7a2a2e', ink:'#3b1b1d', wood:'#c99a63'};
-    const disp = "'Libre Caslon Display', Georgia, serif", sans = "'Inter', sans-serif", mono = "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace";
+    const disp = "'Cormorant Garamond', Georgia, serif", sans = "'DM Sans', sans-serif", mono = "'DM Sans', sans-serif";
     const wrap = React.useRef(null);
     React.useEffect(() => {
       const el = wrap.current; if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2571,7 +2582,7 @@ class Component extends DCLogic {
     Object.assign(el.style, {position:'fixed', left:'0', top:'0', width:'16px', height:'16px', marginLeft:'-8px', marginTop:'-8px', borderRadius:'50%', background:'#F5D900', boxShadow:'0 0 0 1.5px #111111',
       pointerEvents:'none', zIndex:'10001', display:'flex', alignItems:'center', justifyContent:'center',
       transition:'width 450ms cubic-bezier(.22,1,.36,1), height 450ms cubic-bezier(.22,1,.36,1), margin 450ms cubic-bezier(.22,1,.36,1), opacity 250ms', opacity:'0', willChange:'transform'});
-    Object.assign(lab.style, {fontFamily:"'Inter',sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#111111', fontWeight:'600', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
+    Object.assign(lab.style, {fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', color:'#111111', fontWeight:'600', opacity:'0', transition:'opacity 250ms', whiteSpace:'nowrap'});
     el.appendChild(lab); document.body.appendChild(el); document.documentElement.classList.add('yj-cur');
     let tx = -100, ty = -100, x = -100, y = -100, size = 16;
     const setSize = (n, text) => { if (n === size && lab.textContent === (text || '')) return; size = n; el.style.width = el.style.height = n + 'px'; el.style.marginLeft = el.style.marginTop = (-n / 2) + 'px'; lab.textContent = text || ''; lab.style.opacity = text ? '1' : '0'; };
@@ -2939,7 +2950,7 @@ Agent:`;
       summaryBlock:(() => {
         // Recruiter summary: the whole case in one screen, in this case's own newspaper style.
         const h = React.createElement, RED = '#c4161c', INK = '#141210', MUTE = '#6b625a', RULE = '#d9d2c7';
-        const SERIF = "'Source Serif 4', serif";
+        const SERIF = "'Cormorant Garamond', serif";
         const fact = (k, v) => h('div', {key:k, style:{borderTop:'1px solid ' + INK, paddingTop:10}},
           h('div', {style:{fontSize:12, letterSpacing:'.14em', textTransform:'uppercase', color:MUTE, marginBottom:6}}, k), h('div', {style:{fontSize:17, lineHeight:1.45}}, v));
         const num = (n, k) => h('div', {key:k, style:{borderTop:'3px solid ' + RED, paddingTop:10}},
@@ -3036,7 +3047,7 @@ Agent:`;
       h('div', {role:'img', 'aria-label':'Johnson & Johnson · Dosing Error · AVA', style:{position:'absolute', inset:0, margin:'auto', aspectRatio:'1400 / 765', maxWidth:'100%', maxHeight:'100%', containerType:'inline-size', pointerEvents:'none',
           display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', color:'#ffffff'}},
         h('img', {src:__R('assets/logos/jnj.svg'), alt:'', style:{width:'36.7cqw', height:'auto', filter:'brightness(0) invert(1)', marginTop:'2cqw'}}),
-        h('div', {style:{marginTop:'5.6cqw', fontFamily:'Geist, sans-serif', fontWeight:700, fontSize:'2.05cqw', letterSpacing:'-0.005em', lineHeight:1}}, 'Dosing Error'),
+        h('div', {style:{marginTop:'5.6cqw', fontFamily:'DM Sans, sans-serif', fontWeight:700, fontSize:'2.05cqw', letterSpacing:'-0.005em', lineHeight:1}}, 'Dosing Error'),
         h('img', {src:__R('figma/ava/assets/1a818537395aa2c3.png'), alt:'', style:{width:'14cqw', height:'auto', marginTop:'3.6cqw', filter:'brightness(0) invert(1)'}})));
     if (c.banner === 'cray' || c.banner === 'poster') return h('div', {style:{position:'absolute', inset:0, background:c.tone, overflow:'hidden'}},
       h('img', {src:c.src, alt:c.alt || 'CRAY — Safer streets. Happier strays.', style:{position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:c.cardPos || '0% 50%'}}),
@@ -3116,7 +3127,7 @@ Agent:`;
       cardLine:'A mobile prototype that helps parents check a suspicious call or message before they act.',
       open:() => window.open(PROTO_URL, '_blank', 'noopener'), ctaO: s.hovCase === 'askbeta' ? 1 : 0, ctaY: s.hovCase === 'askbeta' ? '0px' : '8px',
       hovOn:() => this.setState({hovCase:'askbeta'}), hovOff:() => this.setState(st => st.hovCase === 'askbeta' ? {hovCase:null} : null),
-      cover: h('a', {href:PROTO_URL, target:'_blank', rel:'noopener', 'aria-label':'Open the Ask Beta prototype', style:{position:'absolute', inset:0, display:'block', background:'#f4b73a', color:'#141210', overflow:'hidden', textDecoration:'none', fontFamily:"Inter, 'Inter', sans-serif"}},
+      cover: h('a', {href:PROTO_URL, target:'_blank', rel:'noopener', 'aria-label':'Open the Ask Beta prototype', style:{position:'absolute', inset:0, display:'block', background:'#f4b73a', color:'#141210', overflow:'hidden', textDecoration:'none', fontFamily:"'DM Sans', sans-serif"}},
         h('img', {src:__R('assets/askbeta-sun.svg'), alt:'', 'aria-hidden':true, style:{position:'absolute', right:'6%', top:'8%', width:'34%', maxWidth:200, height:'auto', animation:'yjSunSpin 40s linear infinite'}}),
         h('span', {style:{position:'absolute', left:'8%', bottom:'9%', right:'8%', display:'flex', flexDirection:'column', gap:'0.4em'}},
           h('span', {style:{fontSize:'clamp(12px,1vw,14px)', fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', opacity:.7}}, 'Live prototype ↗'),
@@ -3212,9 +3223,9 @@ Agent:`;
       socials:[{k:'LI', href:'https://www.linkedin.com/in/yashvi-jain-b049851ba/'}, {k:'CV', href:__R('uploads/assets-1790874602631-0p68.pdf')}],
       loader: null,
       caseBack: s.screen === 'case' ? h('button', {type:'button', className:'yj-back', onClick:() => this.go('work'), 'aria-label':'Back to all projects'},
-        h('style', null, `.yj-back{all:unset;cursor:pointer;position:fixed;z-index:61;left:max(18px, env(safe-area-inset-left, 0px));bottom:calc(18px + env(safe-area-inset-bottom, 0px));display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#fff;color:#111;box-shadow:inset 0 0 0 1.5px #111,0 6px 20px -10px rgba(0,0,0,.35);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:background 250ms ease,color 250ms ease,box-shadow 250ms ease}
+        h('style', null, `.yj-back{all:unset;cursor:pointer;position:fixed;z-index:61;left:max(18px, env(safe-area-inset-left, 0px));bottom:calc(18px + env(safe-area-inset-bottom, 0px));display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#fff;color:#111;box-shadow:inset 0 0 0 1.5px #111,0 6px 20px -10px rgba(0,0,0,.35);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:background 250ms ease,color 250ms ease,box-shadow 250ms ease}
           @media (max-width:640px){.yj-back{bottom:calc(84px + env(safe-area-inset-bottom, 0px));padding:9px 14px;font-size:13px}}
-          .yj-back:hover{color:#303FFF;box-shadow:inset 0 0 0 1.5px #303FFF,0 6px 20px -10px rgba(0,0,0,.35)}.yj-back:focus-visible{outline:2px solid #111;outline-offset:3px}`), '← All projects') : null,
+          .yj-back:hover{color:#2637D9;box-shadow:inset 0 0 0 1.5px #2637D9,0 6px 20px -10px rgba(0,0,0,.35)}.yj-back:focus-visible{outline:2px solid #111;outline-offset:3px}`), '← All projects') : null,
       dock: h(Component.Dock, {items:[
         // Two views only, like the reference: About and Contact are reached from dashboard tiles.
         {key:'dash', label:'Dashboard', on:(s.screen === 'home' && s.homeView !== 'proj') || s.screen === 'approach' || s.screen === 'contact', onClick:() => this.go('home')},
@@ -3385,10 +3396,10 @@ Agent:`;
         faces:[
           h('div', {style:{position:'absolute', inset:0, background:RED, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`12px ${MONO}`, letterSpacing:'0.16em', textTransform:'uppercase'}}, '(Product & service designer — open to roles)'),
-            h('span', {style:{fontFamily:"'Libre Caslon Display',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
+            h('span', {style:{fontFamily:"'Cormorant Garamond',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, 'Have a messy problem?')),
           h('div', {style:{position:'absolute', inset:0, background:CREAM, color:INK, padding:'clamp(24px,3vw,44px)', display:'flex', flexDirection:'column', justifyContent:'space-between'}},
             h('span', {style:{font:`13px ${MONO}`, letterSpacing:'0.08em', textTransform:'uppercase', color:RED}}, '(Get in touch)'),
-            h('span', {style:{fontFamily:"'Libre Caslon Display',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, "Let's frame it →"))]})
+            h('span', {style:{fontFamily:"'Cormorant Garamond',Georgia,serif", fontWeight:400, fontSize:'clamp(48px,7.5vw,135px)', lineHeight:0.92, letterSpacing:'-0.03em'}}, "Let's frame it →"))]})
     };
   }
 }

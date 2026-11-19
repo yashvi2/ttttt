@@ -95,37 +95,54 @@ component (`BentoHome`, `AboutBento`, `ContactBento`).
 
 | Token | Value | Use |
 |---|---|---|
-| `BG` parchment | `#F3F0E9` | page background, with a 24px dot grid (`#d9d1bf`) |
-| `PAPER` | `#FBF9F4` | tile background |
-| `OLIVE` | `#343F34` | editorial rules, chapter text, secondary headings |
-| `BUR` burgundy | `#8C4448` | handwritten notes, numerals, separators ( / ) |
-| `INK` | `#242424` | body text and headlines |
+| `COB` deep cobalt | `#2637D9` | **primary**: the hero panel, the dock, selected chips/tabs, hover ring, the CTA panel on About |
+| `YEL` marigold | `#F5D900` | **primary**: CTA backgrounds (`.yj-cta`, Copy email), active dock tab, hero highlights on cobalt |
+| `BG` parchment | `#F3F0E9` | **primary**: page background, with a 24px dot grid (`#d9d1bf`) |
+| `INK` | `#242424` | **primary**: body text and headlines on light surfaces |
+| `OLIVE` | `#343F34` | secondary text, editorial rules |
+| `BUR` burgundy | `#8C4448` | literary / personal details only: italic notes, chapter numerals, separators |
+| `POWDER` | `#E9ECFF` | secondary surfaces: "Looking for", Skills, contact info, odd project cards |
+| `PERI` periwinkle | `#D9DFFF` | hover fill for chips, tabs and project cards; notebook rules |
+| `BUTTER` buttercream | `#FFF4B8` | secondary surfaces: testimonials, agent tile, even project cards |
+| `VAN` vanilla | `#FFF7D6` | the letter (Contact), the notebook card, the player strip |
+| `PAPER` | `#FBF9F4` | default tile background |
 | `GREY` | `#5E6157` | metadata and labels |
 | `LINE` | `#E2DCCD` | hairlines and chip borders |
-| `COB` cobalt | `#303FFF` | signature accent: **state and one word of emphasis** (selected chip, dock, hover, the italic word in a headline) |
-| `YEL` marigold | `#F5D900` | signature accent: the single primary action (`.yj-cta`), the hero underline, the diary label |
+
+Accessibility (checked with `contrast.cjs`, all screens and hover states):
+- Text ≥ 4.5:1, large text ≥ 3:1. Measured: white on cobalt 8.0, yellow on
+  cobalt 5.6, ink on yellow 11.0, cobalt on parchment 7.0, burgundy on
+  parchment 6.1, grey on powder 5.4.
+- Ink text on yellow buttons. Yellow or white text on cobalt only.
+- Never yellow text on parchment (1.25:1). Never powder, periwinkle,
+  buttercream or vanilla as text colours; they are surfaces only.
+- Focus rings: cobalt on light surfaces, yellow on cobalt.
 
 Rules:
-- Most of each screen is parchment, paper, ink and olive. Cobalt and marigold
-  are accents, never section fills (the dock is the one exception).
-- Burgundy is for annotations and numbering only, not for UI controls.
-- Don't add a third accent hue to the shell. Case-study palettes (AVA red,
-  Pfizer blue, CRAY purple, Move red) never enter the shell.
+- Parchment carries the page; cobalt and yellow carry the brand. Powder and
+  buttercream alternate for secondary surfaces. Burgundy stays rare.
+- Case-study palettes (AVA red, Pfizer blue, CRAY purple, Move red) never
+  enter the shell.
 - Tiles: radius 18, padding `clamp(18px, 1.8vw, 30px)`, gap 28px (20px when
   height ≤ 880px). No borders at rest; a 3D tilt on hover only.
 
-### Type
-- **Cormorant Garamond** (400/500, italic) for editorial headings, tile
-  titles (`title()` = serif at `M × 1.3`), quotes and big numbers. Always set
-  `font-variant-numeric: lining-nums` on numbers.
-- **Inter** for body and UI. Labels (`label()`): 12px, uppercase, `.12em`.
-- **Caveat** for occasional handwritten notes (`.yj-hand`, burgundy). Use
-  sparingly: one or two per screen.
+### Type: strictly two typefaces
+- **Cormorant Garamond** (400, 500, 600, italic 400): the hero, section
+  headings, expressive statements, pull quotes and the small italic notes
+  that replaced handwriting (`.yj-hand`, `HAND` = Cormorant italic 400).
+  Italics are always weight 400.
+- **DM Sans** (400, 500, 600, 700): navigation, project titles (`title()`),
+  descriptions, metadata, buttons, statistics, and all case-study body text.
+  Labels (`label()`): 12px, uppercase, `.12em`.
+- No third face anywhere, including case studies and `public/_ds`. Every
+  legacy family (Inter, Schibsted, Geist, Poppins, Archivo, Source Serif,
+  Averia, Bodoni, Caveat…) has been mapped to one of the two. `fonts.cjs`
+  checks what actually renders.
 - `type.css` forces `#dc-root h1..h6` sizes with `!important`, so headline
   rules live in `states.css` with a higher-specificity selector, e.g.
   `#dc-root .yj-bento h1.yj-ed-h{…}`.
-- Load fonts by adding them to the Google Fonts URL in
-  `PortfolioPublish.jsx` → `defineScreen({ links: [...] })`.
+- Fonts load from one Google Fonts URL (Cormorant Garamond + DM Sans) in
+  `PortfolioPublish.jsx`, `CaseBirdsong.jsx` and `CasePfizer.jsx`.
 
 ## 3. Components (the bento shell)
 

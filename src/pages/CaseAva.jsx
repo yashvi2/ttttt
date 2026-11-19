@@ -13,7 +13,7 @@ function template(v) {
         style={{
           background: '#ffffff',
           color: 'var(--color-text,#201e1d)',
-          fontFamily: "'Johnson Text','Archivo',sans-serif",
+          fontFamily: "'DM Sans','DM Sans',sans-serif",
           paddingBottom: '64px',
         }}
       >

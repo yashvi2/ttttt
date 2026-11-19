@@ -12,7 +12,7 @@ function template(v) {
         style={{
           background: '#ffffff',
           color: '#000000',
-          fontFamily: "'Instrument Sans',sans-serif",
+          fontFamily: "'DM Sans',sans-serif",
           overflow: 'hidden',
         }}
       >
@@ -1987,6 +1987,6 @@ export default defineScreen({
   Logic,
   template,
   css: screenCss,
-  links: ['https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap'],
+  links: ['https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap'],
   defaults: {},
 });

@@ -10,7 +10,7 @@ function template(v) {
       <div
         ref={v.mvRef}
         style={css(
-          `background-color:#efe8d8;background-image:${v.ime?.paper ?? ''};background-size:1200px auto;background-repeat:repeat;color:#201e1d;font-family:'Poppins',sans-serif;padding-bottom:64px`,
+          `background-color:#efe8d8;background-image:${v.ime?.paper ?? ''};background-size:1200px auto;background-repeat:repeat;color:#201e1d;font-family:'DM Sans',sans-serif;padding-bottom:64px`,
         )}
       >
         {' '}
@@ -45,7 +45,7 @@ function template(v) {
               aria-label="Play the Birdsong exhibition video on YouTube (opens in a new tab)"
               style={{ position: 'absolute', inset: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: 'url(assets/web/assets/ime/cover.webp)', backgroundSize: 'cover', backgroundPosition: 'center', textDecoration: 'none' }}
             >
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '14px 22px', borderRadius: '999px', background: 'rgba(32,30,29,.82)', color: '#f4eace', fontFamily: "'Poppins',sans-serif", fontSize: '15px', fontWeight: '600' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '14px 22px', borderRadius: '999px', background: 'rgba(32,30,29,.82)', color: '#f4eace', fontFamily: "'DM Sans',sans-serif", fontSize: '15px', fontWeight: '600' }}>
                 <span aria-hidden="true" style={{ width: '34px', height: '34px', borderRadius: '50%', background: '#ce863f', display: 'grid', placeItems: 'center', color: '#201e1d', fontSize: '13px' }}>▶</span>
                 Watch the exhibition
               </span>
@@ -74,7 +74,7 @@ function template(v) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -87,7 +87,7 @@ function template(v) {
               <h1
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(64px,10vw,152px)',
                   lineHeight: '0.86',
@@ -100,7 +100,7 @@ function template(v) {
               <p
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: 'clamp(20px,1.8vw,26px)',
                   lineHeight: '1.35',
                   color: '#201e1d',
@@ -137,7 +137,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -149,7 +149,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -165,7 +165,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -181,7 +181,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -206,7 +206,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -226,7 +226,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -246,7 +246,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -282,7 +282,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -294,7 +294,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -310,7 +310,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -326,7 +326,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -478,7 +478,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -490,7 +490,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '16px',
                       lineHeight: '1.5',
                       color: '#201e1d',
@@ -505,7 +505,7 @@ function template(v) {
                 >
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -517,7 +517,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '16px',
                       lineHeight: '1.5',
                       color: '#201e1d',
@@ -530,7 +530,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <span
                   style={{
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '12px',
                     fontWeight: '600',
                     letterSpacing: '0.08em',
@@ -831,7 +831,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         fontWeight: '600',
                         letterSpacing: '0.08em',
@@ -843,7 +843,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '16px',
                         lineHeight: '1.5',
                         color: '#201e1d',
@@ -858,7 +858,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         fontWeight: '600',
                         letterSpacing: '0.08em',
@@ -870,7 +870,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '16px',
                         lineHeight: '1.5',
                         color: '#201e1d',
@@ -885,7 +885,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         fontWeight: '600',
                         letterSpacing: '0.08em',
@@ -897,7 +897,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '16px',
                         lineHeight: '1.5',
                         color: '#201e1d',
@@ -929,7 +929,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -941,7 +941,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -957,7 +957,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -973,7 +973,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -1027,7 +1027,7 @@ function template(v) {
                   <figcaption style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         fontWeight: '600',
                         letterSpacing: '0.08em',
@@ -1078,7 +1078,7 @@ function template(v) {
                   <figcaption style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         fontWeight: '600',
                         letterSpacing: '0.08em',
@@ -1115,7 +1115,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -1127,7 +1127,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -1143,7 +1143,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -1159,7 +1159,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -1213,7 +1213,7 @@ function template(v) {
                   </div>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontWeight: '600',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -1225,7 +1225,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Averia Libre',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '26px',
                       lineHeight: '1.05',
@@ -1270,7 +1270,7 @@ function template(v) {
                   </div>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontWeight: '600',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -1282,7 +1282,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Averia Libre',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '26px',
                       lineHeight: '1.05',
@@ -1327,7 +1327,7 @@ function template(v) {
                   </div>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontWeight: '600',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -1339,7 +1339,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Averia Libre',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '26px',
                       lineHeight: '1.05',
@@ -1384,7 +1384,7 @@ function template(v) {
                   </div>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontWeight: '600',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -1396,7 +1396,7 @@ function template(v) {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'Averia Libre',serif",
+                      fontFamily: "'Cormorant Garamond',serif",
                       fontWeight: '700',
                       fontSize: '26px',
                       lineHeight: '1.05',
@@ -1422,7 +1422,7 @@ function template(v) {
                 <div style={{ gridColumn: '1/-1', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -1450,7 +1450,7 @@ function template(v) {
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontWeight: '600',
                             letterSpacing: '0.08em',
                             textTransform: 'uppercase',
@@ -1465,7 +1465,7 @@ function template(v) {
                             style={{
                               padding: '14px 18px',
                               border: '2px solid #201e1d',
-                              fontFamily: "'Poppins',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontSize: '15px',
                               fontWeight: '600',
                               color: '#fbf6ec',
@@ -1477,7 +1477,7 @@ function template(v) {
                           </div>
                           <span
                             aria-hidden="true"
-                            style={{ fontFamily: "'Poppins',sans-serif", fontSize: '20px', color: '#201e1d' }}
+                            style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '20px', color: '#201e1d' }}
                           >
                             →
                           </span>
@@ -1486,7 +1486,7 @@ function template(v) {
                               style={{
                                 padding: '14px 18px',
                                 border: '2px solid #201e1d',
-                                fontFamily: "'Poppins',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontSize: '15px',
                                 fontWeight: '600',
                                 color: '#201e1d',
@@ -1498,7 +1498,7 @@ function template(v) {
                           </div>
                           <span
                             aria-hidden="true"
-                            style={{ fontFamily: "'Poppins',sans-serif", fontSize: '20px', color: '#201e1d' }}
+                            style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '20px', color: '#201e1d' }}
                           >
                             →
                           </span>
@@ -1506,7 +1506,7 @@ function template(v) {
                             style={{
                               padding: '14px 18px',
                               border: '2px solid #201e1d',
-                              fontFamily: "'Poppins',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontSize: '15px',
                               fontWeight: '600',
                               color: '#ffffff',
@@ -1523,7 +1523,7 @@ function template(v) {
                               gap: '8px',
                               padding: '6px 12px',
                               border: '2px dashed #3c593e',
-                              fontFamily: "'Poppins',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '600',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
@@ -1538,7 +1538,7 @@ function template(v) {
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontWeight: '600',
                             letterSpacing: '0.08em',
                             textTransform: 'uppercase',
@@ -1569,7 +1569,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Poppins',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '600',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
@@ -1581,7 +1581,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: "'Averia Libre',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontWeight: '700',
                                   fontSize: '22px',
                                   lineHeight: '1.05',
@@ -1598,7 +1598,7 @@ function template(v) {
                                 gap: '8px',
                                 padding: '10px 14px',
                                 border: '2px dashed #201e1d',
-                                fontFamily: "'Poppins',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontSize: '14px',
                                 fontWeight: '600',
                                 color: '#201e1d',
@@ -1621,7 +1621,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Poppins',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '600',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
@@ -1633,7 +1633,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: "'Averia Libre',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontWeight: '700',
                                   fontSize: '22px',
                                   lineHeight: '1.05',
@@ -1658,7 +1658,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Poppins',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '600',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
@@ -1670,7 +1670,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: "'Averia Libre',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontWeight: '700',
                                   fontSize: '22px',
                                   lineHeight: '1.05',
@@ -1695,7 +1695,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Poppins',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '600',
                                   letterSpacing: '0.08em',
                                   textTransform: 'uppercase',
@@ -1707,7 +1707,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: "'Averia Libre',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontWeight: '700',
                                   fontSize: '22px',
                                   lineHeight: '1.05',
@@ -1730,12 +1730,12 @@ function template(v) {
                           borderTop: '2px solid #201e1d',
                         }}
                       >
-                        <span style={{ fontFamily: "'Poppins',sans-serif", fontSize: '15px', color: '#4a4644' }}>
+                        <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '15px', color: '#4a4644' }}>
                           Galleries run in sequence; each one can return to the menu.
                         </span>
                         <span
                           aria-hidden="true"
-                          style={{ fontFamily: "'Poppins',sans-serif", fontSize: '20px', color: '#201e1d' }}
+                          style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '20px', color: '#201e1d' }}
                         >
                           →
                         </span>
@@ -1743,7 +1743,7 @@ function template(v) {
                           style={{
                             padding: '14px 18px',
                             border: '2px solid #201e1d',
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '15px',
                             fontWeight: '600',
                             color: '#fbf6ec',
@@ -1757,7 +1757,7 @@ function template(v) {
                     </div>
                     <figcaption
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4644',
@@ -1770,7 +1770,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -1817,7 +1817,7 @@ function template(v) {
                 <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -1883,7 +1883,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -1895,7 +1895,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -1911,7 +1911,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -1927,7 +1927,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -1987,7 +1987,7 @@ function template(v) {
                     <span style={{ flex: '1', minHeight: '120px', background: '#1C2565' }} />
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         letterSpacing: '0.04em',
                         color: '#201e1d',
@@ -2000,7 +2000,7 @@ function template(v) {
                     <span style={{ flex: '1', minHeight: '120px', background: '#3C593E' }} />
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         letterSpacing: '0.04em',
                         color: '#201e1d',
@@ -2013,7 +2013,7 @@ function template(v) {
                     <span style={{ flex: '1', minHeight: '120px', background: '#E8A85A' }} />
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         letterSpacing: '0.04em',
                         color: '#201e1d',
@@ -2026,7 +2026,7 @@ function template(v) {
                     <span style={{ flex: '1', minHeight: '120px', background: '#D56D54' }} />
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         letterSpacing: '0.04em',
                         color: '#201e1d',
@@ -2039,7 +2039,7 @@ function template(v) {
                     <span style={{ flex: '1', minHeight: '120px', background: '#333333' }} />
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '12px',
                         letterSpacing: '0.04em',
                         color: '#201e1d',
@@ -2053,7 +2053,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <span
                   style={{
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '12px',
                     fontWeight: '600',
                     letterSpacing: '0.08em',
@@ -2066,7 +2066,7 @@ function template(v) {
                 <p
                   style={{
                     margin: '0',
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '18px',
                     lineHeight: '1.55',
                     color: '#4a4644',
@@ -2117,7 +2117,7 @@ function template(v) {
                     </button>
                     <figcaption
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4644',
@@ -2160,7 +2160,7 @@ function template(v) {
                     </button>
                     <figcaption
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4644',
@@ -2174,7 +2174,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <span
                   style={{
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '12px',
                     fontWeight: '600',
                     letterSpacing: '0.08em',
@@ -2187,7 +2187,7 @@ function template(v) {
                 <p
                   style={{
                     margin: '0',
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '18px',
                     lineHeight: '1.55',
                     color: '#4a4644',
@@ -2232,7 +2232,7 @@ function template(v) {
                   </button>
                   <figcaption
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '15px',
                       lineHeight: '1.45',
                       color: '#4a4644',
@@ -2275,7 +2275,7 @@ function template(v) {
                   </button>
                   <figcaption
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '15px',
                       lineHeight: '1.45',
                       color: '#4a4644',
@@ -2288,7 +2288,7 @@ function template(v) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <span
                   style={{
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '12px',
                     fontWeight: '600',
                     letterSpacing: '0.08em',
@@ -2348,7 +2348,7 @@ function template(v) {
                     </button>
                     <figcaption
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '15px',
                         lineHeight: '1.45',
                         color: '#4a4644',
@@ -2404,7 +2404,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '12px',
                             fontWeight: '600',
                             letterSpacing: '0.08em',
@@ -2416,7 +2416,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '16px',
                             lineHeight: '1.5',
                             color: '#201e1d',
@@ -2431,7 +2431,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '12px',
                             fontWeight: '600',
                             letterSpacing: '0.08em',
@@ -2443,7 +2443,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '16px',
                             lineHeight: '1.5',
                             color: '#201e1d',
@@ -2458,7 +2458,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '12px',
                             fontWeight: '600',
                             letterSpacing: '0.08em',
@@ -2470,7 +2470,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Poppins',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontSize: '16px',
                             lineHeight: '1.5',
                             color: '#201e1d',
@@ -2504,7 +2504,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -2516,7 +2516,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -2541,7 +2541,7 @@ function template(v) {
                   data-yj-rv="up"
                   style={{
                     margin: '0',
-                    fontFamily: "'Averia Libre',serif",
+                    fontFamily: "'Cormorant Garamond',serif",
                     fontWeight: '700',
                     fontSize: 'clamp(32px,3.6vw,52px)',
                     lineHeight: '1.02',
@@ -2557,7 +2557,7 @@ function template(v) {
                   data-yj-rv="up"
                   style={{
                     margin: '0',
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '16px',
                     lineHeight: '1.55',
                     color: '#4a4644',
@@ -2699,7 +2699,7 @@ function template(v) {
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', minWidth: '0' }}>
                     <span
                       style={{
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '600',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
@@ -2711,7 +2711,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Averia Libre',serif",
+                        fontFamily: "'Cormorant Garamond',serif",
                         fontWeight: '700',
                         fontSize: '22px',
                         lineHeight: '1.1',
@@ -2735,7 +2735,7 @@ function template(v) {
                         alignItems: 'center',
                         justifyContent: 'center',
                         border: '2px solid #201e1d',
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '18px',
                         color: '#201e1d',
                         transition: 'background 200ms,color 200ms',
@@ -2756,7 +2756,7 @@ function template(v) {
                         alignItems: 'center',
                         justifyContent: 'center',
                         border: '2px solid #201e1d',
-                        fontFamily: "'Poppins',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontSize: '18px',
                         color: '#201e1d',
                         transition: 'background 200ms,color 200ms',
@@ -2789,7 +2789,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -2801,7 +2801,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -2817,7 +2817,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -2833,7 +2833,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -2855,7 +2855,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '16px 20px 16px 0' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -2918,7 +2918,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '16px 20px 16px 0' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -2996,7 +2996,7 @@ function template(v) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '16px 20px 16px 0' }}>
                   <span
                     style={{
-                      fontFamily: "'Poppins',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontSize: '12px',
                       fontWeight: '600',
                       letterSpacing: '0.08em',
@@ -3054,7 +3054,7 @@ function template(v) {
               >
                 <span
                   style={{
-                    fontFamily: "'Poppins',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontSize: '12px',
                     fontWeight: '600',
                     letterSpacing: '0.08em',
@@ -3097,7 +3097,7 @@ function template(v) {
             <div style={{ display: 'flex', gap: '12px', alignItems: 'baseline' }}>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -3109,7 +3109,7 @@ function template(v) {
               </span>
               <span
                 style={{
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -3125,7 +3125,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Averia Libre',serif",
+                  fontFamily: "'Cormorant Garamond',serif",
                   fontWeight: '700',
                   fontSize: 'clamp(44px,5.4vw,80px)',
                   lineHeight: '1.02',
@@ -3141,7 +3141,7 @@ function template(v) {
                 data-yj-rv="up"
                 style={{
                   margin: '0',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '18px',
                   lineHeight: '1.55',
                   color: '#4a4644',
@@ -3166,7 +3166,7 @@ function template(v) {
                   background: '#3c593e',
                   color: '#ffffff',
                   textDecoration: 'none',
-                  fontFamily: "'Poppins',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontSize: '13px',
                   fontWeight: '600',
                   letterSpacing: '0.08em',
@@ -3200,7 +3200,7 @@ export default defineScreen({
   template,
   css: screenCss,
   links: [
-    'https://fonts.googleapis.com/css2?family=Averia+Libre:ital,wght@0,300;0,400;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap',
+    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap',
   ],
   defaults: {},
 });

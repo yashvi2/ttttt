@@ -20,7 +20,7 @@ function template(v) {
           flexDirection: 'column',
           background: '#f4f1ea',
           color: '#141414',
-          fontFamily: "'Schibsted Grotesk',sans-serif",
+          fontFamily: "'DM Sans',sans-serif",
         }}
       >
         <header
@@ -65,7 +65,7 @@ function template(v) {
           >
             <span
               style={{
-                fontFamily: "'Libre Caslon Display',Georgia,serif",
+                fontFamily: "'Cormorant Garamond',Georgia,serif",
                 fontWeight: '400',
                 fontSize: '24px',
                 letterSpacing: '-0.01em',
@@ -75,7 +75,7 @@ function template(v) {
               Yashvi
             </span>
             <span
-              style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: '24px', letterSpacing: '-0.01em', lineHeight: '1' }}
+              style={{ fontFamily: "'Cormorant Garamond',Georgia,serif", fontSize: '24px', letterSpacing: '-0.01em', lineHeight: '1' }}
             >
               Jain
             </span>
@@ -132,7 +132,7 @@ function template(v) {
                   transition: 'background 250ms',
                   borderRadius: '999px',
                   padding: '17px 20px',
-                  fontFamily: "'Schibsted Grotesk',sans-serif",
+                  fontFamily: "'DM Sans',sans-serif",
                   fontWeight: '500',
                   fontSize: '13px',
                   letterSpacing: '0.14em',
@@ -177,7 +177,7 @@ function template(v) {
                 <div
                   data-yj-rv="up"
                   style={{
-                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontWeight: '500',
                     fontSize: '13px',
                     letterSpacing: '0.14em',
@@ -191,7 +191,7 @@ function template(v) {
                   data-yj-rv="mask"
                   style={{
                     margin: '20px 0 0',
-                    fontFamily: "'Libre Caslon Display',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '400',
                     fontSize: 'clamp(44px,5vw,84px)',
                     lineHeight: '1',
@@ -206,7 +206,7 @@ function template(v) {
                   Selected work
                   <span
                     style={{
-                      fontFamily: "'Schibsted Grotesk',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontStyle: 'normal',
                       fontWeight: '500',
                       fontStretch: '100%',
@@ -268,7 +268,7 @@ function template(v) {
                             style={{
                               all: 'unset',
                               cursor: 'pointer',
-                              fontFamily: "'Libre Caslon Display',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontSize: '32px', fontWeight: '400', letterSpacing: '-0.02em',
                               lineHeight: '1.05',
                             }}
@@ -283,7 +283,7 @@ function template(v) {
                                 padding: '6px 12px',
                                 border: '1.5px solid #8f8a80',
                                 borderRadius: '999px',
-                                fontFamily: "'Schibsted Grotesk',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.14em',
@@ -298,7 +298,7 @@ function template(v) {
                                 padding: '6px 12px',
                                 border: '1.5px solid #cfcac0',
                                 borderRadius: '999px',
-                                fontFamily: "'Schibsted Grotesk',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.14em',
@@ -340,7 +340,7 @@ function template(v) {
                 {' '}
                 <div
                   style={{
-                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontWeight: '500',
                     fontSize: '13px',
                     letterSpacing: '0.14em',
@@ -421,7 +421,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -476,7 +476,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -533,7 +533,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -588,7 +588,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -644,7 +644,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -701,7 +701,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -758,7 +758,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -815,7 +815,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -872,7 +872,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -928,7 +928,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -985,7 +985,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -1043,7 +1043,7 @@ function template(v) {
                       </div>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           lineHeight: '1.4',
@@ -1088,20 +1088,20 @@ function template(v) {
                   <div style={{ fontSize: '13px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e' }}>
                     (About) — From interfaces to services
                   </div>
-                  <h2 style={{ margin: '0', fontFamily: "'Libre Caslon Display',Georgia,serif", fontWeight: '400', fontSize: 'clamp(44px,5.4vw,92px)', lineHeight: '0.98', letterSpacing: '-0.035em', color: '#141414', maxWidth: '14ch' }}>
+                  <h2 style={{ margin: '0', fontFamily: "'Cormorant Garamond',Georgia,serif", fontWeight: '400', fontSize: 'clamp(44px,5.4vw,92px)', lineHeight: '0.98', letterSpacing: '-0.035em', color: '#141414', maxWidth: '14ch' }}>
                     The screen is rarely the <span className="yj-ab-hl">problem.</span>
                   </h2>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0 clamp(14px,3vw,32px)', maxWidth: '680px' }}>
                     <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>{t(v.tcsYrs)}</div>
+                      <div style={{ fontFamily: "'Cormorant Garamond',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>{t(v.tcsYrs)}</div>
                       <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Years at TCS{" "}Interactive</div>
                     </div>
                     <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>MA</div>
+                      <div style={{ fontFamily: "'Cormorant Garamond',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>MA</div>
                       <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Design Management{" "}UAL</div>
                     </div>
                     <div className="yj-ab-stat" style={{ flex: '1 1 150px', padding: '22px 0 0', borderTop: '1px solid #d6d2c9' }}>
-                      <div style={{ fontFamily: "'Libre Caslon Display',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>4</div>
+                      <div style={{ fontFamily: "'Cormorant Garamond',Georgia,serif", fontSize: 'clamp(44px,4.4vw,72px)', lineHeight: '1', letterSpacing: '-0.03em', color: '#141414' }}>4</div>
                       <div style={{ marginTop: '12px', fontSize: '12px', fontWeight: '500', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6b665e', lineHeight: '1.5' }}>Domains, from pharma to social</div>
                     </div>
                   </div>
@@ -1132,7 +1132,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     <span
                       style={{
-                        fontFamily: "'Schibsted Grotesk',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '500',
                         letterSpacing: '0.14em',
                         textTransform: 'uppercase',
@@ -1145,7 +1145,7 @@ function template(v) {
                     <h2
                       style={{
                         margin: '0',
-                        fontFamily: "'Libre Caslon Display',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '400', letterSpacing: '-0.02em',
                         fontSize: 'clamp(34px,3.6vw,58px)',
                         lineHeight: '1',
@@ -1203,7 +1203,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: "'Libre Caslon Display',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontSize: '72px', fontWeight: '400',
                             lineHeight: '0.6',
                             color: '#141414',
@@ -1255,7 +1255,7 @@ function template(v) {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               letterSpacing: '0.14em',
                               textTransform: 'uppercase',
@@ -1274,7 +1274,7 @@ function template(v) {
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr)', marginTop: '96px' }}>
                   <span
                     style={{
-                      fontFamily: "'Schibsted Grotesk',sans-serif",
+                      fontFamily: "'DM Sans',sans-serif",
                       fontWeight: '500',
                       letterSpacing: '0.14em',
                       textTransform: 'uppercase',
@@ -1329,7 +1329,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Libre Caslon Display',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontSize: 'clamp(24px,2.2vw,34px)',
                               letterSpacing: '-0.015em',
                               lineHeight: '1.05',
@@ -1341,7 +1341,7 @@ function template(v) {
                         </span>
                         <span
                           style={{
-                            fontFamily: "'Schibsted Grotesk',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontWeight: '500',
                             letterSpacing: '0.14em',
                             textTransform: 'uppercase',
@@ -1367,7 +1367,7 @@ function template(v) {
                 {' '}
                 <div
                   style={{
-                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontWeight: '500',
                     fontSize: '13px',
                     letterSpacing: '0.14em',
@@ -1381,7 +1381,7 @@ function template(v) {
                   data-yj-rv="mask"
                   style={{
                     margin: '16px 0 40px',
-                    fontFamily: "'Libre Caslon Display',Georgia,serif",
+                    fontFamily: "'Cormorant Garamond',Georgia,serif",
                     fontWeight: '700',
                     fontSize: 'clamp(40px,5vw,80px)',
                     lineHeight: '0.95',
@@ -1396,7 +1396,7 @@ function template(v) {
                   Work
                   <span
                     style={{
-                      fontFamily: "'Libre Caslon Text',Georgia,serif",
+                      fontFamily: "'Cormorant Garamond',Georgia,serif",
                       fontStyle: 'italic',
                       fontWeight: '400',
                       fontStretch: '100%',
@@ -1424,13 +1424,13 @@ function template(v) {
                         className="dc-hover-d2cded96"
                         onClick={tb?.onClick}
                         style={css(
-                          `all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:8px;padding-bottom:14px;margin-bottom:-2px;border-bottom:2px solid ${tb?.line ?? ''};font-family:'Schibsted Grotesk',sans-serif;font-weight:600;font-size:22px;line-height:1.1;text-transform:none;color:${tb?.fg ?? ''};transition:color 250ms`,
+                          `all:unset;cursor:pointer;display:flex;align-items:flex-start;gap:8px;padding-bottom:14px;margin-bottom:-2px;border-bottom:2px solid ${tb?.line ?? ''};font-family:'DM Sans',sans-serif;font-weight:600;font-size:22px;line-height:1.1;text-transform:none;color:${tb?.fg ?? ''};transition:color 250ms`,
                         )}
                       >
                         {t(tb?.label, true)}
                         <span
                           style={{
-                            fontFamily: "'Schibsted Grotesk',sans-serif",
+                            fontFamily: "'DM Sans',sans-serif",
                             fontWeight: '400',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
@@ -1459,7 +1459,7 @@ function template(v) {
                             {t(f?.label, true)}
                             <span
                               style={{
-                                fontFamily: "'Schibsted Grotesk',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 opacity: '0.7',
@@ -1535,7 +1535,7 @@ function template(v) {
                                 style={{
                                   all: 'unset',
                                   cursor: 'pointer',
-                                  fontFamily: "'Libre Caslon Text',Georgia,serif",
+                                  fontFamily: "'Cormorant Garamond',Georgia,serif",
                                   fontStyle: 'italic',
                                   fontSize: '38px',
                                   lineHeight: '1.05',
@@ -1550,7 +1550,7 @@ function template(v) {
                                     padding: '6px 12px',
                                     border: '1.5px solid #8f8a80',
                                     borderRadius: '999px',
-                                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                                    fontFamily: "'DM Sans',sans-serif",
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
@@ -1565,7 +1565,7 @@ function template(v) {
                                     padding: '6px 12px',
                                     border: '1.5px solid #cfcac0',
                                     borderRadius: '999px',
-                                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                                    fontFamily: "'DM Sans',sans-serif",
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
@@ -1620,7 +1620,7 @@ function template(v) {
                         data-yj-rv="up"
                         style={{
                           margin: '0',
-                          fontFamily: "'Libre Caslon Display',Georgia,serif",
+                          fontFamily: "'Cormorant Garamond',Georgia,serif",
                           fontWeight: '400',
                           fontSize: 'clamp(28px,3.2vw,48px)',
                           lineHeight: '0.92',
@@ -1632,7 +1632,7 @@ function template(v) {
                         <br />
                         <span
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             textTransform: 'none',
                             color: '#141414',
@@ -1679,7 +1679,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
@@ -1704,7 +1704,7 @@ function template(v) {
                         </div>
                         <figcaption
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
@@ -1731,7 +1731,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
@@ -1756,7 +1756,7 @@ function template(v) {
                         </div>
                         <figcaption
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
@@ -1769,7 +1769,7 @@ function template(v) {
                             style={{
                               display: 'block',
                               marginTop: '8px',
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontStyle: 'normal',
                               fontSize: '14px',
                               lineHeight: '1.4',
@@ -1796,7 +1796,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
@@ -1832,7 +1832,7 @@ function template(v) {
                         </div>
                         <figcaption
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
@@ -1859,7 +1859,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               letterSpacing: '0.08em',
                               textTransform: 'uppercase',
@@ -1895,7 +1895,7 @@ function template(v) {
                         </div>
                         <figcaption
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '22px',
                             lineHeight: '1.05',
@@ -1948,7 +1948,7 @@ function template(v) {
             </>
           ) : null}
           {v.isCaseStd ? (
-            <div style={{ fontFamily: 'Geist,sans-serif', background: '#000000', color: '#f4f4f4' }}>
+            <div style={{ fontFamily: 'DM Sans,sans-serif', background: '#000000', color: '#f4f4f4' }}>
               {' '}
               {v.isPosterCover ? (
                 <>
@@ -2040,7 +2040,7 @@ function template(v) {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                           <span
                             style={{
-                              fontFamily: 'Geist,sans-serif',
+                              fontFamily: 'DM Sans,sans-serif',
                               fontWeight: '500',
                               fontSize: '13px',
                               letterSpacing: '0.08em',
@@ -2058,7 +2058,7 @@ function template(v) {
                             data-yj-rv="mask"
                             style={{
                               margin: '0',
-                              fontFamily: "'Instrument Serif',serif",
+                              fontFamily: "'Cormorant Garamond',serif",
                               fontStyle: 'italic',
                               fontWeight: '400',
                               fontSize: 'clamp(33px,3.45vw,63px)',
@@ -2105,7 +2105,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: 'Geist,sans-serif',
+                            fontFamily: 'DM Sans,sans-serif',
                             fontWeight: '500',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
@@ -2123,7 +2123,7 @@ function template(v) {
                           data-yj-rv="mask"
                           style={{
                             margin: '0',
-                            fontFamily: "'Instrument Serif',serif",
+                            fontFamily: "'Cormorant Garamond',serif",
                             fontStyle: 'italic',
                             fontWeight: '400',
                             fontSize: 'clamp(36px,5.25vw,87px)',
@@ -2182,7 +2182,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2221,7 +2221,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: 'Geist,sans-serif',
+                            fontFamily: 'DM Sans,sans-serif',
                             fontWeight: '500',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
@@ -2264,7 +2264,7 @@ function template(v) {
                       >
                         <span
                           style={{
-                            fontFamily: 'Geist,sans-serif',
+                            fontFamily: 'DM Sans,sans-serif',
                             fontWeight: '500',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
@@ -2294,7 +2294,7 @@ function template(v) {
                       <div data-yj-rv="up" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <span
                           style={{
-                            fontFamily: 'Geist,sans-serif',
+                            fontFamily: 'DM Sans,sans-serif',
                             fontWeight: '500',
                             fontSize: '13px',
                             letterSpacing: '0.08em',
@@ -2324,7 +2324,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: 'Geist,sans-serif',
+                        fontFamily: 'DM Sans,sans-serif',
                         fontWeight: '500',
                         fontSize: '13px',
                         letterSpacing: '0.08em',
@@ -2374,7 +2374,7 @@ function template(v) {
               >
                 <span
                   style={{
-                    fontFamily: 'Geist,sans-serif',
+                    fontFamily: 'DM Sans,sans-serif',
                     fontWeight: '500',
                     fontSize: '13px',
                     letterSpacing: '0.08em',
@@ -2456,7 +2456,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: 'Geist,sans-serif',
+                              fontFamily: 'DM Sans,sans-serif',
                               fontWeight: '500',
                               fontSize: '13px',
                               letterSpacing: '0.08em',
@@ -2468,7 +2468,7 @@ function template(v) {
                           </span>
                           <span
                             style={{
-                              fontFamily: 'Geist,sans-serif',
+                              fontFamily: 'DM Sans,sans-serif',
                               fontWeight: '600',
                               fontSize: '24px',
                               letterSpacing: '0.08em',
@@ -2523,7 +2523,7 @@ function template(v) {
                                 >
                                   <span
                                     style={{
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontSize: 'clamp(36px,4vw,64px)',
                                       lineHeight: '1',
                                       color: '#f4f4f4',
@@ -2534,7 +2534,7 @@ function template(v) {
                                   <span style={{ color: 'var(--yj-accent, #ff4d2e)', fontSize: '13px' }}>Dogs 87%</span>
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -2568,7 +2568,7 @@ function template(v) {
                                 >
                                   <span
                                     style={{
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontSize: 'clamp(24px,2.4vw,40px)',
                                       lineHeight: '1',
                                       color: '#f4f4f4',
@@ -2579,7 +2579,7 @@ function template(v) {
                                   <span style={{ color: '#f4f4f4', fontSize: '13px' }}>Cats 13%</span>
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -2646,7 +2646,7 @@ function template(v) {
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', minWidth: '0' }}>
                             <span
                               style={{
-                                fontFamily: 'Geist,sans-serif',
+                                fontFamily: 'DM Sans,sans-serif',
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.08em',
@@ -2659,7 +2659,7 @@ function template(v) {
                             <h2
                               style={{
                                 margin: '0',
-                                fontFamily: "'Instrument Serif',serif",
+                                fontFamily: "'Cormorant Garamond',serif",
                                 fontStyle: 'italic',
                                 fontWeight: '400',
                                 fontSize: 'clamp(33px,3.75vw,63px)',
@@ -2711,7 +2711,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2723,7 +2723,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2746,7 +2746,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "Geist,'Geist Display',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontSize: 'clamp(56px,6vw,96px)',
                                   lineHeight: '0.9',
                                   color: '#0a0a0a',
@@ -2795,7 +2795,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2807,7 +2807,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2844,7 +2844,7 @@ function template(v) {
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontSize: '24px',
                                       color: '#f4f4f4',
                                     }}
@@ -2894,7 +2894,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2906,7 +2906,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -2954,7 +2954,7 @@ function template(v) {
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontSize: '18px',
                                       color: '#f4f4f4',
                                     }}
@@ -2990,7 +2990,7 @@ function template(v) {
                                       display: 'flex',
                                       alignItems: 'center',
                                       justifyContent: 'center',
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontSize: '18px',
                                       color: '#f4f4f4',
                                     }}
@@ -3040,7 +3040,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -3052,7 +3052,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -3090,7 +3090,7 @@ function template(v) {
                                   style={{
                                     display: 'flex',
                                     gap: '16px',
-                                    fontFamily: 'Geist,sans-serif',
+                                    fontFamily: 'DM Sans,sans-serif',
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
@@ -3144,7 +3144,7 @@ function template(v) {
                                       >
                                         <span
                                           style={css(
-                                            `font-family:Geist,sans-serif;font-weight:500;font-size:13px;color:#f4f4f4;transform:translateY(${b?.ty ?? ''});transition:transform 300ms cubic-bezier(.2,1.4,.3,1)`,
+                                            `font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;color:#f4f4f4;transform:translateY(${b?.ty ?? ''});transition:transform 300ms cubic-bezier(.2,1.4,.3,1)`,
                                           )}
                                         >
                                           {t(b?.v)}
@@ -3219,7 +3219,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -3235,7 +3235,7 @@ function template(v) {
                               <h2
                                 style={{
                                   margin: '0',
-                                  fontFamily: "'Instrument Serif',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontStyle: 'italic',
                                   fontWeight: '400',
                                   fontSize: 'clamp(33px,3.75vw,63px)',
@@ -3360,7 +3360,7 @@ function template(v) {
                                         justifyContent: 'space-between',
                                         padding: '2px 20px 0 26px',
                                         boxSizing: 'border-box',
-                                        fontFamily: "-apple-system,'SF Pro Text',system-ui,sans-serif",
+                                        fontFamily: "-apple-system,'DM Sans',system-ui,sans-serif",
                                         fontSize: '11.5px',
                                         fontWeight: '600',
                                         color: '#000000',
@@ -3483,7 +3483,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Instrument Serif',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontStyle: 'italic',
                                   fontSize: 'clamp(32px,3vw,48px)',
                                   lineHeight: '1',
@@ -3494,7 +3494,7 @@ function template(v) {
                               </span>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -3589,7 +3589,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -3699,7 +3699,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -3739,7 +3739,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -3820,7 +3820,7 @@ function template(v) {
                                 >
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -3875,7 +3875,7 @@ function template(v) {
                                         <span
                                           style={{
                                             flex: '0 0 110px',
-                                            fontFamily: 'Geist,sans-serif',
+                                            fontFamily: 'DM Sans,sans-serif',
                                             fontWeight: '500',
                                             fontSize: '13px',
                                             letterSpacing: '0.08em',
@@ -3927,7 +3927,7 @@ function template(v) {
                                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         <span
                                           style={{
-                                            fontFamily: 'Geist,sans-serif',
+                                            fontFamily: 'DM Sans,sans-serif',
                                             fontWeight: '500',
                                             fontSize: '13px',
                                             letterSpacing: '0.08em',
@@ -4040,7 +4040,7 @@ function template(v) {
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                           <span
                                             style={{
-                                              fontFamily: "Geist,'Geist Display',sans-serif",
+                                              fontFamily: "'DM Sans',sans-serif",
                                               fontSize: '22px',
                                               color: '#f4f4f4',
                                             }}
@@ -4110,7 +4110,7 @@ function template(v) {
                                                     </span>
                                                     <span
                                                       style={{
-                                                        fontFamily: "Geist,'Geist Display',sans-serif",
+                                                        fontFamily: "'DM Sans',sans-serif",
                                                         fontSize: '24px',
                                                         lineHeight: '1.1',
                                                         color: '#f4f4f4',
@@ -4122,7 +4122,7 @@ function template(v) {
                                                   </span>
                                                   <span
                                                     style={{
-                                                      fontFamily: 'Geist,sans-serif',
+                                                      fontFamily: 'DM Sans,sans-serif',
                                                       fontWeight: '500',
                                                       fontSize: '13px',
                                                       letterSpacing: '0.08em',
@@ -4137,7 +4137,7 @@ function template(v) {
                                                 </div>
                                                 <span
                                                   style={{
-                                                    fontFamily: 'Geist,sans-serif',
+                                                    fontFamily: 'DM Sans,sans-serif',
                                                     fontWeight: '500',
                                                     fontSize: '13px',
                                                     letterSpacing: '0.08em',
@@ -4155,7 +4155,7 @@ function template(v) {
                                                 >
                                                   <span
                                                     style={{
-                                                      fontFamily: 'Geist,sans-serif',
+                                                      fontFamily: 'DM Sans,sans-serif',
                                                       fontWeight: '500',
                                                       fontSize: '13px',
                                                       letterSpacing: '0.08em',
@@ -4184,7 +4184,7 @@ function template(v) {
                                                 >
                                                   <span
                                                     style={{
-                                                      fontFamily: 'Geist,sans-serif',
+                                                      fontFamily: 'DM Sans,sans-serif',
                                                       fontWeight: '500',
                                                       fontSize: '13px',
                                                       letterSpacing: '0.08em',
@@ -4242,7 +4242,7 @@ function template(v) {
                                 >
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -4260,7 +4260,7 @@ function template(v) {
                                     data-yj-px="0.15"
                                     data-yj-pxmax="90"
                                     style={{
-                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                      fontFamily: "'DM Sans',sans-serif",
                                       fontWeight: '700',
                                       fontSize: 'clamp(60px,9vw,150px)',
                                       lineHeight: '0.8',
@@ -4320,7 +4320,7 @@ function template(v) {
                                         >
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -4332,7 +4332,7 @@ function template(v) {
                                           </span>
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -4369,7 +4369,7 @@ function template(v) {
                                                 >
                                                   <span
                                                     style={{
-                                                      fontFamily: 'Geist,sans-serif',
+                                                      fontFamily: 'DM Sans,sans-serif',
                                                       fontWeight: '500',
                                                       fontSize: '13px',
                                                       letterSpacing: '0.08em',
@@ -4381,7 +4381,7 @@ function template(v) {
                                                   </span>
                                                   <span
                                                     style={{
-                                                      fontFamily: 'Geist,sans-serif',
+                                                      fontFamily: 'DM Sans,sans-serif',
                                                       fontWeight: '500',
                                                       fontSize: '13px',
                                                       letterSpacing: '0.08em',
@@ -4464,7 +4464,7 @@ function template(v) {
                                                   </span>
                                                   <span
                                                     style={{
-                                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                                      fontFamily: "'DM Sans',sans-serif",
                                                       fontSize: '26px',
                                                       lineHeight: '1',
                                                       color: 'var(--yj-accent, #ff4d2e)',
@@ -4505,7 +4505,7 @@ function template(v) {
                                         >
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -4621,7 +4621,7 @@ function template(v) {
                                                       </span>
                                                       <span
                                                         style={{
-                                                          fontFamily: 'Geist,sans-serif',
+                                                          fontFamily: 'DM Sans,sans-serif',
                                                           fontWeight: '500',
                                                           fontSize: '13px',
                                                           padding: '2px 7px',
@@ -4652,7 +4652,7 @@ function template(v) {
                                                               <>
                                                                 <span
                                                                   style={{
-                                                                    fontFamily: 'Geist,sans-serif',
+                                                                    fontFamily: 'DM Sans,sans-serif',
                                                                     fontWeight: '500',
                                                                     fontSize: '13px',
                                                                     letterSpacing: '0.08em',
@@ -4746,14 +4746,14 @@ function template(v) {
                                                 <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                                   <span
                                                     style={css(
-                                                      `width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${w?.dotBg ?? ''};color:${w?.dotFg ?? ''};font-family:Geist,sans-serif;font-weight:500;font-size:13px;transition:background 600ms, color 600ms`,
+                                                      `width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${w?.dotBg ?? ''};color:${w?.dotFg ?? ''};font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;transition:background 600ms, color 600ms`,
                                                     )}
                                                   >
                                                     {t(w?.n, true)}
                                                   </span>
                                                   <span
                                                     style={{
-                                                      fontFamily: "Geist,'Geist Display',sans-serif",
+                                                      fontFamily: "'DM Sans',sans-serif",
                                                       fontSize: '24px',
                                                       color: '#f4f4f4',
                                                     }}
@@ -4763,7 +4763,7 @@ function template(v) {
                                                 </span>
                                                 <span
                                                   style={{
-                                                    fontFamily: 'Geist,sans-serif',
+                                                    fontFamily: 'DM Sans,sans-serif',
                                                     fontWeight: '500',
                                                     fontSize: '13px',
                                                     letterSpacing: '0.08em',
@@ -4931,7 +4931,7 @@ function template(v) {
                                                       justifyContent: 'space-between',
                                                       padding: '2px 20px 0 26px',
                                                       boxSizing: 'border-box',
-                                                      fontFamily: "-apple-system,'SF Pro Text',system-ui,sans-serif",
+                                                      fontFamily: "-apple-system,'DM Sans',system-ui,sans-serif",
                                                       fontSize: '11.5px',
                                                       fontWeight: '600',
                                                       color: '#000000',
@@ -5061,7 +5061,7 @@ function template(v) {
                                           >
                                             <span
                                               style={{
-                                                fontFamily: "'Instrument Serif',serif",
+                                                fontFamily: "'Cormorant Garamond',serif",
                                                 fontStyle: 'italic',
                                                 fontSize: 'clamp(32px,3vw,48px)',
                                                 lineHeight: '1',
@@ -5072,7 +5072,7 @@ function template(v) {
                                             </span>
                                             <span
                                               style={{
-                                                fontFamily: 'Geist,sans-serif',
+                                                fontFamily: 'DM Sans,sans-serif',
                                                 fontWeight: '500',
                                                 fontSize: '13px',
                                                 letterSpacing: '0.08em',
@@ -5150,7 +5150,7 @@ function template(v) {
                                             <dt
                                               style={{
                                                 flex: '0 0 124px',
-                                                fontFamily: 'Geist,sans-serif',
+                                                fontFamily: 'DM Sans,sans-serif',
                                                 fontWeight: '500',
                                                 fontSize: '13px',
                                                 letterSpacing: '0.08em',
@@ -5266,7 +5266,7 @@ function template(v) {
                                             >
                                               <span
                                                 style={{
-                                                  fontFamily: 'Geist,sans-serif',
+                                                  fontFamily: 'DM Sans,sans-serif',
                                                   fontWeight: '500',
                                                   fontSize: '13px',
                                                   letterSpacing: '0.08em',
@@ -5323,7 +5323,7 @@ function template(v) {
                                           borderRadius: '999px',
                                           background: 'rgba(0,0,0,0.75)',
                                           color: '#f4f4f4',
-                                          fontFamily: 'Geist,sans-serif',
+                                          fontFamily: 'DM Sans,sans-serif',
                                           fontWeight: '500',
                                           letterSpacing: '0.08em',
                                           textTransform: 'uppercase',
@@ -5350,7 +5350,7 @@ function template(v) {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -5409,7 +5409,7 @@ function template(v) {
                               >
                                 <span
                                   style={{
-                                    fontFamily: 'Geist,sans-serif',
+                                    fontFamily: 'DM Sans,sans-serif',
                                     fontWeight: '500',
                                     fontSize: '13px',
                                     letterSpacing: '0.08em',
@@ -5427,7 +5427,7 @@ function template(v) {
                                   data-yj-rv="mask"
                                   style={{
                                     margin: '0',
-                                    fontFamily: "'Instrument Serif',serif",
+                                    fontFamily: "'Cormorant Garamond',serif",
                                     fontStyle: 'italic',
                                     fontWeight: '400',
                                     fontSize: 'clamp(33px,4.8vw,84px)',
@@ -5486,7 +5486,7 @@ function template(v) {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -5504,7 +5504,7 @@ function template(v) {
                               <h2
                                 style={{
                                   margin: '0',
-                                  fontFamily: "'Instrument Serif',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontStyle: 'italic',
                                   fontWeight: '400',
                                   fontSize: 'clamp(33px,3.75vw,63px)',
@@ -5534,7 +5534,7 @@ function template(v) {
                                   display: 'flex',
                                   alignItems: 'center',
                                   gap: '10px',
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -5577,7 +5577,7 @@ function template(v) {
                                       justifyContent: 'space-between',
                                       alignItems: 'center',
                                       gap: '12px',
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -5604,7 +5604,7 @@ function template(v) {
                                     style={{
                                       margin: '0',
                                       flex: '1',
-                                      fontFamily: "'Instrument Serif',serif",
+                                      fontFamily: "'Cormorant Garamond',serif",
                                       fontStyle: 'italic',
                                       fontSize: 'clamp(26px,2.2vw,34px)',
                                       lineHeight: '1.08',
@@ -5672,7 +5672,7 @@ function template(v) {
                                         style={{
                                           display: 'flex',
                                           justifyContent: 'space-between',
-                                          fontFamily: 'Geist,sans-serif',
+                                          fontFamily: 'DM Sans,sans-serif',
                                           fontWeight: '500',
                                           fontSize: '13px',
                                           letterSpacing: '0.08em',
@@ -5709,7 +5709,7 @@ function template(v) {
                                       <p
                                         style={{
                                           margin: '0',
-                                          fontFamily: 'Geist,sans-serif',
+                                          fontFamily: 'DM Sans,sans-serif',
                                           fontWeight: '500',
                                           fontSize: '13px',
                                           letterSpacing: '0.08em',
@@ -5756,7 +5756,7 @@ function template(v) {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -5774,7 +5774,7 @@ function template(v) {
                               <h2
                                 style={{
                                   margin: '0',
-                                  fontFamily: "'Instrument Serif',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontStyle: 'italic',
                                   fontWeight: '400',
                                   fontSize: 'clamp(33px,3.75vw,63px)',
@@ -5863,7 +5863,7 @@ function template(v) {
                                         >
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -5886,7 +5886,7 @@ function template(v) {
                                           </span>
                                           <span
                                             style={{
-                                              fontFamily: "'Instrument Serif',serif",
+                                              fontFamily: "'Cormorant Garamond',serif",
                                               fontStyle: 'italic',
                                               fontSize: '18px',
                                               lineHeight: '1.15',
@@ -5917,7 +5917,7 @@ function template(v) {
                                       <>
                                         <span
                                           style={{
-                                            fontFamily: 'Geist,sans-serif',
+                                            fontFamily: 'DM Sans,sans-serif',
                                             fontWeight: '500',
                                             fontSize: '13px',
                                             letterSpacing: '0.08em',
@@ -6006,7 +6006,7 @@ function template(v) {
                                           onClick={z?.go}
                                           aria-pressed={z?.on}
                                           style={css(
-                                            `all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid ${z?.line ?? ''};font-family:Geist,sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#f4f4f4;transition:border-color 200ms`,
+                                            `all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid ${z?.line ?? ''};font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;font-size:13px;color:#f4f4f4;transition:border-color 200ms`,
                                           )}
                                         >
                                           <span
@@ -6101,7 +6101,7 @@ function template(v) {
                                               onClick={yy?.go}
                                               aria-selected={yy?.on}
                                               style={css(
-                                                `all:unset;cursor:pointer;padding:10px 0 8px;text-align:center;font-family:Geist,'Geist Display',sans-serif;font-weight:700;font-size:clamp(22px,2.2vw,36px);line-height:1;color:${yy?.fg ?? ''};background:${yy?.bg ?? ''};transition:background 300ms,color 300ms`,
+                                                `all:unset;cursor:pointer;padding:10px 0 8px;text-align:center;font-family:'DM Sans','DM Sans',sans-serif;font-weight:700;font-size:clamp(22px,2.2vw,36px);line-height:1;color:${yy?.fg ?? ''};background:${yy?.bg ?? ''};transition:background 300ms,color 300ms`,
                                               )}
                                             >
                                               {t(yy?.t)}
@@ -6125,7 +6125,7 @@ function template(v) {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '10px',
-                                                fontFamily: 'Geist,sans-serif',
+                                                fontFamily: 'DM Sans,sans-serif',
                                                 fontWeight: '500',
                                                 letterSpacing: '0.08em',
                                                 textTransform: 'uppercase',
@@ -6157,7 +6157,7 @@ function template(v) {
                                                     {t(r?.k)}{' '}
                                                     <span
                                                       style={{
-                                                        fontFamily: 'Geist,sans-serif',
+                                                        fontFamily: 'DM Sans,sans-serif',
                                                         fontWeight: '400',
                                                         letterSpacing: '0.08em',
                                                         textTransform: 'uppercase',
@@ -6203,7 +6203,7 @@ function template(v) {
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                       <span
                                         style={{
-                                          fontFamily: 'Geist,sans-serif',
+                                          fontFamily: 'DM Sans,sans-serif',
                                           fontWeight: '500',
                                           letterSpacing: '0.08em',
                                           textTransform: 'uppercase',
@@ -6216,7 +6216,7 @@ function template(v) {
                                       </span>
                                       <span
                                         style={{
-                                          fontFamily: "Geist,'Geist Display',sans-serif",
+                                          fontFamily: "'DM Sans',sans-serif",
                                           fontWeight: '700',
                                           fontSize: 'clamp(36px,3vw,54px)',
                                           lineHeight: '0.85',
@@ -6290,7 +6290,7 @@ function template(v) {
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -6308,7 +6308,7 @@ function template(v) {
                                     <h2
                                       style={{
                                         margin: '0',
-                                        fontFamily: "'Instrument Serif',serif",
+                                        fontFamily: "'Cormorant Garamond',serif",
                                         fontStyle: 'italic',
                                         fontWeight: '400',
                                         fontSize: 'clamp(33px,3.75vw,63px)',
@@ -6390,7 +6390,7 @@ function template(v) {
                                         >
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -6476,7 +6476,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: "Geist,'Geist Display',sans-serif",
+                                        fontFamily: "'DM Sans',sans-serif",
                                         fontWeight: '700',
                                         fontSize: 'clamp(42px,3.75vw,66px)',
                                         lineHeight: '0.8',
@@ -6487,7 +6487,7 @@ function template(v) {
                                     </span>
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -6562,7 +6562,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -6608,7 +6608,7 @@ function template(v) {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                               <span
                                 style={{
-                                  fontFamily: 'Geist,sans-serif',
+                                  fontFamily: 'DM Sans,sans-serif',
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -6626,7 +6626,7 @@ function template(v) {
                               <h2
                                 style={{
                                   margin: '0',
-                                  fontFamily: "'Instrument Serif',serif",
+                                  fontFamily: "'Cormorant Garamond',serif",
                                   fontStyle: 'italic',
                                   fontWeight: '400',
                                   fontSize: 'clamp(33px,3.75vw,63px)',
@@ -6736,7 +6736,7 @@ function template(v) {
                                         <span style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -6774,7 +6774,7 @@ function template(v) {
                                         >
                                           <span
                                             style={{
-                                              fontFamily: 'Geist,sans-serif',
+                                              fontFamily: 'DM Sans,sans-serif',
                                               fontWeight: '500',
                                               fontSize: '13px',
                                               letterSpacing: '0.08em',
@@ -6807,7 +6807,7 @@ function template(v) {
                                 >
                                   <span
                                     style={{
-                                      fontFamily: 'Geist,sans-serif',
+                                      fontFamily: 'DM Sans,sans-serif',
                                       fontWeight: '500',
                                       fontSize: '13px',
                                       letterSpacing: '0.08em',
@@ -6902,7 +6902,7 @@ function template(v) {
                                       >
                                         <dt
                                           style={{
-                                            fontFamily: 'Geist,sans-serif',
+                                            fontFamily: 'DM Sans,sans-serif',
                                             fontWeight: '500',
                                             fontSize: '13px',
                                             letterSpacing: '0.08em',
@@ -6938,7 +6938,7 @@ function template(v) {
                                   >
                                     <span
                                       style={{
-                                        fontFamily: 'Geist,sans-serif',
+                                        fontFamily: 'DM Sans,sans-serif',
                                         fontWeight: '500',
                                         fontSize: '13px',
                                         letterSpacing: '0.08em',
@@ -7004,7 +7004,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Schibsted Grotesk',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '500',
                         fontSize: '13px',
                         letterSpacing: '0.08em',
@@ -7019,7 +7019,7 @@ function template(v) {
                       style={{
                         margin: '0',
                         maxWidth: '1180px',
-                        fontFamily: "'Libre Caslon Display',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '700',
                         fontSize: 'clamp(40px,5vw,80px)',
                         lineHeight: '0.92',
@@ -7032,7 +7032,7 @@ function template(v) {
                       {'Where AI '}
                       <span
                         style={{
-                          fontFamily: "'Libre Caslon Text',Georgia,serif",
+                          fontFamily: "'Cormorant Garamond',Georgia,serif",
                           fontStyle: 'italic',
                           fontWeight: '400',
                           fontStretch: '100%',
@@ -7045,7 +7045,7 @@ function template(v) {
                       {' meets AI '}
                       <span
                         style={{
-                          fontFamily: "'Libre Caslon Text',Georgia,serif",
+                          fontFamily: "'Cormorant Garamond',Georgia,serif",
                           fontStyle: 'italic',
                           fontWeight: '400',
                           fontStretch: '100%',
@@ -7084,7 +7084,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               fontSize: '13px',
                               letterSpacing: '0.08em',
@@ -7096,7 +7096,7 @@ function template(v) {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'Libre Caslon Display',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontWeight: '700',
                               fontSize: '22px',
                               lineHeight: '1',
@@ -7118,7 +7118,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               fontSize: '13px',
                               letterSpacing: '0.08em',
@@ -7130,7 +7130,7 @@ function template(v) {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'Libre Caslon Display',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontWeight: '700',
                               fontSize: '22px',
                               lineHeight: '1',
@@ -7152,7 +7152,7 @@ function template(v) {
                         >
                           <span
                             style={{
-                              fontFamily: "'Schibsted Grotesk',sans-serif",
+                              fontFamily: "'DM Sans',sans-serif",
                               fontWeight: '500',
                               fontSize: '13px',
                               letterSpacing: '0.08em',
@@ -7164,7 +7164,7 @@ function template(v) {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'Libre Caslon Display',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontWeight: '700',
                               fontSize: '22px',
                               lineHeight: '1',
@@ -7193,7 +7193,7 @@ function template(v) {
                         }
                         <span
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontSize: '20px',
                             color: '#141414',
@@ -7220,7 +7220,7 @@ function template(v) {
                             >
                               <span
                                 style={{
-                                  fontFamily: "'Schibsted Grotesk',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -7315,7 +7315,7 @@ function template(v) {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '900px' }}>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           letterSpacing: '0.08em',
@@ -7329,7 +7329,7 @@ function template(v) {
                         data-yj-rv="mask"
                         style={{
                           margin: '0',
-                          fontFamily: "'Libre Caslon Display',Georgia,serif",
+                          fontFamily: "'Cormorant Garamond',Georgia,serif",
                           fontWeight: '700',
                           fontSize: 'clamp(28px,3.2vw,48px)',
                           lineHeight: '0.95',
@@ -7341,7 +7341,7 @@ function template(v) {
                         {'Simple is good at times. '}
                         <span
                           style={{
-                            fontFamily: "'Libre Caslon Text',Georgia,serif",
+                            fontFamily: "'Cormorant Garamond',Georgia,serif",
                             fontStyle: 'italic',
                             fontWeight: '400',
                             fontStretch: '100%',
@@ -7424,7 +7424,7 @@ function template(v) {
                           >
                             <span
                               style={{
-                                fontFamily: "'Libre Caslon Display',Georgia,serif",
+                                fontFamily: "'Cormorant Garamond',Georgia,serif",
                                 fontWeight: '700',
                                 fontSize: '22px',
                                 lineHeight: '0.9',
@@ -7436,7 +7436,7 @@ function template(v) {
                             </span>
                             <span
                               style={{
-                                fontFamily: "'Schibsted Grotesk',sans-serif",
+                                fontFamily: "'DM Sans',sans-serif",
                                 fontWeight: '500',
                                 fontSize: '13px',
                                 letterSpacing: '0.08em',
@@ -7461,7 +7461,7 @@ function template(v) {
                           <p
                             style={{
                               margin: '0',
-                              fontFamily: "'Libre Caslon Text',Georgia,serif",
+                              fontFamily: "'Cormorant Garamond',Georgia,serif",
                               fontStyle: 'italic',
                               fontSize: '22px',
                               lineHeight: '1.3',
@@ -7478,7 +7478,7 @@ function template(v) {
                                 href={o?.href}
                                 target="_blank"
                                 style={{
-                                  fontFamily: "'Schibsted Grotesk',sans-serif",
+                                  fontFamily: "'DM Sans',sans-serif",
                                   fontWeight: '500',
                                   fontSize: '13px',
                                   letterSpacing: '0.08em',
@@ -7539,7 +7539,7 @@ function template(v) {
                     borderRadius: '999px',
                     border: '1.5px solid #8f8a80',
                     color: '#141414',
-                    fontFamily: "'Schibsted Grotesk',sans-serif",
+                    fontFamily: "'DM Sans',sans-serif",
                     fontWeight: '500',
                     fontSize: '13px',
                     letterSpacing: '0.08em',
@@ -7613,7 +7613,7 @@ function template(v) {
                       <span style={{ fontSize: '16px', fontWeight: '600' }}>{"Yashvi's agent"}</span>
                       <span
                         style={{
-                          fontFamily: "'Schibsted Grotesk',sans-serif",
+                          fontFamily: "'DM Sans',sans-serif",
                           fontWeight: '500',
                           fontSize: '13px',
                           letterSpacing: '0.08em',
@@ -7911,7 +7911,7 @@ function template(v) {
                   >
                     <span
                       style={{
-                        fontFamily: "'Libre Caslon Display',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '700',
                         lineHeight: '0.84',
                         letterSpacing: '-0.005em',
@@ -7948,7 +7948,7 @@ function template(v) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "'Libre Caslon Display',Georgia,serif",
+                        fontFamily: "'Cormorant Garamond',Georgia,serif",
                         fontWeight: '700',
                         lineHeight: '0.84',
                         letterSpacing: '-0.005em',
@@ -8035,7 +8035,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '0' }}>
                     <span
                       style={{
-                        fontFamily: "'Schibsted Grotesk',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '500',
                         fontSize: '13px',
                         letterSpacing: '0.08em',
@@ -8062,7 +8062,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <span
                       style={{
-                        fontFamily: "'Schibsted Grotesk',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '500',
                         fontSize: '13px',
                         letterSpacing: '0.08em',
@@ -8079,7 +8079,7 @@ function template(v) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <span
                       style={{
-                        fontFamily: "'Schibsted Grotesk',sans-serif",
+                        fontFamily: "'DM Sans',sans-serif",
                         fontWeight: '500',
                         fontSize: '13px',
                         letterSpacing: '0.08em',
@@ -8125,7 +8125,7 @@ function template(v) {
                 justifyContent: 'space-between',
                 gap: '16px',
                 flexWrap: 'wrap',
-                fontFamily: "'Schibsted Grotesk',sans-serif",
+                fontFamily: "'DM Sans',sans-serif",
                 fontWeight: '500',
                 fontSize: '13px',
                 letterSpacing: '0.08em',
@@ -8156,7 +8156,7 @@ export default defineScreen({
   css: screenCss,
   links: [
     '_ds/modernist-f6c1caa7-5cac-451a-a099-225de5c74272/styles.css',
-    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Open+Sans:wght@400..700&family=DM+Serif+Display:ital@0;1&family=Geist:wght@100..900&family=Instrument+Serif:ital@0;1&family=Gloock&family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital,wght@0,400;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&family=Schibsted+Grotesk:wght@400..900&display=swap',
+    'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap',
   ],
   defaults: {
     accent: '#b6f23a',
