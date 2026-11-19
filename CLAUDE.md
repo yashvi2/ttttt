@@ -85,60 +85,58 @@ class prefixes per component (`yj-`, `cvs-`, `mvs-`, `gl-`, `fb-`).
 
 ## 2. Design tokens
 
-There is no token build step. Tokens are JS constants at the top of each
-component, plus a few CSS custom properties.
+Direction: **contemporary editorial × modern Regency × creative technology**.
+Warm paper, oversized serif, restrained colour; the Regency note lives in
+type, a few handwritten annotations and small botanical marks, never as a
+historical theme. Case studies stay modern and keep their own palettes.
+
+There is no token build step. Tokens are JS constants at the top of each shell
+component (`BentoHome`, `AboutBento`, `ContactBento`).
 
 | Token | Value | Use |
 |---|---|---|
-| `YEL` | `#FFD60A` | brand yellow: the name tile and the turntable halo only |
-| `INK` | `#111111` | text and primary buttons |
-| `GREY` | `#6B6B6B` | secondary text and labels |
-| `LINE` | `#E3E3E0` | hairlines and chip borders |
-| `BG` | `#F6F6F3` | page background, with a 24px dot grid |
-| `PAPER` | `#FFFFFF` | tile background |
-| ultramarine | `#2B3BFF` | **active state only**: selected tab, chip and mood; playing button; link/row hover. Also the wordmark on yellow. |
-| `--yj-accent` | prop `accent` (default `#b6f23a`) | legacy accent; don't use in new UI |
+| `BG` parchment | `#F3F0E9` | page background, with a 24px dot grid (`#d9d1bf`) |
+| `PAPER` | `#FBF9F4` | tile background |
+| `OLIVE` | `#343F34` | editorial rules, chapter text, secondary headings |
+| `BUR` burgundy | `#8C4448` | handwritten notes, numerals, separators ( / ) |
+| `INK` | `#242424` | body text and headlines |
+| `GREY` | `#5E6157` | metadata and labels |
+| `LINE` | `#E2DCCD` | hairlines and chip borders |
+| `COB` cobalt | `#303FFF` | signature accent: **state and one word of emphasis** (selected chip, dock, hover, the italic word in a headline) |
+| `YEL` marigold | `#F5D900` | signature accent: the single primary action (`.yj-cta`), the hero underline, the diary label |
 
 Rules:
-- Colour roles (UX):
-  - **Yellow:** the brand, plus the single primary action per screen
-    ("Let's talk over coffee", `.yj-cta`).
-  - **Ultramarine:** state, meaning selected, playing, hovered or focused.
-  - **Ink:** secondary actions (Read more, Copy email, Play when idle).
-  - **Grey:** metadata.
-  - The bottom-right tile leads with proof (an Impact list of three facts).
-    The turntable is a compact player strip under it, and its shader
-    (`Glow react`) only shows, in yellow, while a track plays.
-  - Don't add a third hue to the shell.
+- Most of each screen is parchment, paper, ink and olive. Cobalt and marigold
+  are accents, never section fills (the dock is the one exception).
+- Burgundy is for annotations and numbering only, not for UI controls.
+- Don't add a third accent hue to the shell. Case-study palettes (AVA red,
+  Pfizer blue, CRAY purple, Move red) never enter the shell.
 - Tiles: radius 18, padding `clamp(18px, 1.8vw, 30px)`, gap 28px (20px when
-  height ≤ 880px). No borders or shadows at rest; a 3D tilt on hover only.
-- Case studies own their palettes. Examples: AVA red `#c8102e`, Pfizer
-  `#0000c9`, CRAY purple `#7a3fc4`, Move red. Never bring those into the shell.
+  height ≤ 880px). No borders at rest; a 3D tilt on hover only.
 
 ### Type
-- Shell UI: **Schibsted Grotesk** for everything. Tile titles use
-  `M = clamp(16px, min(1.4vw, 2.5vh), 21px)`, labels use `S = 14`.
-- Wordmark (`h1.yj-wm`): **Bodoni Moda** italic, weight 400, ultramarine on
-  yellow, styled in `states.css`. Use a high-specificity selector, because
-  `type.css` forces `#dc-root h1..h6` sizes with `!important`:
-
-```css
-#dc-root .yj-bento h1.yj-wm{color:#2B3BFF !important;font-family:'Bodoni Moda',…;font-style:italic;font-weight:400 !important;…}
-```
-
+- **Cormorant Garamond** (400/500, italic) for editorial headings, tile
+  titles (`title()` = serif at `M × 1.3`), quotes and big numbers. Always set
+  `font-variant-numeric: lining-nums` on numbers.
+- **Inter** for body and UI. Labels (`label()`): 12px, uppercase, `.12em`.
+- **Caveat** for occasional handwritten notes (`.yj-hand`, burgundy). Use
+  sparingly: one or two per screen.
+- `type.css` forces `#dc-root h1..h6` sizes with `!important`, so headline
+  rules live in `states.css` with a higher-specificity selector, e.g.
+  `#dc-root .yj-bento h1.yj-ed-h{…}`.
 - Load fonts by adding them to the Google Fonts URL in
   `PortfolioPublish.jsx` → `defineScreen({ links: [...] })`.
-
----
 
 ## 3. Components (the bento shell)
 
 | Component | Where | Notes |
 |---|---|---|
-| `BentoHome` | logic.js | 12×6 grid plus a logos row; `view` is `'dash'` or `'proj'` (the projects grid) |
+| `BentoHome` | logic.js | 12×6 grid plus a logos row; `view` is `'dash'` or `'proj'`. Intro = editorial hero (`.yj-ed`); photo tile = visual diary (`.yj-dy`, photos + muted video loops, prev/next, counter) |
+| Projects view | inside BentoHome | cinematic banners: B/W cover crossfades to a second real asset (`ALT`) or trailer (`VID`) on hover; filters All / UX / Service design / Co-design / Play |
 | `tile(area, props, ...kids)` | inside BentoHome | the one tile primitive; `onClick` makes a button, `href` an anchor |
 | `Dock` | logic.js | fixed pill nav, Dashboard / Projects |
-| `AboutBento`, `ContactBento` | logic.js | inner pages in the same tile language |
+| `AboutBento` | logic.js | editorial spread (story so far, photo collage, Austen quote), experience/skills tiles, then **Beyond the Brief** (`#beyond`, scrapbook wall) |
+| `ContactBento` | logic.js | correspondence letter (airmail edge, stamp, postmark) + reach-me tiles |
 | `CaseMoveSimple`, `CaseCraySimple`, `Glance`, `FlipBook` | logic.js | case-study structure |
 | `Music` | logic.js | Web Audio engine, one generated track per mood |
 | `Glow` | logic.js | **WebGL shader background**, see §8 |
@@ -194,12 +192,14 @@ There is no Storybook. Check visually with the Playwright scripts (§9).
   only with a more specific selector.
 - Responsive sizes use `clamp()` with `min(vw, vh)` so the landing fits
   one screen. Breakpoints are 820px (phone), 980px, and height ≤ 880px.
-- Motion budget on the landing: one ambient motion, the name-tile fluid. The record
-  spins only while music plays. Everything else moves only on interaction:
+- Motion budget on the landing: one ambient motion, the visual diary (crossfade
+  + slow zoom every 4 s). The record spins only while music plays. Everything else moves only on interaction:
   - photos auto-advance every 4 s (pause on hover); quotes change on click;
   - the logo marquee scrolls slowly (pauses on hover, still with reduced motion);
   - the turntable fluid appears only while music plays;
-  - the intro flips once, at 4 s, and doesn't cycle.
+  - the hero headline rises in once; the handwritten note fades in after it;
+  - project banners animate only on hover; screens fade in on change, and case
+    studies enter with a short cobalt progress line.
 - Separators in metadata lines are " / ", not "·".
 - Motion is always gated by `prefers-reduced-motion`. Content is visible by
   default, and reveal animations are switched on by a JS-added class.
@@ -226,6 +226,8 @@ There is no Storybook. Check visually with the Playwright scripts (§9).
 
 ## 8. Shaders (`Component.Glow`)
 
+Since the editorial redesign, the only shader on the landing is the turntable
+strip's glow while music plays (the name tile is now the editorial hero).
 Live WebGL backgrounds for tiles, after the yellow/ultramarine grainy
 gradient references. One fragment shader runs domain-warped fBm noise
 around an anchor point.
