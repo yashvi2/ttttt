@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact · Yashvi Jain</title>
+<meta name="description" content="Get in touch with Yashvi Jain, product designer in London, about roles, projects or a chat.">
+<meta property="og:type" content="website"><meta property="og:title" content="Contact · Yashvi Jain"><meta property="og:description" content="Get in touch with Yashvi Jain, product designer in London, about roles, projects or a chat."><meta property="og:image" content="og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.hero{background:var(--blue);color:#fff;padding-top:clamp(56px,8vw,120px);padding-bottom:clamp(56px,8vw,120px)}
+.hero .kick{color:var(--soft-on-blue)}.hero .kick .n{color:#fff}
+.hero .h1 em{color:var(--orange)}
+.mail{display:inline-flex;align-items:center;gap:.3em;margin-top:clamp(32px,5vw,64px);font:500 clamp(26px,4.4vw,64px)/1.05 var(--tight);letter-spacing:-.04em;color:#fff;text-decoration:none;border-bottom:2px solid rgba(255,255,255,.35);padding-bottom:6px;word-break:break-all}
+.mail:hover{border-bottom-color:var(--orange)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.hero .btn{background:#fff;color:var(--blue)}.hero .btn:hover{background:var(--orange);color:var(--ink)}
+.hero .btn.ghost{background:none;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}.hero .btn.ghost:hover{box-shadow:inset 0 0 0 1px #fff}
+.toast{font-size:14px;color:var(--soft-on-blue);align-self:center;min-width:6em}
+.pick{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 28px}
+.pick button{font:500 15px var(--tight);padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.compose{background:var(--tint);border-radius:14px;padding:clamp(20px,3vw,32px)}
+.compose label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin-bottom:8px}
+.compose textarea{width:100%;min-height:140px;border:1px solid var(--line);border-radius:10px;padding:14px;font:inherit;background:#fff;resize:vertical}
+.compose textarea:focus{outline:2px solid var(--blue);outline-offset:1px;border-color:transparent}
+.compose .row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.compose small{color:var(--muted)}
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,48px)}
+.info div{border-top:1px solid var(--line);padding-top:16px}
+.info dt{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:6px}
+.info dd{margin:0;font:500 20px/1.3 var(--tight);letter-spacing:-.01em}
+.info a{text-decoration:none;border-bottom:1px solid var(--line)}.info a:hover{border-bottom-color:var(--ink)}
+@media (max-width:700px){.info{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top w" id="top">
+  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <nav aria-label="Main"><a href="work.html">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html" aria-current="page">Contact</a></nav>
+</header>
+
+<main id="main">
+  <section class="hero w">
+    <p class="kick in"><span class="n">Contact</span> Available for product design roles · London</p>
+    <h1 class="h1 in d1">Tell me what’s tangled. <em>I’ll find the straight line.</em></h1>
+    <a class="mail in d2" href="mailto:yashvi.jain.yj@gmail.com">yashvi.jain.yj@gmail.com <span aria-hidden="true">↗</span></a>
+    <div class="acts in d3">
+      <button class="btn" id="copy" type="button">Copy email</button>
+      <a class="btn ghost" href="https://www.linkedin.com/in/yashvi-jain-b049851ba/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn ghost" href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">View CV ↗</a>
+      <span class="toast" id="toast" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="w sec">
+    <div class="split">
+      <div class="lab"><p class="kick">Start a note</p></div>
+      <div>
+        <h2 class="h2">What’s it about?</h2>
+        <div class="pick" id="pick" role="group" aria-label="Topic">
+          <button type="button" aria-pressed="true" data-s="Product design role">A role</button>
+          <button type="button" aria-pressed="false" data-s="Project collaboration">A project</button>
+          <button type="button" aria-pressed="false" data-s="Coffee chat">A coffee chat</button>
+          <button type="button" aria-pressed="false" data-s="Hello">Just hello</button>
+        </div>
+        <div class="compose">
+          <label for="msg">Your message</label>
+          <textarea id="msg" placeholder="A line about the team, the problem, and the best time to talk."></textarea>
+          <div class="row"><small>Opens in your email app, ready to send.</small><a class="btn" id="send" href="mailto:yashvi.jain.yj@gmail.com">Write the email →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="w sec">
+    <div class="split">
+      <div class="lab"><p class="kick">Good to know</p></div>
+      <dl class="info">
+        <div><dt>Based in</dt><dd>London, UK<br><span class="muted" id="clock" style="font-size:15px;font-weight:400"></span></dd></div>
+        <div><dt>Looking for</dt><dd>Product design roles with a hard problem at the centre</dd></div>
+        <div><dt>Elsewhere</dt><dd><a href="https://www.linkedin.com/in/yashvi-jain-b049851ba/" target="_blank" rel="noopener">LinkedIn ↗</a><br><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">View CV ↗</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+<footer class="foot w" style="margin-top:clamp(96px,12vw,180px)"><span>© 2026 Yashvi Jain · London, UK</span><span><a href="index.html">Home</a> · <a href="about.html">About</a></span></footer>
+<script>
+(function(){
+const top=document.getElementById('top');addEventListener('scroll',()=>top.classList.toggle('s',scrollY>8),{passive:true});
+const E='yashvi.jain.yj@gmail.com',toast=document.getElementById('toast');
+document.getElementById('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(E);toast.textContent='Copied. Your move.';}catch(e){toast.textContent=E;}setTimeout(()=>toast.textContent='',3000);});
+const pick=[...document.querySelectorAll('#pick button')],msg=document.getElementById('msg'),send=document.getElementById('send');
+let subj=pick[0].dataset.s;
+const upd=()=>{send.href=`mailto:${E}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(msg.value)}`;};
+pick.forEach(b=>b.addEventListener('click',()=>{pick.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));subj=b.dataset.s;upd();}));
+msg.addEventListener('input',upd);upd();
+const clock=document.getElementById('clock');const tick=()=>{try{clock.textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London',timeZoneName:'short'}).format(new Date())+' right now';}catch(e){}};tick();setInterval(tick,30000);
+})();
+</script>
+</body>
+</html>

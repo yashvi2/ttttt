@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Work · Yashvi Jain</title>
+<meta name="description" content="Six case studies across healthcare, AI, social impact and brand, plus side projects in clay, zines and installations.">
+<meta property="og:type" content="website"><meta property="og:title" content="Work · Yashvi Jain"><meta property="og:description" content="Six case studies across healthcare, AI, social impact and brand, plus side projects in clay, zines and installations."><meta property="og:image" content="og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:32px 0 0}
+.filters button{font:500 15px var(--tight);padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(40px,5vw,80px) clamp(24px,3vw,48px);list-style:none;margin:clamp(40px,5vw,72px) 0 0;padding:0}
+.cards li[hidden]{display:none}
+.card{display:block;text-decoration:none;color:inherit}
+.art{aspect-ratio:4/3;border-radius:4px;display:flex;align-items:flex-end;padding:clamp(20px,3vw,36px);overflow:hidden;position:relative;transition:transform .6s var(--ease)}
+.art span{font:500 clamp(40px,5.6vw,88px)/.9 var(--tight);letter-spacing:-.055em}
+.art.b{background:var(--blue);color:#fff}.art.t{background:var(--tint);color:var(--blue)}.art.o{background:var(--orange);color:var(--ink)}
+.art.q{background:repeating-linear-gradient(135deg,var(--tint) 0 1px,#fff 1px 14px);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+a.card:hover .art{transform:scale(.985)}
+a.card:hover h2{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.cap{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.cap .n{font-size:13px;font-weight:500;color:var(--muted);padding-top:6px}
+.cap h2{font:500 clamp(24px,2.4vw,36px)/1.05 var(--tight);letter-spacing:-.03em;margin:0}
+.cap p{grid-column:2;margin:0;color:var(--muted);font-size:15px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cap p b{color:var(--ink);font-weight:500}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+
+.whead{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(24px,4vw,64px);align-items:end}
+.whead .h1{margin:0}
+.cnt{font:500 .2em/1 var(--tight);letter-spacing:0;color:var(--blue);vertical-align:top;margin-left:.3em;position:relative;top:.5em}
+.whead .lede{font-size:clamp(17px,1.4vw,20px);color:var(--muted);max-width:24em}
+.ctrl{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:clamp(40px,5vw,72px);padding:16px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.ctrl .filters{margin:0}
+.filters button{border:0;background:none;padding:8px 12px;color:var(--muted)}
+.filters button[aria-pressed="true"]{background:none;color:var(--ink);border:0;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px}
+.filters button:hover{color:var(--ink)}
+.view{display:flex;background:var(--tint);border-radius:999px;padding:3px}
+.view button{font:500 14px var(--tight);border:0;background:none;padding:7px 16px;border-radius:999px;cursor:pointer;color:var(--muted)}
+.view button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.scrollhint{font-size:13px;font-weight:500;color:var(--muted);margin:14px 0 0}
+/* grid view: two staggered columns, title / category / year */
+.cards{margin-top:clamp(32px,4vw,56px)}
+.cards[data-view="grid"] li:nth-child(even){margin-top:clamp(48px,8vw,140px)}
+.cap{grid-template-columns:auto 1fr auto;align-items:baseline}
+.cap .cat{grid-column:2;color:var(--muted);font-size:15px}
+.cap .yr{grid-column:3;grid-row:1;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.cap .out{grid-column:2;font-weight:500;font-size:15px;color:var(--ink)}
+/* list view: big rows, image peeks under the cursor */
+.cards[data-view="list"]{grid-template-columns:1fr;gap:0}
+.cards[data-view="list"] .art{display:none}
+.cards[data-view="list"] .cap{grid-template-columns:48px minmax(0,6fr) minmax(0,3fr) minmax(0,3fr) 64px;margin:0;padding:clamp(20px,2.4vw,32px) 0;border-top:1px solid var(--line);transition:padding .4s var(--ease),color .3s}
+.cards[data-view="list"] li:last-child .cap{border-bottom:1px solid var(--line)}
+.cards[data-view="list"] .cap h2{font-size:clamp(28px,4vw,60px);letter-spacing:-.045em}
+.cards[data-view="list"] .cap .cat{grid-column:3;grid-row:1}
+.cards[data-view="list"] .cap .out{grid-column:4;grid-row:1}
+.cards[data-view="list"] .cap .yr{grid-column:5;text-align:right}
+.cards[data-view="list"] a.card:hover .cap{padding-left:16px;color:var(--blue)}
+.cards[data-view="list"] a.card:hover h2{text-decoration:none}
+.peek{position:fixed;left:0;top:0;width:300px;aspect-ratio:4/3;border-radius:4px;pointer-events:none;z-index:15;opacity:0;transform:translate(-50%,-50%) scale(.9);transition:opacity .25s,transform .35s var(--ease);display:flex;align-items:flex-end;padding:20px;font:500 40px/.9 var(--tight);letter-spacing:-.05em}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@media (max-width:899px){.whead{grid-template-columns:1fr}.cards[data-view="list"] .cap{grid-template-columns:40px 1fr auto}.cards[data-view="list"] .cap .cat,.cards[data-view="list"] .cap .out{grid-column:2;grid-row:auto}.cards[data-view="list"] .cap .yr{grid-column:3;grid-row:1}.peek{display:none}.cards[data-view="grid"] li:nth-child(even){margin-top:0}}
+/* real cover images */
+.art.pic{background:var(--bg);padding:0;align-items:stretch}
+.art.pic img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);transition:transform 1.1s var(--ease),filter .6s;will-change:transform}
+.art.pic.fit{align-items:flex-end;justify-content:center;padding:clamp(28px,4vw,48px) 0 0}
+.art.pic.fit img{width:auto;height:118%;object-fit:contain;object-position:top;transform:translateY(0);filter:drop-shadow(0 20px 30px rgba(0,0,0,.18))}
+.art.pic .lbl{position:absolute;left:16px;bottom:16px;font:500 13px/1 var(--tight);letter-spacing:0;background:#fff;color:var(--ink);padding:8px 12px;border-radius:999px;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .45s var(--ease)}
+a.card:hover .art{transform:none}
+a.card:hover .art.pic img{transform:scale(1.1)}
+a.card:hover .art.pic.fit img{transform:translateY(-6%)}
+a.card:hover .art.pic .lbl{opacity:1;transform:none}
+.peek{padding:0;overflow:hidden;background:#eee}.peek img{width:100%;height:100%;object-fit:cover;display:block}
+.peek.fit img{object-fit:contain;padding-top:16px}
+@media (prefers-reduced-motion:reduce){.art.pic img,.art.pic .lbl{transition:none}}
+/* play: side projects */
+.play{padding-top:clamp(80px,10vw,160px);padding-bottom:clamp(40px,6vw,80px);overflow-x:clip;border-top:1px solid var(--ink);margin-top:clamp(80px,10vw,160px)}
+.pl-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(24px,4vw,64px);align-items:end}
+.pl-head h2{font:500 clamp(44px,6.4vw,104px)/.92 var(--tight);letter-spacing:-.05em;margin:12px 0 0}
+.pl-head h2 em{font-style:normal;color:var(--orange)}
+.pl-head p{margin:0;color:var(--muted);font-size:clamp(17px,1.4vw,20px);max-width:22em}
+.pl-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:clamp(48px,7vw,112px) clamp(20px,3vw,40px);margin-top:clamp(56px,7vw,112px);align-items:start}
+.pl{margin:0;display:flex;flex-direction:column;gap:14px}
+.pl:nth-child(1){grid-column:1/8;margin-top:clamp(0px,6vw,96px)}
+.pl:nth-child(2){grid-column:9/13}
+.pl:nth-child(3){grid-column:1/6}
+.pl:nth-child(4){grid-column:7/12;margin-top:clamp(0px,8vw,128px)}
+.pl-tag{display:flex;justify-content:space-between;padding-top:12px;border-top:1px solid var(--line);font-size:13px;font-weight:500;color:var(--muted)}
+.pl-tag b{font-weight:500;color:var(--orange)}
+.pl-m{position:relative;overflow:hidden;border-radius:4px;background:#0d0d0d}
+.pl-m>img,.pl-m>video,.pl-m .st img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pl:nth-child(2) .pl-m{transform:rotate(-1deg)}.pl:nth-child(3) .pl-m{transform:rotate(1deg)}
+.pl figcaption{font:500 clamp(20px,1.8vw,26px)/1.1 var(--tight);letter-spacing:-.02em}
+.pl figcaption span{display:block;margin-top:6px;font-size:15px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.pl-m .st img{opacity:0;transform:scale(1);transition:opacity .9s ease,transform 3.2s ease}
+.pl-m .st img.on{opacity:1;transform:scale(1.06)}
+.zine{background:#1a1a1a;perspective:2400px}
+.zine .st img{object-fit:contain;transform:rotateY(0)}
+.zine .st img{transform-origin:50% 50%;transition:opacity .7s ease,transform .9s var(--ease)}
+.zine .st img:not(.on){transform:rotateY(-12deg) scale(.96)}
+.zine .st img.on{transform:none}
+.pl-dots{position:absolute;left:14px;bottom:14px;display:flex;gap:6px;z-index:2}
+.pl-dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);transition:background .3s,width .3s}
+.pl-dots i.on{background:#fff;width:18px;border-radius:3px}
+@media (max-width:899px){.pl-head{grid-template-columns:1fr}.pl-grid{grid-template-columns:1fr}.pl:nth-child(n){grid-column:1;margin-top:0}}
+@media (prefers-reduced-motion:reduce){.pl-m .st img{transition:none}}
+/* play jump */
+.to-play{font:500 15px var(--tight);padding:8px 14px;margin-left:8px;border-radius:999px;background:var(--orange);color:#fff;text-decoration:none;display:inline-flex;gap:6px;align-items:center}
+.to-play:hover{background:var(--ink)}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* pfizer card: live screens */
+.art.pfc{padding:0}
+.art.pfc .pf-logo{position:absolute;left:clamp(20px,3vw,36px);top:clamp(20px,3vw,36px);width:clamp(72px,7vw,104px);height:auto;z-index:3;transform:none!important}
+.art.pfc .pf-win{position:absolute;border-radius:10px;overflow:hidden;background:#00002D;box-shadow:0 30px 60px rgba(0,0,40,.45);transition:transform 1.1s var(--ease)}
+.art.pfc .pf-bar{display:flex;align-items:center;gap:6px;height:26px;padding:0 12px;background:#14143f}
+.art.pfc .pf-bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28)}
+.art.pfc .pf-bar span{margin-left:8px;font:500 11px/1 var(--tight);color:rgba(255,255,255,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.art.pfc .pf-scr{position:absolute;inset:26px 0 0}
+.art.pfc .pf-scr img{width:100%;height:100%;object-fit:cover;object-position:50% 0;transform:none!important}
+.art.pfc .pf-a{left:8%;right:20%;top:34%;aspect-ratio:680/406;z-index:2}
+.art.pfc .pf-b{left:38%;right:-8%;top:15%;aspect-ratio:680/351;z-index:1;opacity:.92}
+.card:hover .art.pfc .pf-a{transform:translate(-3%,2%)}
+.card:hover .art.pfc .pf-b{transform:translate(3%,-3%)}
+.cards[data-view="list"] .art.pfc{display:none}
+/* zine flip book */
+@property --sh{syntax:"<number>";inherits:true;initial-value:0}
+.fb{background:#ecebe8;perspective:2600px;cursor:pointer;user-select:none}
+.fb-book{position:absolute;inset:5% 4% 9%;filter:drop-shadow(0 18px 24px rgba(0,0,0,.22))}
+.fb-h,.fb-leaf{position:absolute;top:0;bottom:0;width:50%}
+.fb-l{left:0}.fb-r{left:50%}
+.fb-h,.fb-f,.fb-b{background-size:200% 100%;background-repeat:no-repeat;background-color:#fff}
+.fb-leaf{left:50%;transform-style:preserve-3d;transform-origin:0 50%;visibility:hidden;z-index:3}
+.fb-leaf.back{left:0;transform-origin:100% 50%}
+.fb-f,.fb-b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.fb-b{transform:rotateY(180deg)}
+.fb-f::after,.fb-b::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:var(--sh,0);background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 60%)}
+.fb-b::after{background:linear-gradient(270deg,rgba(0,0,0,.28),rgba(0,0,0,0) 60%)}
+.fb-spine{position:absolute;left:50%;top:0;bottom:0;width:24px;margin-left:-12px;z-index:4;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.14) 50%,rgba(0,0,0,0))}
+.fb-btn{position:absolute;bottom:3%;z-index:5;width:34px;height:34px;border-radius:50%;border:0;background:#fff;color:var(--ink);font:500 16px/1 var(--tight);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:background .2s,color .2s}
+.fb-btn:hover,.fb-btn:focus-visible{background:var(--orange);color:#fff}
+.fb-prev{right:calc(4% + 42px)}.fb-next{right:4%}
+.fb-n{position:absolute;left:4%;bottom:calc(3% + 9px);z-index:5;font:500 13px/1 var(--tight);color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top w" id="top">
+  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <nav aria-label="Main"><a href="work.html" aria-current="page">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html">Contact</a></nav>
+</header>
+<main id="main" class="w" style="padding-top:clamp(48px,7vw,104px)">
+  <div class="peek" id="peek" aria-hidden="true"></div>
+  <div class="whead">
+    <h1 class="h1 in">Selected <em>work</em><sup class="cnt" aria-hidden="true">06</sup><span class="sr">, 6 projects</span></h1>
+    <p class="lede in d1">Research-led product design across healthcare, AI, social impact and brand. Every project starts with the people using it.</p>
+  </div>
+  <div class="ctrl in d2">
+    <div class="filters" role="group" aria-label="Filter by sector">
+      <button type="button" aria-pressed="true" data-f="all">All</button>
+      <button type="button" aria-pressed="false" data-f="health">Healthcare</button>
+      <button type="button" aria-pressed="false" data-f="ai">AI</button>
+      <button type="button" aria-pressed="false" data-f="impact">Social impact</button>
+      <button type="button" aria-pressed="false" data-f="brand">Brand &amp; web</button>
+      <a class="to-play" href="#play">Play <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="view" role="group" aria-label="Layout"><button type="button" aria-pressed="true" data-v="grid">Grid</button><button type="button" aria-pressed="false" data-v="list">List</button></div>
+  </div>
+  <p class="scrollhint in d3" aria-hidden="true">Scroll to explore ↓</p>
+  <ul class="cards" id="cards" data-view="grid">
+    <li data-f="health"><a class="card" href="case-study.html"><div class="art pic" style="--bg:#C8102E"><img src="assets/web/assets/ava/cover-banner.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Ava</span></div><div class="cap"><span class="n">01</span><h2>Ava &amp; dosing error</h2><span class="cat">Healthcare</span><span class="yr">2025</span><b class="out">70% fewer dosing errors</b></div></a></li>
+    <li data-f="impact"><a class="card" href="case-move.html"><div class="art pic" style="--bg:#e9e6e1"><img src="assets/web/assets/ma/ma-poster-wall-web.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Move</span></div><div class="cap"><span class="n">02</span><h2>What it takes to move</h2><span class="cat">Social impact</span><span class="yr">2026</span><b class="out">Tested with families</b></div></a></li>
+    <li data-f="ai"><a class="card" href="case-askbeta.html"><div class="art pic fit" style="--bg:#F5B942"><img src="assets/askbeta/s1-home.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Ask Beta</span></div><div class="cap"><span class="n">03</span><h2>Ask Beta</h2><span class="cat">AI product</span><span class="yr">2026</span><b class="out">Live prototype</b></div></a></li>
+    <li data-f="brand health"><a class="card" href="case-pfizer.html"><div class="art pic pfc" style="--bg:#0000C9"><img class="pf-logo" src="logos/pfizer-white.svg" alt=""><div class="pf-win pf-b" aria-hidden="true"><div class="pf-bar"><i></i><i></i><i></i><span>pfizer.com/about/careers</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-b.webp" alt="" loading="lazy" decoding="async"></div></div><div class="pf-win pf-a"><div class="pf-bar" aria-hidden="true"><i></i><i></i><i></i><span>pfizer.com</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-a.webp" alt="The live pfizer.com homepage" loading="lazy" decoding="async"></div></div><span class="lbl">Pfizer</span></div><div class="cap"><span class="n">04</span><h2>Pfizer.com</h2><span class="cat">Brand &amp; web</span><span class="yr">Via TCS</span><b class="out">1 system behind it</b></div></a></li>
+    <li data-f="impact"><a class="card" href="case-cray.html"><div class="art pic" style="--bg:#7B27A1"><img src="assets/web/assets/cray/banner-simple.webp" alt="" loading="lazy" decoding="async"><span class="lbl">CRAY</span></div><div class="cap"><span class="n">05</span><h2>CRAY</h2><span class="cat">Social impact</span><span class="yr">2025</span><b class="out">Live prototype</b></div></a></li>
+    <li data-f="brand"><a class="card" href="case-birdsong.html"><div class="art pic" style="--bg:#2e2523"><img src="assets/web/assets/ime/cover.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Birdsong</span></div><div class="cap"><span class="n">06</span><h2>Birdsong</h2><span class="cat">Museum &amp; web</span><span class="yr">2022</span><b class="out">With the British Council</b></div></a></li>
+  </ul>
+</main>
+<section class="play w" id="play" aria-labelledby="play-h">
+  <div class="pl-head">
+    <div><p class="kick">Play · 04 side projects</p><h2 id="play-h">Rough, fast, <em>for fun.</em></h2></div>
+    <p>Where I test ideas without a brief. Some become real work. Most just teach me something.</p>
+  </div>
+  <div class="pl-grid">
+    <figure class="pl"><div class="pl-tag"><b>Zine</b><span>2026</span></div><div class="pl-m fb" style="aspect-ratio:1.41/1" data-pages="assets/web/uploads/Frame-10.webp|assets/web/uploads/Frame-8.webp|assets/web/uploads/Frame-9.webp|assets/web/uploads/2.webp" role="group" aria-roledescription="flip book" aria-label="The Cost of a Trace zine, 4 spreads"><div class="fb-book"><div class="fb-h fb-l"></div><div class="fb-h fb-r"></div><div class="fb-leaf"><div class="fb-f"></div><div class="fb-b"></div></div><i class="fb-spine" aria-hidden="true"></i></div><button type="button" class="fb-btn fb-prev" aria-label="Previous spread">←</button><button type="button" class="fb-btn fb-next" aria-label="Next spread">→</button><span class="fb-n" aria-live="polite">1 / 4</span></div><figcaption>The Cost of a Trace<span>A zine on the data we leave behind</span></figcaption></figure>
+    <figure class="pl"><div class="pl-tag"><b>Installation</b><span>2026</span></div><div class="pl-m" style="aspect-ratio:4/5" data-cycle="2400"><div class="st"><img class="on" src="assets/web/uploads/IMG_3619.webp" alt="The Cost of a Trace installation" loading="lazy" decoding="async"><img src="assets/web/uploads/IMG_3615.webp" alt="" loading="lazy" decoding="async"><img src="assets/web/uploads/IMG_3621.webp" alt="" loading="lazy" decoding="async"><img src="assets/web/uploads/IMG_3620.webp" alt="" loading="lazy" decoding="async"><img src="assets/web/uploads/IMG_3625.webp" alt="" loading="lazy" decoding="async"></div><div class="pl-dots" aria-hidden="true"></div></div><figcaption>The Cost of a Trace, in the room<span>Shown at UAL Net Zero</span></figcaption></figure>
+    <figure class="pl"><div class="pl-tag"><b>Video</b><span>2026</span></div><div class="pl-m" style="aspect-ratio:4/5"><video src="assets/web/uploads/clay-print.mp4" poster="assets/web/uploads/IMG_2555-frame.webp" autoplay muted loop playsinline preload="metadata" aria-label="A delta printer laying down a clay coil"></video></div><figcaption>3D printed clay pots<span>Wedged by hand, printed on a delta printer</span></figcaption></figure>
+    <figure class="pl"><div class="pl-tag"><b>Photo</b><span>Ongoing</span></div><div class="pl-m" style="aspect-ratio:1/1"><img src="assets/web/uploads/IMG_0139.webp" alt="Bracket fungi on a mossy stump" loading="lazy" decoding="async"></div><figcaption>Shroom spotter<span>Field notes from walks</span></figcaption></figure>
+  </div>
+</section>
+<a class="next" href="about.html"><p class="kick">Next</p><p class="h1" style="margin-top:12px">The person behind it <em>→</em></p></a>
+<footer class="foot w"><span>© 2026 Yashvi Jain · London, UK</span><span><a href="index.html">Home</a> · <a href="contact.html">Contact</a></span></footer>
+<script>
+(function(){
+const top=document.getElementById('top');addEventListener('scroll',()=>top.classList.toggle('s',scrollY>8),{passive:true});
+const bs=[...document.querySelectorAll('.filters button')],items=[...document.querySelectorAll('#cards li')];
+bs.forEach(b=>b.addEventListener('click',()=>{bs.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const f=b.dataset.f;
+  items.forEach(li=>{const tags=li.dataset.f.split(' ');li.hidden=!(f==='all'||tags.includes(f));});}));
+const cards=document.getElementById('cards'),vb=[...document.querySelectorAll('.view button')],peek=document.getElementById('peek');
+vb.forEach(b=>b.addEventListener('click',()=>{vb.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));cards.dataset.view=b.dataset.v;peek.classList.remove('on');}));
+let px=0,py=0,tx=0,ty=0;
+addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;});
+(function f(){px+=(tx-px)*.18;py+=(ty-py)*.18;peek.style.left=px+'px';peek.style.top=py+'px';requestAnimationFrame(f);})();
+items.forEach(li=>{li.addEventListener('mouseenter',()=>{if(cards.dataset.view!=='list')return;const art=li.querySelector('.art');const im=art.querySelector('img');peek.className='peek on'+(art.classList.contains('fit')?' fit':'');peek.style.background=art.style.getPropertyValue('--bg');peek.innerHTML='';if(im){const c=new Image();c.src=im.src;c.alt='';peek.appendChild(c);}});
+  li.addEventListener('mouseleave',()=>peek.classList.remove('on'));});
+// play: cycling stacks
+const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.pl-m[data-cycle]').forEach(m=>{const ims=[...m.querySelectorAll('.st img')],dots=m.querySelector('.pl-dots');let i=0,vis=false;
+  ims.forEach((_,j)=>{const d=document.createElement('i');if(!j)d.className='on';dots.appendChild(d);});const ds=[...dots.children];
+  new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting)).observe(m);
+  if(rm)return;setInterval(()=>{if(!vis||document.hidden)return;ims[i].classList.remove('on');ds[i].classList.remove('on');i=(i+1)%ims.length;ims[i].classList.add('on');ds[i].classList.add('on');},+m.dataset.cycle);});
+// play: zine flip book
+document.querySelectorAll('.fb').forEach(m=>{const pg=m.dataset.pages.split('|'),n=pg.length,L=m.querySelector('.fb-l'),R=m.querySelector('.fb-r'),leaf=m.querySelector('.fb-leaf'),F=m.querySelector('.fb-f'),B=m.querySelector('.fb-b'),cnt=m.querySelector('.fb-n');
+  pg.forEach(u=>{const im=new Image();im.src=u;});
+  const set=(el,u,side)=>{el.style.backgroundImage='url("'+u+'")';el.style.backgroundPosition=side?'100% 0':'0 0';};
+  let i=0,busy=false,vis=false,hover=false;const show=k=>{set(L,pg[k],0);set(R,pg[k],1);cnt.textContent=(k+1)+' / '+n;};show(0);
+  const ease='cubic-bezier(.45,.05,.3,1)',dur=rm?0:900;
+  function go(d){if(busy)return;const j=(i+d+n)%n;if(rm){i=j;show(i);return;}busy=true;
+    leaf.className='fb-leaf'+(d<0?' back':'');
+    if(d>0){set(F,pg[i],1);set(B,pg[j],0);set(R,pg[j],1);}else{set(F,pg[i],0);set(B,pg[j],1);set(L,pg[j],0);}
+    leaf.style.visibility='visible';const to=d>0?-180:180;
+    const an=leaf.animate([{transform:'rotateY(0deg)'},{transform:'rotateY('+to+'deg)'}],{duration:dur,easing:ease,fill:'forwards'});
+    const sh=[F,B].map(e=>e.animate([{'--sh':0},{'--sh':1,offset:.5},{'--sh':0}],{duration:dur,easing:ease}));
+    an.onfinish=()=>{i=j;show(i);leaf.style.visibility='hidden';an.cancel();busy=false;};}
+  m.querySelector('.fb-next').addEventListener('click',e=>{e.stopPropagation();go(1);});
+  m.querySelector('.fb-prev').addEventListener('click',e=>{e.stopPropagation();go(-1);});
+  m.addEventListener('click',e=>{const r=m.getBoundingClientRect();go(e.clientX-r.left<r.width/2?-1:1);});
+  m.addEventListener('mouseenter',()=>hover=true);m.addEventListener('mouseleave',()=>hover=false);
+  new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting)).observe(m);
+  if(!rm)setInterval(()=>{if(vis&&!hover&&!document.hidden)go(1);},3400);});
+document.querySelectorAll('.pl video').forEach(v=>{if(rm){v.removeAttribute('autoplay');v.pause();return;}new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?v.play().catch(()=>{}):v.pause())).observe(v);});
+})();
+</script>
+</body>
+</html>
