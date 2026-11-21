@@ -130,3 +130,11 @@ html,body{background:#FFFFFF}
 .h1{line-height:.9}
 .cap h2{font-size:clamp(28px,2.8vw,40px)!important}
 .h1 em,.h2 em,.cap h2 em{font-family:inherit!important;font-weight:inherit!important;letter-spacing:inherit!important}
+/* hide-on-scroll top bar (non-home pages) */
+.top{transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.top.hid{transform:translateY(-100%)}
+.ctoc{transition:top .45s cubic-bezier(.2,.7,.2,1)}
+.nav-hid .ctoc{top:0!important}
+.split>.lab{transition:top .45s cubic-bezier(.2,.7,.2,1)}
+.nav-hid .split>.lab{top:24px}
+@media (prefers-reduced-motion:reduce){.top,.ctoc,.split>.lab{transition:none}}

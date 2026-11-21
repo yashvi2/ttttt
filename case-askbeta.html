@@ -12,12 +12,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter+Tight:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="case.css">
+<link rel="stylesheet" href="refine.css">
 </head>
-<body>
+<body class="cs2" style="--hl:#A86B00">
 <div class="prog" id="prog" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top w" id="top">
-  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <a class="home" href="index.html">Yashvi Jain</a>
   <nav aria-label="Main"><a href="work.html" aria-current="page">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html">Contact</a></nav>
 </header>
 
@@ -34,41 +35,10 @@
   <div class="w cs-facts">
     <dl class="meta"><div><dt>Role</dt><dd>Product designer (solo)</dd></div><div><dt>Context</dt><dd>Built at SheBuilds with Lovable</dd></div><div><dt>Type</dt><dd>Concept and working prototype</dd></div><div><dt>Status</dt><dd>Simulated detection, fictional data</dd></div></dl>
     <div class="glance" aria-label="At a glance"><div><h3>Problem</h3><p>When a suspicious call comes in, my parents’ first thought is “let’s ask Beta” (बेटा, “my child”). But I’m often in meetings or far away.</p></div><div><h3>Insight</h3><p>Warnings get ignored, and shame stops people asking. Asking has to feel normal, fast and private.</p></div><div><h3>Solution</h3><p>A sun that appears only when something looks wrong, explains it in plain words, suggests one safe step and lets the child know.</p></div><div><h3>Result</h3><p>A working prototype with simulated detection. Next: testing with real parents.</p></div></div>
-    <p class="cs-note">Detection is simulated in this prototype, and every number, name and message in it is fictional.</p>
   </div>
 
-  <nav class="ctoc w" aria-label="On this page"><ol><li><a href="#problem">Problem</a></li><li><a href="#direction">Direction</a></li><li><a href="#product">How it works</a></li><li><a href="#decisions">Decisions</a></li><li><a href="#ai">AI</a></li><li><a href="#next">Next</a></li></ol><span class="bar" aria-hidden="true"></span></nav>
-
-  <section class="w sec cs" id="problem">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">01</span> Problem</p></div>
-      <div class="body cs-body"><h2 class="h2">Scams that start with a phone call cost more</h2>
-<div class="stats"><div class="stat"><b>£1.28bn</b><span>UK payment fraud losses in 2025, £576m of it authorised push payment (APP) fraud</span></div><div class="stat"><b>17% → 28%</b><span>phone calls start 17% of APP cases but 28% of the money lost</span></div><div class="stat"><b>28%</b><span>of UK adults targeted by an AI voice-clone scam; 46% had never heard of them</span></div></div><p class="cap">Sources: UK Finance Annual Fraud Report 2026; Starling Bank, 2024. Research: desk research and conversations with my parents.</p><div class="pair"><div class="panel"><h3>Parent</h3><ul class="blist"><li>“Is this real? They sound so sure.”</li><li>“What if it really was the bank?”</li><li>“I feel silly asking.”</li></ul></div><div class="panel"><h3>Child</h3><ul class="blist"><li>“A missed call, I assume the worst.”</li><li>“I can’t answer from a meeting.”</li><li>“I only hear after the money’s gone.”</li></ul></div></div><h3>What I learned</h3><ul class="blist"><li>Urgency is the weapon.</li><li>A familiar voice can arrive on a new channel.</li><li>Secrecy is a red flag.</li><li>Shame stops people asking.</li><li>Warnings get ignored.</li></ul>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="direction">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">02</span> Direction</p></div>
-      <div class="body cs-body"><h2 class="h2">Don’t add warnings. Make asking normal.</h2>
-<p>The principle: don’t add more warnings. Make asking normal, fast and private. I explored three directions against it.</p><div class="tbl"><table><thead><tr><th scope="col">Direction</th><th scope="col">Idea</th><th scope="col">Outcome</th></tr></thead><tbody><tr><th scope="row">A</th><td>Share and check: the parent shares the call or message, Beta explains it and tells the child</td><td>Chosen</td></tr><tr><th scope="row">B</th><td>A family safe phrase to confirm who is really calling</td><td>Not taken forward</td></tr><tr><th scope="row">C</th><td>Pause with a cool-off before any payment</td><td>Not taken forward</td></tr></tbody></table></div>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="product">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">03</span> How it works</p></div>
-      <div class="body cs-body"><h2 class="h2">Real screens from the prototype</h2>
-<p>The prototype plays one story across two phones: Mummy’s and mine.</p><div class="phones"><figure class=""><div class="frame"><img src="assets/askbeta/s1-home.webp" alt="Phone home screen with a small Ask Beta sun and a “You’re protected” indicator" loading="lazy" decoding="async"></div><figcaption>1 · A tiny sun on the home screen. Beta stays quiet until something looks wrong.</figcaption></figure><figure class=""><div class="frame"><img src="assets/askbeta/s2-call.webp" alt="Incoming call with an Ask Beta banner: This looks like a fake bank call, Don’t answer" loading="lazy" decoding="async"></div><figcaption>2 · A scam call arrives. Plain words and one safe step: don’t answer.</figcaption></figure><figure class=""><div class="frame"><img src="assets/askbeta/s3-told.webp" alt="Lock screen notification: Mummy declined a scam call, tap to check in" loading="lazy" decoding="async"></div><figcaption>3 · I’m told automatically, so I can check in when I’m free.</figcaption></figure><figure class=""><div class="frame"><img src="assets/askbeta/s4-reassured.webp" alt="Notification on Mummy’s phone: You did the right thing, love you" loading="lazy" decoding="async"></div><figcaption>4 · My reply reaches her: “You did the right thing, love you.”</figcaption></figure></div><p style="margin-top:24px"><a class="btn primary" href="https://parent-scam-sense.lovable.app" target="_blank" rel="noopener">Try the prototype ↗</a></p>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="decisions">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">04</span> Decisions</p></div>
-      <div class="body cs-body"><h2 class="h2">Calm, familiar and in her control</h2>
-<div class="grid g2"><div class="panel"><h3>Made for older eyes</h3><ul class="blist"><li>Big, readable text</li><li>Familiar app icons</li><li>One action per screen</li><li>The sun is the only colour</li></ul></div><div class="panel"><h3>The parent stays in control</h3><ul class="blist"><li>She chooses whether her child is told</li><li>“It’s someone I know” stops repeat warnings for a number</li><li>Beta can be paused for an hour</li><li>If she thinks she’s been scammed, her child is always told</li></ul></div></div>
-<div class="pm rv" id="pm" data-mode="story">
+  <div class="w show"><p class="kick showk"><span class="n">The prototype</span> One story across two phones: Mummy’s and mine</p>
+<div class="pm" id="pm" data-mode="story">
   <div class="pm-top"><div class="pm-tabs" role="group" aria-label="Prototype view"><button type="button" aria-pressed="true" data-m="story">Watch the flow</button><button type="button" aria-pressed="false" data-m="live">Try it live</button></div><a class="pm-open" href="https://parent-scam-sense.lovable.app" target="_blank" rel="noopener">Open in a new tab ↗</a></div>
   <div class="pm-stage">
     <div class="pm-phone"><div class="pm-glow" aria-hidden="true"></div>
@@ -78,12 +48,38 @@
     <ol class="pm-steps"><li><button type="button" class="pm-step on" data-i="0"><span class="pm-n">01</span><span class="pm-t">Home</span><span class="pm-c">A tiny sun on the home screen. Beta stays quiet until something looks wrong.</span><i class="pm-bar"></i></button></li><li><button type="button" class="pm-step" data-i="1"><span class="pm-n">02</span><span class="pm-t">Scam call</span><span class="pm-c">A scam call arrives. Plain words and one safe step: don’t answer.</span><i class="pm-bar"></i></button></li><li><button type="button" class="pm-step" data-i="2"><span class="pm-n">03</span><span class="pm-t">Child told</span><span class="pm-c">I’m told automatically, so I can check in when I’m free.</span><i class="pm-bar"></i></button></li><li><button type="button" class="pm-step" data-i="3"><span class="pm-n">04</span><span class="pm-t">Reassured</span><span class="pm-c">My reply reaches her: “You did the right thing, love you.”</span><i class="pm-bar"></i></button></li></ol>
   </div>
 </div>
+  <p class="cs-note">Detection is simulated in this prototype, and every number, name and message in it is fictional.</p>
+  </div>
+
+  <nav class="ctoc w" aria-label="On this page"><ol><li><a href="#problem">Problem</a></li><li><a href="#direction">Direction</a></li><li><a href="#decisions">Decisions</a></li><li><a href="#ai">AI</a></li><li><a href="#next">Next</a></li></ol><span class="bar" aria-hidden="true"></span></nav>
+
+  <section class="w sec cs" id="problem">
+    <div class="split">
+      <div class="lab"><p class="kick"><span class="n">01</span> Problem</p></div>
+      <div class="body cs-body"><h2 class="h2">Scams that start with a phone call cost more</h2>
+<div class="stats"><div class="stat"><b>£1.28bn</b><span>UK payment fraud losses in 2025, £576m of it authorised push payment (APP) fraud</span></div><div class="stat"><b>17% → 28%</b><span>phone calls start 17% of APP cases but 28% of the money lost</span></div><div class="stat"><b>28%</b><span>of UK adults targeted by an AI voice-clone scam; 46% had never heard of them</span></div></div><p class="cap">Sources: UK Finance Annual Fraud Report 2026; Starling Bank, 2024. Research: desk research and conversations with my parents.</p><div class="pair"><div class="panel"><h3>Parent</h3><ul class="blist"><li>“Is this real? They sound so sure.”</li><li>“What if it really was the bank?”</li><li>“I feel silly asking.”</li></ul></div><div class="panel"><h3>Child</h3><ul class="blist"><li>“A missed call, I assume the worst.”</li><li>“I can’t answer from a meeting.”</li><li>“I only hear after the money’s gone.”</li></ul></div></div><h3>What I learned</h3><ol class="finds"><li><b>Urgency is the weapon</b><span>Scammers rush people past the moment they would ask.</span></li><li><b>Shame stops people asking</b><span>So asking has to be private, and feel normal.</span></li><li><b>Warnings get ignored</b><span>Another banner is not enough. The child needs to know too.</span></li></ol>
+      </div>
+    </div>
+  </section>
+  <section class="w sec cs" id="direction">
+    <div class="split">
+      <div class="lab"><p class="kick"><span class="n">02</span> Direction</p></div>
+      <div class="body cs-body"><h2 class="h2">Don’t add warnings. Make asking normal.</h2>
+<p>I explored three directions against one principle: make asking normal, fast and private.</p><div class="opts"><div class="on"><small>A · Chosen</small><b>Share and check</b><p>The parent shares the call or message. Beta explains it and tells the child.</p></div><div><small>B · Not taken forward</small><b>A family safe phrase</b><p>A shared word to confirm who is really calling.</p></div><div><small>C · Not taken forward</small><b>Pause before paying</b><p>A cool-off before any payment.</p></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="w sec cs" id="decisions">
+    <div class="split">
+      <div class="lab"><p class="kick"><span class="n">03</span> Decisions</p></div>
+      <div class="body cs-body"><h2 class="h2">Calm, familiar and in her control</h2>
+<div class="grid g2"><div class="panel"><h3>Made for older eyes</h3><ul class="blist"><li>Big, readable text</li><li>Familiar app icons</li><li>One action per screen</li><li>The sun is the only colour</li></ul></div><div class="panel"><h3>The parent stays in control</h3><ul class="blist"><li>She chooses whether her child is told</li><li>“It’s someone I know” stops repeat warnings for a number</li><li>Beta can be paused for an hour</li><li>If she thinks she’s been scammed, her child is always told</li></ul></div></div>
       </div>
     </div>
   </section>
   <section class="w sec cs" id="ai">
     <div class="split">
-      <div class="lab"><p class="kick"><span class="n">05</span> AI</p></div>
+      <div class="lab"><p class="kick"><span class="n">04</span> AI</p></div>
       <div class="body cs-body"><h2 class="h2">How AI helped</h2>
 <div class="grid g2"><div class="panel"><h3>In my process</h3><ul class="blist"><li>Research synthesis with Claude</li><li>Built and iterated in Lovable</li><li>The calls on direction and tone stayed mine</li></ul></div><div class="panel"><h3>In the product</h3><ul class="blist"><li>Spots scam patterns</li><li>Explains them in plain words</li><li>Writes the summary the child receives</li></ul></div></div><p class="cap">Detection is simulated in this prototype.</p>
       </div>
@@ -91,16 +87,17 @@
   </section>
   <section class="w sec cs" id="next">
     <div class="split">
-      <div class="lab"><p class="kick"><span class="n">06</span> Next</p></div>
+      <div class="lab"><p class="kick"><span class="n">05</span> Next</p></div>
       <div class="body cs-body"><h2 class="h2">Test with real parents</h2>
 <p>The next step is moderated testing with parents on three scenarios, including one that should <em>not</em> trigger a warning:</p><ul class="blist"><li>A “Hi Mum, new number” text asking for money</li><li>A fake bank “safe account” call</li><li>A genuine message, to check for false alarms</li></ul>
       </div>
     </div>
   </section>
-
-  <a class="next" href="case-pfizer.html"><p class="kick"><span class="n">Next case study · 04</span></p><p class="h1" style="margin-top:12px">Pfizer.com <em>→</em></p></a>
+  <div class="w"><div class="hire"><p class="kick"><span class="n">Work with me</span></p><div><p class="t2">Hiring a product designer? Let’s talk.</p><div class="acts"><a class="b1" href="contact.html">Get in touch</a><a class="b2" href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">Download CV ↗</a></div></div></div></div>
+  <div class="w"><a class="nxt" href="case-pfizer.html"><p class="kick"><span class="n">Next</span> Case study 04</p><div><p class="t">Pfizer.com <span aria-hidden="true">→</span></p><p class="d">Pfizer’s new brand, live on pfizer.com.</p></div></a></div>
 </main>
 <footer class="foot w"><span>© 2026 Yashvi Jain · London, UK</span><span><a href="work.html">All work</a> · <a href="contact.html">Contact</a></span></footer>
 <script src="case.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>

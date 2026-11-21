@@ -128,6 +128,12 @@ html{scroll-behavior:smooth}
 .card:hover .art.pfc .pf-a{transform:translate(-3%,2%)}
 .card:hover .art.pfc .pf-b{transform:translate(3%,-3%)}
 .cards[data-view="list"] .art.pfc{display:none}
+.art.pfk{display:grid;place-items:center}
+.art.pfk img.pf-kid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;opacity:.55;transform:scale(1.04);transition:transform 1.1s var(--ease)}
+.art.pfk::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(0,0,201,.15),rgba(0,0,201,.85));pointer-events:none}
+.art.pfk .pf-logo{position:relative;left:auto;top:auto;width:clamp(140px,16vw,240px);z-index:2}
+.card:hover .art.pfk img.pf-kid{transform:scale(1.1)}
+.art.pfk .lbl{z-index:3}
 
 /* Ask Beta card: same three-phone art as home */
 .art.abc{padding:0}
@@ -176,7 +182,7 @@ html{scroll-behavior:smooth}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top w" id="top">
-  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <a class="home" href="index.html">Yashvi Jain</a>
   <nav aria-label="Main"><a href="work.html" aria-current="page">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html">Contact</a></nav>
 </header>
 <main id="main" class="w" style="padding-top:clamp(48px,7vw,104px)">
@@ -201,8 +207,8 @@ html{scroll-behavior:smooth}
     <li data-f="health"><a class="card" href="case-study.html"><div class="art pic" style="--bg:#C8102E"><img src="assets/web/assets/ava/cover-banner.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Ava</span></div><div class="cap"><span class="n">01</span><h2>Ava &amp; dosing error</h2><span class="cat">Healthcare</span><span class="yr">2025</span><b class="out">70% fewer dosing errors</b></div></a></li>
     <li data-f="impact"><a class="card" href="case-move.html"><div class="art pic" style="--bg:#e9e6e1"><img src="assets/web/assets/ma/ma-poster-wall-web.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Move</span></div><div class="cap"><span class="n">02</span><h2>What it takes to move</h2><span class="cat">Social impact</span><span class="yr">2026</span><b class="out">Tested with families</b></div></a></li>
     <li data-f="ai"><a class="card" href="case-askbeta.html"><div class="art pic abc" style="--bg:#F5B942"><img class="ab-sun" src="assets/askbeta-sun.svg" alt="" aria-hidden="true"><div class="ab-ph ab-l"><img src="assets/askbeta/s3-told.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-r"><img src="assets/askbeta/s4-reassured.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-c"><img src="assets/askbeta/s2-call.webp" alt="Ask Beta app screens" loading="lazy" decoding="async"></div><span class="lbl">Ask Beta</span></div><div class="cap"><span class="n">03</span><h2>Ask Beta</h2><span class="cat">AI product</span><span class="yr">2026</span><b class="out">Live prototype</b></div></a></li>
-    <li data-f="brand health"><a class="card" href="case-pfizer.html"><div class="art pic pfc" style="--bg:#0000C9"><img class="pf-logo" src="logos/pfizer-white.svg" alt=""><div class="pf-win pf-b" aria-hidden="true"><div class="pf-bar"><i></i><i></i><i></i><span>pfizer.com/about/careers</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-b.webp" alt="" loading="lazy" decoding="async"></div></div><div class="pf-win pf-a"><div class="pf-bar" aria-hidden="true"><i></i><i></i><i></i><span>pfizer.com</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-a.webp" alt="The live pfizer.com homepage" loading="lazy" decoding="async"></div></div><span class="lbl">Pfizer</span></div><div class="cap"><span class="n">04</span><h2>Pfizer.com</h2><span class="cat">Brand &amp; web</span><span class="yr">Via TCS</span><b class="out">1 system behind it</b></div></a></li>
-    <li data-f="impact"><a class="card" href="case-cray.html"><div class="art pic crc" style="--bg:#7B27A1"><span class="cr-tag"><i></i>Live prototype</span><div class="cr-ph"><img src="assets/web/assets/cray/cover.webp" alt="" loading="lazy" decoding="async"><iframe src="https://build-your-dream-2348.lovable.app/" title="CRAY live prototype home screen" loading="lazy" tabindex="-1" aria-hidden="true" onload="this.classList.add('on')"></iframe></div><span class="lbl">CRAY</span></div><div class="cap"><span class="n">05</span><h2>CRAY</h2><span class="cat">Social impact</span><span class="yr">2025</span><b class="out">Live prototype</b></div></a></li>
+    <li data-f="brand health"><a class="card" href="case-pfizer.html"><div class="art pic pfc pfk" style="--bg:#0000C9"><img class="pf-kid" src="assets/web/assets/pfizer/cover-kid.webp" alt="" loading="lazy" decoding="async"><img class="pf-logo" src="logos/pfizer-white.svg" alt="Pfizer logo over a blue-tinted photo of a child resting on a teddy bear"><span class="lbl">Pfizer</span></div><div class="cap"><span class="n">04</span><h2>Pfizer.com</h2><span class="cat">Brand &amp; web</span><span class="yr">Via TCS</span><b class="out">1 system behind it</b></div></a></li>
+    <li data-f="impact"><a class="card" href="case-cray.html"><div class="art pic crc" style="--bg:#7B27A1"><div class="cr-ph"><img src="assets/web/assets/cray/lovable-home.webp" alt="CRAY prototype home screen" loading="lazy" decoding="async" style="object-position:50% 0"></div><span class="lbl">CRAY</span></div><div class="cap"><span class="n">05</span><h2>CRAY</h2><span class="cat">Social impact</span><span class="yr">2025</span><b class="out">Live prototype</b></div></a></li>
     <li data-f="brand"><a class="card" href="case-birdsong.html"><div class="art pic" style="--bg:#2e2523"><img src="assets/web/assets/ime/cover.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Birdsong</span></div><div class="cap"><span class="n">06</span><h2>Birdsong</h2><span class="cat">Museum &amp; web</span><span class="yr">2022</span><b class="out">With the British Council</b></div></a></li>
   </ul>
 </main>
@@ -265,5 +271,6 @@ document.querySelectorAll('.pl video').forEach(v=>{v.muted=true;new Intersection
 (function(){var ph=document.querySelectorAll('.cr-ph');if(!ph.length)return;function fit(el){el.style.setProperty('--s',(el.clientWidth/390).toFixed(4))}
 ph.forEach(function(el){fit(el);if('ResizeObserver'in window)new ResizeObserver(function(){fit(el)}).observe(el)})})();
 </script>
+<script src="nav.js"></script>
 </body>
 </html>

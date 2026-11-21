@@ -12,11 +12,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter+Tight:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="case.css">
+<link rel="stylesheet" href="kit.css">
+<link rel="stylesheet" href="refine.css">
 <style>
-:root{--cp:#7B27A1;--cl:#A46BF5;--cd:#1E0B2E;--cd2:#2D1245;--ct:#F4ECFB;--ct2:#E7D6F7;--cg:#7CFFB2}
+:root{--cp:#7B27A1;--cl:#D3B4EC;--cd:#1E0B2E;--cd2:#1E0B2E;--ct:#F4ECFB;--ct2:#E7D6F7;--a:#7B27A1;--a2:#D3B4EC;--ad:#1E0B2E;--at:#F4ECFB;--at2:#E7D6F7;--aon:#fff}
 .cr .kick .n{color:var(--cp)}
 /* hero */
-.cr-hero{position:relative;min-height:min(86vh,820px);background:radial-gradient(90% 80% at 70% 20%,#a46bf5 0,#7B27A1 45%,#3f1160 100%);overflow:hidden;color:#fff;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:24px}
+.cr-hero{position:relative;min-height:min(86vh,820px);background:radial-gradient(90% 80% at 70% 20%,#8f3bb8 0,#7B27A1 45%,#4a1666 100%);overflow:hidden;color:#fff;display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:24px}
 .cr-hero .txt{position:relative;z-index:3;padding:clamp(48px,6vw,96px) 0}
 .cr-hero .wm{font:700 clamp(84px,13vw,210px)/.8 "Archivo",var(--tight);font-stretch:118%;letter-spacing:-.06em;margin:0;animation:crUp 1s var(--ease) both}
 .cr-hero .tag{font:500 clamp(22px,2.4vw,36px)/1.1 var(--tight);letter-spacing:-.03em;margin:18px 0 0;opacity:.92;animation:crUp 1s var(--ease) both .12s}
@@ -26,21 +28,15 @@
 .cr-hero .ring{position:absolute;right:-10%;top:-20%;width:70vw;max-width:900px;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.07);z-index:0}
 .stage{position:relative;height:min(78vh,720px);z-index:2}
 .dev{position:absolute;left:50%;top:50%;height:86%;aspect-ratio:390/845;transform:translate(-50%,-50%) rotate(-4deg);border-radius:clamp(28px,3.4vw,44px);background:#fff;overflow:hidden;box-shadow:0 0 0 8px #111,0 0 0 10px #333,0 50px 90px rgba(20,0,40,.55);animation:crPh 1.2s var(--ease) both .2s}
-.dev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0}
 .dev iframe{position:absolute;top:0;left:0;width:390px;height:845px;border:0;transform-origin:0 0;transform:scale(var(--s,.6));background:#fff;opacity:0;transition:opacity .6s}
 .dev iframe.on{opacity:1}
 .dev .nt{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:32%;height:22px;border-radius:99px;background:#111;z-index:3}
-.stk{position:absolute;z-index:3;height:auto;filter:drop-shadow(0 20px 30px rgba(20,0,40,.45))}
-.stk.dog{width:clamp(110px,13vw,200px);left:-4%;bottom:-2%;animation:crBob 6s ease-in-out infinite}
-.stk.cat{width:clamp(110px,12vw,190px);right:-2%;top:6%;animation:crBob 7s ease-in-out infinite reverse}
 .paw{position:absolute;z-index:1;opacity:.18;width:40px;animation:crPaw 9s linear infinite}
 @keyframes crUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes crPh{from{opacity:0;transform:translate(-50%,-42%) rotate(-10deg)}to{opacity:1;transform:translate(-50%,-50%) rotate(-4deg)}}
 @keyframes crBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(-2deg)}}
 @keyframes crPaw{0%{transform:translateY(40px);opacity:0}20%,80%{opacity:.18}100%{transform:translateY(-80px);opacity:0}}
-.live{position:absolute;z-index:4;left:50%;bottom:3%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;background:#fff;color:var(--cd);padding:8px 14px;border-radius:99px;text-decoration:none;box-shadow:0 10px 30px rgba(20,0,40,.3);white-space:nowrap}
-.live i,.dot-live{width:8px;height:8px;border-radius:50%;background:#16c172;box-shadow:0 0 0 0 rgba(22,193,114,.6);animation:crPulse 1.8s infinite;display:inline-block}
-@keyframes crPulse{70%{box-shadow:0 0 0 9px rgba(22,193,114,0)}100%{box-shadow:0 0 0 0 rgba(22,193,114,0)}}
 @media (max-width:860px){.cr-hero{grid-template-columns:1fr}.stage{height:560px}.cr-hero .txt{padding-bottom:0}}
 /* intro */
 .cr-intro{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,5vw,80px);align-items:end;padding-top:clamp(56px,7vw,104px)}
@@ -59,21 +55,21 @@
 .methods span:hover{background:var(--cp);color:#fff;border-color:var(--cp)}
 /* layout helpers */
 .band{padding:clamp(72px,9vw,140px) 0;position:relative;overflow:hidden}
-.band.pu{background:var(--cp);color:#fff}
+.band.ac{background:var(--cp);color:#fff}
 .band.dk{background:var(--cd);color:#fff}
 .band.tn{background:var(--ct)}
 .sec-cr{padding-top:clamp(72px,9vw,140px);padding-bottom:clamp(72px,9vw,140px)}
 .ey{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--cp);margin:0}
 .ey::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px}
-.band.pu .ey,.band.dk .ey{color:var(--cl)}
-.band.pu .ey{color:#fff}
+.band.ac .ey,.band.dk .ey{color:var(--cl)}
+.band.ac .ey{color:#fff}
 .hd{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(36px,4vw,64px)}
 .hd .h2{font-size:clamp(34px,4.6vw,68px);margin-top:16px}
 .hd .h2 b{font-weight:500;color:var(--cp)}
-.band.dk .hd .h2 b,.band.pu .hd .h2 b{color:var(--cl)}
-.band.pu .hd .h2 b{color:#E6D3FF}
+.band.dk .hd .h2 b,.band.ac .hd .h2 b{color:var(--cl)}
+.band.ac .hd .h2 b{color:#E6D3FF}
 .hd p{margin:0;max-width:34em;font-size:17px;line-height:1.6}
-.band.pu .hd p,.band.dk .hd p{color:rgba(255,255,255,.82)}
+.band.ac .hd p,.band.dk .hd p{color:rgba(255,255,255,.82)}
 @media (max-width:820px){.hd{grid-template-columns:1fr}}
 /* why */
 .why{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,28px);align-items:stretch}
@@ -195,7 +191,7 @@
 .moved .tok{background:var(--cl);color:var(--cd);font-weight:600;padding:6px 12px;border-radius:8px}
 .moved .from,.moved .to{display:flex;flex-direction:column;font-size:12px;opacity:.75}
 .moved .from b,.moved .to b{font:500 26px/1 var(--tight);opacity:1}
-.moved .to b{color:var(--cg)}
+.moved .to b{color:#fff}
 .moved .ar{font-size:22px;color:var(--cl);animation:crSlide 1.6s ease-in-out infinite}
 @keyframes crSlide{50%{transform:translateX(6px)}}
 @media (max-width:900px){.cs4{grid-template-columns:1fr 1fr}}
@@ -208,7 +204,7 @@
 .ia-root span.h{background:#fff;color:var(--cd);font-weight:600}
 .ia-cols{display:flex;gap:10px;min-width:860px}
 .ia-col{flex:1 1 130px}.ia-col.w2{flex:2 1 240px}
-.ia-col h4{margin:0;display:flex;justify-content:space-between;font:600 14px/1 var(--tight);padding:10px 12px;border-radius:8px;color:var(--cd)}
+.ia-col h4{margin:0;display:flex;justify-content:space-between;font:600 14px/1 var(--tight);padding:10px 12px;border-radius:8px;color:var(--cd);background:var(--cl)}
 .ia-col ul{list-style:none;margin:8px 0 0;padding:8px 10px;display:grid;gap:7px;border:1px solid rgba(255,255,255,.1);border-radius:8px;min-height:180px;align-content:start}
 .ia-col li{font-size:12.5px;color:rgba(255,255,255,.8);display:flex;gap:7px;align-items:center;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
 .ia-col li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cl);flex:none}
@@ -226,25 +222,6 @@
 .idea h3{margin:0;font:500 clamp(22px,2vw,28px)/1.1 var(--tight);letter-spacing:-.03em}
 .idea p{margin:auto 0 0;font-size:15px;line-height:1.45;color:rgba(255,255,255,.82)}
 @media (max-width:820px){.ideas{grid-template-columns:1fr}}
-.fan{position:relative;height:clamp(480px,48vw,640px);perspective:1400px}
-.fp{all:unset;cursor:pointer;position:absolute;left:50%;top:0;height:92%;aspect-ratio:390/845;border-radius:clamp(26px,2.6vw,38px);background:#fff;overflow:hidden;box-shadow:0 0 0 7px #0c0c0c,0 0 0 8px #3a3a3a,0 40px 70px rgba(0,0,0,.45);transition:transform .9s var(--ease),filter .6s,opacity .6s;will-change:transform}
-.fp iframe{position:absolute;top:0;left:0;width:390px;height:845px;border:0;transform-origin:0 0;transform:scale(var(--s,.6));pointer-events:none;background:#fff}
-.fp .ph-fb{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(160deg,#f4ecfb,#e7d6f7);color:var(--cp);font-weight:600;font-size:15px;text-align:center;padding:20px}
-.fp::after{content:"";position:absolute;inset:0;background:var(--cd);opacity:var(--dim,0);transition:opacity .6s;pointer-events:none}
-.fp.c{pointer-events:auto}
-.fp.c .ph-fb{display:none}
-.fan-ui{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:10px;text-align:center}
-.fan-ui .tt{font:500 clamp(26px,2.6vw,38px)/1 var(--tight);letter-spacing:-.03em;display:flex;gap:12px;align-items:baseline}
-.fan-ui .tt small{font-size:13px;color:rgba(255,255,255,.55);font-variant-numeric:tabular-nums}
-.fan-ui .hint{font-size:13px;color:rgba(255,255,255,.6);margin:0}
-.dots{display:flex;gap:6px}
-.dots button{all:unset;cursor:pointer;width:18px;height:4px;border-radius:4px;background:rgba(255,255,255,.25);transition:width .3s,background .3s}
-.dots button.on{width:36px;background:var(--cl)}
-.open{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--cd);text-decoration:none;font-weight:600;font-size:15px;padding:11px 20px;border-radius:99px;transition:transform .3s var(--ease)}
-.open:hover{transform:translateY(-2px)}
-.fan-nav{display:flex;gap:8px}
-.fan-nav button{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:18px}
-.fan-nav button:hover{background:#fff;color:var(--cd)}
 /* testing */
 .tests{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.2vw,16px)}
 .tc{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #eadff5;display:flex;flex-direction:column;transition:transform .5s var(--ease),box-shadow .5s}
@@ -285,16 +262,24 @@
 .next{background:var(--cp)!important}
 </style>
 </head>
-<body class="cr">
+<body class="cs2 cr kit" style="--hl:#7B27A1">
 <div class="prog" id="prog" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top w" id="top">
-  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <a class="home" href="index.html">Yashvi Jain</a>
   <nav aria-label="Main"><a href="work.html" aria-current="page">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html">Contact</a></nav>
 </header>
 
 <main id="main">
-  <section class="cr-hero w" aria-label="CRAY: safer streets, happier strays">
+  <section class="w cs-head">
+    <p class="kick"><span class="n">Case study 05 · CRAY</span> Animal welfare · Self-initiated · 2025</p>
+    <h1 class="h1">Designing one platform for stray animal care</h1>
+    <p class="lede">People want to help strays but don’t know where to start. CRAY puts first aid, hospitals, fostering and adoption in one app.</p>
+    <ul class="cs-tags" aria-label="Tags"><li>UX research</li><li>Product</li></ul>
+    <p class="acts"><a class="b1" href="https://build-your-dream-2348.lovable.app/" target="_blank" rel="noopener">Open the prototype ↗</a></p>
+  </section>
+
+  <section class="cv qcover cr-hero w" aria-label="CRAY: safer streets, happier strays">
     <span class="ring" aria-hidden="true"></span>
     <div class="txt">
       <p class="wm">cray</p>
@@ -302,20 +287,10 @@
       <div class="chips" aria-label="App sections"><span>Report</span><span>Find aid</span><span>Foster</span><span>Adopt</span></div>
     </div>
     <div class="stage">
-      <img class="stk cat" src="assets/web/assets/cray/sticker-cat.webp" alt="">
-      <div class="dev" id="heroDev"><span class="nt"></span><img src="assets/web/assets/cray/cover.webp" alt=""><iframe src="https://build-your-dream-2348.lovable.app/" title="CRAY live prototype, home screen" loading="eager" tabindex="-1" aria-hidden="true"></iframe></div>
-      <img class="stk dog" src="assets/web/assets/cray/sticker-dog.webp" alt="">
-      <a class="live" href="https://build-your-dream-2348.lovable.app" target="_blank" rel="noopener"><i></i>Live prototype ↗</a>
+      <div class="dev" id="heroDev"><span class="nt"></span><img src="assets/web/assets/cray/lovable-home.webp" alt="CRAY prototype home screen: Hi, let’s care for a stray today, with Emergency, Hospitals, Report abuse, Donate and Scan AI"></div>
     </div>
   </section>
 
-  <section class="w cr-intro">
-    <div>
-      <p class="kick"><span class="n">Case study 05 · Animal welfare · 2025</span></p>
-      <h1 class="h1">Designing one platform for <b>stray animal care</b></h1>
-    </div>
-    <p class="lede">People want to help strays but don’t know where to start. CRAY puts first aid, hospitals, fostering and adoption in one app.</p>
-  </section>
 
   <div class="w">
     <div class="question pr"><small>The question</small><p>People want to help strays, but don’t know where to start. What would make helping easy?</p></div>
@@ -329,19 +304,21 @@
 
   <nav class="ctoc w" aria-label="On this page"><ol><li><a href="#why">Why</a></li><li><a href="#research">Research</a></li><li><a href="#insight">Insight</a></li><li><a href="#structure">Structure</a></li><li><a href="#solution">Solution</a></li><li><a href="#testing">Testing</a></li><li><a href="#reflection">Reflection</a></li></ol><span class="bar" aria-hidden="true"></span></nav>
 
-  <section class="w sec-cr" id="why">
-    <div class="hd">
-      <div><p class="ey">01 · Why</p><h2 class="h2">Willing helpers, <b>no clear path</b></h2></div>
-      <p>It began with losing a stray I was attached to. I went down the rabbit hole of why: people at both extremes, those who go out of their way to help and those who harm, and animals that swing between trust and fear.</p>
-    </div>
+  <section class="w sec cs qsec" id="why">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">01</span> Why</p></div><div class="cs-body"><h2 class="h2">Willing helpers, <b>no clear path</b></h2>
+      <p>It began with losing a stray I was attached to. I went down the rabbit hole of why: people at both extremes, those who go out of their way to help and those who harm, and animals that swing between trust and fear.</p></div></div>
+    <div class="qb-body">
     <div class="why">
       <div class="wph pr"><img src="assets/web/assets/cray/insight-dogs.webp" alt="A person crouches to greet two street dogs on an Indian street" loading="lazy"></div>
       <div class="aim pr d1"><small>The aim</small><p>One platform for stray animal care that turns goodwill into action.</p><div class="path" aria-label="From first aid to a forever home"><span>First aid</span><i>→</i><span>Hospital</span><i>→</i><span>Shelter</span><i>→</i><span>Foster</span><i>→</i><span>Forever home</span></div></div>
     </div>
+    
+  </div>
   </section>
 
-  <section class="band pu" id="scale">
-    <div class="w">
+  <section class="w sec cs qsec nohd" id="scale">
+    
+    <div class="band ac stage">
       <div class="scale">
         <div class="tot pr"><p class="ey">The scale · strays in India</p><b class="cnt" data-to="7.1" data-dec="1">7.1</b><span>crore stray animals</span></div>
         <div class="pr d1">
@@ -349,15 +326,14 @@
           <div class="split-leg"><div><b>6.2 crore</b>street dogs</div><div class="r"><b>91 lakh</b>street cats · 13%</div></div>
         </div>
       </div>
-    </div>
+    
+  </div>
   </section>
 
-  <section class="band tn" id="research">
-    <div class="w">
-      <div class="hd">
-        <div><p class="ey">02 · Research</p><h2 class="h2">People feed strays. <b>Few know how to care for them.</b></h2></div>
-        <p>My survey of people who feed and help strays surfaced two problems: pets abandoned after adoption, and infections that go untreated. Help exists, but it’s hard to find.</p>
-      </div>
+  <section class="w sec cs qsec" id="research">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">02</span> Research</p></div><div class="cs-body"><h2 class="h2">People feed strays. <b>Few know how to care for them.</b></h2>
+        <p>My survey of people who feed and help strays surfaced two problems: pets abandoned after adoption, and infections that go untreated. Help exists, but it’s hard to find.</p></div></div>
+    <div class="qb-body">
       <div class="sv">
         <div class="sc big pr"><small><span>Infections</span><span>Strays</span></small><b>1 in 5</b><p>strays suffers from some kind of infection.</p></div>
         <div class="sc pr d1"><small><span>Sponsorship</span><span>23% aware</span></small><div class="row"><div class="donut" data-v="69.6"><svg viewBox="0 0 110 110"><circle class="tr" cx="55" cy="55" r="48"/><circle class="vl" cx="55" cy="55" r="48"/></svg><b>69.6%</b></div><p>of the 77% who didn’t know would sponsor an animal, once told how.</p></div></div>
@@ -376,23 +352,25 @@
         </div>
         <div class="labs" aria-hidden="true"><span>Water</span><span>Feed</span><span>Shelter</span><span>Play</span><span>Vaccinate</span><span>Check-ups</span><span>Neuter</span></div>
       </div>
-    </div>
+    
+  </div>
   </section>
 
-  <section class="band dk" id="insight">
-    <div class="w">
+  <section class="w sec cs qsec nohd" id="insight">
+    
+    <div class="band dk stage">
       <div class="ins">
         <div class="pr"><p class="ey">03 · Insight</p><p class="big">Information, not intent, <b>was the gap.</b></p></div>
         <div class="pr d1"><p style="color:rgba(255,255,255,.8);font-size:17px;line-height:1.6;margin:0">The survey and Tarun’s journey said the same thing. Hospitals listed the wrong hours, nobody knew first aid, and shelters had no space.</p><div class="decide"><small>I decided</small><p>Design for the moment someone finds an animal in trouble, not for browsing. Aid comes first on the home screen.</p></div></div>
       </div>
-    </div>
+    
+  </div>
   </section>
 
-  <section class="w sec-cr" id="journey">
-    <div class="hd">
-      <div><p class="ey">Persona &amp; journey</p><h2 class="h2">One rescue, <b>five stages</b></h2></div>
-      <p>Tarun is a persona traced through one rescue, from a shivering puppy to a shelter. Each pain point became a feature.</p>
-    </div>
+  <section class="w sec cs qsec" id="journey">
+    <div class="split qh"><div class="lab"><p class="kick">Persona &amp; journey</p></div><div class="cs-body"><h2 class="h2">One rescue, <b>five stages</b></h2>
+      <p>Tarun is a persona traced through one rescue, from a shivering puppy to a shelter. Each pain point became a feature.</p></div></div>
+    <div class="qb-body">
     <div class="jr">
       <div class="tarun pr"><img src="assets/web/assets/cray/persona-tarun.webp" alt="Tarun, persona, sitting with a street dog" loading="lazy"><div><b>Tarun, 24</b><span>Wants to help, and to adopt a dog, but isn’t sure he has the time with a busy schedule.</span></div></div>
       <div class="jdeck pr d1" id="jdeck">
@@ -406,14 +384,14 @@
         </div>
       </div>
     </div>
+    
+  </div>
   </section>
 
-  <section class="band tn" id="structure">
-    <div class="w">
-      <div class="hd">
-        <div><p class="ey">04 · Structure</p><h2 class="h2">Helpers <b>sorted the app</b> for me</h2></div>
-        <p>A card sort gave the app its four tabs: Home, Aid, Adoption and Explore. Bars show how many of 10 participants put each card in that group. Rarely placed cards were merged or dropped.</p>
-      </div>
+  <section class="w sec cs qsec" id="structure">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">04</span> Structure</p></div><div class="cs-body"><h2 class="h2">Helpers <b>sorted the app</b> for me</h2>
+        <p>A card sort gave the app its four tabs: Home, Aid, Adoption and Explore. Bars show how many of 10 participants put each card in that group. Rarely placed cards were merged or dropped.</p></div></div>
+    <div class="qb-body">
       <div class="cs4">
         <div class="grp pr"><h3>Home <small>4 cards</small></h3><p class="d">What people want first: emergencies, reminders and a quick fit check.</p><ul><li><div>Compatibility quiz<b>9</b></div><s><i style="--w:90%"></i></s></li><li><div>Emergency<b>8</b></div><s><i style="--w:80%"></i></s></li><li><div>Reminders<b>7</b></div><s><i style="--w:70%"></i></s></li><li><div>Report abuse<b>5</b></div><s><i style="--w:50%"></i></s></li></ul></div>
         <div class="grp pr d1"><h3>Aid <small>5 cards</small></h3><p class="d">Medical help scored highest, with every item at full marks but one.</p><ul><li><div>AI reports analyser<b>10</b></div><s><i style="--w:100%"></i></s></li><li><div>Treatments<b>10</b></div><s><i style="--w:100%"></i></s></li><li><div>Vaccines / medicines<b>10</b></div><s><i style="--w:100%"></i></s></li><li><div>Hospital<b>10</b></div><s><i style="--w:100%"></i></s></li><li><div>Sponsor<b>8</b></div><s><i style="--w:80%"></i></s></li></ul></div>
@@ -426,44 +404,39 @@
         <small>Information architecture</small>
         <div class="ia-root"><span>Login / Register</span><span aria-hidden="true">→</span><span class="h">Homepage</span></div>
         <div class="ia-cols">
-          <div class="ia-col"><h4 style="background:#C9A6F7">Aid<span>4</span></h4><ul><li>Report crime</li><li>Ask for rescue vehicle</li><li>Emergency</li><li>Diseases</li></ul></div>
-          <div class="ia-col"><h4 style="background:#D7BEF9">Animals<span>3</span></h4><ul><li>Dogs</li><li>Cats</li><li>Profile: photos, videos, details</li></ul></div>
-          <div class="ia-col"><h4 style="background:#E4D3FB">Match<span>3</span></h4><ul><li>Questionnaire</li><li>Compatibility checker</li><li>Add to calendar</li></ul></div>
-          <div class="ia-col w2"><h4 style="background:var(--cl)">Adoption<span>10</span></h4><ul class="ia-lanes"><div><small>Browse</small><li>Adoption centre details</li><li>Animals available</li><li>Lost &amp; found</li><li>Foster / sponsor an animal</li><li>Give for adoption / report</li></div><div><small>Adopt</small><li class="hl">Schedule a visit</li><li>Apply for adoption</li><li>Background check approved</li><li>Adopted</li><li>Counselling / accessories</li></div></ul></div>
-          <div class="ia-col"><h4 style="background:#B98AF6">Profile<span>5</span></h4><ul><li>Profile setup</li><li>Verify</li><li>Favourites</li><li>Progress tracker</li><li>Logout</li></ul></div>
+          <div class="ia-col"><h4>Aid<span>4</span></h4><ul><li>Report crime</li><li>Ask for rescue vehicle</li><li>Emergency</li><li>Diseases</li></ul></div>
+          <div class="ia-col"><h4>Animals<span>3</span></h4><ul><li>Dogs</li><li>Cats</li><li>Profile: photos, videos, details</li></ul></div>
+          <div class="ia-col"><h4>Match<span>3</span></h4><ul><li>Questionnaire</li><li>Compatibility checker</li><li>Add to calendar</li></ul></div>
+          <div class="ia-col w2"><h4>Adoption<span>10</span></h4><ul class="ia-lanes"><div><small>Browse</small><li>Adoption centre details</li><li>Animals available</li><li>Lost &amp; found</li><li>Foster / sponsor an animal</li><li>Give for adoption / report</li></div><div><small>Adopt</small><li class="hl">Schedule a visit</li><li>Apply for adoption</li><li>Background check approved</li><li>Adopted</li><li>Counselling / accessories</li></div></ul></div>
+          <div class="ia-col"><h4>Profile<span>5</span></h4><ul><li>Profile setup</li><li>Verify</li><li>Favourites</li><li>Progress tracker</li><li>Logout</li></ul></div>
         </div>
         <p class="ia-note">If an adoption is rejected after the background check, the flow routes people to foster or sponsor instead.</p>
       </div>
       <div class="figs c1" style="margin-top:clamp(16px,2vw,24px)"><figure><div class="frame"><img src="assets/web/assets/cray/flow-wireframes.webp" alt="User flow and wireframes" loading="lazy" decoding="async"></div><figcaption>User flow and wireframes.</figcaption></figure></div>
-    </div>
+    
+  </div>
   </section>
 
-  <section class="band dk" id="solution">
-    <div class="w">
-      <div class="hd">
-        <div><p class="ey">05 · Solution</p><h2 class="h2">Foster first. <b>Adopt second.</b></h2></div>
-        <p>Abandonment starts with a bad match. CRAY slows the decision down without losing the person, and puts aid one tap away.</p>
-      </div>
+  <section class="w sec cs qsec" id="solution">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">05</span> Solution</p></div><div class="cs-body"><h2 class="h2">Foster first. <b>Adopt second.</b></h2>
+        <p>Abandonment starts with a bad match. CRAY slows the decision down without losing the person, and puts aid one tap away.</p></div></div>
+    <div class="band dk stage">
       <div class="ideas">
         <div class="idea pr"><em>01</em><h3>Foster first</h3><p>Adoption starts as a foster period. People live with the animal before they commit, and can step back without abandoning it.</p></div>
         <div class="idea pr d1"><em>02</em><h3>Which pet?</h3><p>A short quiz about home, routine and budget suggests the right animal, and scores compatibility so the shelter sees the fit too.</p></div>
         <div class="idea pr d2"><em>03</em><h3>Aid</h3><p>A symptom scan, a live hospital list and ambulance calls for the moment someone finds an injured animal.</p></div>
       </div>
-      <div class="fan" id="fan" aria-label="Live prototype screens"></div>
-      <div class="fan-ui">
-        <p class="hint">Screens load live from the prototype. Tap a side screen to bring it forward.</p>
-        <div class="tt" aria-live="polite"><span id="fanT">Home</span><small id="fanN">01 / 08</small></div>
-        <div class="dots" id="fanD"></div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center"><div class="fan-nav"><button type="button" data-d="-1" aria-label="Previous screen">←</button><button type="button" data-d="1" aria-label="Next screen">→</button></div><a class="open" id="fanO" href="https://build-your-dream-2348.lovable.app/" target="_blank" rel="noopener">Open full prototype ↗</a></div>
-      </div>
-    </div>
+      <div class="kmq" id="crmq" style="--t:46s"><div class="trk"><a class="kpc" href="https://build-your-dream-2348.lovable.app/" target="_blank" rel="noopener" aria-label="Open Home in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/home.webp" alt="CRAY prototype, Home screen: Hi, let’s care for a stray today" loading="lazy" decoding="async"></div><figcaption>Home<span>/</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/quiz" target="_blank" rel="noopener" aria-label="Open Compatibility quiz in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/quiz.webp" alt="CRAY prototype, Compatibility quiz screen: Which pet suits your home" loading="lazy" decoding="async"></div><figcaption>Compatibility quiz<span>/quiz</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/adopt" target="_blank" rel="noopener" aria-label="Open Adopt in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/adopt.webp" alt="CRAY prototype, Adopt screen: Animals ready for a foster home" loading="lazy" decoding="async"></div><figcaption>Adopt<span>/adopt</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/adopt/lion" target="_blank" rel="noopener" aria-label="Open Meet Lion in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/lion.webp" alt="CRAY prototype, Meet Lion screen: One animal’s profile" loading="lazy" decoding="async"></div><figcaption>Meet Lion<span>/adopt/lion</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/emergency" target="_blank" rel="noopener" aria-label="Open Emergency in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/emergency.webp" alt="CRAY prototype, Emergency screen: Help for an injured animal, now" loading="lazy" decoding="async"></div><figcaption>Emergency<span>/emergency</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/aid/hospitals" target="_blank" rel="noopener" aria-label="Open Hospitals in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/hospitals.webp" alt="CRAY prototype, Hospitals screen: Vets and hospitals nearby" loading="lazy" decoding="async"></div><figcaption>Hospitals<span>/aid/hospitals</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/aid/scan" target="_blank" rel="noopener" aria-label="Open Scan AI in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/scan.webp" alt="CRAY prototype, Scan AI screen: Check symptoms from a photo" loading="lazy" decoding="async"></div><figcaption>Scan AI<span>/aid/scan</span></figcaption></a><a class="kpc" href="https://build-your-dream-2348.lovable.app/donate" target="_blank" rel="noopener" aria-label="Open Donate in the live prototype"><div class="scr"><img src="assets/web/assets/cray/screens/donate.webp" alt="CRAY prototype, Donate screen: Support shelters and feeders" loading="lazy" decoding="async"></div><figcaption>Donate<span>/donate</span></figcaption></a></div></div>
+      <div class="kmq-ctl"><button class="kmq-btn" type="button" data-mq="crmq" aria-pressed="false"><span>Pause</span></button><a class="open" href="https://build-your-dream-2348.lovable.app/" target="_blank" rel="noopener">Open full prototype ↗</a></div>
+      <p class="hint" style="text-align:center;margin:14px 0 0;font-size:13px;color:rgba(255,255,255,.6)">Real screens from the live prototype. Tap a screen to open it.</p>
+    
+  </div>
   </section>
 
-  <section class="w sec-cr" id="testing">
-    <div class="hd">
-      <div><p class="ey">06 · Testing</p><h2 class="h2">Four testers, <b>four fixes</b></h2></div>
-      <p>Each person used the prototype on their own phone, on one task. One piece of feedback each, and what changed.</p>
-    </div>
+  <section class="w sec cs qsec" id="testing">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">06</span> Testing</p></div><div class="cs-body"><h2 class="h2">Four testers, <b>four fixes</b></h2>
+      <p>Each person used the prototype on their own phone, on one task. One piece of feedback each, and what changed.</p></div></div>
+    <div class="qb-body">
     <div class="tests">
       <article class="tc pr"><div class="im"><img src="assets/web/assets/cray/test-kanika.webp" alt="Kanika testing the prototype on her phone" loading="lazy"><div class="who"><b>Kanika</b><span>Designer at TCS</span></div></div><div class="bd"><small>Task</small><p class="task">Report an injured stray</p><q>I hit the emergency button by mistake.</q><p class="fix"><b>Fix</b>Moved it away from the main actions and added a confirm step.</p></div></article>
       <article class="tc pr d1"><div class="im"><img src="assets/web/assets/cray/test-nikhil.webp" alt="Nikhil testing the prototype" loading="lazy"><div class="who"><b>Nikhil</b><span>Pet owner</span></div></div><div class="bd"><small>Task</small><p class="task">Set up a profile</p><q>Can it work in regional languages?</q><p class="fix"><b>Fix</b>Language switch added to onboarding.</p></div></article>
@@ -471,25 +444,24 @@
       <article class="tc pr d3"><div class="im"><img src="assets/web/assets/cray/test-4.webp" alt="Khushi testing the prototype" loading="lazy"><div class="who"><b>Khushi</b><span>Looking to adopt</span></div></div><div class="bd"><small>Task</small><p class="task">Find an NGO to adopt from</p><q>I want to learn about what specific NGOs are doing.</q><p class="fix"><b>Fix</b>NGO profiles added to Explore.</p></div></article>
     </div>
     <div class="result pr"><small>Result</small><p>A live prototype with foster-first adoption and a which-pet quiz that checks compatibility. Testing led to four fixes and an icon-led v2 for low-literacy users.</p></div>
+    
+  </div>
   </section>
 
-  <section class="band pu" id="reflection">
-    <div class="w">
-      <div class="hd" style="align-items:start">
-        <div><p class="ey">07 · Reflection</p><h2 class="h2">Not everyone <b>reads the screen</b></h2>
+  <section class="w sec cs qsec" id="reflection">
+    <div class="split qh"><div class="lab"><p class="kick"><span class="n">07</span> Reflection</p></div><div class="cs-body"><div><h2 class="h2">Not everyone <b>reads the screen</b></h2>
           <div class="langs" id="langs" aria-label="Regional languages in v2"><span class="on">English</span><span lang="hi">हिन्दी</span><span lang="bn">বাংলা</span><span lang="ta">தமிழ்</span><span lang="mr">मराठी</span><span lang="te">తెలుగు</span></div>
-          <div class="icons" aria-hidden="true"><i>🐾</i><i>🏥</i><i>🔊</i><i>🏠</i></div>
         </div>
         <div><p>I built the whole app in English without thinking twice, and that assumption showed my privilege. Testing showed that not every user reads English, or reads at all. V2 adds regional languages and leans on icons, imagery and voice instead of text-heavy screens.</p>
-          <div class="nextc"><small>Next</small><p>Run the compatibility quiz with a shelter, and measure how many fosters turn into adoptions against how many animals are returned.</p></div></div>
-      </div>
-    </div>
+          <div class="nextc"><small>Next</small><p>Run the compatibility quiz with a shelter, and measure how many fosters turn into adoptions against how many animals are returned.</p></div></div></div></div>
+    
   </section>
-
-  <a class="next" href="case-birdsong.html" style="margin-top:0"><p class="kick"><span class="n">Next case study · 06</span></p><p class="h1" style="margin-top:12px">Birdsong <em>→</em></p></a>
+  <div class="w"><div class="hire"><p class="kick"><span class="n">Work with me</span></p><div><p class="t2">Hiring a product designer? Let’s talk.</p><div class="acts"><a class="b1" href="contact.html">Get in touch</a><a class="b2" href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">Download CV ↗</a></div></div></div></div>
+  <div class="w"><a class="nxt" href="case-birdsong.html"><p class="kick"><span class="n">Next</span> Case study 06</p><div><p class="t">Birdsong <span aria-hidden="true">→</span></p><p class="d">Taking a one-room museum exhibition online.</p></div></a></div>
 </main>
 <footer class="foot w"><span>© 2026 Yashvi Jain · London, UK</span><span><a href="work.html">All work</a> · <a href="contact.html">Contact</a></span></footer>
 <script src="case.js"></script>
+<script src="kit.js"></script>
 <script>
 (function(){
 var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,IO='IntersectionObserver' in window;
@@ -499,10 +471,6 @@ function once(el,cb,th){var d=false;vis(el,function(v){if(v&&!d){d=true;cb();}},
 var pr=[].slice.call(document.querySelectorAll('.pr'));
 if(reduce||!IO)pr.forEach(function(e){e.classList.add('in');});
 else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});pr.forEach(function(e){io.observe(e);});}
-/* fit iframes to their phone */
-function fit(el){var f=el.querySelector('iframe');if(f)el.style.setProperty('--s',(el.clientWidth/390).toFixed(4));}
-function watch(el){fit(el);if('ResizeObserver' in window)new ResizeObserver(function(){fit(el);}).observe(el);}
-var hd=document.getElementById('heroDev');watch(hd);hd.querySelector('iframe').addEventListener('load',function(){this.classList.add('on');});
 /* counter */
 document.querySelectorAll('.cnt').forEach(function(b){var to=+b.dataset.to,dec=+b.dataset.dec||0;if(reduce)return;b.textContent=(0).toFixed(dec);once(b,function(){var t0=performance.now();(function st(n){var p=Math.min(1,(n-t0)/1400),e=1-Math.pow(1-p,3);b.textContent=(to*e).toFixed(dec);if(p<1)requestAnimationFrame(st);})(t0);});});
 /* split bar */
@@ -516,28 +484,14 @@ document.querySelectorAll('.grp').forEach(function(g){once(g,function(){g.classL
 var ia=document.getElementById('ia');once(ia,function(){[].forEach.call(ia.querySelectorAll('li'),function(l,i){l.style.transitionDelay=(i*35)+'ms';});ia.classList.add('in');},.2);
 /* journey deck */
 var jd=document.getElementById('jdeck');if(jd){var jb=[].slice.call(jd.querySelectorAll('.jtrack button')),jc=[].slice.call(jd.querySelectorAll('.jc')),ji=0,jt=null,jv=false,jh=false;
-function jg(i){ji=(i+jc.length)%jc.length;jc.forEach(function(c,k){c.classList.toggle('on',k===ji);});jb.forEach(function(b,k){b.classList.toggle('on',k===ji);b.classList.toggle('done',k<ji);b.setAttribute('aria-selected',String(k===ji));var x=b.querySelector('i');x.style.animation='none';x.offsetWidth;x.style.animation='';});clearTimeout(jt);if(jv&&!jh&&!reduce)jt=setTimeout(function(){jg(ji+1);},4200);}
+function jg(i){ji=(i+jc.length)%jc.length;jc.forEach(function(c,k){c.classList.toggle('on',k===ji);});jb.forEach(function(b,k){b.classList.toggle('on',k===ji);b.classList.toggle('done',k<ji);b.setAttribute('aria-selected',String(k===ji));var x=b.querySelector('i');x.style.animation='none';x.offsetWidth;x.style.animation='';});clearTimeout(jt);if(jv)jt=setTimeout(function(){jg(ji+1);},4200);}
 jb.forEach(function(b,k){b.addEventListener('click',function(){jg(k);});});
-jd.addEventListener('pointerenter',function(){jh=true;jd.classList.add('hold');clearTimeout(jt);});jd.addEventListener('pointerleave',function(){jh=false;jd.classList.remove('hold');jg(ji);});
-vis(jd,function(v){jv=v;if(v)jg(ji);else clearTimeout(jt);});}
-/* phone fan of live screens */
-var BASE='https://build-your-dream-2348.lovable.app',S=[['Home','/'],['Compatibility quiz','/quiz'],['Adopt','/adopt'],['Meet Lion','/adopt/lion'],['Emergency','/emergency'],['Hospitals','/aid/hospitals'],['Scan AI','/aid/scan'],['Donate','/donate']];
-var fan=document.getElementById('fan'),fT=document.getElementById('fanT'),fN=document.getElementById('fanN'),fD=document.getElementById('fanD'),fO=document.getElementById('fanO'),cur=0,ph=[];
-S.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.className='fp';b.setAttribute('aria-label','Show '+s[0]);b.innerHTML='<span class="ph-fb">'+s[0]+'</span>';fan.appendChild(b);ph.push(b);
-b.addEventListener('click',function(){if(i===cur)window.open(BASE+s[1],'_blank','noopener');else fgo(i);});
-var d=document.createElement('button');d.type='button';d.setAttribute('aria-label',s[0]);d.addEventListener('click',function(){fgo(i);});fD.appendChild(d);});
-var armed=false;function load(i){var b=ph[i];if(!armed||!b||b.dataset.l)return;b.dataset.l=1;var f=document.createElement('iframe');f.src=BASE+S[i][1];f.title='CRAY prototype: '+S[i][0];f.tabIndex=-1;f.setAttribute('aria-hidden','true');f.loading='lazy';b.insertBefore(f,b.firstChild);watch(b);}
-function fgo(i){cur=(i+S.length)%S.length;var n=S.length;ph.forEach(function(b,k){var o=k-cur;if(o>n/2)o-=n;if(o<-n/2)o+=n;var a=Math.abs(o);var show=a<=2;b.style.transform='translateX(calc(-50% + '+(o*clamp())+'px)) translateZ('+(-a*120)+'px) rotateY('+(-o*14)+'deg) rotate('+(o*3)+'deg)';b.style.zIndex=10-a;b.style.opacity=show?1:0;b.style.setProperty('--dim',a?Math.min(.55,a*.28):0);b.style.pointerEvents=show?'auto':'none';b.classList.toggle('c',a===0);b.tabIndex=show?0:-1;if(show)load(k);});
-[].forEach.call(fD.children,function(d,k){d.classList.toggle('on',k===cur);});fT.textContent=S[cur][0];fN.textContent=String(cur+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');fO.href=BASE+S[cur][1];}
-function clamp(){var w=fan.clientWidth;return Math.max(90,Math.min(230,w*.2));}
-document.querySelectorAll('.fan-nav button').forEach(function(b){b.addEventListener('click',function(){fgo(cur+(+b.dataset.d));});});
-var fx=null;fan.addEventListener('pointerdown',function(e){fx=e.clientX;});fan.addEventListener('pointerup',function(e){if(fx!==null&&Math.abs(e.clientX-fx)>40)fgo(cur+(e.clientX<fx?1:-1));fx=null;});
-addEventListener('resize',function(){fgo(cur);});
-fgo(0);once(fan,function(){armed=true;fgo(cur);},.01);
+vis(jd,function(v){var w=jv;jv=v;if(v&&!w)jg(ji);else if(!v)clearTimeout(jt);},.15);}
 /* languages */
 var ls=[].slice.call(document.querySelectorAll('#langs span')),li=0,lv=false;vis(document.getElementById('langs'),function(v){lv=v;});
-setInterval(function(){if(!lv||reduce)return;ls[li].classList.remove('on');li=(li+1)%ls.length;ls[li].classList.add('on');},1300);
+setInterval(function(){if(!lv)return;ls[li].classList.remove('on');li=(li+1)%ls.length;ls[li].classList.add('on');},1300);
 })();
 </script>
+<script src="nav.js"></script>
 </body>
 </html>

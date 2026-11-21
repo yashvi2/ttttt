@@ -1316,6 +1316,10 @@ html,body{background:#FFFFFF}
 .showcase .sc:hover .ab .ab-l{transform:translateX(-140%) rotate(-10deg)}
 .showcase .sc:hover .ab .ab-r{transform:translateX(40%) rotate(10deg)}
 .showcase .has-cov.pf .sc-art img.pf-logo{position:absolute;left:clamp(20px,3.2vw,40px);top:clamp(20px,3.2vw,40px);width:clamp(76px,8vw,116px);height:auto;object-fit:contain;z-index:2}
+.showcase .has-cov.pf .sc-art img.pf-kid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;opacity:.55;transform:scale(1.04);transition:transform 1.1s var(--ease,cubic-bezier(.2,.7,.2,1))}
+.showcase .has-cov.pf .sc-art::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(0,0,201,.15),rgba(0,0,201,.85));pointer-events:none}
+.showcase .sc:hover .has-cov.pf .sc-art img.pf-kid{transform:scale(1.1)}
+.showcase .has-cov.pf .sc-art img.pf-logo{left:50%!important;top:50%!important;width:clamp(140px,15vw,230px)!important;transform:translate(-50%,-50%)}
 .showcase .pf .pf-win{position:absolute;left:30%;right:-6%;top:16%;bottom:-8%;border-radius:10px 0 0 0;overflow:hidden;background:#00002D;box-shadow:0 30px 60px rgba(0,0,40,.45);transition:transform 1.1s var(--ease,cubic-bezier(.2,.7,.2,1))}
 .showcase .sc:hover .pf .pf-win{transform:translate(-2%,-3%)}
 .showcase .pf .pf-bar{display:flex;align-items:center;gap:6px;height:30px;padding:0 12px;background:#14143f}
@@ -1711,7 +1715,7 @@ setTimeout(function(){if(!el.classList.contains('gone'))finish();},6500);})();
   const COV = {ava:['assets/web/assets/ava/cover-banner.webp','#C8102E',''], move:['assets/web/assets/ma/ma-poster-wall-web.webp','#e9e6e1',''], beta:['assets/askbeta/s1-home.webp','#F5B942','fit'], pfizer:['assets/web/assets/pfizer/pipeline-card.webp','#0b0e5c','']};
   scs.forEach(sc => { const c = COV[sc.dataset.k], art = sc.querySelector('.sc-art');
     if (sc.dataset.k === 'pfizer') { const inn = sc.querySelector('.sc-in'); inn.classList.add('has-cov','pf'); inn.style.background = '#0000C9';
-      art.innerHTML = '<img class="pf-logo" src="logos/pfizer-white.svg" alt="" aria-hidden="true"><div class="pf-win pf-b" aria-hidden="true"><div class="pf-bar"><i></i><i></i><i></i><span>pfizer.com/about/careers</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-b.webp" alt="" loading="lazy" decoding="async"></div></div><div class="pf-win pf-a" aria-hidden="true"><div class="pf-bar"><i></i><i></i><i></i><span>pfizer.com</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-a.webp" alt="" loading="lazy" decoding="async"></div></div>'; return; }
+      art.innerHTML = '<img class="pf-kid" src="assets/web/assets/pfizer/cover-kid.webp" alt="" loading="lazy" decoding="async"><img class="pf-logo" src="logos/pfizer-white.svg" alt="" aria-hidden="true">'; return; }
     if (sc.dataset.k === 'beta') { const inn = sc.querySelector('.sc-in'); inn.classList.add('has-cov','ab');
       art.innerHTML = '<img class="ab-sun" src="assets/askbeta-sun.svg" alt="" aria-hidden="true"><div class="ab-ph ab-l"><img src="assets/askbeta/s3-told.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-r"><img src="assets/askbeta/s4-reassured.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-c"><img src="assets/askbeta/s2-call.webp" alt="" loading="lazy" decoding="async"></div>'; return; }
     if (c) { const inn = sc.querySelector('.sc-in'); inn.classList.add('has-cov'); if (c[2]) inn.classList.add('fit'); inn.style.background = c[1]; art.innerHTML = '<img src="' + c[0] + '" alt="" loading="lazy" decoding="async">'; }

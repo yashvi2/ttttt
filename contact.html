@@ -41,7 +41,7 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top w" id="top">
-  <a class="home" href="index.html">Yashvi Jain<span class="muted"> · Product designer</span></a>
+  <a class="home" href="index.html">Yashvi Jain</a>
   <nav aria-label="Main"><a href="work.html">Work</a><a href="about.html">About</a><a href="Yashvi-Jain-CV.pdf" target="_blank" rel="noopener">CV ↗</a><a class="cta" href="contact.html" aria-current="page">Contact</a></nav>
 </header>
 
@@ -103,5 +103,6 @@ msg.addEventListener('input',upd);upd();
 const clock=document.getElementById('clock');const tick=()=>{try{clock.textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/London',timeZoneName:'short'}).format(new Date())+' right now';}catch(e){}};tick();setInterval(tick,30000);
 })();
 </script>
+<script src="nav.js"></script>
 </body>
 </html>
