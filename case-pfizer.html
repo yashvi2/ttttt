@@ -6,14 +6,219 @@
 <title>Pfizer.com · Case study · Yashvi Jain</title>
 <meta name="description" content="Bringing Pentagram’s Pfizer rebrand to pfizer.com, and the design system that now guides Pfizer’s other pages.">
 <meta property="og:type" content="website"><meta property="og:title" content="Pfizer.com · Case study · Yashvi Jain"><meta property="og:description" content="Bringing Pentagram’s Pfizer rebrand to pfizer.com, and the design system that now guides Pfizer’s other pages."><meta property="og:image" content="og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#FFFFFF">
+<meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0000C9">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Inter+Tight:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="case.css">
+<style>
+:root{--pb:#0000C9;--pb2:#2637d9;--pn:#00002D;--pn2:#0b0e5c;--pt:#EAF0FF;--pt2:#D6E0FF}
+.pf .kick .n,.pf .cs-head .kick .n{color:var(--pb)}
+/* hero */
+.pf-hero{position:relative;height:min(78vh,760px);min-height:440px;background:var(--pb);overflow:hidden;display:grid;place-items:center}
+.pf-hero .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:luminosity;opacity:.55;transform:scale(1.12);animation:pfZoom 14s var(--ease) forwards}
+.pf-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(0,0,201,.15),rgba(0,0,201,.85))}
+.pf-hero .lg{position:relative;z-index:2;width:clamp(180px,26vw,360px);height:auto;animation:pfUp 1.2s var(--ease) both .2s}
+.pf-hero .orb{position:absolute;z-index:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#6f86ff,#2637d9 55%,#0000a0);filter:blur(.5px);opacity:.9}
+.pf-hero .o1{width:clamp(80px,12vw,180px);aspect-ratio:1;left:8%;top:14%;animation:pfFloat 9s ease-in-out infinite}
+.pf-hero .o2{width:clamp(40px,6vw,90px);aspect-ratio:1;right:12%;top:22%;animation:pfFloat 7s ease-in-out infinite reverse}
+.pf-hero .o3{width:clamp(120px,18vw,260px);aspect-ratio:1;right:6%;bottom:-8%;animation:pfFloat 11s ease-in-out infinite;opacity:.6}
+.pf-hero .sq{position:absolute;z-index:1;width:clamp(50px,7vw,110px);aspect-ratio:1;border-radius:28%;border:2px solid rgba(255,255,255,.35);left:14%;bottom:14%;animation:pfSpin 24s linear infinite}
+@keyframes pfZoom{to{transform:scale(1)}}
+@keyframes pfUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes pfFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes pfSpin{to{transform:rotate(360deg)}}
+.pf-intro{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(24px,5vw,80px);align-items:end;padding-top:clamp(48px,6vw,96px)}
+.pf-intro .h1{font-size:clamp(44px,6.4vw,100px)}
+.pf-intro .h1 b{font-weight:500;color:var(--pb)}
+.pf-intro .lede{font-size:clamp(18px,1.6vw,22px);color:#333}
+.pill{display:inline-flex;align-items:center;gap:8px;margin-top:20px;border:1.5px solid var(--pb);color:var(--pb);text-decoration:none;font-weight:600;font-size:15px;padding:10px 18px;border-radius:999px;transition:background .25s,color .25s}
+.pill:hover{background:var(--pb);color:#fff}
+.pill i{font-style:normal;transition:transform .3s var(--ease)}.pill:hover i{transform:translateX(4px)}
+.wins{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(36px,4vw,64px)}
+.win{border-radius:10px;overflow:hidden;border:1px solid #dfe3f3;background:#fff;box-shadow:0 20px 50px rgba(0,0,80,.08);transition:transform .8s var(--ease),box-shadow .8s}
+.win:hover{transform:translateY(-6px);box-shadow:0 30px 70px rgba(0,0,120,.16)}
+.win .bar{display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;background:#f5f6fb;border-bottom:1px solid #e6e8f3}
+.win .bar i{width:9px;height:9px;border-radius:50%;background:#d4d7e6}
+.win .bar span{margin-left:8px;flex:1;font-size:12px;color:#666;background:#fff;border:1px solid #e6e8f3;border-radius:99px;padding:3px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.win .bar em{font-style:normal;font-size:11px;font-weight:600;color:#d4002a;display:flex;align-items:center;gap:6px}
+.win .bar em::before{content:"";width:7px;height:7px;border-radius:50%;background:#d4002a;animation:pfBlink 1.4s infinite}
+@keyframes pfBlink{50%{opacity:.25}}
+.win img{width:100%;aspect-ratio:680/376;object-fit:cover;object-position:top}
+.win-cap{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#777;margin-top:10px}
+@media (max-width:820px){.pf-intro,.wins{grid-template-columns:1fr}}
+.pf .cs-facts .meta dd{color:var(--ink)}
+.pf .glance{background:var(--pt);border-radius:14px}
+.pf .glance h3::before{background:var(--pb)}
+/* sections */
+.band{padding:clamp(72px,9vw,140px) 0;position:relative;overflow:hidden}
+.band.blue{background:var(--pb);color:#fff}
+.band.navy{background:var(--pn);color:#fff}
+.band.tint{background:var(--pt)}
+.band .kick{color:rgba(255,255,255,.7)}.band.tint .kick{color:#555}
+.band .kick .n{color:#fff}.band.tint .kick .n{color:var(--pb)}
+.band .kick::before,.sec-pf .kick::before{content:"";width:9px;height:9px;background:currentColor;display:inline-block}
+.band.blue .kick::before,.band.navy .kick::before{background:#fff}
+.sec-pf .kick::before{background:var(--pb)}
+.hd{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(36px,4vw,64px)}
+.hd .h2{font-size:clamp(34px,4.6vw,68px)}
+.hd p{margin:0;max-width:34em;font-size:17px;line-height:1.6}
+.band.blue .hd p,.band.navy .hd p{color:rgba(255,255,255,.82)}
+@media (max-width:820px){.hd{grid-template-columns:1fr}}
+.sec-pf{padding-top:clamp(72px,9vw,140px);padding-bottom:clamp(72px,9vw,140px)}
+/* stats */
+.pf-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.4vw,18px)}
+.pf-stats>div{background:var(--pt);border-radius:16px;padding:clamp(18px,2vw,28px);min-height:clamp(200px,20vw,300px);display:flex;flex-direction:column;justify-content:space-between;transition:background .35s,transform .5s var(--ease)}
+.pf-stats>div:hover{background:var(--pt2);transform:translateY(-4px)}
+.pf-stats span{font-size:14px;font-weight:500;color:var(--pb);max-width:16em;line-height:1.35}
+.pf-stats b{font:500 clamp(64px,8vw,128px)/.85 var(--tight);letter-spacing:-.06em;color:var(--pb)}
+.pf-stats b small{font-size:.32em;letter-spacing:-.02em;margin-left:.25em}
+@media (max-width:820px){.pf-stats{grid-template-columns:1fr 1fr}}
+/* values */
+.hd .make,.make{max-width:none;font:500 clamp(40px,6vw,92px)/1 var(--tight);letter-spacing:-.05em;margin:0;display:flex;gap:.25em;flex-wrap:wrap;align-items:baseline}
+.rot{display:inline-grid;height:1.05em;overflow:hidden;vertical-align:bottom;color:#B9C4FF}
+.rot span{grid-area:1/1;transform:translateY(110%);opacity:0;transition:transform .7s var(--ease),opacity .5s}
+.rot span.on{transform:none;opacity:1}.rot span.out{transform:translateY(-110%);opacity:0}
+.vals{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.2vw,16px)}
+.val{border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:clamp(18px,1.8vw,26px);min-height:220px;display:flex;flex-direction:column;gap:10px;transition:background .4s,color .4s,transform .5s var(--ease);cursor:default}
+.val small{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.val h3{font:500 clamp(24px,2.2vw,32px)/1.05 var(--tight);letter-spacing:-.03em;margin:0}
+.val p{margin:auto 0 0;font-size:15px;line-height:1.45;opacity:.85}
+.val .shape{width:44px;height:44px;margin-bottom:6px;background:#B9C4FF;transition:transform .6s var(--ease)}
+.val:nth-child(1) .shape{border-radius:50%}.val:nth-child(2) .shape{border-radius:50%/35%;width:64px}.val:nth-child(3) .shape{border-radius:28%}.val:nth-child(4) .shape{border-radius:50% 50% 50% 0}
+.val:hover,.val.on{background:#fff;color:var(--pb);transform:translateY(-6px)}
+.val:hover .shape,.val.on .shape{background:var(--pb);transform:rotate(-12deg) scale(1.1)}
+@media (max-width:900px){.vals{grid-template-columns:1fr 1fr}}
+.typep{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.2vw,16px);margin-top:clamp(40px,5vw,72px)}
+.tf{background:rgba(255,255,255,.08);border-radius:12px;padding:clamp(20px,2.2vw,32px);overflow:hidden;position:relative}
+.tf small{font-size:12px;opacity:.7}
+.tf .big{font:500 clamp(56px,7vw,112px)/1 var(--tight);letter-spacing:-.05em;margin:12px 0 8px}
+.tf.dia .big{font-family:"Archivo",var(--tight);font-stretch:125%;font-weight:400;letter-spacing:-.02em}
+.tf.dia .big span{display:inline-block;animation:pfW 5s ease-in-out infinite}
+@keyframes pfW{0%,100%{font-stretch:62%}50%{font-stretch:125%}}
+.tf p{margin:0;font-size:15px;opacity:.85;max-width:30em}
+@media (max-width:820px){.typep{grid-template-columns:1fr}}
+.spec-img{margin-top:clamp(10px,1.2vw,16px);border-radius:12px;overflow:hidden}
+.spec-img img{width:100%}
+/* design system */
+.spec{background:#fff;color:var(--ink);border-radius:14px;padding:clamp(18px,2.4vw,32px)}
+.spec>small{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#777;font-weight:600}
+.spec ol{list-style:none;margin:14px 0 0;padding:0}
+.spec li{display:grid;grid-template-columns:52px 1fr auto;align-items:baseline;gap:12px;border-bottom:1px solid #eee;padding:10px 0;cursor:pointer;transition:color .25s}
+.spec li:hover{color:var(--pb)}
+.spec li i{font-style:normal;font-size:11px;font-weight:600;color:#888}
+.spec li em{font-style:normal;font-size:12px;color:#888;font-variant-numeric:tabular-nums}
+.spec li span{letter-spacing:-.03em;line-height:1.05;transition:transform .35s var(--ease);display:inline-block}
+.spec li:hover span{transform:translateX(6px);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.btns b{font-weight:600;font-size:14px;padding:11px 20px;border-radius:99px;transition:all .25s}
+.btns .p1{background:var(--pb);color:#fff}.btns .p1:hover{background:var(--pn2)}
+.btns .p2{border:1.5px solid var(--pb);color:var(--pb)}.btns .p2:hover{background:var(--pt)}
+.btns .p3{background:#e8e8e8;color:#9a9a9a}
+.sysg{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(16px,2vw,28px);align-items:start}
+@media (max-width:900px){.sysg{grid-template-columns:1fr}}
+.rules{display:grid;gap:10px}
+.rule-c{display:flex;gap:16px;align-items:center;background:rgba(255,255,255,.07);border-radius:12px;padding:16px 18px;transition:background .3s}
+.rule-c:hover{background:rgba(255,255,255,.14)}
+.rule-c .sw{width:40px;height:40px;border-radius:10px;flex:none}
+.rule-c p{margin:0;font-size:15px;line-height:1.4;color:rgba(255,255,255,.88)}
+.rule-c p b{color:#fff;font-weight:600}
+.tk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:clamp(40px,5vw,72px) 0 clamp(16px,2vw,24px)}
+.tk div{border-top:1px solid rgba(255,255,255,.25);padding-top:14px}
+.tk b{display:block;font:500 clamp(44px,5vw,76px)/1 var(--tight);letter-spacing:-.05em;color:#B9C4FF}
+.tk span{font-size:14px;color:rgba(255,255,255,.75)}
+@media (max-width:700px){.tk{grid-template-columns:1fr 1fr;row-gap:24px}}
+/* figma viewer */
+.fv{background:#11143f;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.fv-top{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto;scrollbar-width:none}
+.fv-top::-webkit-scrollbar{display:none}
+.fv-top .fl{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.6);margin-right:10px;white-space:nowrap}
+.fv-top .fl svg{flex:none}
+.fv-top button{all:unset;flex:none;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.7);padding:7px 12px;border-radius:8px;white-space:nowrap;position:relative;overflow:hidden}
+.fv-top button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.fv-top button[aria-selected="true"]{color:#fff;background:var(--pb)}
+.fv-top button .pg{position:absolute;left:0;bottom:0;height:2px;width:100%;background:#B9C4FF;transform-origin:0 50%;transform:scaleX(0)}
+.fv-top button[aria-selected="true"] .pg{animation:pfPg var(--d,5200ms) linear forwards}
+.fv.hold .fv-top button .pg{animation-play-state:paused}
+@keyframes pfPg{to{transform:scaleX(1)}}
+.fv-stage{position:relative;aspect-ratio:1600/1060;background:#fff;overflow:hidden}
+.fv-stage figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .6s,transform 1s var(--ease);transform:scale(1.02)}
+.fv-stage figure.on{opacity:1;transform:none}
+.fv-stage img{width:100%;height:100%;object-fit:cover;object-position:top;animation:none}
+.fv-stage figure.on img{animation:pfPan 9s ease-in-out both}
+@keyframes pfPan{0%{object-position:50% 0}100%{object-position:50% 100%}}
+.fv-cap{padding:14px 18px;font-size:14px;color:rgba(255,255,255,.75);min-height:3.2em}
+/* light / dark */
+.ld{border-radius:14px;overflow:hidden;margin:clamp(16px,2vw,24px) 0 0;background:#fff}
+.ld img{width:100%;transition:transform 1.2s var(--ease)}.ld:hover img{transform:scale(1.02)}
+.ld .dk{clip-path:inset(0 0 0 var(--x,50%))}
+.ld input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ld .hdl{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.2);pointer-events:none}
+.ld .hdl::after{content:"↔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;color:var(--pb);display:grid;place-items:center;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.ld-cap{display:flex;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.7);margin-top:10px}
+/* prototype */
+.proto{border-radius:14px;overflow:hidden;border:1px solid #e3e6f3;box-shadow:0 30px 70px rgba(0,0,80,.12);background:#000}
+.proto .bar{display:flex;align-items:center;gap:8px;height:38px;padding:0 14px;background:#f5f6fb;border-bottom:1px solid #e6e8f3}
+.proto .bar span{flex:1;max-width:280px;font-size:12px;color:#666;background:#fff;border:1px solid #e6e8f3;border-radius:99px;padding:3px 12px}
+.proto .bar em{margin-left:auto;font-style:normal;font-size:11px;font-weight:600;color:#d4002a;display:flex;gap:6px;align-items:center;letter-spacing:.06em}
+.proto .bar em::before{content:"";width:8px;height:8px;border-radius:50%;background:#d4002a;animation:pfBlink 1.2s infinite}
+.proto .st{position:relative;aspect-ratio:1400/886;overflow:hidden}
+.proto .st img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transform:scale(1.04);transition:opacity .9s,transform 4s ease-out}
+.proto .st img.on{opacity:1;transform:none}
+.proto .cur{position:absolute;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:0 0 0 6px rgba(255,255,255,.25);transition:left 1.4s var(--ease),top 1.4s var(--ease);z-index:2;pointer-events:none}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.steps button{all:unset;cursor:pointer;font-size:14px;color:#555;padding-top:12px;position:relative}
+.steps button::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#e4e7f3;border-radius:3px}
+.steps button i{position:absolute;top:0;left:0;height:3px;width:100%;background:var(--pb);border-radius:3px;transform:scaleX(0);transform-origin:0 50%}
+.steps button.on{color:var(--pb);font-weight:600}
+.steps button.on i{animation:pfPg 3600ms linear forwards}
+.steps button.done i{transform:scaleX(1)}
+@media (max-width:700px){.steps{grid-template-columns:1fr 1fr}}
+/* live screens */
+.reel{display:flex;gap:clamp(12px,1.6vw,20px);overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gut) 18px;scrollbar-width:thin}
+.reel figure{flex:0 0 min(78vw,760px);margin:0;scroll-snap-align:center}
+.reel figure.tall{flex-basis:min(48vw,360px)}
+.reel .fr{border-radius:12px;overflow:hidden;background:#fff;aspect-ratio:1400/800;box-shadow:0 20px 50px rgba(0,0,80,.12);position:relative}
+.reel .tall .fr{aspect-ratio:auto;height:min(43.6vw,436px)}
+.reel .fr img{width:100%;height:100%;object-fit:cover;object-position:top;transition:object-position 4s ease-in-out}
+.reel .tall .fr img{object-position:top}
+.reel figure:hover .tall .fr img,.reel .tall:hover .fr img{object-position:bottom}
+.reel figcaption{font-size:14px;color:#444;margin-top:12px}
+.reel-nav{display:flex;gap:8px;justify-content:flex-end;margin-bottom:16px}
+.reel-nav button{all:unset;cursor:pointer;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--pb);color:var(--pb);display:grid;place-items:center;font-size:18px;transition:background .2s,color .2s}
+.reel-nav button:hover{background:var(--pb);color:#fff}
+.arts{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px);margin-top:clamp(28px,3vw,44px)}
+.arts div{border-radius:12px;overflow:hidden;background:#fff;transition:transform .6s var(--ease)}
+.arts div:hover{transform:translateY(-8px) rotate(-.6deg)}
+.arts img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.arts p{margin:0;padding:12px 14px;font-size:14px;color:#333}
+@media (max-width:700px){.arts{grid-template-columns:1fr}}
+/* role */
+.roles{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.2vw,16px)}
+.role{border-radius:16px;padding:clamp(20px,2vw,28px);min-height:260px;display:flex;flex-direction:column;gap:12px;transition:transform .5s var(--ease)}
+.role:hover{transform:translateY(-6px)}
+.role:nth-child(1){background:var(--pt)}.role:nth-child(2){background:#D6E0FF}.role:nth-child(3){background:var(--pb);color:#fff}.role:nth-child(4){background:var(--pn);color:#fff}
+.role b{font:500 clamp(30px,3vw,44px)/1 var(--tight);letter-spacing:-.04em}
+.role small{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+.role p{margin:auto 0 0;font-size:15px;line-height:1.45}
+@media (max-width:900px){.roles{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.roles,.vals,.pf-stats{grid-template-columns:1fr}.pf-stats>div,.role,.val{min-height:150px}.reel figure{flex-basis:86vw}}
+/* impact */
+.mq{overflow:hidden;border-top:1px solid rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.25);margin-top:clamp(40px,5vw,72px);padding:clamp(16px,2vw,26px) 0}
+.mq div{display:flex;gap:40px;width:max-content;animation:pfMq 28s linear infinite;font:500 clamp(28px,4vw,56px)/1 var(--tight);letter-spacing:-.04em;white-space:nowrap}
+.mq span{display:flex;align-items:center;gap:40px}.mq span::after{content:"";width:.35em;height:.35em;background:#B9C4FF;border-radius:30%}
+@keyframes pfMq{to{transform:translateX(-50%)}}
+.band.blue .pill{border-color:#fff;color:#fff}.band.blue .pill:hover{background:#fff;color:var(--pb)}
+/* reveal */
+.pr{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform 1s var(--ease)}
+.pr.in{opacity:1;transform:none}
+.pr.d1{transition-delay:.08s}.pr.d2{transition-delay:.16s}.pr.d3{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){.pr{opacity:1;transform:none;transition:none}.pf-hero .ph,.pf-hero .lg,.pf-hero .orb,.pf-hero .sq,.mq div,.tf.dia .big span,.fv-stage figure.on img{animation:none}}
+.next{background:var(--pb)!important}
+</style>
 </head>
-<body>
+<body class="pf">
 <div class="prog" id="prog" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top w" id="top">
@@ -22,75 +227,226 @@
 </header>
 
 <main id="main">
-  <section class="w cs-head">
-    <p class="kick in"><span class="n">Case study 04 · Pfizer.com</span> Pfizer · via TCS · 2024–25</p>
-    <h1 class="h1 in d1">Pfizer’s new brand, live on pfizer.com</h1>
-    <p class="lede in d2">I led the UI of pfizer.com through Pentagram’s rebrand, and turned it into the design system Pfizer’s internal pages and dashboards now follow.</p>
-    <ul class="cs-tags in d3" aria-label="Tags"><li>UI</li><li>Design system</li></ul>
+  <div class="pf-hero" role="img" aria-label="Pfizer logo over a blue-tinted photo of a child resting on a teddy bear">
+    <img class="ph" src="assets/web/assets/pfizer/cover-kid.webp" alt="">
+    <span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="sq"></span>
+    <img class="lg" src="assets/logos/pfizer-white.svg" alt="">
+  </div>
+
+  <section class="w pf-intro">
+    <div>
+      <p class="kick"><span class="n">Case study 04 · Corporate website &amp; design system</span></p>
+      <h1 class="h1">Pfizer’s new brand, live on <b>pfizer.com</b></h1>
+    </div>
+    <div>
+      <p class="lede">I led the UI of pfizer.com through Pentagram’s rebrand, and turned it into the design system Pfizer’s internal pages and dashboards now follow.</p>
+      <a class="pill" href="https://www.pfizer.com" target="_blank" rel="noopener">Visit pfizer.com <i>→</i></a>
+    </div>
   </section>
 
-  <div class="w"><div class="cs-cover in d2 scrim" style="--acc:#111"><img class="bg" src="assets/web/assets/pfizer/cover-kid.webp" alt=""><img class="logo" src="assets/logos/pfizer-white.svg" alt="Pfizer logo over a photo of a child resting on a teddy bear"></div></div>
+  <div class="w wins">
+    <div class="pr"><div class="win"><div class="bar"><i></i><i></i><i></i><span>pfizer.com</span><em>LIVE</em></div><img src="assets/web/assets/pfizer/banner-a.webp" alt="The live pfizer.com homepage: Pfizer is fighting for 8 cancer breakthroughs by 2030"></div><p class="win-cap">Home</p></div>
+    <div class="pr d2"><div class="win"><div class="bar"><i></i><i></i><i></i><span>pfizer.com/about/careers</span></div><img src="assets/web/assets/pfizer/banner-b.webp" alt="The careers page: Use your power for purpose"></div><p class="win-cap">Careers</p></div>
+  </div>
 
   <div class="w cs-facts">
-    <dl class="meta"><div><dt>Role</dt><dd>UI lead, offshore design team</dd></div><div><dt>Client</dt><dd>Pfizer, via TCS</dd></div><div><dt>Brand</dt><dd>Pentagram</dd></div><div><dt>Timeline</dt><dd>6 months, 2024–25</dd></div></dl>
+    <dl class="meta"><div><dt>My role</dt><dd>UI lead, offshore design team</dd></div><div><dt>Client</dt><dd>Pfizer, via TCS</dd></div><div><dt>Brand</dt><dd>Pentagram</dd></div><div><dt>Typefaces</dt><dd>Pfizer Tomorrow, Pfizer Diatype</dd></div><div><dt>Timeline</dt><dd>6 months, 2024–25</dd></div></dl>
     <div class="glance" aria-label="At a glance"><div><h3>Problem</h3><p>Pfizer’s first formal brand, created by Pentagram, had to work across a very large website and many teams, accessibly and consistently.</p></div><div><h3>What I did</h3><p>As UI lead, I set up the UI system and components for pfizer.com and led the offshore design team building it.</p></div><div><h3>Result</h3><p>pfizer.com is live in the new brand, and its system now guides Pfizer’s internal pages and dashboards.</p></div></div>
     <p class="cs-note">Shared as a portfolio sample. Some screens are simplified, and confidential client data is not shown.</p>
   </div>
 
-  <nav class="ctoc w" aria-label="On this page"><ol><li><a href="#context">Context</a></li><li><a href="#brand">Brand on screen</a></li><li><a href="#system">Design system</a></li><li><a href="#screens">Live screens</a></li><li><a href="#role">My role</a></li><li><a href="#impact">Impact</a></li></ol><span class="bar" aria-hidden="true"></span></nav>
+  <nav class="ctoc w" aria-label="On this page"><ol><li><a href="#context">Context</a></li><li><a href="#brand">Brand on screen</a></li><li><a href="#system">Design system</a></li><li><a href="#motion">Prototype</a></li><li><a href="#screens">Live screens</a></li><li><a href="#role">My role</a></li><li><a href="#impact">Impact</a></li></ol><span class="bar" aria-hidden="true"></span></nav>
 
-  <section class="w sec cs" id="context">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">01</span> Context</p></div>
-      <div class="body cs-body"><h2 class="h2">Pfizer’s first formal brand, and a website to carry it</h2>
-<p>Pentagram built the identity around one purpose: breakthroughs that change people’s lives. I brought it to pfizer.com, so that everyone can use the site, including people with colour blindness, low vision and ADHD.</p><div class="stats"><div class="stat"><b>110</b><span>products made explorable on the pipeline page</span></div><div class="stat"><b>6</b><span>type levels, each with one clickable rule</span></div><div class="stat"><b>4</b><span>brand traits turned into website rules</span></div><div class="stat"><b>6 months</b><span>from the new brand to a live pfizer.com</span></div></div>
-      </div>
+  <section class="w sec-pf" id="context">
+    <div class="hd">
+      <div><p class="kick">The context</p><h2 class="h2" style="margin-top:16px">Pfizer’s first formal brand, and a website to carry it</h2></div>
+      <p>Pentagram built the identity around one purpose: breakthroughs that change people’s lives. I brought it to pfizer.com, so that everyone can use the site, including people with colour blindness, low vision and ADHD.</p>
     </div>
-  </section>
-  <section class="w sec cs" id="brand">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">02</span> Brand on screen</p></div>
-      <div class="body cs-body"><h2 class="h2">Four values, four website rules</h2>
-<p>Pentagram turned Pfizer’s four values into four traits. I turned each trait into a rule the website could follow, and gave motion one job: to support meaning, never to decorate.</p><div class="tbl"><table><thead><tr><th scope="col">Value</th><th scope="col">Trait</th><th scope="col">Website rule</th></tr></thead><tbody><tr><th scope="row">Courage</th><td>Daring</td><td>Big type and bold blue, used with confidence</td></tr><tr><th scope="row">Excellence</th><td>Focused</td><td>One action per section, nothing competing for it</td></tr><tr><th scope="row">Equity</th><td>Compassionate</td><td>Readable for colour blindness, low vision and ADHD</td></tr><tr><th scope="row">Joy</th><td>Spirited</td><td>Motion that brings warmth to the science</td></tr></tbody></table></div><h3 class="h3 sub">Two typefaces, one voice</h3><p>Pentagram’s identity runs on two typefaces. Pfizer Tomorrow is drawn from the wordmark, warm and humanist, and carries the masterbrand. Pfizer Diatype is a superfamily by Dinamo, with more than 76 styles across normal, condensed, compressed, expanded, mono and semi-mono widths, and support for over 200 languages. On pfizer.com I gave each a clear job: Tomorrow for headings H1 to H5, Diatype for eyebrows, body, navigation and data.</p><div class="figs c1"><figure><div class="frame"><img src="assets/pfizer/ds/diatype-superfamily.webp" alt="Pfizer Diatype specimen: eight weights in white on Pfizer blue, and the Expanded, Mono, Semi-Mono, Condensed and Compressed widths on navy" loading="lazy" decoding="async"></div><figcaption>Pfizer Diatype, one superfamily in many widths. Image from Pentagram’s Pfizer identity.</figcaption></figure></div><ul class="blist"><li>Pfizer blue is the anchor, with a wider spectrum of secondary hues kept for product brands.</li><li>Illustration is built from simple geometric forms, circles, ovals and rounded squares, standing in for science, people and medicine.</li><li>Photography shows real patients in real places, lit naturally.</li><li>Charts use rounded forms, a simple colour order and one type family.</li></ul>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="system">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">03</span> Design system</p></div>
-      <div class="body cs-body"><h2 class="h2">What I set up, and how teams use it</h2>
-<p>Tokens, components and guidelines that started on pfizer.com and became the corporate design UI for Pfizer’s other pages and dashboards. The rules were simple enough to repeat: blue means clickable, black means static, and every state is designed, not left to the browser.</p><div class="tbl"><table><thead><tr><th scope="col">Level</th><th scope="col">Example</th><th scope="col">Size / line height</th></tr></thead><tbody><tr><th scope="row">H1</th><td>Breakthroughs</td><td>72 / 86</td></tr><tr><th scope="row">H2</th><td>Our pipeline</td><td>52 / 62</td></tr><tr><th scope="row">H3</th><td>Clinical trials</td><td>42 / 50</td></tr><tr><th scope="row">H4</th><td>Areas of focus</td><td>32 / 38</td></tr><tr><th scope="row">Body</th><td>Body text, readable at 20px</td><td>20 / 27</td></tr></tbody></table></div><ul class="blist"><li>Type scale in Pfizer Tomorrow and Pfizer Diatype</li><li>Blue for clickable, black for static</li><li>Buttons in every state: default, hover, focused and disabled</li><li>Grids, palettes, icon library, imagery and video subtitles</li></ul><div class="figs c1"><figure class=""><div class="frame"><img src="assets/pfizer/ds/ds-buttons.webp" alt="Primary and secondary buttons in default, hover, focus and disabled states, on Light and Inverted themes, from the Figma library" loading="lazy" decoding="async"></div><figcaption>Buttons in every state, default and inverted, from the Figma library.</figcaption></figure></div><h3 class="h3 sub">Rebuilt as a Figma library</h3><p>The client files stay with Pfizer, so I rebuilt the system from the live site as a Figma library for this portfolio. Every colour, gap and radius in it is a token, and every component follows the theme of the frame it sits in.</p><div class="stats"><div class="stat"><b>71</b><span>primitive tokens for colour, space, radius and type</span></div><div class="stat"><b>29</b><span>semantic colour tokens, each in three themes</span></div><div class="stat"><b>16</b><span>text styles, from H1 to mono data</span></div><div class="stat"><b>25</b><span>components, plus an 8-icon set</span></div></div><div class="figs c1"><figure><div class="frame"><img src="assets/pfizer/ds/fig-color-palette.webp" alt="Color, with purpose: the primitive palette of brand blues, neutrals and the extended spectrum, each with token name and hex" loading="lazy" decoding="async"></div><figcaption>One palette, clear roles, three modes. Primitives hold every value: brand blue, neutrals and the extended spectrum.</figcaption></figure><figure><div class="frame"><img src="assets/pfizer/ds/fig-color-roles.webp" alt="Semantic roles table mapping each token, including new status roles, to a primitive in Light, Inverted and Dark" loading="lazy" decoding="async"></div><figcaption>Semantic roles bind intent, not hex values. Status roles for success, warning, error and info were added alongside text, surface, action and border.</figcaption></figure><figure><div class="frame"><img src="assets/pfizer/ds/fig-color-context.webp" alt="The same semantic roles in Light, Inverted and Dark cards, status bars, and measured contrast pairings" loading="lazy" decoding="async"></div><figcaption>The same roles in context, with measured contrast for the key text pairings.</figcaption></figure><figure><div class="frame"><img src="assets/pfizer/ds/fig-components.webp" alt="Reusable components: buttons, search input and checkbox states, plus new text field, switch, status badge and alert families" loading="lazy" decoding="async"></div><figcaption>Built to work together. Existing controls stay linked, and new families fill the gaps: text field, switch, status badges and alerts.</figcaption></figure><figure><div class="frame"><img src="assets/pfizer/ds/fig-modes.webp" alt="A preferences form built from linked component instances, shown in Light, Inverted and Dark" loading="lazy" decoding="async"></div><figcaption>One system, three modes. The same linked instances change theme when the parent mode changes, not individual colours.</figcaption></figure><figure><div class="frame"><img src="assets/pfizer/ds/ds-light-dark.webp" alt="The pipeline landing page built from library components, in Light and Dark themes side by side" loading="lazy" decoding="async"></div><figcaption>The pipeline landing page, built only from library components, in Light and Dark.</figcaption></figure></div><div class="figs c2"><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/pipeline.webp" alt="Live pipeline landing page on pfizer.com with a navy hero and a 110 total products dial" loading="lazy" decoding="async"></div><figcaption>Live on pfizer.com: the pipeline landing the rebuild follows, in the Inverted theme.</figcaption></figure><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/table.webp" alt="Live pipeline table on pfizer.com with phase dials, filters and product rows" loading="lazy" decoding="async"></div><figcaption>Live on pfizer.com: the pipeline table, with phase dials and filters.</figcaption></figure></div><div class="figs c2"><figure><div class="frame"><img src="assets/pfizer/ds/ds-diatype-standin.webp" alt="Type specimen of the free fonts standing in for Pfizer Diatype widths" loading="lazy" decoding="async"></div><figcaption>The licensed fonts aren’t in Figma, so Geist, Geist Mono and Sofia Sans Condensed stand in for Diatype’s widths. Two font variables swap them back.</figcaption></figure><figure class="crop"><div class="frame"><img src="assets/pfizer/ds/ds-page-light.webp" alt="Full pipeline landing page in the Light theme" loading="lazy" decoding="async"></div><figcaption>Hero, story cards, pipeline table, chart, FAQ and footer.</figcaption></figure></div>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="screens">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">04</span> Live screens</p></div>
-      <div class="body cs-body"><h2 class="h2">The system, on pfizer.com</h2>
-<div class="figs c2"><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/menu-desktop.webp" alt="Responsibility mega-menu on desktop" loading="lazy" decoding="async"></div><figcaption>The Responsibility mega-menu, with the page tinted blue behind it.</figcaption></figure><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/articles-desktop.webp" alt="Latest articles carousel on desktop" loading="lazy" decoding="async"></div><figcaption>The articles carousel on desktop.</figcaption></figure><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/pipeline-page.webp" alt="Pipeline page" loading="lazy" decoding="async"></div><figcaption>The product pipeline, filterable by phase.</figcaption></figure><figure class="crop"><div class="frame"><img src="assets/web/assets/pfizer/guides.webp" alt="Design guidelines" loading="lazy" decoding="async"></div><figcaption>Guidelines handed to internal teams.</figcaption></figure></div><p>Every component was specified for desktop, iPad and mobile: article cards go from three across to two to one, and the mega-menu becomes a full-screen list on mobile.</p>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="role">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">05</span> My role</p></div>
-      <div class="body cs-body"><h2 class="h2">Leading the offshore design team</h2>
-<div class="tbl"><table><thead><tr><th scope="col"></th><th scope="col">What it meant</th></tr></thead><tbody><tr><th scope="row">Adapt</th><td>Translated Pentagram’s identity into web type, colour and interaction rules</td></tr><tr><th scope="row">Include</th><td>Designed for colour blindness, low vision and ADHD from the first component</td></tr><tr><th scope="row">Lead</th><td>Led the TCS team through the rebrand, reviewing every page against the system</td></tr><tr><th scope="row">Scale</th><td>Set up the guidelines that internal pages and dashboards now follow</td></tr></tbody></table></div>
-      </div>
-    </div>
-  </section>
-  <section class="w sec cs" id="impact">
-    <div class="split">
-      <div class="lab"><p class="kick"><span class="n">06</span> Impact</p></div>
-      <div class="body cs-body"><h2 class="h2">The website became the template</h2>
-<p>Once pfizer.com went live, its system became Pfizer’s corporate design UI. Internal pages, dashboards, the product pipeline and the newsroom now start from the same type, colour rules and components, instead of reinventing the brand.</p><p><a href="https://www.pfizer.com" target="_blank" rel="noopener">Visit pfizer.com ↗</a></p>
-      </div>
+    <div class="pf-stats stats">
+      <div class="pr"><span>Products made explorable on the pipeline page</span><b>110</b></div>
+      <div class="pr d1"><span>Type levels, each with one clickable rule</span><b>6</b></div>
+      <div class="pr d2"><span>Brand traits turned into website rules</span><b>4</b></div>
+      <div class="pr d3"><span>From the new brand to a live pfizer.com</span><b>6<small>months</small></b></div>
     </div>
   </section>
 
-  <a class="next" href="case-cray.html"><p class="kick"><span class="n">Next case study · 05</span></p><p class="h1" style="margin-top:12px">CRAY <em>→</em></p></a>
+  <section class="band blue" id="brand">
+    <div class="w">
+      <div class="hd">
+        <div><p class="kick">The brand, on screen</p><p class="make" style="margin-top:16px" aria-label="Make it daring, focused, compassionate and spirited">Make it <span class="rot" aria-hidden="true"><span class="on">Daring</span><span>Focused</span><span>Compassionate</span><span>Spirited</span></span></p></div>
+        <p>Pentagram turned Pfizer’s four values into four traits. I turned each trait into a rule the website could follow, and gave motion one job: to support meaning, never to decorate.</p>
+      </div>
+      <div class="vals">
+        <div class="val pr"><span class="shape"></span><small>Value · Courage</small><h3>Daring</h3><p>Big type and bold blue, used with confidence.</p></div>
+        <div class="val pr d1"><span class="shape"></span><small>Value · Excellence</small><h3>Focused</h3><p>One action per section, nothing competing for it.</p></div>
+        <div class="val pr d2"><span class="shape"></span><small>Value · Equity</small><h3>Compassionate</h3><p>Readable for colour blindness, low vision and ADHD.</p></div>
+        <div class="val pr d3"><span class="shape"></span><small>Value · Joy</small><h3>Spirited</h3><p>Motion that brings warmth to the science.</p></div>
+      </div>
+      <div class="typep">
+        <div class="tf pr"><small>Headings · H1 to H5</small><p class="big">Tomorrow</p><p>Pfizer Tomorrow is drawn from the wordmark, warm and humanist, and carries the masterbrand.</p></div>
+        <div class="tf dia pr d1"><small>Eyebrows, body, navigation and data</small><p class="big"><span>Diatype</span></p><p>A Dinamo superfamily: 76+ styles across normal, condensed, compressed, expanded and mono widths, in 200+ languages.</p></div>
+      </div>
+      <div class="spec-img pr"><img src="assets/pfizer/ds/diatype-superfamily.webp" alt="Pfizer Diatype specimen: eight weights in white on Pfizer blue, and the Expanded, Mono, Semi-Mono, Condensed and Compressed widths on navy" loading="lazy" decoding="async"></div>
+    </div>
+  </section>
+
+  <section class="band navy" id="system">
+    <div class="w">
+      <div class="hd">
+        <div><p class="kick">Design system</p><h2 class="h2" style="margin-top:16px">What I set up, and how teams use it</h2></div>
+        <p>Tokens, components and guidelines that started on pfizer.com and became the corporate design UI for Pfizer’s other pages and dashboards. The rules were simple enough to repeat.</p>
+      </div>
+      <div class="sysg">
+        <div class="spec pr">
+          <small>Hover for the clickable state</small>
+          <ol>
+            <li><i>H1</i><span style="font-size:clamp(34px,3.6vw,52px)">Breakthroughs</span><em>72 / 86</em></li>
+            <li><i>H2</i><span style="font-size:clamp(28px,2.8vw,40px)">Our pipeline</span><em>52 / 62</em></li>
+            <li><i>H3</i><span style="font-size:clamp(24px,2.3vw,32px)">Clinical trials</span><em>42 / 50</em></li>
+            <li><i>H4</i><span style="font-size:clamp(20px,1.9vw,26px)">Areas of focus</span><em>32 / 38</em></li>
+            <li><i>Body</i><span style="font-size:17px;letter-spacing:0">Body text, readable at 20px</span><em>20 / 27</em></li>
+          </ol>
+          <div class="btns"><b class="p1">Primary</b><b class="p2">Secondary</b><b class="p3">Disabled</b></div>
+        </div>
+        <div class="rules">
+          <div class="rule-c pr"><span class="sw" style="background:var(--pb)"></span><p><b>Blue means clickable.</b> Links, buttons and anything you can act on.</p></div>
+          <div class="rule-c pr d1"><span class="sw" style="background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)"></span><p><b>Black means static.</b> Text you read, never text you press.</p></div>
+          <div class="rule-c pr d2"><span class="sw" style="background:linear-gradient(90deg,var(--pb) 0 33%,var(--pb2) 33% 66%,#c8ceea 66%)"></span><p><b>Every state is designed.</b> Default, hover, focused and disabled, not left to the browser.</p></div>
+          <div class="rule-c pr d3"><span class="sw" style="background:conic-gradient(#0000C9 0 25%,#8BE3FF 0 50%,#FFC845 0 75%,#FF7A59 0)"></span><p><b>Grids, palettes, icons, imagery</b> and video subtitles, handed over as guidelines.</p></div>
+        </div>
+      </div>
+
+      <div class="tk">
+        <div class="pr"><b class="cn">71</b><span>primitive tokens for colour, space, radius and type</span></div>
+        <div class="pr d1"><b class="cn">29</b><span>semantic colour tokens, each in three themes</span></div>
+        <div class="pr d2"><b class="cn">16</b><span>text styles, from H1 to mono data</span></div>
+        <div class="pr d3"><b class="cn">25</b><span>components, plus an 8-icon set</span></div>
+      </div>
+      <p style="margin:0 0 20px;max-width:40em;color:rgba(255,255,255,.8)">The client files stay with Pfizer, so I rebuilt the system from the live site as a Figma library for this portfolio. Every colour, gap and radius is a token, and every component follows the theme of the frame it sits in.</p>
+
+      <div class="fv pr" id="fv">
+        <div class="fv-top" role="tablist" aria-label="Figma library pages">
+          <span class="fl"><svg width="12" height="18" viewBox="0 0 38 57" aria-hidden="true"><path fill="#1abcfe" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0acf83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#ff7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#f24e1e" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#a259ff" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>Pfizer DS</span>
+          <button role="tab" aria-selected="true">Palette<span class="pg"></span></button>
+          <button role="tab" aria-selected="false">Roles<span class="pg"></span></button>
+          <button role="tab" aria-selected="false">In context<span class="pg"></span></button>
+          <button role="tab" aria-selected="false">Components<span class="pg"></span></button>
+          <button role="tab" aria-selected="false">Modes<span class="pg"></span></button>
+          <button role="tab" aria-selected="false">Buttons<span class="pg"></span></button>
+        </div>
+        <div class="fv-stage">
+          <figure class="on" data-cap="One palette, clear roles, three modes. Primitives hold every value: brand blue, neutrals and the extended spectrum."><img src="assets/pfizer/ds/fig-color-palette.webp" alt="Primitive palette of brand blues, neutrals and the extended spectrum, each with token name and hex"></figure>
+          <figure data-cap="Semantic roles bind intent, not hex values. Status roles for success, warning, error and info sit alongside text, surface, action and border."><img src="assets/pfizer/ds/fig-color-roles.webp" alt="Semantic roles table mapping each token to a primitive in Light, Inverted and Dark" loading="lazy"></figure>
+          <figure data-cap="The same roles in context, with measured contrast for the key text pairings."><img src="assets/pfizer/ds/fig-color-context.webp" alt="Semantic roles in Light, Inverted and Dark cards, with contrast pairings" loading="lazy"></figure>
+          <figure data-cap="Built to work together: buttons, search, checkbox, plus new text field, switch, status badge and alert families."><img src="assets/pfizer/ds/fig-components.webp" alt="Reusable component families from the Figma library" loading="lazy"></figure>
+          <figure data-cap="One system, three modes. The same linked instances change theme when the parent mode changes."><img src="assets/pfizer/ds/fig-modes.webp" alt="A preferences form built from linked instances in Light, Inverted and Dark" loading="lazy"></figure>
+          <figure data-cap="Primary and secondary buttons in every state, on Light and Inverted themes."><img src="assets/pfizer/ds/ds-buttons.webp" alt="Buttons in default, hover, focus and disabled states" loading="lazy" style="object-fit:contain;object-position:center;background:#f4f5fa"></figure>
+        </div>
+        <p class="fv-cap" aria-live="polite">One palette, clear roles, three modes. Primitives hold every value: brand blue, neutrals and the extended spectrum.</p>
+      </div>
+
+      <figure class="ld pr"><img src="assets/pfizer/ds/ds-light-dark.webp" alt="Pipeline landing page built only from library components, in Light and Dark side by side" loading="lazy"></figure>
+      <p class="ld-cap"><span>The pipeline landing page, built only from library components, in Light and Dark.</span></p>
+    </div>
+  </section>
+
+  <section class="w sec-pf" id="motion">
+    <div class="hd">
+      <div><p class="kick">Prototype</p><h2 class="h2" style="margin-top:16px">The system, in motion</h2></div>
+      <p>A walkthrough of the pipeline prototype: navigation, hover states and page transitions built on the components, so developers could see exactly how each interaction should behave.</p>
+    </div>
+    <div class="proto pr" id="proto">
+      <div class="bar"><span>pfizer.com · prototype</span><em>RECORDING</em></div>
+      <div class="st">
+        <img class="on" src="assets/web/pfizer-proto/1.webp" alt="Pipeline prototype, step 1">
+        <img src="assets/web/pfizer-proto/2.webp" alt="Pipeline prototype, step 2" loading="lazy">
+        <img src="assets/web/pfizer-proto/3.webp" alt="Pipeline prototype, step 3" loading="lazy">
+        <img src="assets/web/pfizer-proto/4.webp" alt="Pipeline prototype, step 4" loading="lazy">
+        <span class="cur" aria-hidden="true" style="left:30%;top:60%"></span>
+      </div>
+    </div>
+    <div class="steps" id="steps"><button class="on">Enter the pipeline<i></i></button><button>Filter by phase<i></i></button><button>Open a candidate<i></i></button><button>Read the detail<i></i></button></div>
+  </section>
+
+  <section class="band tint" id="screens">
+    <div class="w">
+      <div class="hd">
+        <div><p class="kick">Live screens</p><h2 class="h2" style="margin-top:16px">The system, on pfizer.com</h2></div>
+        <p>Every component was specified for desktop, iPad and mobile: article cards go from three across to two to one, and the mega-menu becomes a full-screen list on mobile.</p>
+      </div>
+      <div class="reel-nav"><button type="button" data-d="-1" aria-label="Previous screen">←</button><button type="button" data-d="1" aria-label="Next screen">→</button></div>
+    </div>
+    <div class="reel" id="reel" tabindex="0" aria-label="Live screens, scroll sideways">
+      <figure><div class="fr"><img src="assets/web/assets/pfizer/menu-desktop.webp" alt="Responsibility mega-menu on desktop" loading="lazy"></div><figcaption>The Responsibility mega-menu, with the page tinted blue behind it.</figcaption></figure>
+      <figure><div class="fr"><img src="assets/web/assets/pfizer/articles-desktop.webp" alt="Latest articles carousel on desktop" loading="lazy"></div><figcaption>The articles carousel on desktop.</figcaption></figure>
+      <figure class="tall"><div class="fr"><img src="assets/web/assets/pfizer/pipeline-page.webp" alt="Pipeline page, full length" loading="lazy"></div><figcaption>The product pipeline, filterable by phase. Hover to scroll.</figcaption></figure>
+      <figure><div class="fr"><img src="assets/web/assets/pfizer/table.webp" alt="Pipeline table with phase dials and filters" loading="lazy"></div><figcaption>The pipeline table, with phase dials and filters.</figcaption></figure>
+      <figure><div class="fr"><img src="assets/web/assets/pfizer/guides.webp" alt="Design guidelines" loading="lazy"></div><figcaption>Guidelines handed to internal teams.</figcaption></figure>
+    </div>
+    <div class="w">
+      <div class="arts">
+        <div class="pr"><img src="assets/web/assets/pfizer/article-1.webp" alt="Article card" loading="lazy"><p>Article card · desktop, three across</p></div>
+        <div class="pr d1"><img src="assets/web/assets/pfizer/article-2.webp" alt="Article card" loading="lazy"><p>Two across on iPad</p></div>
+        <div class="pr d2"><img src="assets/web/assets/pfizer/article-3.webp" alt="Article card" loading="lazy"><p>One across on mobile</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="w sec-pf" id="role">
+    <div class="hd">
+      <div><p class="kick">My role</p><h2 class="h2" style="margin-top:16px">Leading the offshore design team</h2></div>
+      <p>I owned the UI and the system, and reviewed every page the TCS team built against it.</p>
+    </div>
+    <div class="roles">
+      <div class="role pr"><small>01</small><b>Adapt</b><p>Translated Pentagram’s identity into web type, colour and interaction rules.</p></div>
+      <div class="role pr d1"><small>02</small><b>Include</b><p>Designed for colour blindness, low vision and ADHD from the first component.</p></div>
+      <div class="role pr d2"><small>03</small><b>Lead</b><p>Led the TCS team through the rebrand, reviewing every page against the system.</p></div>
+      <div class="role pr d3"><small>04</small><b>Scale</b><p>Set up the guidelines that internal pages and dashboards now follow.</p></div>
+    </div>
+  </section>
+
+  <section class="band blue" id="impact">
+    <div class="w">
+      <div class="hd">
+        <div><p class="kick">Impact</p><h2 class="h2" style="margin-top:16px">The website became the template</h2></div>
+        <div><p>Once pfizer.com went live, its system became Pfizer’s corporate design UI. Internal pages, dashboards, the product pipeline and the newsroom now start from the same type, colour rules and components, instead of reinventing the brand.</p><a class="pill" href="https://www.pfizer.com" target="_blank" rel="noopener">Visit pfizer.com <i>→</i></a></div>
+      </div>
+    </div>
+    <div class="mq" aria-hidden="true"><div><span>Product pipeline</span><span>Newsroom</span><span>pfizer.com</span><span>Internal pages</span><span>Dashboards</span><span>Product pipeline</span><span>Newsroom</span><span>pfizer.com</span><span>Internal pages</span><span>Dashboards</span></div></div>
+  </section>
+
+  <a class="next" href="case-cray.html" style="margin-top:0"><p class="kick"><span class="n">Next case study · 05</span></p><p class="h1" style="margin-top:12px">CRAY <em>→</em></p></a>
 </main>
 <footer class="foot w"><span>© 2026 Yashvi Jain · London, UK</span><span><a href="work.html">All work</a> · <a href="contact.html">Contact</a></span></footer>
 <script src="case.js"></script>
+<script>
+(function(){
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function vis(el,cb,th){if(!('IntersectionObserver' in window)){cb(true);return;}new IntersectionObserver(function(es){es.forEach(function(e){cb(e.isIntersecting);});},{threshold:th||.25}).observe(el);}
+/* reveal */
+var pr=[].slice.call(document.querySelectorAll('.pr'));
+if(reduce||!('IntersectionObserver' in window))pr.forEach(function(e){e.classList.add('in');});
+else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});pr.forEach(function(e){io.observe(e);});}
+/* counters on navy tokens */
+document.querySelectorAll('.cn').forEach(function(b){var to=+b.textContent;if(reduce)return;b.textContent='0';vis(b,function(v){if(!v||b.dataset.d)return;b.dataset.d=1;var t0=performance.now();(function st(n){var p=Math.min(1,(n-t0)/1300),e=1-Math.pow(1-p,3);b.textContent=Math.round(to*e);if(p<1)requestAnimationFrame(st);})(t0);});});
+/* rotating word + value card sync */
+var rot=[].slice.call(document.querySelectorAll('.rot span')),vals=[].slice.call(document.querySelectorAll('.val')),ri=0,rv=false;
+if(rot.length){vis(document.getElementById('brand'),function(v){rv=v;},.2);
+setInterval(function(){if(!rv||reduce)return;var p=ri;ri=(ri+1)%rot.length;rot[p].classList.remove('on');rot[p].classList.add('out');setTimeout(function(){rot[p].classList.remove('out');},700);rot[ri].classList.add('on');vals.forEach(function(v,k){v.classList.toggle('on',k===ri);});},2200);}
+/* figma viewer */
+var fv=document.getElementById('fv');if(fv){var tabs=[].slice.call(fv.querySelectorAll('[role=tab]')),figs=[].slice.call(fv.querySelectorAll('figure')),cap=fv.querySelector('.fv-cap'),fi=0,ft=null,fvis=false,hold=false,D=5200;
+function show(i){fi=(i+figs.length)%figs.length;figs.forEach(function(f,k){f.classList.toggle('on',k===fi);});tabs.forEach(function(t,k){t.setAttribute('aria-selected',String(k===fi));var pg=t.querySelector('.pg');pg.style.animation='none';pg.offsetWidth;pg.style.animation='';});cap.textContent=figs[fi].dataset.cap;var t=tabs[fi];t.parentNode.scrollTo({left:t.offsetLeft-40,behavior:'smooth'});sch();}
+function sch(){clearTimeout(ft);if(fvis&&!hold&&!reduce)ft=setTimeout(function(){show(fi+1);},D);}
+tabs.forEach(function(t,k){t.addEventListener('click',function(){show(k);});});
+fv.addEventListener('pointerenter',function(){hold=true;fv.classList.add('hold');clearTimeout(ft);});fv.addEventListener('pointerleave',function(){hold=false;fv.classList.remove('hold');show(fi);});
+vis(fv,function(v){fvis=v;if(v)show(fi);else clearTimeout(ft);});}
+/* prototype */
+var pt=document.getElementById('proto');if(pt){var im=[].slice.call(pt.querySelectorAll('.st img')),bs=[].slice.call(document.querySelectorAll('#steps button')),cu=pt.querySelector('.cur'),P=[[22,30],[58,38],[42,62],[70,48]],pi=0,ptm=null,pv=false;
+function go(i){pi=(i+im.length)%im.length;im.forEach(function(x,k){x.classList.toggle('on',k===pi);});bs.forEach(function(b,k){b.classList.toggle('on',k===pi);b.classList.toggle('done',k<pi);var ii=b.querySelector('i');ii.style.animation='none';ii.offsetWidth;ii.style.animation='';});cu.style.left=P[pi][0]+'%';cu.style.top=P[pi][1]+'%';clearTimeout(ptm);if(pv&&!reduce)ptm=setTimeout(function(){go(pi+1);},3600);}
+bs.forEach(function(b,k){b.addEventListener('click',function(){go(k);});});vis(pt,function(v){pv=v;if(v)go(pi);else clearTimeout(ptm);});}
+/* reel */
+var reel=document.getElementById('reel');document.querySelectorAll('.reel-nav button').forEach(function(b){b.addEventListener('click',function(){reel.scrollBy({left:(+b.dataset.d)*reel.clientWidth*.7,behavior:'smooth'});});});
+})();
+</script>
 </body>
 </html>

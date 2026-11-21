@@ -128,6 +128,30 @@ html{scroll-behavior:smooth}
 .card:hover .art.pfc .pf-a{transform:translate(-3%,2%)}
 .card:hover .art.pfc .pf-b{transform:translate(3%,-3%)}
 .cards[data-view="list"] .art.pfc{display:none}
+
+/* Ask Beta card: same three-phone art as home */
+.art.abc{padding:0}
+.art.abc img.ab-sun{position:absolute;left:clamp(18px,3vw,36px);top:clamp(18px,3vw,36px);width:clamp(40px,4.4vw,60px);height:auto;object-fit:contain;z-index:4;transform:none!important;filter:drop-shadow(0 4px 10px rgba(150,70,0,.25))}
+.art.abc .ab-ph{position:absolute;bottom:-14%;height:86%;aspect-ratio:248/532;border-radius:clamp(14px,2vw,26px);overflow:hidden;box-shadow:0 24px 50px rgba(120,50,0,.32);transition:transform 1.1s var(--ease)}
+.art.abc .ab-ph img{width:100%;height:100%;object-fit:cover;transform:none!important}
+.art.abc .ab-c{left:50%;height:96%;bottom:-10%;z-index:3;transform:translateX(-50%)}
+.art.abc .ab-l{left:50%;z-index:1;transform:translateX(-128%) rotate(-7deg);transform-origin:50% 100%}
+.art.abc .ab-r{left:50%;z-index:2;transform:translateX(28%) rotate(7deg);transform-origin:50% 100%}
+.card:hover .art.abc .ab-c{transform:translate(-50%,-5%)}
+.card:hover .art.abc .ab-l{transform:translateX(-140%) rotate(-10deg)}
+.card:hover .art.abc .ab-r{transform:translateX(40%) rotate(10deg)}
+/* CRAY card: live Lovable home screen in a phone */
+.art.crc{padding:0;background:radial-gradient(120% 90% at 30% 10%,#a46bf5 0,#7B27A1 55%,#4a1468 100%)}
+.art.crc .cr-ph{position:absolute;left:50%;bottom:7%;height:86%;aspect-ratio:390/845;transform:translateX(-50%);border-radius:clamp(18px,2.4vw,30px);overflow:hidden;background:#fff;box-shadow:0 0 0 5px #111,0 24px 50px rgba(30,0,50,.5);transition:transform 1.1s var(--ease)}
+.art.crc .cr-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:none!important}
+.art.crc .cr-ph iframe{position:absolute;top:0;left:0;width:390px;height:845px;border:0;transform-origin:0 0;transform:scale(var(--s,.5));pointer-events:none;background:#fff;opacity:0;transition:opacity .6s}
+.art.crc .cr-ph iframe.on{opacity:1}
+.art.crc .cr-tag{position:absolute;left:clamp(18px,3vw,36px);top:clamp(18px,3vw,36px);font:600 12px/1 var(--tight);color:#fff;background:rgba(255,255,255,.16);padding:8px 12px;border-radius:999px;display:flex;gap:8px;align-items:center}
+.art.crc .cr-tag i{width:8px;height:8px;border-radius:50%;background:#7CFFB2;box-shadow:0 0 0 0 rgba(124,255,178,.6);animation:crp 1.8s infinite}
+@keyframes crp{70%{box-shadow:0 0 0 8px rgba(124,255,178,0)}100%{box-shadow:0 0 0 0 rgba(124,255,178,0)}}
+.card:hover .art.crc .cr-ph{transform:translate(-50%,-3%) scale(1.02)}
+.cards[data-view="list"] .art.abc,.cards[data-view="list"] .art.crc{display:none}
+@media (prefers-reduced-motion:reduce){.art.crc .cr-tag i{animation:none}}
 /* zine flip book */
 @property --sh{syntax:"<number>";inherits:true;initial-value:0}
 .fb{background:#ecebe8;perspective:2600px;cursor:pointer;user-select:none}
@@ -176,9 +200,9 @@ html{scroll-behavior:smooth}
   <ul class="cards" id="cards" data-view="grid">
     <li data-f="health"><a class="card" href="case-study.html"><div class="art pic" style="--bg:#C8102E"><img src="assets/web/assets/ava/cover-banner.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Ava</span></div><div class="cap"><span class="n">01</span><h2>Ava &amp; dosing error</h2><span class="cat">Healthcare</span><span class="yr">2025</span><b class="out">70% fewer dosing errors</b></div></a></li>
     <li data-f="impact"><a class="card" href="case-move.html"><div class="art pic" style="--bg:#e9e6e1"><img src="assets/web/assets/ma/ma-poster-wall-web.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Move</span></div><div class="cap"><span class="n">02</span><h2>What it takes to move</h2><span class="cat">Social impact</span><span class="yr">2026</span><b class="out">Tested with families</b></div></a></li>
-    <li data-f="ai"><a class="card" href="case-askbeta.html"><div class="art pic fit" style="--bg:#F5B942"><img src="assets/askbeta/s1-home.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Ask Beta</span></div><div class="cap"><span class="n">03</span><h2>Ask Beta</h2><span class="cat">AI product</span><span class="yr">2026</span><b class="out">Live prototype</b></div></a></li>
+    <li data-f="ai"><a class="card" href="case-askbeta.html"><div class="art pic abc" style="--bg:#F5B942"><img class="ab-sun" src="assets/askbeta-sun.svg" alt="" aria-hidden="true"><div class="ab-ph ab-l"><img src="assets/askbeta/s3-told.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-r"><img src="assets/askbeta/s4-reassured.webp" alt="" loading="lazy" decoding="async"></div><div class="ab-ph ab-c"><img src="assets/askbeta/s2-call.webp" alt="Ask Beta app screens" loading="lazy" decoding="async"></div><span class="lbl">Ask Beta</span></div><div class="cap"><span class="n">03</span><h2>Ask Beta</h2><span class="cat">AI product</span><span class="yr">2026</span><b class="out">Live prototype</b></div></a></li>
     <li data-f="brand health"><a class="card" href="case-pfizer.html"><div class="art pic pfc" style="--bg:#0000C9"><img class="pf-logo" src="logos/pfizer-white.svg" alt=""><div class="pf-win pf-b" aria-hidden="true"><div class="pf-bar"><i></i><i></i><i></i><span>pfizer.com/about/careers</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-b.webp" alt="" loading="lazy" decoding="async"></div></div><div class="pf-win pf-a"><div class="pf-bar" aria-hidden="true"><i></i><i></i><i></i><span>pfizer.com</span></div><div class="pf-scr"><img src="assets/web/assets/pfizer/banner-a.webp" alt="The live pfizer.com homepage" loading="lazy" decoding="async"></div></div><span class="lbl">Pfizer</span></div><div class="cap"><span class="n">04</span><h2>Pfizer.com</h2><span class="cat">Brand &amp; web</span><span class="yr">Via TCS</span><b class="out">1 system behind it</b></div></a></li>
-    <li data-f="impact"><a class="card" href="case-cray.html"><div class="art pic" style="--bg:#7B27A1"><img src="assets/web/assets/cray/banner-simple.webp" alt="" loading="lazy" decoding="async"><span class="lbl">CRAY</span></div><div class="cap"><span class="n">05</span><h2>CRAY</h2><span class="cat">Social impact</span><span class="yr">2025</span><b class="out">Live prototype</b></div></a></li>
+    <li data-f="impact"><a class="card" href="case-cray.html"><div class="art pic crc" style="--bg:#7B27A1"><span class="cr-tag"><i></i>Live prototype</span><div class="cr-ph"><img src="assets/web/assets/cray/cover.webp" alt="" loading="lazy" decoding="async"><iframe src="https://build-your-dream-2348.lovable.app/" title="CRAY live prototype home screen" loading="lazy" tabindex="-1" aria-hidden="true" onload="this.classList.add('on')"></iframe></div><span class="lbl">CRAY</span></div><div class="cap"><span class="n">05</span><h2>CRAY</h2><span class="cat">Social impact</span><span class="yr">2025</span><b class="out">Live prototype</b></div></a></li>
     <li data-f="brand"><a class="card" href="case-birdsong.html"><div class="art pic" style="--bg:#2e2523"><img src="assets/web/assets/ime/cover.webp" alt="" loading="lazy" decoding="async"><span class="lbl">Birdsong</span></div><div class="cap"><span class="n">06</span><h2>Birdsong</h2><span class="cat">Museum &amp; web</span><span class="yr">2022</span><b class="out">With the British Council</b></div></a></li>
   </ul>
 </main>
@@ -236,6 +260,10 @@ document.querySelectorAll('.fb').forEach(m=>{const pg=m.dataset.pages.split('|')
   if(!rm)setInterval(()=>{if(vis&&!hover&&!document.hidden)go(1);},3400);});
 document.querySelectorAll('.pl video').forEach(v=>{v.muted=true;new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?v.play().catch(()=>{}):v.pause())).observe(v);});
 })();
+</script>
+<script>
+(function(){var ph=document.querySelectorAll('.cr-ph');if(!ph.length)return;function fit(el){el.style.setProperty('--s',(el.clientWidth/390).toFixed(4))}
+ph.forEach(function(el){fit(el);if('ResizeObserver'in window)new ResizeObserver(function(){fit(el)}).observe(el)})})();
 </script>
 </body>
 </html>
