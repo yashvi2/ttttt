@@ -1393,7 +1393,7 @@ setTimeout(function(){if(!el.classList.contains('gone'))finish();},6500);})();
     <div class="hx-body">
       <p class="hx-small hx-f"><span class="l1">Complex systems.</span><br>Simple to use.</p>
       <figure class="hx-media hx-f hx-reel" id="hxmedia" aria-label="Yashvi in London and at work: presenting, wedging clay and 3D printing">
-        <div class="stk" aria-hidden="true"><div class="stk-c"><img src="assets/hero/park.webp" alt="" decoding="async"></div><div class="stk-c"><img src="assets/hero/madm.webp" alt="" decoding="async"></div><div class="stk-c"><img src="assets/hero/trace.webp" alt="" decoding="async" loading="lazy"></div><div class="stk-c"><video src="assets/hero/clay.mp4" poster="assets/hero/clay.webp" muted playsinline preload="metadata"></video></div><div class="stk-c"><video src="assets/hero/print.mp4" poster="assets/hero/print.webp" muted playsinline preload="metadata"></video></div><div class="stk-c"><img src="assets/hero/board.webp" alt="" decoding="async" loading="lazy"></div><div class="stk-c"><video src="assets/hero/water.mp4" poster="assets/hero/water.webp" muted playsinline preload="metadata"></video></div><div class="stk-c"><img src="assets/hero/london.webp" alt="" decoding="async" loading="lazy"></div></div>
+        <div class="stk" aria-hidden="true"><div class="stk-c"><img src="assets/hero/park.webp" alt="" decoding="async"></div><div class="stk-c"><img src="assets/hero/madm.webp" alt="" decoding="async"></div><div class="stk-c"><img src="assets/hero/trace.webp" alt="" decoding="async" loading="lazy"></div><div class="stk-c"><video src="assets/hero/clay.mp4" poster="assets/hero/clay.webp" muted loop playsinline preload="auto"></video></div><div class="stk-c"><video src="assets/hero/print.mp4" poster="assets/hero/print.webp" muted loop playsinline preload="auto"></video></div><div class="stk-c"><img src="assets/hero/board.webp" alt="" decoding="async" loading="lazy"></div><div class="stk-c"><video src="assets/hero/water.mp4" poster="assets/hero/water.webp" muted loop playsinline preload="auto"></video></div><div class="stk-c"><img src="assets/hero/london.webp" alt="" decoding="async" loading="lazy"></div></div>
       </figure>
       <p class="hx-big hx-f intro">Product designer turning research into clinical tools, AI products and design systems.</p>
     </div>
@@ -1698,10 +1698,10 @@ setTimeout(function(){if(!el.classList.contains('gone'))finish();},6500);})();
       cs.forEach(c => { if (c !== a && c !== b && c !== g) c.className = 'stk-c'; });
       g.className = 'stk-c gone'; b.className = 'stk-c under'; a.className = 'stk-c'; void a.offsetWidth; a.className = 'stk-c top';
       cs.forEach(c => { const v = c.querySelector('video'); if (v && c !== a) v.pause(); });
-      const v = a.querySelector('video'); if (v) { v.currentTime = 0; v.play().catch(()=>{}); }
+      const v = a.querySelector('video'); if (v) { v.muted = true; v.play().catch(()=>{}); }
       const nx = cs[(i + 1) % n].querySelector('img'); if (nx) nx.loading = 'eager'; };
-    const step = () => { if (vis && !document.hidden) { i = (i + 1) % cs.length; show(); } t = setTimeout(step, cs[i].querySelector('video') ? 2600 : 1900); };
-    show(); if (rm) return;
+    const step = () => { if (vis && !document.hidden) { i = (i + 1) % cs.length; show(); } t = setTimeout(step, cs[i].querySelector('video') ? 3400 : 1900); };
+    show();
     t = setTimeout(step, 1900);
     new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(f);
   })();

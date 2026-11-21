@@ -48,7 +48,7 @@ function st(){p.classList.toggle('paused',v.paused);p.setAttribute('aria-label',
 v.addEventListener('play',st);v.addEventListener('pause',st);st();
 p.addEventListener('click',function(){user=true;if(v.paused)v.play();else v.pause();});
 s.addEventListener('click',function(){v.muted=!v.muted;s.setAttribute('aria-pressed',String(!v.muted));s.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off');if(v.paused){user=true;v.play();}});
-if('IntersectionObserver' in window&&!red){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(!user||!v.paused){var r=v.play();if(r&&r.catch)r.catch(function(){});}}else if(!v.paused){v.pause();}});},{threshold:.35}).observe(v);}
+v.muted=true;if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(!user||!v.paused){var r=v.play();if(r&&r.catch)r.catch(function(){});}}else if(!v.paused){v.pause();}});},{threshold:.35}).observe(v);}
 });})();
 /* Ask Beta: auto-playing flow, tap hints, and a live prototype tab */
 (function(){var pm=document.getElementById('pm');if(!pm)return;
